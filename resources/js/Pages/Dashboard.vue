@@ -529,7 +529,7 @@ watch(
                         <div class="flex-1 flex flex-col justify-center">
                             <div class="flex flex-col sm:flex-row items-center justify-center gap-8">
                                 <!-- Chart Canvas -->
-                                <div class="relative w-40 h-40">
+                                <div class="relative w-40 h-40 flex-shrink-0">
                                     <canvas ref="donutCanvas"></canvas>
                                     <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                         <span class="text-2xl font-bold text-slate-800">{{ customerStats.total }}</span>
