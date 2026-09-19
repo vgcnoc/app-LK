@@ -2,6 +2,7 @@
 import { ref, computed, watch } from 'vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Chart from 'chart.js/auto';
 
 const props = defineProps({
     customers: {
@@ -13,6 +14,18 @@ const props = defineProps({
         default: () => []
     },
     pakets: {
+        type: Array,
+        default: () => []
+    },
+    globalInstallationFee: {
+        type: [Number, String],
+        default: 0
+    },
+    chart: {
+        type: Object,
+        default: () => ({ labels: [], registrations: [], stops: [] })
+    },
+    sales: {
         type: Array,
         default: () => []
     }
@@ -39,19 +52,8 @@ const currentPage = ref(1);
 
 // Available unique areas
 const availableAreas = computed(() => {
-    const set = new Set();
-    if (Array.isArray(props.areas)) {
-        props.areas.forEach(a => {
-            if (typeof a === 'string' && a.trim()) set.add(a.trim());
-            else if (a && a.name) set.add(a.name.trim());
-        });
-    }
-    customerList.value.forEach(c => {
-        if (c.area && typeof c.area === 'string' && c.area.trim()) {
-            set.add(c.area.trim());
-        }
-    });
-    return Array.from(set).sort();
+    if (!Array.isArray(props.areas)) return [];
+    return props.areas.map(a => typeof a === 'string' ? a : a.name).filter(Boolean);
 });
 
 // Available unique pakets
@@ -71,11 +73,13 @@ const availablePakets = computed(() => {
     return Array.from(set).sort();
 });
 
+
+
 // Summary Counts (Master Data only)
 const totalCount = computed(() => customerList.value.length);
 const aktifCount = computed(() => customerList.value.filter(c => (c.status_pelanggan || 'Aktif').toLowerCase() === 'aktif').length);
-const nonaktifCount = computed(() => customerList.value.filter(c => (c.status_pelanggan || '').toLowerCase() === 'nonaktif').length);
-const suspendCount = computed(() => customerList.value.filter(c => ['suspend', 'isolir', 'berhenti'].includes((c.status_pelanggan || '').toLowerCase())).length);
+const berhentiCount = computed(() => customerList.value.filter(c => ['berhenti', 'nonaktif', 'putus'].includes((c.status_pelanggan || '').toLowerCase())).length);
+const suspendCount = computed(() => customerList.value.filter(c => ['suspend', 'isolir'].includes((c.status_pelanggan || '').toLowerCase())).length);
 
 // Filtered and sorted customers
 const filteredCustomers = computed(() => {
@@ -94,7 +98,19 @@ const filteredCustomers = computed(() => {
             paket.includes(query);
 
         const matchesArea = !selectedArea.value || customer.area === selectedArea.value;
-        const matchesStatus = !selectedStatus.value || (customer.status_pelanggan || 'Aktif') === selectedStatus.value;
+        
+        let matchesStatus = true;
+        if (selectedStatus.value) {
+            if (selectedStatus.value === 'Menunggak') {
+                matchesStatus = (customer.status === 'nunggak' || customer.status === 'pending') && !customer.is_partial_payment && (!customer.status_pelanggan || customer.status_pelanggan === 'Aktif');
+            } else if (selectedStatus.value === 'Bayar Sebagian') {
+                matchesStatus = customer.is_partial_payment == 1;
+            } else if (selectedStatus.value === 'Aktif') {
+                matchesStatus = (!customer.status_pelanggan || customer.status_pelanggan === 'Aktif') && customer.status === 'paid';
+            } else {
+                matchesStatus = (customer.status_pelanggan || 'Aktif') === selectedStatus.value;
+            }
+        }
 
         return matchesSearch && matchesArea && matchesStatus;
     }).sort((a, b) => {
@@ -198,6 +214,88 @@ const getStatusBadge = (status) => {
     };
 };
 
+// Chart Setup
+const chartCanvas = ref(null);
+let chartInstance = null;
+
+const renderChart = () => {
+    if (!chartCanvas.value) return;
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+    
+    const ctx = chartCanvas.value.getContext('2d');
+    chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: props.chart?.labels || [],
+            datasets: [
+                {
+                    label: 'Pertambahan Pelanggan',
+                    data: props.chart?.registrations || [],
+                    borderColor: '#4f46e5', // indigo-600
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true
+                },
+                {
+                    label: 'Pelanggan Berhenti',
+                    data: props.chart?.stops || [],
+                    borderColor: '#e11d48', // rose-600
+                    backgroundColor: 'rgba(225, 29, 72, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        font: {
+                            family: "'Inter', sans-serif",
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+};
+
+watch(() => props.chart, () => {
+    renderChart();
+}, { deep: true });
+
+import { onMounted } from 'vue';
+onMounted(() => {
+    renderChart();
+});
+
+
 // Avatar Initials
 const getInitials = (name) => {
     if (!name) return '?';
@@ -207,6 +305,31 @@ const getInitials = (name) => {
         .slice(0, 2)
         .map(n => n.charAt(0).toUpperCase())
         .join('');
+};
+
+const isFetchingCoordinate = ref(false);
+
+const fetchCoordinate = (form) => {
+    if (!navigator.geolocation) {
+        alert('Geolocation tidak didukung oleh browser Anda.');
+        return;
+    }
+    
+    isFetchingCoordinate.value = true;
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const lat = position.coords.latitude.toFixed(6);
+            const lng = position.coords.longitude.toFixed(6);
+            form.coordinate = `${lat}, ${lng}`;
+            isFetchingCoordinate.value = false;
+        },
+        (error) => {
+            console.error(error);
+            alert('Gagal mendapatkan lokasi. Pastikan izin lokasi diaktifkan.');
+            isFetchingCoordinate.value = false;
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+    );
 };
 
 // =================== CREATE MODAL ===================
@@ -219,7 +342,11 @@ const createForm = useForm({
     register_date: new Date().toISOString().split('T')[0],
     status_pelanggan: 'Aktif',
     base_amount: '',
-    amount: ''
+    amount: '',
+    sales_id: '',
+    coordinate: '',
+    no_wa: '',
+    installation_fee: ''
 });
 
 const openCreateModal = () => {
@@ -258,7 +385,41 @@ const editForm = useForm({
     register_date: '',
     status_pelanggan: 'Aktif',
     base_amount: '',
-    amount: ''
+    amount: '',
+    sales_id: '',
+    coordinate: '',
+    no_wa: '',
+    installation_fee: ''
+});
+
+const calculateInstallationFee = (paketName, areaName) => {
+    if (paketName && Array.isArray(props.pakets)) {
+        const p = props.pakets.find(x => x.name && x.name.trim() === paketName.trim());
+        if (p && p.installation_fee !== null && p.installation_fee !== undefined && p.installation_fee >= 0) {
+            return p.installation_fee;
+        }
+    }
+    
+    if (areaName && Array.isArray(props.areas)) {
+        const a = props.areas.find(x => x.name && x.name.trim() === areaName.trim());
+        if (a && a.installation_fee !== null && a.installation_fee !== undefined && a.installation_fee >= 0) {
+            return a.installation_fee;
+        }
+    }
+    
+    return props.globalInstallationFee || 0;
+};
+
+watch([() => createForm.paket, () => createForm.area], ([newPaket, newArea], [oldPaket, oldArea]) => {
+    if (newPaket !== oldPaket || newArea !== oldArea) {
+        createForm.installation_fee = calculateInstallationFee(newPaket, newArea);
+    }
+});
+
+watch([() => editForm.paket, () => editForm.area], ([newPaket, newArea], [oldPaket, oldArea]) => {
+    if (showEditModal.value && (newPaket !== oldPaket || newArea !== oldArea)) {
+        editForm.installation_fee = calculateInstallationFee(newPaket, newArea);
+    }
 });
 
 const openEditModal = (customer) => {
@@ -276,6 +437,10 @@ const openEditModal = (customer) => {
     editForm.status_pelanggan = customer.status_pelanggan || 'Aktif';
     editForm.base_amount = baseVal;
     editForm.amount = baseVal;
+    editForm.sales_id = customer.sales_id || '';
+    editForm.coordinate = customer.coordinate || '';
+    editForm.no_wa = customer.no_wa || '';
+    editForm.installation_fee = customer.installation_fee !== undefined && customer.installation_fee !== null ? customer.installation_fee : '';
     editForm.clearErrors();
     showEditModal.value = true;
 };
@@ -394,8 +559,8 @@ const submitDelete = () => {
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-xs font-medium text-slate-500">Nonaktif</p>
-                                <p class="text-xl font-bold text-slate-700">{{ nonaktifCount }}</p>
+                                <p class="text-xs font-medium text-slate-500">Pelanggan Berhenti</p>
+                                <p class="text-xl font-bold text-slate-700">{{ berhentiCount }}</p>
                             </div>
                         </div>
                     </div>
@@ -408,10 +573,18 @@ const submitDelete = () => {
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-xs font-medium text-slate-500">Suspend / Berhenti</p>
+                                <p class="text-xs font-medium text-slate-500">Suspend</p>
                                 <p class="text-xl font-bold text-amber-600">{{ suspendCount }}</p>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Registration & Stops Chart -->
+                <div class="rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm mb-6">
+                    <h3 class="text-sm font-semibold text-slate-800 mb-4">Grafik Pertambahan & Pelanggan Berhenti (6 Bulan Terakhir)</h3>
+                    <div class="h-64 w-full">
+                        <canvas ref="chartCanvas"></canvas>
                     </div>
                 </div>
 
@@ -461,7 +634,10 @@ const submitDelete = () => {
                                 class="rounded-lg border border-slate-300 bg-white py-2 pl-3 pr-8 text-sm text-slate-700 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                             >
                                 <option value="">Semua Status</option>
-                                <option value="Aktif">Aktif</option>
+                                <option value="Aktif">Aktif (Lunas)</option>
+                                <option value="Menunggak">Menunggak</option>
+                                <option value="Janji Bayar">Janji Bayar</option>
+                                <option value="Bayar Sebagian">Bayar Sebagian</option>
                                 <option value="Nonaktif">Nonaktif</option>
                                 <option value="Suspend">Suspend</option>
                                 <option value="Berhenti">Berhenti</option>
@@ -505,8 +681,8 @@ const submitDelete = () => {
 
                 <!-- Table Card -->
                 <div class="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+                    <div class="overflow-x-auto w-full pb-4">
+<table class="min-w-full divide-y divide-slate-200 text-left text-sm">
                             <thead class="bg-slate-50/80 text-xs font-semibold uppercase tracking-wider text-slate-600">
                                 <tr>
                                     <th scope="col" class="py-3.5 pl-4 pr-2 text-center sm:pl-6 w-12">
@@ -730,51 +906,32 @@ const submitDelete = () => {
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
+</div>
 
                     <!-- Pagination Controls -->
                     <div
-                        v-if="totalPages > 1"
-                        class="flex flex-col items-center justify-between gap-3 border-t border-slate-200 px-4 py-3 sm:flex-row sm:px-6"
+                        class="px-6 py-4 flex items-center justify-between border-t border-slate-200 bg-white"
                     >
-                        <div class="text-xs text-slate-500">
-                            Menampilkan halaman <span class="font-medium text-slate-700">{{ currentPage }}</span> dari <span class="font-medium text-slate-700">{{ totalPages }}</span>
+                        <div class="text-sm text-slate-500">
+                            Menampilkan <span class="font-medium text-slate-900">{{ (currentPage - 1) * perPage + 1 }}</span> - 
+                            <span class="font-medium text-slate-900">{{ Math.min(currentPage * perPage, filteredCustomers.length) }}</span> dari 
+                            <span class="font-medium text-slate-900">{{ filteredCustomers.length }}</span> pelanggan
                         </div>
                         <div class="flex items-center gap-1">
                             <button
-                                type="button"
+                                @click="currentPage--" 
                                 :disabled="currentPage === 1"
-                                @click="currentPage--"
-                                class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+                                class="px-3 py-1.5 border border-slate-200 rounded-lg text-slate-500 bg-white hover:bg-slate-50 hover:text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                             >
-                                Sebelumnya
+                                &lt;
                             </button>
-                            <div class="flex items-center gap-1 px-1">
-                                <template v-for="page in totalPages" :key="page">
-                                    <button
-                                        v-if="page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
-                                        type="button"
-                                        @click="currentPage = page"
-                                        :class="page === currentPage ? 'bg-indigo-600 text-white font-semibold' : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'"
-                                        class="h-7 w-7 rounded-lg text-xs transition"
-                                    >
-                                        {{ page }}
-                                    </button>
-                                    <span
-                                        v-else-if="(page === currentPage - 2 && page > 1) || (page === currentPage + 2 && page < totalPages)"
-                                        class="px-1 text-xs text-slate-400"
-                                    >
-                                        ...
-                                    </span>
-                                </template>
-                            </div>
+                            <button class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-medium shadow-sm">{{ currentPage }}</button>
                             <button
-                                type="button"
+                                @click="currentPage++" 
                                 :disabled="currentPage === totalPages"
-                                @click="currentPage++"
-                                class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+                                class="px-3 py-1.5 border border-slate-200 rounded-lg text-slate-500 bg-white hover:bg-slate-50 hover:text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                             >
-                                Selanjutnya
+                                &gt;
                             </button>
                         </div>
                     </div>
@@ -815,19 +972,33 @@ const submitDelete = () => {
                     <!-- Modal Body Form -->
                     <form @submit.prevent="submitCreate">
                         <div class="p-6 space-y-4">
-                            <!-- Nama Pelanggan -->
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    Nama Pelanggan <span class="text-rose-500">*</span>
-                                </label>
-                                <input
-                                    v-model="createForm.name"
-                                    type="text"
-                                    required
-                                    placeholder="Contoh: Budi Santoso"
-                                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                                />
-                                <p v-if="createForm.errors.name" class="mt-1 text-xs text-rose-600">{{ createForm.errors.name }}</p>
+                            <!-- Nama Pelanggan & No WA -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Nama Pelanggan <span class="text-rose-500">*</span>
+                                    </label>
+                                    <input
+                                        v-model="createForm.name"
+                                        type="text"
+                                        required
+                                        placeholder="Contoh: Budi Santoso"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+                                    <p v-if="createForm.errors.name" class="mt-1 text-xs text-rose-600">{{ createForm.errors.name }}</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        No WA
+                                    </label>
+                                    <input
+                                        v-model="createForm.no_wa"
+                                        type="text"
+                                        placeholder="Contoh: 08123456789"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+                                    <p v-if="createForm.errors.no_wa" class="mt-1 text-xs text-rose-600">{{ createForm.errors.no_wa }}</p>
+                                </div>
                             </div>
 
                             <!-- Area & Paket -->
@@ -836,17 +1007,14 @@ const submitDelete = () => {
                                     <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
                                         Area / Wilayah <span class="text-rose-500">*</span>
                                     </label>
-                                    <input
+                                    <select
                                         v-model="createForm.area"
-                                        type="text"
-                                        list="create-areas-list"
                                         required
-                                        placeholder="Contoh: Area Timur, RW 01"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                                    />
-                                    <datalist id="create-areas-list">
-                                        <option v-for="a in availableAreas" :key="a" :value="a" />
-                                    </datalist>
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 bg-white"
+                                    >
+                                        <option value="" disabled>-- Pilih Area --</option>
+                                        <option v-for="a in availableAreas" :key="a" :value="a">{{ a }}</option>
+                                    </select>
                                     <p v-if="createForm.errors.area" class="mt-1 text-xs text-rose-600">{{ createForm.errors.area }}</p>
                                 </div>
 
@@ -882,6 +1050,39 @@ const submitDelete = () => {
                                 <p v-if="createForm.errors.alamat" class="mt-1 text-xs text-rose-600">{{ createForm.errors.alamat }}</p>
                             </div>
 
+                            <!-- Koordinat -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Titik Koordinat
+                                </label>
+                                <div class="flex gap-2">
+                                    <input
+                                        v-model="createForm.coordinate"
+                                        type="text"
+                                        placeholder="Contoh: -6.200000, 106.816666"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+                                    <button
+                                        type="button"
+                                        @click="fetchCoordinate(createForm)"
+                                        :disabled="isFetchingCoordinate"
+                                        class="shrink-0 flex items-center justify-center rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 border border-slate-300 disabled:opacity-50"
+                                        title="Dapatkan lokasi saat ini"
+                                    >
+                                        <svg v-if="isFetchingCoordinate" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        <svg v-else class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <span class="ml-2 hidden sm:inline">{{ isFetchingCoordinate ? 'Mencari...' : 'Auto' }}</span>
+                                    </button>
+                                </div>
+                                <p v-if="createForm.errors.coordinate" class="mt-1 text-xs text-rose-600">{{ createForm.errors.coordinate }}</p>
+                            </div>
+
                             <!-- Base Amount / Tarif & Tgl Register -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
@@ -896,7 +1097,7 @@ const submitDelete = () => {
                                             v-model="createForm.base_amount"
                                             type="number"
                                             min="0"
-                                            step="1000"
+                                            step="1"
                                             required
                                             placeholder="150000"
                                             class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
@@ -918,22 +1119,67 @@ const submitDelete = () => {
                                 </div>
                             </div>
 
-                            <!-- Status Pelanggan -->
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    Status Pelanggan <span class="text-rose-500">*</span>
-                                </label>
-                                <select
-                                    v-model="createForm.status_pelanggan"
-                                    required
-                                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                                >
-                                    <option value="Aktif">Aktif</option>
-                                    <option value="Nonaktif">Nonaktif</option>
-                                    <option value="Suspend">Suspend</option>
-                                    <option value="Berhenti">Berhenti</option>
-                                </select>
-                                <p v-if="createForm.errors.status_pelanggan" class="mt-1 text-xs text-rose-600">{{ createForm.errors.status_pelanggan }}</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Biaya Pasang Baru (Rp)
+                                    </label>
+                                    <div class="relative">
+                                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                            <span class="text-xs font-semibold text-slate-400">Rp</span>
+                                        </div>
+                                        <input
+                                            v-model="createForm.installation_fee"
+                                            type="number"
+                                            min="0"
+                                            step="1"
+                                            placeholder="0"
+                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        />
+                                    </div>
+                                    <p v-if="createForm.errors.installation_fee" class="mt-1 text-xs text-rose-600">{{ createForm.errors.installation_fee }}</p>
+                                </div>
+
+                                <!-- Status Pelanggan -->
+                                <div class="col-span-1 sm:col-span-1">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Status Pelanggan <span class="text-rose-500">*</span>
+                                    </label>
+                                    <select
+                                        v-model="createForm.status_pelanggan"
+                                        required
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    >
+                                        <option value="Aktif">Aktif</option>
+                                        <option value="Suspend">Suspend</option>
+                                        <option value="Berhenti">Berhenti</option>
+                                    </select>
+                                    <p v-if="createForm.errors.status_pelanggan" class="mt-1 text-xs text-rose-600">{{ createForm.errors.status_pelanggan }}</p>
+                                </div>
+                                <div class="col-span-1 sm:col-span-2">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Sales / Afiliator
+                                    </label>
+                                    <template v-if="!is_sales">
+                                        <select
+                                            v-model="createForm.sales_id"
+                                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        >
+                                            <option value="">-- Tanpa Sales --</option>
+                                            <option v-for="s in sales" :key="s.id" :value="s.id">{{ s.name }} ({{ s.member_number }})</option>
+                                        </select>
+                                        <p v-if="createForm.errors.sales_id" class="mt-1 text-xs text-rose-600">{{ createForm.errors.sales_id }}</p>
+                                    </template>
+                                    <template v-else>
+                                        <input
+                                            type="text"
+                                            disabled
+                                            :value="$page.props.auth.user.name"
+                                            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 cursor-not-allowed"
+                                        />
+                                        <p class="mt-1 text-[11px] text-slate-500">Otomatis dialokasikan ke akun Anda</p>
+                                    </template>
+                                </div>
                             </div>
                         </div>
 
@@ -995,19 +1241,33 @@ const submitDelete = () => {
                     <!-- Modal Body Form -->
                     <form @submit.prevent="submitEdit">
                         <div class="p-6 space-y-4">
-                            <!-- Nama Pelanggan -->
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    Nama Pelanggan <span class="text-rose-500">*</span>
-                                </label>
-                                <input
-                                    v-model="editForm.name"
-                                    type="text"
-                                    required
-                                    placeholder="Contoh: Budi Santoso"
-                                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                                />
-                                <p v-if="editForm.errors.name" class="mt-1 text-xs text-rose-600">{{ editForm.errors.name }}</p>
+                            <!-- Nama Pelanggan & No WA -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Nama Pelanggan <span class="text-rose-500">*</span>
+                                    </label>
+                                    <input
+                                        v-model="editForm.name"
+                                        type="text"
+                                        required
+                                        placeholder="Contoh: Budi Santoso"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+                                    <p v-if="editForm.errors.name" class="mt-1 text-xs text-rose-600">{{ editForm.errors.name }}</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        No WA
+                                    </label>
+                                    <input
+                                        v-model="editForm.no_wa"
+                                        type="text"
+                                        placeholder="Contoh: 08123456789"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+                                    <p v-if="editForm.errors.no_wa" class="mt-1 text-xs text-rose-600">{{ editForm.errors.no_wa }}</p>
+                                </div>
                             </div>
 
                             <!-- Area & Paket -->
@@ -1016,17 +1276,14 @@ const submitDelete = () => {
                                     <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
                                         Area / Wilayah <span class="text-rose-500">*</span>
                                     </label>
-                                    <input
+                                    <select
                                         v-model="editForm.area"
-                                        type="text"
-                                        list="edit-areas-list"
                                         required
-                                        placeholder="Contoh: Area Timur, RW 01"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                                    />
-                                    <datalist id="edit-areas-list">
-                                        <option v-for="a in availableAreas" :key="a" :value="a" />
-                                    </datalist>
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 bg-white"
+                                    >
+                                        <option value="" disabled>-- Pilih Area --</option>
+                                        <option v-for="a in availableAreas" :key="a" :value="a">{{ a }}</option>
+                                    </select>
                                     <p v-if="editForm.errors.area" class="mt-1 text-xs text-rose-600">{{ editForm.errors.area }}</p>
                                 </div>
 
@@ -1062,6 +1319,39 @@ const submitDelete = () => {
                                 <p v-if="editForm.errors.alamat" class="mt-1 text-xs text-rose-600">{{ editForm.errors.alamat }}</p>
                             </div>
 
+                            <!-- Koordinat -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Titik Koordinat
+                                </label>
+                                <div class="flex gap-2">
+                                    <input
+                                        v-model="editForm.coordinate"
+                                        type="text"
+                                        placeholder="Contoh: -6.200000, 106.816666"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+                                    <button
+                                        type="button"
+                                        @click="fetchCoordinate(editForm)"
+                                        :disabled="isFetchingCoordinate"
+                                        class="shrink-0 flex items-center justify-center rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 border border-slate-300 disabled:opacity-50"
+                                        title="Dapatkan lokasi saat ini"
+                                    >
+                                        <svg v-if="isFetchingCoordinate" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        <svg v-else class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <span class="ml-2 hidden sm:inline">{{ isFetchingCoordinate ? 'Mencari...' : 'Auto' }}</span>
+                                    </button>
+                                </div>
+                                <p v-if="editForm.errors.coordinate" class="mt-1 text-xs text-rose-600">{{ editForm.errors.coordinate }}</p>
+                            </div>
+
                             <!-- Base Amount / Tarif & Tgl Register -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
@@ -1076,7 +1366,7 @@ const submitDelete = () => {
                                             v-model="editForm.base_amount"
                                             type="number"
                                             min="0"
-                                            step="1000"
+                                            step="1"
                                             required
                                             placeholder="150000"
                                             class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
@@ -1098,22 +1388,67 @@ const submitDelete = () => {
                                 </div>
                             </div>
 
-                            <!-- Status Pelanggan -->
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    Status Pelanggan <span class="text-rose-500">*</span>
-                                </label>
-                                <select
-                                    v-model="editForm.status_pelanggan"
-                                    required
-                                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                                >
-                                    <option value="Aktif">Aktif</option>
-                                    <option value="Nonaktif">Nonaktif</option>
-                                    <option value="Suspend">Suspend</option>
-                                    <option value="Berhenti">Berhenti</option>
-                                </select>
-                                <p v-if="editForm.errors.status_pelanggan" class="mt-1 text-xs text-rose-600">{{ editForm.errors.status_pelanggan }}</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Biaya Pasang Baru (Rp)
+                                    </label>
+                                    <div class="relative">
+                                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                            <span class="text-xs font-semibold text-slate-400">Rp</span>
+                                        </div>
+                                        <input
+                                            v-model="editForm.installation_fee"
+                                            type="number"
+                                            min="0"
+                                            step="1"
+                                            placeholder="0"
+                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        />
+                                    </div>
+                                    <p v-if="editForm.errors.installation_fee" class="mt-1 text-xs text-rose-600">{{ editForm.errors.installation_fee }}</p>
+                                </div>
+
+                                <!-- Status Pelanggan -->
+                                <div class="col-span-1 sm:col-span-1">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Status Pelanggan <span class="text-rose-500">*</span>
+                                    </label>
+                                    <select
+                                        v-model="editForm.status_pelanggan"
+                                        required
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    >
+                                        <option value="Aktif">Aktif</option>
+                                        <option value="Suspend">Suspend</option>
+                                        <option value="Berhenti">Berhenti</option>
+                                    </select>
+                                    <p v-if="editForm.errors.status_pelanggan" class="mt-1 text-xs text-rose-600">{{ editForm.errors.status_pelanggan }}</p>
+                                </div>
+                                <div class="col-span-1 sm:col-span-2">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Sales / Afiliator
+                                    </label>
+                                    <template v-if="!is_sales">
+                                        <select
+                                            v-model="editForm.sales_id"
+                                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        >
+                                            <option value="">-- Tanpa Sales --</option>
+                                            <option v-for="s in sales" :key="s.id" :value="s.id">{{ s.name }} ({{ s.member_number }})</option>
+                                        </select>
+                                        <p v-if="editForm.errors.sales_id" class="mt-1 text-xs text-rose-600">{{ editForm.errors.sales_id }}</p>
+                                    </template>
+                                    <template v-else>
+                                        <input
+                                            type="text"
+                                            disabled
+                                            :value="$page.props.auth.user.name"
+                                            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 cursor-not-allowed"
+                                        />
+                                        <p class="mt-1 text-[11px] text-slate-500">Otomatis dialokasikan ke akun Anda</p>
+                                    </template>
+                                </div>
                             </div>
                         </div>
 

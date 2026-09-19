@@ -1,8 +1,11 @@
 <script setup>
-import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
 
 const sidebarOpen = ref(false);
+
+const permissions = computed(() => usePage().props.auth?.permissions || []);
+const can = (perm) => permissions.value.includes(perm);
 </script>
 
 <template>
@@ -24,15 +27,19 @@ const sidebarOpen = ref(false);
             <!-- Logo / Brand Area -->
             <div class="h-16 flex items-center justify-between px-6 border-b border-slate-700/60 flex-shrink-0">
                 <Link :href="route('dashboard')" class="flex items-center gap-3 text-white group">
-                    <div class="p-2 rounded-xl bg-indigo-500/20 text-indigo-400 group-hover:bg-indigo-500/30 group-hover:scale-105 transition-all">
-                        <!-- Wallet SVG Icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                    </div>
-                    <span class="text-base font-bold tracking-wider uppercase">
-                        APP KEUANGAN
-                    </span>
+                    <template v-if="$page.props.app_logo">
+                        <img :src="$page.props.app_logo" class="h-12 w-auto object-contain" alt="Logo" />
+                    </template>
+                    <template v-else>
+                        <div class="p-2.5 rounded-xl bg-indigo-500/20 text-indigo-400 group-hover:bg-indigo-500/30 group-hover:scale-105 transition-all flex-shrink-0 flex items-center justify-center overflow-hidden">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <span class="text-lg font-bold tracking-wide text-white">
+                            V-Billing
+                        </span>
+                    </template>
                 </Link>
 
                 <!-- Mobile close button -->
@@ -50,6 +57,7 @@ const sidebarOpen = ref(false);
             <nav class="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
                 <!-- Dashboard -->
                 <Link
+                    v-if="can('akses_dashboard')"
                     :href="route('dashboard')"
                     :class="[
                         route().current('dashboard')
@@ -65,8 +73,28 @@ const sidebarOpen = ref(false);
                     <span>Dashboard</span>
                 </Link>
 
+                <!-- Transaksi -->
+                <Link
+                    v-if="can('akses_transaksi')"
+                    :href="route('transaksi')"
+                    :class="[
+                        route().current('transaksi*')
+                            ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
+                            : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                    ]"
+                >
+                    <!-- Transactions Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Transaksi</span>
+                </Link>
+
+
                 <!-- Billing Data -->
                 <Link
+                    v-if="can('akses_billing')"
                     :href="route('billing.index')"
                     :class="[
                         route().current('billing*')
@@ -82,8 +110,45 @@ const sidebarOpen = ref(false);
                     <span>Billing Data</span>
                 </Link>
 
+                <!-- Voucher & Saldo -->
+                <Link
+                    v-if="can('akses_voucher_saldo')"
+                    :href="route('voucher-saldo.index')"
+                    :class="[
+                        route().current('voucher-saldo*')
+                            ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
+                            : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                    ]"
+                >
+                    <!-- Ticket/Voucher Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                    </svg>
+                    <span>Voucher & Saldo</span>
+                </Link>
+                <!-- Booking Pelanggan -->
+                <Link
+                    v-if="can('akses_booking')"
+                    :href="route('booking.index')"
+                    :class="[
+                        route().current('booking*')
+                            ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
+                            : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                    ]"
+                >
+                    <!-- Clipboard Document Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    <span>Booking Pelanggan</span>
+                </Link>
+
+
                 <!-- Data Pelanggan -->
                 <Link
+                    v-if="can('akses_data_pelanggan')"
                     :href="route('pelanggan.index')"
                     :class="[
                         route().current('pelanggan*') && !route().current('pelanggan.inaktif')
@@ -101,6 +166,7 @@ const sidebarOpen = ref(false);
 
                 <!-- Pelanggan Inaktif -->
                 <Link
+                    v-if="can('akses_data_nonaktif')"
                     :href="route('pelanggan.inaktif')"
                     :class="[
                         route().current('pelanggan.inaktif')
@@ -118,6 +184,7 @@ const sidebarOpen = ref(false);
 
                 <!-- Laporan -->
                 <Link
+                    v-if="can('akses_laporan')"
                     :href="route('laporan')"
                     :class="[
                         route().current('laporan*')
@@ -135,6 +202,7 @@ const sidebarOpen = ref(false);
 
                 <!-- Master Data -->
                 <Link
+                    v-if="can('akses_master_data')"
                     :href="route('master-data.index')"
                     :class="[
                         route().current('master-data*')
@@ -148,6 +216,58 @@ const sidebarOpen = ref(false);
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
                     </svg>
                     <span>Master Data</span>
+                </Link>
+
+                <!-- Affiliates -->
+                <Link
+                    v-if="can('akses_affiliate')"
+                    :href="route('affiliates.index')"
+                    :class="[
+                        route().current('affiliates*')
+                            ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
+                            : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                    ]"
+                >
+                    <!-- Affiliate / Network Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <span>Multi-Tier Affiliate</span>
+                </Link>
+                
+                <!-- Diagram Affiliate -->
+                <Link
+                    v-if="can('akses_affiliate')"
+                    :href="route('affiliates.diagram')"
+                    :class="[
+                        route().current('affiliates.diagram')
+                            ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
+                            : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                    ]"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <span>Diagram Affiliate</span>
+                </Link>
+
+                <!-- Data Komisi -->
+                <Link
+                    v-if="can('akses_affiliate')"
+                    :href="route('komisi.index')"
+                    :class="[
+                        route().current('komisi*')
+                            ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
+                            : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                    ]"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Data Komisi</span>
                 </Link>
 
                 <!-- Divider -->
@@ -178,12 +298,12 @@ const sidebarOpen = ref(false);
         <!-- Content Wrapper -->
         <div class="flex-1 flex flex-col overflow-hidden min-w-0 print:overflow-visible print:block">
             <!-- Topbar -->
-            <header class="h-16 bg-white shadow-sm border-b border-slate-200/80 flex items-center justify-between px-6 z-10 no-print flex-shrink-0 print:hidden">
+            <header class="h-16 bg-white shadow-sm border-b border-slate-200/80 flex items-center justify-between px-4 sm:px-6 z-10 no-print flex-shrink-0 print:hidden">
                 <div class="flex items-center gap-3">
                     <!-- Mobile Hamburger Button -->
                     <button
                         @click="sidebarOpen = !sidebarOpen"
-                        class="lg:hidden p-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 focus:outline-none"
+                        class="lg:hidden p-2 -ml-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 focus:outline-none"
                         aria-label="Toggle Navigation"
                     >
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -191,13 +311,13 @@ const sidebarOpen = ref(false);
                         </svg>
                     </button>
 
-                    <div>
+                    <div class="truncate">
                         <slot name="header" />
                     </div>
                 </div>
 
-                <div class="flex items-center gap-4">
-                    <span class="text-sm font-medium text-slate-600">
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <span class="hidden sm:inline text-sm font-medium text-slate-600">
                         Halo, <span class="font-semibold text-slate-800">{{ $page.props.auth.user.name }}</span>
                     </span>
                     <Link
@@ -216,8 +336,15 @@ const sidebarOpen = ref(false);
             </header>
 
             <!-- Main Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 p-6 print:overflow-visible print:bg-white print:p-0 print:block">
-                <slot />
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 px-2 sm:px-6 py-6 flex flex-col print:overflow-visible print:bg-white print:p-0 print:block">
+                <div class="flex-1 max-w-full">
+                    <slot />
+                </div>
+                
+                <!-- Footer -->
+                <footer class="mt-8 pt-4 border-t border-slate-200/80 text-center text-sm text-slate-500 print:hidden flex-shrink-0">
+                    &copy; {{ new Date().getFullYear() }} viruzs global connection.
+                </footer>
             </main>
         </div>
     </div>

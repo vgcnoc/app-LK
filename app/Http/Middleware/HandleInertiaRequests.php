@@ -29,10 +29,16 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $appLogo = \App\Models\Setting::where('key', 'app_logo')->value('value');
+        
         return [
             ...parent::share($request),
+            'app_logo' => $appLogo,
             'auth' => [
                 'user' => $request->user(),
+                'permissions' => $request->user()
+                    ? $request->user()->getAllPermissions()->pluck('name')->toArray()
+                    : [],
             ],
         ];
     }

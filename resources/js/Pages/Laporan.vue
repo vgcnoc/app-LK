@@ -1,6 +1,7 @@
 <script setup>
 import { Head, useForm, Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import * as XLSX from 'xlsx';
 
 const props = defineProps({
     filters: {
@@ -41,6 +42,18 @@ const props = defineProps({
     expenseCategories: {
         type: Array,
         default: () => [],
+    },
+    companyExpenseTypes: {
+        type: Array,
+        default: () => [],
+    },
+    materials: {
+        type: Array,
+        default: () => [],
+    },
+    paymentMethods: {
+        type: Array,
+        default: () => [],
     }
 });
 
@@ -49,6 +62,9 @@ const form = useForm({
     end_date: props.filters?.end_date || '',
     area: props.filters?.area || '',
     kategori: props.filters?.kategori || '',
+    company_expense_type_id: props.filters?.company_expense_type_id || '',
+    material_id: props.filters?.material_id || '',
+    payment_method: props.filters?.payment_method || '',
 });
 
 const handleFilter = () => {
@@ -63,6 +79,9 @@ const handleReset = () => {
     form.end_date = '';
     form.area = '';
     form.kategori = '';
+    form.company_expense_type_id = '';
+    form.material_id = '';
+    form.payment_method = '';
     form.get(route('laporan'), {
         preserveState: true,
         preserveScroll: true,
@@ -71,6 +90,58 @@ const handleReset = () => {
 
 const printReport = () => {
     window.print();
+};
+
+const exportExcel = () => {
+    const dataToExport = form.kategori === 'belum_lunas' ? props.unpaid_list : props.transactions;
+    
+    if (!dataToExport || dataToExport.length === 0) {
+        alert("Tidak ada data untuk diexport");
+        return;
+    }
+    
+    let formattedData = [];
+    
+    if (form.kategori === 'belum_lunas') {
+        formattedData = dataToExport.map((item, index) => ({
+            'No': index + 1,
+            'Nama Pelanggan': item.name,
+            'Area': item.area || '-',
+            'Status': 'Belum Lunas',
+            'Jumlah Tagihan': item.amount
+        }));
+    } else {
+        formattedData = dataToExport.map((item, index) => {
+            let jenis = '';
+            if (item.type === 'income') {
+                jenis = item.income_source === 'voucher' ? 'Pemasukan (Voucher)' : (item.income_source === 'saldo' ? 'Pemasukan (Saldo)' : 'Pemasukan');
+            } else {
+                jenis = item.expense_category?.name || item.expenseCategory?.name || 'Pengeluaran';
+                if (item.company_expense_type || item.companyExpenseType) {
+                    jenis += ' - ' + (item.company_expense_type?.name || item.companyExpenseType?.name);
+                }
+                if (item.material) {
+                    jenis += ' (' + item.material.name + ')';
+                }
+            }
+            return {
+                'No': index + 1,
+                'Tanggal': item.date,
+                'Deskripsi': item.description || '-',
+                'Area': item.area || '-',
+                'Metode Bayar': item.payment_method || '-',
+                'Jenis': jenis,
+                'Jumlah': item.type === 'income' ? item.amount : -item.amount
+            };
+        });
+    }
+
+    const ws = XLSX.utils.json_to_sheet(formattedData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Laporan");
+    
+    const fileName = `Laporan_${form.kategori === 'belum_lunas' ? 'Belum_Lunas' : 'Transaksi'}_${new Date().toISOString().slice(0,10)}.xlsx`;
+    XLSX.writeFile(wb, fileName);
 };
 
 const formatCurrency = (number) => {
@@ -94,6 +165,34 @@ const formatDate = (dateString) => {
         return dateString;
     }
 };
+
+import { computed, watch } from 'vue';
+
+const isPerusahaanCategoryFilter = computed(() => {
+    if (!form.kategori.startsWith('cat_')) return false;
+    const catId = form.kategori.replace('cat_', '');
+    const selectedCat = props.expenseCategories.find(c => c.id == catId);
+    return selectedCat && selectedCat.name && selectedCat.name.toLowerCase().includes('perusahaan');
+});
+
+const isMaterialSubCategoryFilter = computed(() => {
+    if (!isPerusahaanCategoryFilter.value || !form.company_expense_type_id) return false;
+    const selectedType = props.companyExpenseTypes.find(t => t.id == form.company_expense_type_id);
+    return selectedType && selectedType.name && selectedType.name.toLowerCase() === 'material';
+});
+
+watch(() => form.kategori, () => {
+    if (!isPerusahaanCategoryFilter.value) {
+        form.company_expense_type_id = '';
+        form.material_id = '';
+    }
+});
+
+watch(() => form.company_expense_type_id, () => {
+    if (!isMaterialSubCategoryFilter.value) {
+        form.material_id = '';
+    }
+});
 </script>
 
 <template>
@@ -112,6 +211,16 @@ const formatDate = (dateString) => {
                 </div>
 
                 <div class="print:hidden flex items-center gap-3">
+                    <button
+                        type="button"
+                        @click="exportExcel"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 active:bg-emerald-800 shadow-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                    >
+                        <svg class="w-4 h-4 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span>Export Excel</span>
+                    </button>
                     <button
                         type="button"
                         @click="printReport"
@@ -218,6 +327,57 @@ const formatDate = (dateString) => {
                         </select>
                     </div>
 
+                    <!-- Payment Method Filter -->
+                    <div class="flex-1">
+                        <label for="payment_method" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">
+                            Metode Bayar
+                        </label>
+                        <select
+                            id="payment_method"
+                            v-model="form.payment_method"
+                            class="w-full rounded-lg border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                        >
+                            <option value="">Semua Metode</option>
+                            <option v-for="method in paymentMethods" :key="method.id" :value="method.name">
+                                {{ method.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Jenis Pengeluaran Perusahaan Filter -->
+                    <div v-if="isPerusahaanCategoryFilter" class="flex-1">
+                        <label for="company_expense_type_id" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">
+                            Jenis Pengeluaran
+                        </label>
+                        <select
+                            id="company_expense_type_id"
+                            v-model="form.company_expense_type_id"
+                            class="w-full rounded-lg border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                        >
+                            <option value="">Semua Jenis</option>
+                            <option v-for="type in companyExpenseTypes" :key="type.id" :value="type.id">
+                                {{ type.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Material Filter -->
+                    <div v-if="isMaterialSubCategoryFilter" class="flex-1">
+                        <label for="material_id" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">
+                            Material
+                        </label>
+                        <select
+                            id="material_id"
+                            v-model="form.material_id"
+                            class="w-full rounded-lg border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                        >
+                            <option value="">Semua Material</option>
+                            <option v-for="mat in materials" :key="mat.id" :value="mat.id">
+                                {{ mat.name }}
+                            </option>
+                        </select>
+                    </div>
+
                     <!-- Action Buttons -->
                     <div class="flex items-center gap-2 pt-1 lg:pt-0">
                         <button
@@ -233,7 +393,7 @@ const formatDate = (dateString) => {
                         </button>
 
                         <button
-                            v-if="form.start_date || form.end_date || form.area || form.kategori"
+                            v-if="form.start_date || form.end_date || form.area || form.kategori || form.payment_method"
                             type="button"
                             @click="handleReset"
                             class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 active:bg-slate-300 transition-all focus:outline-none"
@@ -357,7 +517,8 @@ const formatDate = (dateString) => {
 
                 <div class="overflow-x-auto">
                     <!-- TABLE BELUM LUNAS -->
-                    <table v-if="form.kategori === 'belum_lunas'" class="w-full text-left border-collapse print-table">
+                    <div class="overflow-x-auto w-full pb-4" v-if="form.kategori === 'belum_lunas'">
+                        <table class="w-full text-left border-collapse print-table">
                         <thead>
                             <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold text-slate-600 uppercase tracking-wider">
                                 <th scope="col" class="py-3.5 px-4 text-center w-12">#</th>
@@ -418,9 +579,11 @@ const formatDate = (dateString) => {
                             </tr>
                         </tfoot>
                     </table>
+</div>
 
                     <!-- TABLE TRANSAKSI -->
-                    <table v-else class="w-full text-left border-collapse print-table">
+                    <div class="overflow-x-auto w-full pb-4" v-else>
+                        <table class="w-full text-left border-collapse print-table">
                         <thead>
                             <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold text-slate-600 uppercase tracking-wider">
                                 <th scope="col" class="py-3.5 px-4 text-center w-12">#</th>
@@ -466,7 +629,9 @@ const formatDate = (dateString) => {
                                         class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700"
                                     >
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                        Pemasukan
+                                        <template v-if="item.income_source === 'voucher'">Pemasukan (Voucher)</template>
+                                        <template v-else-if="item.income_source === 'saldo'">Pemasukan (Saldo)</template>
+                                        <template v-else>Pemasukan</template>
                                     </span>
                                     <span
                                         v-else
@@ -474,6 +639,12 @@ const formatDate = (dateString) => {
                                     >
                                         <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
                                         {{ item.expense_category?.name || item.expenseCategory?.name || 'Pengeluaran' }}
+                                        <template v-if="item.company_expense_type || item.companyExpenseType">
+                                            - {{ item.company_expense_type?.name || item.companyExpenseType?.name }}
+                                        </template>
+                                        <template v-if="item.material">
+                                            ({{ item.material.name }})
+                                        </template>
                                     </span>
                                 </td>
                                 <td class="py-3.5 px-4 whitespace-nowrap text-right font-semibold">
@@ -523,6 +694,7 @@ const formatDate = (dateString) => {
                             </tr>
                         </tfoot>
                     </table>
+</div>
                 </div>
             </div>
         </div>

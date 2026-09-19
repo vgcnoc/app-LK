@@ -4,6 +4,8 @@ import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import ManageUsers from './Partials/ManageUsers.vue';
+import ManageRoles from './Partials/ManageRoles.vue';
+import UpdateAppLogoForm from './Partials/UpdateAppLogoForm.vue';
 import TextInput from '@/Components/TextInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputError from '@/Components/InputError.vue';
@@ -14,10 +16,12 @@ defineProps({
     mustVerifyEmail: { type: Boolean },
     status: { type: String },
     users: { type: Array, default: () => [] },
+    allPermissions: { type: Array, default: () => [] },
+    roles: { type: Array, default: () => [] },
 });
 
-const authUser = usePage().props.auth.user;
-const isAdmin = authUser.role === 'admin';
+const authPermissions = usePage().props.auth.permissions || [];
+const canManageUsers = authPermissions.includes('manajemen_pengguna');
 </script>
 
 <template>
@@ -40,14 +44,21 @@ const isAdmin = authUser.role === 'admin';
                     />
                 </div>
 
+                <!-- App Logo Update Section (Admin Only) -->
+                <div v-if="canManageUsers" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <UpdateAppLogoForm class="max-w-xl" />
+                </div>
+
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <UpdatePasswordForm class="max-w-xl" />
                 </div>
-                <!-- User Management Section (Admin Only) -->
-                <div v-if="isAdmin" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <ManageUsers :users="users" class="w-full" />
+                <!-- User Management Section (Permission-based) -->
+                <div v-if="canManageUsers" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <ManageUsers :users="users" :roles="roles" class="w-full" />
+                    <ManageRoles :roles="roles" :all-permissions="allPermissions" class="w-full mt-8 border-t border-slate-200 pt-8" />
                 </div>
             </div>
         </div>
     </AuthenticatedLayout>
 </template>
+

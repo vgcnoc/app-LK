@@ -19,15 +19,32 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         $users = [];
-        if ($request->user()->role === 'admin') {
-            $users = \App\Models\User::orderBy('name')->get();
+        $allPermissions = [];
+        $roles = [];
+        
+        if ($request->user()->can('manajemen_pengguna')) {
+            $users = \App\Models\User::with('roles')->orderBy('name')->get()->map(function ($user) {
+                // Return the role name. Fallback to string role column.
+                $user->user_role = $user->roles->first()?->name ?? $user->role;
+                return $user;
+            });
+            $allPermissions = \Spatie\Permission\Models\Permission::orderBy('name')->pluck('name')->toArray();
+            $roles = \Spatie\Permission\Models\Role::with('permissions')->get()->map(function($role) {
+                return [
+                    'id' => $role->id,
+                    'name' => $role->name,
+                    'permissions' => $role->permissions->pluck('name')->toArray(),
+                ];
+            });
         }
         
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'paymentMethods' => \App\Models\PaymentMethod::orderBy('name')->get(),
-            'users' => $users
+            'users' => $users,
+            'allPermissions' => $allPermissions,
+            'roles' => $roles,
         ]);
     }
 
@@ -45,6 +62,26 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit');
+    }
+
+    /**
+     * Update the global app logo.
+     */
+    public function updateAppLogo(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'app_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        if ($request->hasFile('app_logo')) {
+            $path = $request->file('app_logo')->store('logos', 'public');
+            \App\Models\Setting::updateOrCreate(
+                ['key' => 'app_logo'],
+                ['value' => '/storage/' . $path]
+            );
+        }
+
+        return back()->with('success', 'Logo aplikasi berhasil diperbarui.');
     }
 
     /**
