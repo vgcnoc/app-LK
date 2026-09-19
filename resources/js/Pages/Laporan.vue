@@ -130,6 +130,7 @@ const exportExcel = () => {
                 'Deskripsi': item.description || '-',
                 'Area': item.area || '-',
                 'Metode Bayar': item.payment_method || '-',
+                'Tanggal Bayar': item.paid_at ? formatDate(item.paid_at) : '-',
                 'Jenis': jenis,
                 'Jumlah': item.type === 'income' ? item.amount : -item.amount
             };
@@ -591,6 +592,7 @@ watch(() => form.company_expense_type_id, () => {
                                 <th scope="col" class="py-3.5 px-4">Deskripsi</th>
                                 <th scope="col" class="py-3.5 px-4">Area</th>
                                 <th scope="col" class="py-3.5 px-4">Metode Bayar</th>
+                                <th scope="col" class="py-3.5 px-4">Tanggal Bayar</th>
                                 <th scope="col" class="py-3.5 px-4 text-center">Jenis</th>
                                 <th scope="col" class="py-3.5 px-4 text-right">Jumlah</th>
                             </tr>
@@ -622,6 +624,9 @@ watch(() => form.company_expense_type_id, () => {
                                     <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-medium text-[11px]">
                                         {{ item.payment_method || '-' }}
                                     </span>
+                                </td>
+                                <td class="py-3.5 px-4 whitespace-nowrap text-slate-600 text-xs">
+                                    {{ item.paid_at ? formatDate(item.paid_at) : '-' }}
                                 </td>
                                 <td class="py-3.5 px-4 whitespace-nowrap text-center">
                                     <span
@@ -655,7 +660,7 @@ watch(() => form.company_expense_type_id, () => {
                             </tr>
 
                             <tr v-if="transactions.length === 0">
-                                <td colspan="7" class="py-12 text-center text-slate-400">
+                                <td colspan="8" class="py-12 text-center text-slate-400">
                                     <div class="flex flex-col items-center justify-center">
                                         <svg class="w-12 h-12 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -669,7 +674,7 @@ watch(() => form.company_expense_type_id, () => {
 
                         <tfoot v-if="transactions.length > 0" class="bg-slate-50/80 border-t border-slate-200 font-semibold text-xs text-slate-700">
                             <tr>
-                                <td colspan="6" class="py-3.5 px-4 text-right uppercase tracking-wider">
+                                <td colspan="7" class="py-3.5 px-4 text-right uppercase tracking-wider">
                                     Total Pemasukan:
                                 </td>
                                 <td class="py-3.5 px-4 text-right text-emerald-600 font-bold">
@@ -677,7 +682,7 @@ watch(() => form.company_expense_type_id, () => {
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="6" class="py-3.5 px-4 text-right uppercase tracking-wider">
+                                <td colspan="7" class="py-3.5 px-4 text-right uppercase tracking-wider">
                                     Total Pengeluaran:
                                 </td>
                                 <td class="py-3.5 px-4 text-right text-rose-600 font-bold">
@@ -685,7 +690,7 @@ watch(() => form.company_expense_type_id, () => {
                                 </td>
                             </tr>
                             <tr class="border-t border-slate-200 bg-slate-100/70">
-                                <td colspan="6" class="py-3.5 px-4 text-right uppercase tracking-wider text-slate-900 font-bold">
+                                <td colspan="7" class="py-3.5 px-4 text-right uppercase tracking-wider text-slate-900 font-bold">
                                     Saldo Bersih:
                                 </td>
                                 <td class="py-3.5 px-4 text-right font-bold text-slate-900">

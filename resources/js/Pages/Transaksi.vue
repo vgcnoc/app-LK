@@ -136,6 +136,7 @@ const form = useForm({
     description: '',
     area: '',
     payment_method: '',
+    paid_at: '',
     expense_category_id: '',
     income_category_id: '',
     company_expense_type_id: '',
@@ -232,6 +233,7 @@ const openModal = () => {
     form.clearErrors();
     form.date = new Date().toISOString().split('T')[0];
     form.type = 'income';
+    form.paid_at = new Date().toISOString().split('T')[0];
     if (props.paymentMethods && props.paymentMethods.length > 0) {
         form.payment_method = props.paymentMethods[0].name || props.paymentMethods[0].id;
     }
@@ -253,6 +255,7 @@ const editTransaction = (item) => {
         form.description = item.description || '';
         form.area = item.area || '';
         form.payment_method = item.payment_method || '';
+        form.paid_at = item.paid_at ? String(item.paid_at).split(' ')[0] : '';
         form.expense_category_id = item.expense_category_id || '';
         form.income_category_id = item.income_category_id || '';
         form.company_expense_type_id = item.company_expense_type_id || '';
@@ -512,6 +515,7 @@ const deleteTransaction = (id) => {
                                     <th scope="col" class="px-6 py-4">Keterangan</th>
                                     <th scope="col" class="px-6 py-4">Area</th>
                                     <th scope="col" class="px-6 py-4 text-center">Metode Bayar</th>
+                                    <th scope="col" class="px-6 py-4 text-center">Tanggal Bayar</th>
                                     <th scope="col" class="px-6 py-4 text-center">Tipe</th>
                                     <th scope="col" class="px-6 py-4 text-right">Jumlah</th>
                                     <th scope="col" class="px-6 py-4 text-center">Aksi</th>
@@ -552,6 +556,9 @@ const deleteTransaction = (id) => {
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold tracking-wide uppercase bg-blue-50 text-blue-600">
                                             {{ item.payment_method || '-' }}
                                         </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-slate-600">
+                                        {{ item.paid_at ? formatDate(item.paid_at) : '-' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                         <span
@@ -602,7 +609,7 @@ const deleteTransaction = (id) => {
                                     </td>
                                 </tr>
                                 <tr v-if="filteredTransactions.length === 0">
-                                    <td colspan="8" class="px-6 py-12 text-center text-slate-500">
+                                    <td colspan="9" class="px-6 py-12 text-center text-slate-500">
                                         <div class="flex flex-col items-center justify-center space-y-3">
                                             <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
@@ -707,9 +714,9 @@ const deleteTransaction = (id) => {
                                 </div>
 
                                 <!-- Date & Amount -->
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     <div>
-                                        <label for="date" class="block text-xs font-medium text-slate-700 mb-1">Tanggal</label>
+                                        <label for="date" class="block text-xs font-medium text-slate-700 mb-1">Tanggal Transaksi</label>
                                         <input
                                             id="date"
                                             v-model="form.date"
@@ -718,6 +725,17 @@ const deleteTransaction = (id) => {
                                             class="w-full rounded-xl border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500"
                                         />
                                         <p v-if="form.errors.date" class="mt-1 text-xs text-rose-600">{{ form.errors.date }}</p>
+                                    </div>
+
+                                    <div>
+                                        <label for="paid_at" class="block text-xs font-medium text-slate-700 mb-1">Tanggal Bayar</label>
+                                        <input
+                                            id="paid_at"
+                                            v-model="form.paid_at"
+                                            type="date"
+                                            class="w-full rounded-xl border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        />
+                                        <p v-if="form.errors.paid_at" class="mt-1 text-xs text-rose-600">{{ form.errors.paid_at }}</p>
                                     </div>
 
                                     <div>
