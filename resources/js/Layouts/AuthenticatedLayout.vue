@@ -336,13 +336,11 @@ const can = (perm) => permissions.value.includes(perm);
             </header>
 
             <!-- Main Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 px-2 sm:px-6 py-6 flex flex-col print:overflow-visible print:bg-white print:p-0 print:block">
-                <div class="flex-1 max-w-full">
-                    <slot />
-                </div>
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 p-6 print:overflow-visible print:bg-white print:p-0 print:block">
+                <slot />
                 
                 <!-- Footer -->
-                <footer class="mt-8 pt-4 border-t border-slate-200/80 text-center text-sm text-slate-500 print:hidden flex-shrink-0">
+                <footer class="mt-8 pt-4 border-t border-slate-200/80 text-center text-sm text-slate-500 print:hidden">
                     &copy; {{ new Date().getFullYear() }} viruzs global connection.
                 </footer>
             </main>
