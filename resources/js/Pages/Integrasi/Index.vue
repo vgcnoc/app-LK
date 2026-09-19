@@ -47,7 +47,7 @@ const syncData = () => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
                 <!-- Alert Messages -->
-                <div v-if="$page.props.flash.success" class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-md">
+                <div v-if="$page.props.flash?.success" class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-md">
                     <div class="flex">
                         <div class="flex-shrink-0">
                             <svg class="h-5 w-5 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
@@ -60,7 +60,7 @@ const syncData = () => {
                     </div>
                 </div>
 
-                <div v-if="$page.props.flash.error" class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-md">
+                <div v-if="$page.props.flash?.error" class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-md">
                     <div class="flex">
                         <div class="flex-shrink-0">
                             <svg class="h-5 w-5 text-rose-400" viewBox="0 0 20 20" fill="currentColor">
