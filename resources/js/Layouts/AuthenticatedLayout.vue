@@ -336,7 +336,7 @@ const can = (perm) => permissions.value.includes(perm);
             </header>
 
             <!-- Main Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 p-6 print:overflow-visible print:bg-white print:p-0 print:block">
+            <main class="flex-1 overflow-x-auto overflow-y-auto bg-slate-50 p-6 print:overflow-visible print:bg-white print:p-0 print:block">
                 <slot />
                 
                 <!-- Footer -->

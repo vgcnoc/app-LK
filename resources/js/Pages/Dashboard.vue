@@ -527,44 +527,44 @@ watch(
                         </div>
                         
                         <div class="flex-1 flex flex-col justify-center">
-                            <div class="flex flex-col sm:flex-row items-center justify-center gap-8">
+                            <div class="flex flex-col 2xl:flex-row items-center justify-center gap-4 xl:gap-8 flex-wrap">
                                 <!-- Chart Canvas -->
-                                <div class="relative w-40 h-40 flex-shrink-0">
+                                <div class="relative w-32 h-32 xl:w-40 xl:h-40 flex-shrink-0">
                                     <canvas ref="donutCanvas"></canvas>
                                     <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                        <span class="text-2xl font-bold text-slate-800">{{ customerStats.total }}</span>
+                                        <span class="text-xl xl:text-2xl font-bold text-slate-800">{{ customerStats.total }}</span>
                                         <span class="text-[10px] text-slate-500 uppercase tracking-wider mt-0.5">Pelanggan</span>
                                     </div>
                                 </div>
                                 <!-- Legend -->
-                                <div class="space-y-3 min-w-[120px]">
-                                    <div class="flex items-center justify-between gap-4 text-sm">
+                                <div class="space-y-2 xl:space-y-3 min-w-[120px] flex-1">
+                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-sm">
                                         <div class="flex items-center gap-2">
-                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                                            <span class="text-slate-600">Aktif</span>
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
+                                            <span class="text-slate-600 truncate">Aktif</span>
                                         </div>
-                                        <div class="font-semibold text-slate-800">{{ customerStats.aktif }} <span class="text-slate-400 font-normal text-xs">({{ customerStats.total ? Math.round((customerStats.aktif/customerStats.total)*100) : 0 }}%)</span></div>
+                                        <div class="font-semibold text-slate-800 flex-shrink-0">{{ customerStats.aktif }} <span class="text-slate-400 font-normal text-[10px] xl:text-xs">({{ customerStats.total ? Math.round((customerStats.aktif/customerStats.total)*100) : 0 }}%)</span></div>
                                     </div>
-                                    <div class="flex items-center justify-between gap-4 text-sm">
+                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-sm">
                                         <div class="flex items-center gap-2">
-                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
-                                            <span class="text-slate-600">Nonaktif</span>
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 flex-shrink-0"></span>
+                                            <span class="text-slate-600 truncate">Nonaktif</span>
                                         </div>
-                                        <div class="font-semibold text-slate-800">{{ customerStats.nonaktif }} <span class="text-slate-400 font-normal text-xs">({{ customerStats.total ? Math.round((customerStats.nonaktif/customerStats.total)*100) : 0 }}%)</span></div>
+                                        <div class="font-semibold text-slate-800 flex-shrink-0">{{ customerStats.nonaktif }} <span class="text-slate-400 font-normal text-[10px] xl:text-xs">({{ customerStats.total ? Math.round((customerStats.nonaktif/customerStats.total)*100) : 0 }}%)</span></div>
                                     </div>
-                                    <div class="flex items-center justify-between gap-4 text-sm">
+                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-sm">
                                         <div class="flex items-center gap-2">
-                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                                            <span class="text-slate-600">Suspend</span>
+                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 flex-shrink-0"></span>
+                                            <span class="text-slate-600 truncate">Suspend</span>
                                         </div>
-                                        <div class="font-semibold text-slate-800">{{ customerStats.suspend }} <span class="text-slate-400 font-normal text-xs">({{ customerStats.total ? Math.round((customerStats.suspend/customerStats.total)*100) : 0 }}%)</span></div>
+                                        <div class="font-semibold text-slate-800 flex-shrink-0">{{ customerStats.suspend }} <span class="text-slate-400 font-normal text-[10px] xl:text-xs">({{ customerStats.total ? Math.round((customerStats.suspend/customerStats.total)*100) : 0 }}%)</span></div>
                                     </div>
-                                    <div class="flex items-center justify-between gap-4 text-sm">
+                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-sm">
                                         <div class="flex items-center gap-2">
-                                            <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
-                                            <span class="text-slate-600">Janji Bayar</span>
+                                            <span class="w-2.5 h-2.5 rounded-full bg-purple-500 flex-shrink-0"></span>
+                                            <span class="text-slate-600 truncate">Janji</span>
                                         </div>
-                                        <div class="font-semibold text-slate-800">{{ customerStats.janji_bayar }} <span class="text-slate-400 font-normal text-xs">({{ customerStats.total ? Math.round((customerStats.janji_bayar/customerStats.total)*100) : 0 }}%)</span></div>
+                                        <div class="font-semibold text-slate-800 flex-shrink-0">{{ customerStats.janji_bayar }} <span class="text-slate-400 font-normal text-[10px] xl:text-xs">({{ customerStats.total ? Math.round((customerStats.janji_bayar/customerStats.total)*100) : 0 }}%)</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -587,11 +587,11 @@ watch(
                             </div>
                         </div>
                         
-                        <div class="flex flex-col sm:flex-row gap-6 mb-4">
+                        <div class="flex flex-col sm:flex-row 2xl:flex-col gap-6 mb-4 flex-wrap">
                             <div class="relative w-32 h-32 mx-auto sm:mx-0 flex-shrink-0">
                                 <canvas ref="paketCanvas"></canvas>
                             </div>
-                            <div class="flex-1 overflow-y-auto pr-2">
+                            <div class="flex-1 overflow-y-auto pr-2 min-w-[120px]">
                                 <ul class="space-y-4">
                                     <li v-for="(paket, index) in paketStats" :key="paket.paket" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 group">
                                         <div class="flex items-center gap-3">
