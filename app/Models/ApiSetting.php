@@ -14,10 +14,12 @@ class ApiSetting extends Model
         'base_url',
         'api_key',
         'api_secret',
+        'json_mapping',
         'last_sync_at',
     ];
 
     protected $casts = [
         'last_sync_at' => 'datetime',
+        'json_mapping' => 'array',
     ];
 }

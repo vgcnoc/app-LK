@@ -10,6 +10,14 @@ const props = defineProps({
 const form = useForm({
     base_url: props.setting?.base_url || '',
     api_key: props.setting?.api_key || '',
+    json_mapping: props.setting?.json_mapping || {
+        name_key: 'name',
+        address_key: 'address',
+        phone_key: 'phone',
+        package_key: 'package',
+        price_key: 'price',
+        status_key: 'status',
+    }
 });
 
 const isSaving = ref(false);
@@ -128,24 +136,42 @@ const syncData = () => {
                             <p class="text-sm text-slate-500 mt-1">Tarik data pelanggan dari billing external.</p>
                         </div>
                         <div class="p-6">
-                            <div class="mb-6">
-                                <h4 class="text-sm font-semibold text-slate-700 mb-2">Panduan Struktur JSON:</h4>
-                                <p class="text-xs text-slate-500 mb-3">API yang Anda sediakan harus merespon dengan array JSON menggunakan *key* berikut:</p>
-                                <div class="bg-slate-900 text-emerald-400 p-4 rounded-lg text-xs font-mono overflow-x-auto">
-                                    [<br>
-                                    &nbsp;&nbsp;{<br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;"name": "Nama Pelanggan",<br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;"address": "Alamat Lengkap",<br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;"phone": "08123456789",<br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;"package": "Paket 10Mbps",<br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;"price": 150000,<br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;"status": "Aktif"<br>
-                                    &nbsp;&nbsp;}<br>
-                                    ]
+                            <div class="mb-6 space-y-4">
+                                <h4 class="text-sm font-semibold text-slate-700 mb-2">Pencocokan Kolom (Mapping JSON)</h4>
+                                <p class="text-xs text-slate-500 mb-4">Masukkan nama *key* JSON dari API Anda yang sesuai dengan data berikut:</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk Nama Pelanggan *</label>
+                                        <input type="text" v-model="form.json_mapping.name_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: name">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk Alamat</label>
+                                        <input type="text" v-model="form.json_mapping.address_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: address">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk No. Telepon/WA</label>
+                                        <input type="text" v-model="form.json_mapping.phone_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: phone">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk Nama Paket</label>
+                                        <input type="text" v-model="form.json_mapping.package_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: package">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk Harga/Tagihan</label>
+                                        <input type="text" v-model="form.json_mapping.price_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: price">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk Status</label>
+                                        <input type="text" v-model="form.json_mapping.status_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: status">
+                                    </div>
                                 </div>
                             </div>
                             
                             <div class="border-t border-slate-100 pt-4">
+                                <p class="text-xs text-amber-600 mb-3 bg-amber-50 p-2 rounded border border-amber-200">
+                                    <span class="font-bold">Penting:</span> Pastikan Anda sudah mengklik <b>Simpan Pengaturan</b> di form sebelah kiri sebelum menarik data jika ada perubahan mapping.
+                                </p>
                                 <div class="flex items-center justify-between">
                                     <div class="text-sm text-slate-600">
                                         Terakhir Sinkron: 

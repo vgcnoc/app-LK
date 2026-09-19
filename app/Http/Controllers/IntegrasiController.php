@@ -30,6 +30,7 @@ class IntegrasiController extends Controller
         $request->validate([
             'base_url' => 'nullable|url',
             'api_key' => 'nullable|string',
+            'json_mapping' => 'nullable|array',
         ]);
 
         $setting = ApiSetting::first();
@@ -37,6 +38,7 @@ class IntegrasiController extends Controller
             $setting->update([
                 'base_url' => $request->base_url,
                 'api_key' => $request->api_key,
+                'json_mapping' => $request->json_mapping,
             ]);
         }
 
@@ -74,25 +76,33 @@ class IntegrasiController extends Controller
                 return redirect()->back()->with('error', 'Format respons API tidak valid. Harus berupa Array JSON.');
             }
 
+            $mapping = is_array($setting->json_mapping) ? $setting->json_mapping : [];
+            
+            $keyName = $mapping['name_key'] ?? 'name';
+            $keyAddress = $mapping['address_key'] ?? 'address';
+            $keyPhone = $mapping['phone_key'] ?? 'phone';
+            $keyPackage = $mapping['package_key'] ?? 'package';
+            $keyPrice = $mapping['price_key'] ?? 'price';
+            $keyStatus = $mapping['status_key'] ?? 'status';
+
             $syncedCount = 0;
             $updatedCount = 0;
             
             foreach ($data as $item) {
-                // Validasi field minimum yang diperlukan: 'name' atau 'nama'
-                $name = $item['name'] ?? $item['nama'] ?? null;
+                // Gunakan mapping atau default key (bisa di-nest? Kita asumsikan flat json array of objects)
+                $name = $item[$keyName] ?? $item['nama'] ?? null;
                 
                 if (!$name) {
                     continue; // Skip kalau tidak ada nama
                 }
 
-                $address = $item['address'] ?? $item['alamat'] ?? null;
-                $phone = $item['phone'] ?? $item['no_wa'] ?? null;
-                $package = $item['package'] ?? $item['paket'] ?? null;
-                $price = $item['price'] ?? $item['base_amount'] ?? $item['harga'] ?? 0;
-                $status = $item['status'] ?? 'Aktif';
+                $address = $item[$keyAddress] ?? $item['alamat'] ?? null;
+                $phone = $item[$keyPhone] ?? $item['no_wa'] ?? null;
+                $package = $item[$keyPackage] ?? $item['paket'] ?? null;
+                $price = $item[$keyPrice] ?? $item['base_amount'] ?? $item['harga'] ?? 0;
+                $status = $item[$keyStatus] ?? 'Aktif';
 
-                // Cek apakah pelanggan sudah ada berdasarkan nama (atau id_pelanggan_lama jika ada)
-                // Kita gunakan nama sebagai default uniqueness check jika tidak ada id
+                // Cek apakah pelanggan sudah ada berdasarkan nama
                 $customer = Customer::where('name', $name)->first();
 
                 if ($customer) {
