@@ -21,14 +21,14 @@ const can = (perm) => permissions.value.includes(perm);
         <aside
             :class="[
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
-                'fixed lg:static inset-y-0 left-0 z-30 w-64 bg-gradient-to-b from-[#2a1157]/95 to-[#160731]/95 backdrop-blur-md border-r border-white/5 text-white flex flex-col flex-shrink-0 transition-transform duration-300 ease-in-out no-print shadow-xl lg:shadow-none print:hidden'
+                'fixed lg:static inset-y-0 left-0 z-30 w-64 bg-gradient-to-b from-indigo-950 via-purple-950 to-slate-950 border-r border-purple-800/30 text-white flex flex-col flex-shrink-0 transition-transform duration-300 ease-in-out no-print shadow-2xl lg:shadow-none print:hidden'
             ]"
         >
             <!-- Logo / Brand Area -->
-            <div class="h-16 flex items-center justify-between px-6 border-b border-white/10 flex-shrink-0">
+            <div class="h-16 flex items-center justify-between px-6 border-b border-purple-800/40 flex-shrink-0">
                 <Link :href="route('dashboard')" class="flex items-center gap-3 text-white group">
                     <template v-if="$page.props.app_logo">
-                        <img :src="$page.props.app_logo" class="h-12 w-auto object-contain" alt="Logo" />
+                        <img :src="$page.props.app_logo" class="h-8 max-w-full object-contain" alt="Logo" />
                     </template>
                     <template v-else>
                         <div class="p-2.5 rounded-xl bg-indigo-500/20 text-indigo-400 group-hover:bg-indigo-500/30 group-hover:scale-105 transition-all flex-shrink-0 flex items-center justify-center overflow-hidden">
@@ -61,9 +61,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('dashboard')"
                     :class="[
                         route().current('dashboard')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Dashboard Icon -->
@@ -79,9 +79,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('transaksi')"
                     :class="[
                         route().current('transaksi*')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Transactions Icon -->
@@ -98,9 +98,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('billing.index')"
                     :class="[
                         route().current('billing*')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Receipt/Billing Icon -->
@@ -116,9 +116,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('voucher-saldo.index')"
                     :class="[
                         route().current('voucher-saldo*')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Ticket/Voucher Icon -->
@@ -133,9 +133,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('booking.index')"
                     :class="[
                         route().current('booking*')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Clipboard Document Icon -->
@@ -152,9 +152,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('pelanggan.index')"
                     :class="[
                         route().current('pelanggan*') && !route().current('pelanggan.inaktif')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Users Icon -->
@@ -170,9 +170,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('pelanggan.inaktif')"
                     :class="[
                         route().current('pelanggan.inaktif')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Archive/Pause Icon -->
@@ -188,9 +188,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('pelanggan.pantauan')"
                     :class="[
                         route().current('pelanggan.pantauan')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Exclamation Icon -->
@@ -206,9 +206,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('laporan')"
                     :class="[
                         route().current('laporan*')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Report / Chart Icon -->
@@ -224,9 +224,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('master-data.index')"
                     :class="[
                         route().current('master-data*')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Database / Master Data Icon -->
@@ -242,9 +242,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('affiliates.index')"
                     :class="[
                         route().current('affiliates*')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Affiliate / Network Icon -->
@@ -260,9 +260,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('affiliates.diagram')"
                     :class="[
                         route().current('affiliates.diagram')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -277,9 +277,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('komisi.index')"
                     :class="[
                         route().current('komisi*')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -294,9 +294,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('integrasi-billing.index')"
                     :class="[
                         route().current('integrasi-billing*')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Receipt / Billing Icon -->
@@ -316,9 +316,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route().has('profile.edit') ? route('profile.edit') : (route().has('settings') ? route('settings') : '#')"
                     :class="[
                         route().current('profile*') || route().current('settings*')
-                            ? 'bg-gradient-to-r from-[#6d28d9]/80 to-[#5b21b6]/80 text-white font-semibold shadow-md ring-1 ring-white/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10',
-                        'flex items-center gap-3 px-3.5 py-2.5 mx-3 rounded-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
+                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Settings / Cog Icon -->
