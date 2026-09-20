@@ -48,7 +48,11 @@ const filteredCustomers = computed(() => {
     } else if (activeTab.value === 'Berhenti') {
         base = props.customers.filter(c => ['berhenti', 'nonaktif', 'stop permanen', 'putus'].includes((c.status_pelanggan || '').toLowerCase()));
     } else if (activeTab.value === 'Gratis') {
-        base = props.customers.filter(c => (c.status_pelanggan || '').toLowerCase() === 'gratis');
+        base = props.customers.filter(c => {
+            const isStatusGratis = (c.status_pelanggan || '').toLowerCase() === 'gratis';
+            const isAreaGratis = (c.area || '').toLowerCase().startsWith('gratis');
+            return isStatusGratis || isAreaGratis;
+        });
     }
 
     if (startDateFilter.value || endDateFilter.value) {
