@@ -1,23 +1,11 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { Link, usePage, router } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
 
 const sidebarOpen = ref(false);
 
 const permissions = computed(() => usePage().props.auth?.permissions || []);
 const can = (perm) => permissions.value.includes(perm);
-
-let removeListener = null;
-
-onMounted(() => {
-    removeListener = router.on('navigate', () => {
-        sidebarOpen.value = false;
-    });
-});
-
-onUnmounted(() => {
-    if (removeListener) removeListener();
-});
 </script>
 
 <template>
@@ -69,13 +57,13 @@ onUnmounted(() => {
             <nav class="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
                 <!-- Dashboard -->
                 <Link
-                    prefetch v-if="can('akses_dashboard')"
+                    v-if="can('akses_dashboard')"
                     :href="route('dashboard')"
                     :class="[
                         route().current('dashboard')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Dashboard Icon -->
@@ -87,13 +75,13 @@ onUnmounted(() => {
 
                 <!-- Transaksi -->
                 <Link
-                    prefetch v-if="can('akses_transaksi')"
+                    v-if="can('akses_transaksi')"
                     :href="route('transaksi')"
                     :class="[
                         route().current('transaksi*')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Transactions Icon -->
@@ -106,13 +94,13 @@ onUnmounted(() => {
 
                 <!-- Billing Data -->
                 <Link
-                    prefetch v-if="can('akses_billing')"
+                    v-if="can('akses_billing')"
                     :href="route('billing.index')"
                     :class="[
                         route().current('billing*')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Receipt/Billing Icon -->
@@ -124,13 +112,13 @@ onUnmounted(() => {
 
                 <!-- Voucher & Saldo -->
                 <Link
-                    prefetch v-if="can('akses_voucher_saldo')"
+                    v-if="can('akses_voucher_saldo')"
                     :href="route('voucher-saldo.index')"
                     :class="[
                         route().current('voucher-saldo*')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Ticket/Voucher Icon -->
@@ -141,13 +129,13 @@ onUnmounted(() => {
                 </Link>
                 <!-- Booking Pelanggan -->
                 <Link
-                    prefetch v-if="can('akses_booking')"
+                    v-if="can('akses_booking')"
                     :href="route('booking.index')"
                     :class="[
                         route().current('booking*')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Clipboard Document Icon -->
@@ -160,13 +148,13 @@ onUnmounted(() => {
 
                 <!-- Data Pelanggan -->
                 <Link
-                    prefetch v-if="can('akses_data_pelanggan')"
+                    v-if="can('akses_data_pelanggan')"
                     :href="route('pelanggan.index')"
                     :class="[
                         route().current('pelanggan*') && !route().current('pelanggan.inaktif')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Users Icon -->
@@ -178,13 +166,13 @@ onUnmounted(() => {
 
                 <!-- Pelanggan Inaktif -->
                 <Link
-                    prefetch v-if="can('akses_data_nonaktif')"
+                    v-if="can('akses_data_nonaktif')"
                     :href="route('pelanggan.inaktif')"
                     :class="[
                         route().current('pelanggan.inaktif')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Archive/Pause Icon -->
@@ -196,13 +184,13 @@ onUnmounted(() => {
 
                 <!-- Pelanggan Pantauan -->
                 <Link
-                    prefetch v-if="can('akses_data_pelanggan')"
+                    v-if="can('akses_data_pelanggan')"
                     :href="route('pelanggan.pantauan')"
                     :class="[
                         route().current('pelanggan.pantauan')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Exclamation Icon -->
@@ -214,13 +202,13 @@ onUnmounted(() => {
 
                 <!-- Laporan -->
                 <Link
-                    prefetch v-if="can('akses_laporan')"
+                    v-if="can('akses_laporan')"
                     :href="route('laporan')"
                     :class="[
                         route().current('laporan*')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Report / Chart Icon -->
@@ -232,13 +220,13 @@ onUnmounted(() => {
 
                 <!-- Master Data -->
                 <Link
-                    prefetch v-if="can('akses_master_data')"
+                    v-if="can('akses_master_data')"
                     :href="route('master-data.index')"
                     :class="[
                         route().current('master-data*')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Database / Master Data Icon -->
@@ -250,13 +238,13 @@ onUnmounted(() => {
 
                 <!-- Affiliates -->
                 <Link
-                    prefetch v-if="can('akses_affiliate')"
+                    v-if="can('akses_affiliate')"
                     :href="route('affiliates.index')"
                     :class="[
                         route().current('affiliates*')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Affiliate / Network Icon -->
@@ -268,13 +256,13 @@ onUnmounted(() => {
                 
                 <!-- Diagram Affiliate -->
                 <Link
-                    prefetch v-if="can('akses_affiliate')"
+                    v-if="can('akses_affiliate')"
                     :href="route('affiliates.diagram')"
                     :class="[
                         route().current('affiliates.diagram')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -285,13 +273,13 @@ onUnmounted(() => {
 
                 <!-- Data Komisi -->
                 <Link
-                    prefetch v-if="can('akses_affiliate')"
+                    v-if="can('akses_affiliate')"
                     :href="route('komisi.index')"
                     :class="[
                         route().current('komisi*')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -302,13 +290,13 @@ onUnmounted(() => {
 
                 <!-- Integrasi / API -->
                 <Link
-                    prefetch v-if="can('akses_integrasi')"
+                    v-if="can('akses_integrasi')"
                     :href="route('integrasi.index')"
                     :class="[
                         route().current('integrasi*')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Integration / Cloud Icon -->
@@ -330,7 +318,7 @@ onUnmounted(() => {
                         route().current('profile*') || route().current('settings*')
                             ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
                             : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
                     ]"
                 >
                     <!-- Settings / Cog Icon -->
