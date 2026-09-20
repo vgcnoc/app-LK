@@ -645,6 +645,15 @@ Route::middleware(['auth'])->group(function () {
         return back()->with('success', 'Data pelanggan berhasil diimport.');
     })->name('billing.import');
 
+    Route::post('/billing/mass-delete', function (Request $request) {
+        $ids = $request->input('ids', []);
+        if (empty($ids)) {
+            return back()->with('error', 'Tidak ada pelanggan yang dipilih.');
+        }
+        Customer::whereIn('id', $ids)->delete();
+        return back()->with('success', count($ids) . ' pelanggan berhasil dihapus.');
+    })->name('billing.mass-delete');
+
     Route::post('/billing/{customer}/lunas', function (Request $request, Customer $customer) {
         if ($customer->status === 'paid') {
             return back()->with('error', 'Pelanggan sudah lunas.');

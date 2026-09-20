@@ -58,6 +58,27 @@ const formatDate = (dateStr) => {
     }
 };
 
+const selectedCustomers = ref([]);
+const toggleSelectAll = (event) => {
+    if (event.target.checked) {
+        selectedCustomers.value = paginatedCustomers.value.map(c => c.id);
+    } else {
+        selectedCustomers.value = [];
+    }
+};
+
+const deleteSelected = () => {
+    if (selectedCustomers.value.length === 0) return;
+    if (confirm(`Yakin ingin menghapus ${selectedCustomers.value.length} pelanggan yang dipilih? Data yang dihapus tidak dapat dikembalikan.`)) {
+        router.post(route('billing.mass-delete'), { ids: selectedCustomers.value }, {
+            preserveScroll: true,
+            onSuccess: () => {
+                selectedCustomers.value = [];
+            }
+        });
+    }
+};
+
 // Helper to check if customer is active
 const isAktif = (c) => !c.status_pelanggan || String(c.status_pelanggan).toLowerCase() === 'aktif';
 
@@ -1098,6 +1119,12 @@ const deleteCustomer = (customer) => {
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-2">
+                                        <button v-if="selectedCustomers.length > 0" @click="deleteSelected" type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-rose-700 transition-colors border border-transparent shadow-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                            Hapus Terpilih ({{ selectedCustomers.length }})
+                                        </button>
                                         <button @click="exportExcel" type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100 transition-colors border border-emerald-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -1193,6 +1220,9 @@ const deleteCustomer = (customer) => {
 <table class="min-w-full divide-y divide-slate-200 text-left text-sm print:text-[11px]">
                             <thead class="bg-slate-50/80 text-xs font-semibold uppercase tracking-wider text-slate-500 print:text-[10px]">
                                 <tr>
+                                    <th scope="col" class="w-12 px-4 py-3.5 text-center print:hidden">
+                                        <input type="checkbox" class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500" @change="toggleSelectAll" :checked="selectedCustomers.length === paginatedCustomers.length && paginatedCustomers.length > 0" />
+                                    </th>
                                     <th scope="col" class="w-16 px-4 py-3.5 text-center">No</th>
                                     <th scope="col" class="px-6 py-3.5">Nama Pelanggan</th>
                                     <th scope="col" class="px-6 py-3.5">Area</th>
@@ -1213,6 +1243,11 @@ const deleteCustomer = (customer) => {
                                     :key="customer.id || index"
                                     class="transition-colors duration-150 hover:bg-slate-50/80"
                                 >
+                                    <!-- Checkbox -->
+                                    <td class="whitespace-nowrap px-4 py-4 text-center print:hidden">
+                                        <input type="checkbox" class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500" v-model="selectedCustomers" :value="customer.id" />
+                                    </td>
+                                    
                                     <!-- Row Number -->
                                     <td class="whitespace-nowrap print:whitespace-normal px-4 py-4 text-center text-xs font-medium text-slate-400">
                                         {{ index + 1 }}
