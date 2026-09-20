@@ -549,6 +549,14 @@ const totalLunas = computed(() =>
 const totalBelumLunas = computed(() =>
     filteredCustomers.value.filter((c) => String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length
 );
+const totalNominalLunas = computed(() => {
+    return filteredCustomers.value.reduce((sum, c) => {
+        if (String(c.status).toLowerCase() === 'paid') {
+            return sum + (Number(c.base_amount) || 0);
+        }
+        return sum;
+    }, 0);
+});
 const percentLunas = computed(() => {
     if (totalCustomers.value === 0) return 0;
     return Math.round((totalLunas.value / totalCustomers.value) * 100);
@@ -863,7 +871,7 @@ const deleteCustomer = (customer) => {
         <div class="py-8">
             <div class="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
                 <!-- 1. STATS CARDS -->
-                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 print:hidden">
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5 print:hidden">
                     <!-- Total Pelanggan -->
                     <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
                         <div class="flex items-center justify-between gap-3">
@@ -931,8 +939,29 @@ const deleteCustomer = (customer) => {
                         </div>
                     </div>
 
-                    <!-- Total Tagihan -->
-                    <!-- Total Tagihan -->
+                    <!-- Nominal Lunas -->
+                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 truncate">
+                                    Nominal Lunas
+                                </p>
+                                <p class="mt-1 sm:mt-2 truncate text-xl sm:text-2xl font-bold tracking-tight text-emerald-600" :title="formatRupiah(totalNominalLunas)">
+                                    {{ formatRupiah(totalNominalLunas) }}
+                                </p>
+                                <p class="mt-1 text-[10px] sm:text-xs text-slate-400 truncate">
+                                    Pendapatan dari tagihan lunas
+                                </p>
+                            </div>
+                            <div class="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-600 ring-1 ring-teal-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Tagihan (Belum Lunas) -->
                     <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex-1 min-w-0">
