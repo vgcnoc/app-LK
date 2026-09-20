@@ -493,7 +493,7 @@ const totalTagihanFiltered = computed(() => {
     return filteredCustomers.value.reduce((sum, c) => sum + (Number(c.amount) || 0), 0);
 });
 
-const itemsPerPage = ref(100);
+const itemsPerPage = ref(10);
 const currentPage = ref(1);
 
 const totalPages = computed(() => Math.ceil(filteredCustomers.value.length / itemsPerPage.value) || 1);
