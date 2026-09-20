@@ -1037,143 +1037,107 @@ const deleteCustomer = (customer) => {
                 </div>
                 
                 <div class="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm print:shadow-none print:border-none print:ring-0">
-                    <!-- Tab Navigation -->
-                    <div class="border-b border-slate-100 p-5 print:hidden">
-                        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                            <div>
-                                <div class="flex flex-wrap gap-2">
-                                    <button
-                                        @click="activeTab = 'semua'"
-                                        :class="[
-                                            'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
-                                            activeTab === 'semua'
-                                                ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200/60'
-                                                : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                        ]"
-                                    >
-                                        📋 Daftar Tagihan
-                                        <span class="ml-1.5 rounded-md bg-slate-200/80 px-1.5 py-0.5 text-[10px] font-bold text-slate-600">{{ props.customers.filter(c => !c.promise_date && !checkSebagian(c) && !isOverdue(c)).length }}</span>
-                                    </button>
-                                    <button
-                                        @click="activeTab = 'jatuh_tempo'"
-                                        :class="[
-                                            'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
-                                            activeTab === 'jatuh_tempo'
-                                                ? 'bg-white text-rose-700 shadow-sm ring-1 ring-rose-200/60'
-                                                : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                        ]"
-                                    >
-                                        ⏳ Tagihan Jatuh Tempo
-                                        <span class="ml-1.5 rounded-md bg-rose-100 px-1.5 py-0.5 text-[10px] font-bold text-rose-700">{{ props.customers.filter(c => isOverdue(c)).length }}</span>
-                                    </button>
-                                    <button
-                                        @click="activeTab = 'piutang'"
-                                        :class="[
-                                            'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
-                                            activeTab === 'piutang'
-                                                ? 'bg-white text-amber-700 shadow-sm ring-1 ring-amber-200/60'
-                                                : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                        ]"
-                                    >
-                                        💰 Piutang (Bayar Sebagian)
-                                        <span class="ml-1.5 rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-700">{{ props.customers.filter(c => checkSebagian(c) && String(c.status).toLowerCase() !== 'paid' && isAktif(c) && !c.promise_date).length }}</span>
-                                    </button>
-                                    <button
-                                        @click="activeTab = 'janji_bayar'"
-                                        :class="[
-                                            'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
-                                            activeTab === 'janji_bayar'
-                                                ? 'bg-white text-indigo-700 shadow-sm ring-1 ring-indigo-200/60'
-                                                : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                        ]"
-                                    >
-                                        📅 Janji Bayar
-                                        <span class="ml-1.5 rounded-md bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold text-indigo-700">{{ props.customers.filter(c => !!c.promise_date && String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length }}</span>
-                                    </button>
-                                    <button
-                                        @click="activeTab = 'riwayat_upgrade'"
-                                        :class="[
-                                            'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
-                                            activeTab === 'riwayat_upgrade'
-                                                ? 'bg-white text-purple-700 shadow-sm ring-1 ring-purple-200/60'
-                                                : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                        ]"
-                                    >
-                                        📈 Riwayat Upgrade
-                                        <span class="ml-1.5 rounded-md bg-purple-100 px-1.5 py-0.5 text-[10px] font-bold text-purple-700">{{ props.upgradeHistories?.length || 0 }}</span>
-                                    </button>
-                                </div>
-                                <p class="mt-2 text-xs text-slate-500">
-                                    Menampilkan {{ filteredCustomers.length }} dari {{ totalCustomers }} pelanggan
-                                </p>
-                            </div>
+                                        <!-- Tab Navigation -->
+                    <div class="border-b border-slate-100 bg-slate-50/50 p-4 sm:p-5 print:hidden">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button
+                                @click="activeTab = 'semua'"
+                                :class="[
+                                    'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
+                                    activeTab === 'semua'
+                                        ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200/60'
+                                        : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
+                                ]"
+                            >
+                                📋 Daftar Tagihan
+                                <span class="ml-1.5 rounded-md bg-slate-200/80 px-1.5 py-0.5 text-[10px] font-bold text-slate-600">{{ props.customers.filter(c => !c.promise_date && !checkSebagian(c) && !isOverdue(c)).length }}</span>
+                            </button>
+                            <button
+                                @click="activeTab = 'jatuh_tempo'"
+                                :class="[
+                                    'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
+                                    activeTab === 'jatuh_tempo'
+                                        ? 'bg-white text-rose-700 shadow-sm ring-1 ring-rose-200/60'
+                                        : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
+                                ]"
+                            >
+                                ⏳ Tagihan Jatuh Tempo
+                                <span class="ml-1.5 rounded-md bg-rose-100 px-1.5 py-0.5 text-[10px] font-bold text-rose-700">{{ props.customers.filter(c => isOverdue(c)).length }}</span>
+                            </button>
+                            <button
+                                @click="activeTab = 'piutang'"
+                                :class="[
+                                    'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
+                                    activeTab === 'piutang'
+                                        ? 'bg-white text-amber-700 shadow-sm ring-1 ring-amber-200/60'
+                                        : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
+                                ]"
+                            >
+                                💰 Piutang (Bayar Sebagian)
+                                <span class="ml-1.5 rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-700">{{ props.customers.filter(c => checkSebagian(c) && String(c.status).toLowerCase() !== 'paid' && isAktif(c) && !c.promise_date).length }}</span>
+                            </button>
+                            <button
+                                @click="activeTab = 'janji_bayar'"
+                                :class="[
+                                    'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
+                                    activeTab === 'janji_bayar'
+                                        ? 'bg-white text-indigo-700 shadow-sm ring-1 ring-indigo-200/60'
+                                        : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
+                                ]"
+                            >
+                                📅 Janji Bayar
+                                <span class="ml-1.5 rounded-md bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold text-indigo-700">{{ props.customers.filter(c => !!c.promise_date && String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length }}</span>
+                            </button>
+                            <button
+                                @click="activeTab = 'riwayat_upgrade'"
+                                :class="[
+                                    'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
+                                    activeTab === 'riwayat_upgrade'
+                                        ? 'bg-white text-purple-700 shadow-sm ring-1 ring-purple-200/60'
+                                        : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
+                                ]"
+                            >
+                                📈 Riwayat Upgrade
+                                <span class="ml-1.5 rounded-md bg-purple-100 px-1.5 py-0.5 text-[10px] font-bold text-purple-700">{{ props.upgradeHistories?.length || 0 }}</span>
+                            </button>
+                        </div>
+                    </div>
 
-                            <div class="flex flex-col gap-3">
-                                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between w-full">
-                                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                                        <div class="flex items-center gap-2">
-                                            <label class="text-xs font-semibold text-slate-500 whitespace-nowrap">Tanggal</label>
-                                            <input type="date" v-model="startDateFilter" class="w-full sm:w-auto rounded-lg border border-slate-300 py-1.5 px-3 text-xs text-slate-700 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                                            <span class="text-xs text-slate-500">s/d</span>
-                                            <input type="date" v-model="endDateFilter" class="w-full sm:w-auto rounded-lg border border-slate-300 py-1.5 px-3 text-xs text-slate-700 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                                        </div>
+                    <!-- Filter & Actions Toolbar -->
+                    <div class="border-b border-slate-100 p-4 sm:p-5 print:hidden">
+                        <div class="flex flex-col gap-4">
+                            <!-- Top Row: Filters -->
+                            <div class="flex flex-wrap items-center gap-3">
+                                <!-- Search Input -->
+                                <div class="relative w-full sm:max-w-xs shrink-0">
+                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                        </svg>
                                     </div>
-                                    <div class="flex items-center gap-2">
-                                        <button v-if="selectedCustomers.length > 0" @click="deleteSelected" type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-rose-700 transition-colors border border-transparent shadow-sm">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                            Hapus Terpilih ({{ selectedCustomers.length }})
-                                        </button>
-                                        <button @click="exportExcel" type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100 transition-colors border border-emerald-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                            </svg>
-                                            Export Excel
-                                        </button>
-                                        <button @click="exportPDF" type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-700 hover:bg-rose-100 transition-colors border border-rose-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                                            </svg>
-                                            Cetak PDF
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-                                    <div class="flex items-center gap-2">
-                                        <select
-                                            v-model="itemsPerPage"
-                                            class="rounded-xl border border-slate-300 py-2 pl-3 pr-8 text-xs text-slate-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                                        >
-                                            <option :value="10">10 baris</option>
-                                            <option :value="50">50 baris</option>
-                                            <option :value="100">100 baris</option>
-                                            <option :value="500">500 baris</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <!-- Search Input -->
-                                    <div class="relative w-full sm:w-64">
-                                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                            </svg>
-                                        </div>
-                                        <input
-                                            v-model="searchQuery"
-                                            type="text"
-                                            placeholder="Cari nama atau area..."
-                                            class="w-full rounded-xl border border-slate-300 py-2 pl-9 pr-3 text-xs text-slate-800 shadow-sm transition placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                                        />
-                                        <button
-                                            v-if="searchQuery"
-                                            @click="searchQuery = ''"
-                                            class="absolute inset-y-0 right-0 flex items-center pr-2.5 text-slate-400 hover:text-slate-600"
-                                        >
+                                    <input
+                                        v-model="searchQuery"
+                                        type="text"
+                                        placeholder="Cari nama atau area..."
+                                        class="w-full rounded-xl border border-slate-300 py-2 pl-9 pr-3 text-xs text-slate-800 shadow-sm transition placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+                                    <button
+                                        v-if="searchQuery"
+                                        @click="searchQuery = ''"
+                                        class="absolute inset-y-0 right-0 flex items-center pr-2.5 text-slate-400 hover:text-slate-600"
+                                    >
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                                         </svg>
                                     </button>
+                                </div>
+                                
+                                <!-- Tanggal -->
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <label class="text-xs font-semibold text-slate-500 whitespace-nowrap">Tanggal</label>
+                                    <input type="date" v-model="startDateFilter" class="w-full sm:w-auto rounded-xl border border-slate-300 py-2 px-3 text-xs text-slate-700 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20">
+                                    <span class="text-xs text-slate-500">s/d</span>
+                                    <input type="date" v-model="endDateFilter" class="w-full sm:w-auto rounded-xl border border-slate-300 py-2 px-3 text-xs text-slate-700 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20">
                                 </div>
 
                                 <!-- Status Filter -->
@@ -1197,13 +1161,15 @@ const deleteCustomer = (customer) => {
                                     </option>
                                 </select>
 
+                                <!-- Action Buttons (Filters) -->
+                                <div class="flex items-center gap-2 shrink-0">
                                     <!-- Terapkan Filter -->
                                     <button
                                         @click="applyFilters"
                                         type="button"
-                                        class="inline-flex items-center gap-1 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-medium text-white shadow-sm transition hover:bg-indigo-700"
+                                        class="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-medium text-white shadow-sm transition hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500/20"
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                                         </svg>
                                         Terapkan
@@ -1214,17 +1180,59 @@ const deleteCustomer = (customer) => {
                                         v-if="searchQuery || statusFilter !== 'all' || areaFilter !== 'all' || startDateFilter || endDateFilter"
                                         @click="resetFilters"
                                         type="button"
-                                        class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm transition hover:bg-slate-50"
+                                        class="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm transition hover:bg-slate-50 focus:ring-2 focus:ring-slate-200"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                         </svg>
-                                        <span>Reset</span>
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Row: Table Actions -->
+                            <div class="flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 pt-4">
+                                <!-- Left side: Pagination & Info -->
+                                <div class="flex items-center gap-3">
+                                    <select
+                                        v-model="itemsPerPage"
+                                        class="rounded-xl border border-slate-300 py-1.5 pl-3 pr-8 text-xs text-slate-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    >
+                                        <option :value="10">10 baris</option>
+                                        <option :value="50">50 baris</option>
+                                        <option :value="100">100 baris</option>
+                                        <option :value="500">500 baris</option>
+                                    </select>
+                                    <p class="text-xs font-medium text-slate-500">
+                                        Menampilkan {{ filteredCustomers.length }} dari {{ totalCustomers }} pelanggan
+                                    </p>
+                                </div>
+                                
+                                <!-- Right side: Export & Delete -->
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <button v-if="selectedCustomers.length > 0" @click="deleteSelected" type="button" class="inline-flex items-center gap-1.5 rounded-xl bg-rose-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-rose-700 transition-colors shadow-sm focus:ring-2 focus:ring-rose-500/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                        Hapus Terpilih ({{ selectedCustomers.length }})
+                                    </button>
+                                    <button @click="exportExcel" type="button" class="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100 transition-colors border border-emerald-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                        </svg>
+                                        Export Excel
+                                    </button>
+                                    <button @click="exportPDF" type="button" class="inline-flex items-center gap-1.5 rounded-xl bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-700 hover:bg-rose-100 transition-colors border border-rose-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                        </svg>
+                                        Cetak PDF
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
                     <!-- Table -->
                     <div v-if="activeTab !== 'riwayat_upgrade'" class="overflow-x-auto print:overflow-visible print:w-full">
