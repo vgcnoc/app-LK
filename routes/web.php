@@ -597,7 +597,7 @@ Route::middleware(['auth'])->group(function () {
     // BILLING DATA (Pindah dari /pelanggan sebelumnya)
     Route::get('/billing', function () {
         \App\Models\Customer::syncBilling();
-        $excludedAreas = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3', 'BC 1', 'BC 2', 'BC 3'];
+        $excludedAreas = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3'];
         
         $customers = Customer::where(function($query) {
                 $query->whereNull('status_pelanggan')
@@ -869,7 +869,7 @@ Route::middleware(['auth'])->group(function () {
     // PELANGGAN INAKTIF (Berhenti / Stop / Gratis)
     Route::get('/pelanggan-inaktif', function () {
         \App\Models\Customer::syncBilling();
-        $excludedAreas = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3', 'BC 1', 'BC 2', 'BC 3'];
+        $excludedAreas = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3'];
         
         $customers = Customer::with('suspensions')
             ->where(function($query) use ($excludedAreas) {
