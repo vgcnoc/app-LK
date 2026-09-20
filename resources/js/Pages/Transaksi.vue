@@ -370,7 +370,7 @@ const deleteTransaction = (id) => {
                         <div
                             v-for="(area, index) in areaSummaries"
                             :key="index"
-                            class="relative overflow-hidden bg-white rounded-2xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100 p-5 transition-all duration-300 hover:shadow-[0_8px_20px_-6px_rgba(6,81,237,0.15)] hover:-translate-y-1 group"
+                            class="relative overflow-hidden bg-white rounded-2xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100 p-5 transition-all duration-300 hover:shadow-[0_8px_20px_-6px_rgba(6,81,237,0.15)] hover:-translate-y-1 group min-w-0"
                         >
                             <div class="flex items-center justify-between pb-3 border-b border-slate-50 mb-4">
                                 <h4 class="font-bold text-slate-800 text-sm flex items-center gap-3 truncate group-hover:text-indigo-600 transition-colors" :title="area.area_name || area.area || area.name">
@@ -424,7 +424,7 @@ const deleteTransaction = (id) => {
 <!-- Removed Chart Section -->
 
                 <!-- 4. Transactions Table Section -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden min-w-0">
                     <div class="p-6 border-b border-slate-100 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
                         <div>
                             <div class="flex items-center gap-3">
@@ -440,10 +440,9 @@ const deleteTransaction = (id) => {
                             </div>
                             <p class="text-xs text-slate-500 mt-1.5 xl:ml-11">Riwayat lengkap catatan arus kas masuk dan keluar operasional</p>
                         </div>
-                        <div class="flex flex-col md:flex-row gap-3 w-full xl:w-auto items-center">
-                            <!-- Filter Date Range -->
-                            <div class="flex items-center gap-2">
-                                <div class="relative">
+                        <div class="flex flex-col md:flex-row gap-3 w-full xl:w-auto items-stretch md:items-center">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                                <div class="relative w-full sm:w-auto">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                                     </div>
@@ -451,11 +450,11 @@ const deleteTransaction = (id) => {
                                         v-model="filterStartDate"
                                         type="date"
                                         title="Dari Tanggal"
-                                        class="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-sm transition-all duration-200 text-slate-700 w-[145px]"
+                                        class="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-sm transition-all duration-200 text-slate-700 w-full sm:w-[145px]"
                                     >
                                 </div>
-                                <span class="text-slate-400 text-xs font-medium">s/d</span>
-                                <div class="relative">
+                                <span class="text-slate-400 text-xs font-medium text-center hidden sm:block">s/d</span>
+                                <div class="relative w-full sm:w-auto">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                                     </div>
@@ -463,7 +462,7 @@ const deleteTransaction = (id) => {
                                         v-model="filterEndDate"
                                         type="date"
                                         title="Sampai Tanggal"
-                                        class="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-sm transition-all duration-200 text-slate-700 w-[145px]"
+                                        class="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-sm transition-all duration-200 text-slate-700 w-full sm:w-[145px]"
                                     >
                                 </div>
                             </div>
@@ -510,15 +509,15 @@ const deleteTransaction = (id) => {
 <table class="w-full text-left text-sm border-collapse">
                             <thead class="bg-slate-50/80 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100">
                                 <tr>
-                                    <th scope="col" class="px-6 py-4 w-12 text-center">#</th>
-                                    <th scope="col" class="px-6 py-4">Tanggal <span class="ml-1 inline-block text-slate-300">↕</span></th>
-                                    <th scope="col" class="px-6 py-4">Keterangan</th>
-                                    <th scope="col" class="px-6 py-4">Area</th>
-                                    <th scope="col" class="px-6 py-4 text-center">Metode Bayar</th>
-                                    <th scope="col" class="px-6 py-4 text-center">Tanggal Bayar</th>
-                                    <th scope="col" class="px-6 py-4 text-center">Tipe</th>
-                                    <th scope="col" class="px-6 py-4 text-right">Jumlah</th>
-                                    <th scope="col" class="px-6 py-4 text-center">Aksi</th>
+                                    <th scope="col" class="px-6 py-4 w-12 text-center whitespace-nowrap">#</th>
+                                    <th scope="col" class="px-6 py-4 whitespace-nowrap">Tanggal <span class="ml-1 inline-block text-slate-300">↕</span></th>
+                                    <th scope="col" class="px-6 py-4 whitespace-nowrap">Keterangan</th>
+                                    <th scope="col" class="px-6 py-4 whitespace-nowrap">Area</th>
+                                    <th scope="col" class="px-6 py-4 text-center whitespace-nowrap">Metode Bayar</th>
+                                    <th scope="col" class="px-6 py-4 text-center whitespace-nowrap">Tanggal Bayar</th>
+                                    <th scope="col" class="px-6 py-4 text-center whitespace-nowrap">Tipe</th>
+                                    <th scope="col" class="px-6 py-4 text-right whitespace-nowrap">Jumlah</th>
+                                    <th scope="col" class="px-6 py-4 text-center whitespace-nowrap">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 text-slate-700">

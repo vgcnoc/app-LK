@@ -217,14 +217,71 @@ const handleFile = (file) => {
     selectedFileName.value = file.name;
     parseError.value = '';
 
+    // Helper: parse any Excel date value to YYYY-MM-DD string
+    const parseExcelDate = (val) => {
+        if (!val) return null;
+        
+        // If it's already a Date object (from cellDates:true)
+        if (val instanceof Date && !isNaN(val.getTime())) {
+            const y = val.getFullYear();
+            const m = String(val.getMonth() + 1).padStart(2, '0');
+            const d = String(val.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+        
+        const str = String(val).trim();
+        if (!str) return null;
+        
+        // Already YYYY-MM-DD
+        if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+        
+        // DD/MM/YYYY or DD-MM-YYYY
+        const dmy = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+        if (dmy) {
+            const day = dmy[1].padStart(2, '0');
+            const mon = dmy[2].padStart(2, '0');
+            return `${dmy[3]}-${mon}-${day}`;
+        }
+        
+        // MM/DD/YYYY fallback (if month > 12 it's clearly DD/MM)
+        // Already handled above
+        
+        // Excel serial number (e.g. 45555)
+        const num = Number(str);
+        if (!isNaN(num) && num > 30000 && num < 100000) {
+            // Convert Excel serial to JS Date
+            // Excel epoch: Jan 1, 1900 = serial 1 (with the 1900 leap year bug)
+            const excelEpoch = new Date(1899, 11, 30);
+            const jsDate = new Date(excelEpoch.getTime() + num * 86400000);
+            if (!isNaN(jsDate.getTime())) {
+                const y = jsDate.getFullYear();
+                const m = String(jsDate.getMonth() + 1).padStart(2, '0');
+                const d = String(jsDate.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
+            }
+        }
+        
+        // Last resort: try native Date parsing
+        const parsed = new Date(str);
+        if (!isNaN(parsed.getTime())) {
+            const y = parsed.getFullYear();
+            const m = String(parsed.getMonth() + 1).padStart(2, '0');
+            const d = String(parsed.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+        
+        // Return raw string, let the backend try
+        return str;
+    };
+
     const reader = new FileReader();
     reader.onload = (e) => {
         try {
             const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
+            const workbook = XLSX.read(data, { type: 'array', cellDates: true });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '', raw: false });
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '', raw: true });
 
             if (!jsonData || jsonData.length === 0) {
                 parseError.value = 'File Excel tidak memiliki baris data.';
@@ -293,19 +350,11 @@ const handleFile = (file) => {
                         cleanAmount = Number(matchedPkg.price);
                     }
                 }
-                const tglValue = tglKey ? String(row[tglKey]).trim() : null;
-                const statusValue = statusKey ? String(row[statusKey]).trim() : 'Aktif';
                 
-                let lastPaidValue = null;
-                if (lastPaidKey && row[lastPaidKey]) {
-                    // Try to parse the date to YYYY-MM-DD
-                    const parsed = new Date(row[lastPaidKey]);
-                    if (!isNaN(parsed.getTime())) {
-                        lastPaidValue = parsed.toISOString().split('T')[0];
-                    } else {
-                        lastPaidValue = String(row[lastPaidKey]).trim();
-                    }
-                }
+                // Parse dates properly using our helper
+                const tglValue = tglKey ? parseExcelDate(row[tglKey]) : null;
+                const statusValue = statusKey ? String(row[statusKey]).trim() : 'Aktif';
+                const lastPaidValue = lastPaidKey ? parseExcelDate(row[lastPaidKey]) : null;
 
                 return {
                     name: nameValue,
@@ -788,11 +837,11 @@ const deleteCustomer = (customer) => {
     <AuthenticatedLayout>
         <template #header>
             <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h2 class="text-2xl font-bold tracking-tight text-slate-800">
+                <div class="flex-1 min-w-0">
+                    <h2 class="text-2xl font-bold tracking-tight text-slate-800 break-words">
                         Billing Data
                     </h2>
-                    <p class="text-sm text-slate-500">
+                    <p class="text-sm text-slate-500 break-words">
                         Kelola Billing Data, pantau status tagihan, dan import data dari Excel.
                     </p>
                 </div>
@@ -804,21 +853,21 @@ const deleteCustomer = (customer) => {
                 <!-- 1. STATS CARDS -->
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 print:hidden">
                     <!-- Total Pelanggan -->
-                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 truncate">
                                     Total Pelanggan
                                 </p>
-                                <p class="mt-2 text-3xl font-bold tracking-tight text-slate-800">
+                                <p class="mt-1 sm:mt-2 text-xl sm:text-3xl font-bold tracking-tight text-slate-800 truncate">
                                     {{ totalCustomers }}
                                 </p>
-                                <p class="mt-1 text-xs text-slate-400">
+                                <p class="mt-1 text-[10px] sm:text-xs text-slate-400 truncate">
                                     Semua data terdaftar
                                 </p>
                             </div>
-                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <div class="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                             </div>
@@ -826,21 +875,21 @@ const deleteCustomer = (customer) => {
                     </div>
 
                     <!-- Sudah Lunas -->
-                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 truncate">
                                     Sudah Lunas
                                 </p>
-                                <p class="mt-2 text-3xl font-bold tracking-tight text-emerald-600">
+                                <p class="mt-1 sm:mt-2 text-xl sm:text-3xl font-bold tracking-tight text-emerald-600 truncate">
                                     {{ totalLunas }}
                                 </p>
-                                <p class="mt-1 text-xs text-slate-400">
+                                <p class="mt-1 text-[10px] sm:text-xs text-slate-400 truncate">
                                     {{ percentLunas }}% dari total pelanggan
                                 </p>
                             </div>
-                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <div class="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
@@ -848,21 +897,22 @@ const deleteCustomer = (customer) => {
                     </div>
 
                     <!-- Belum Lunas -->
-                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    <!-- Belum Lunas -->
+                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 truncate">
                                     Belum Lunas
                                 </p>
-                                <p class="mt-2 text-3xl font-bold tracking-tight text-amber-600">
+                                <p class="mt-1 sm:mt-2 text-xl sm:text-3xl font-bold tracking-tight text-amber-600 truncate">
                                     {{ totalBelumLunas }}
                                 </p>
-                                <p class="mt-1 text-xs text-slate-400">
+                                <p class="mt-1 text-[10px] sm:text-xs text-slate-400 truncate">
                                     Menunggu pembayaran
                                 </p>
                             </div>
-                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 ring-1 ring-amber-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <div class="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 ring-1 ring-amber-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
@@ -870,21 +920,22 @@ const deleteCustomer = (customer) => {
                     </div>
 
                     <!-- Total Tagihan -->
-                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
-                        <div class="flex items-center justify-between">
-                            <div class="overflow-hidden">
-                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    <!-- Total Tagihan -->
+                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 truncate">
                                     Total Tagihan
                                 </p>
-                                <p class="mt-2 truncate text-2xl font-bold tracking-tight text-slate-800" :title="formatRupiah(totalTagihan)">
+                                <p class="mt-1 sm:mt-2 truncate text-xl sm:text-2xl font-bold tracking-tight text-slate-800" :title="formatRupiah(totalTagihan)">
                                     {{ formatRupiah(totalTagihan) }}
                                 </p>
-                                <p class="mt-1 text-xs text-slate-400">
+                                <p class="mt-1 text-[10px] sm:text-xs text-slate-400 truncate">
                                     Akumulasi tagihan pelanggan
                                 </p>
                             </div>
-                            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 ring-1 ring-violet-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <div class="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 ring-1 ring-violet-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                             </div>
@@ -901,9 +952,9 @@ const deleteCustomer = (customer) => {
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
                             </div>
-                            <div>
-                                <h3 class="text-base font-semibold text-slate-800">Import Billing Data via Excel</h3>
-                                <p class="text-xs text-slate-500">Unggah berkas spreadsheet untuk menambahkan pelanggan secara massal.</p>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="text-base font-semibold text-slate-800 truncate">Import Billing Data via Excel</h3>
+                                <p class="text-xs text-slate-500 truncate">Unggah berkas spreadsheet untuk menambahkan pelanggan secara massal.</p>
                             </div>
                         </div>
                     </div>
@@ -988,12 +1039,12 @@ const deleteCustomer = (customer) => {
                             <!-- Footer (Info & Submit) -->
                             <div class="flex w-full flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-slate-100 pt-3 mt-1">
                                 <!-- Quick info alert box -->
-                                <div class="flex-1 rounded-lg border border-blue-100 bg-blue-50/70 py-2 px-3 text-[11px] text-blue-800">
-                                    <div class="flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <div class="flex-1 rounded-lg border border-blue-100 bg-blue-50/70 py-2 px-3 text-[11px] text-blue-800 min-w-0">
+                                    <div class="flex items-start gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0 text-blue-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <p>
+                                        <p class="break-words flex-1 min-w-0">
                                             Header kolom Excel: <strong>Nama Pelanggan, Area, Alamat, Nama Paket, Tanggal Register, Status Pelanggan, Tagihan</strong>.
                                         </p>
                                     </div>
@@ -1240,21 +1291,21 @@ const deleteCustomer = (customer) => {
 <table class="min-w-full divide-y divide-slate-200 text-left text-sm print:text-[11px]">
                             <thead class="bg-slate-50/80 text-xs font-semibold uppercase tracking-wider text-slate-500 print:text-[10px]">
                                 <tr>
-                                    <th scope="col" class="w-12 px-4 py-3.5 text-center print:hidden">
+                                    <th scope="col" class="w-12 px-4 py-3.5 text-center print:hidden whitespace-nowrap">
                                         <input type="checkbox" class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500" @change="toggleSelectAll" :checked="selectedCustomers.length === paginatedCustomers.length && paginatedCustomers.length > 0" />
                                     </th>
-                                    <th scope="col" class="w-16 px-4 py-3.5 text-center">No</th>
-                                    <th scope="col" class="px-6 py-3.5">Nama Pelanggan</th>
-                                    <th scope="col" class="px-6 py-3.5">Area</th>
-                                    <th scope="col" class="px-6 py-3.5">Alamat</th>
-                                    <th scope="col" class="px-6 py-3.5 print:hidden">Nama Paket</th>
-                                    <th scope="col" class="px-6 py-3.5 print:hidden">Tanggal Register</th>
-                                    <th scope="col" class="px-6 py-3.5 print:hidden">Pembayaran Terakhir</th>
-                                    <th scope="col" class="px-6 py-3.5 text-right">Tagihan</th>
-                                    <th scope="col" class="px-6 py-3.5 text-center print:hidden">Status Pelanggan</th>
-                                    <th scope="col" class="px-6 py-3.5 text-center print:hidden">Status</th>
-                                    <th scope="col" class="px-6 py-3.5 text-center print:hidden">Janji Bayar</th>
-                                    <th scope="col" class="w-36 px-6 py-3.5 text-center print:hidden">Aksi</th>
+                                    <th scope="col" class="w-16 px-4 py-3.5 text-center whitespace-nowrap">No</th>
+                                    <th scope="col" class="px-6 py-3.5 whitespace-nowrap">Nama Pelanggan</th>
+                                    <th scope="col" class="px-6 py-3.5 whitespace-nowrap">Area</th>
+                                    <th scope="col" class="px-6 py-3.5 whitespace-nowrap">Alamat</th>
+                                    <th scope="col" class="px-6 py-3.5 print:hidden whitespace-nowrap">Nama Paket</th>
+                                    <th scope="col" class="px-6 py-3.5 print:hidden whitespace-nowrap">Tanggal Register</th>
+                                    <th scope="col" class="px-6 py-3.5 print:hidden whitespace-nowrap">Pembayaran Terakhir</th>
+                                    <th scope="col" class="px-6 py-3.5 text-right whitespace-nowrap">Tagihan</th>
+                                    <th scope="col" class="px-6 py-3.5 text-center print:hidden whitespace-nowrap">Status Pelanggan</th>
+                                    <th scope="col" class="px-6 py-3.5 text-center print:hidden whitespace-nowrap">Status</th>
+                                    <th scope="col" class="px-6 py-3.5 text-center print:hidden whitespace-nowrap">Janji Bayar</th>
+                                    <th scope="col" class="w-36 px-6 py-3.5 text-center print:hidden whitespace-nowrap">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 bg-white">

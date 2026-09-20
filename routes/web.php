@@ -599,7 +599,7 @@ Route::middleware(['auth'])->group(function () {
         \App\Models\Customer::syncBilling();
         $customers = Customer::whereNull('status_pelanggan')
             ->orWhereIn('status_pelanggan', ['Aktif', ''])
-            ->orderBy('created_at', 'desc')
+            ->orderByRaw('COALESCE(register_date, created_at) DESC')
             ->get();
         $paymentMethods = PaymentMethod::orderBy('name')->get();
         $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
@@ -621,6 +621,28 @@ Route::middleware(['auth'])->group(function () {
         $packages = \App\Models\InternetPackage::all()->pluck('price', 'name')->toArray();
         $packagesLower = array_change_key_case($packages, CASE_LOWER);
 
+        // Helper function for robust date parsing
+        $parseExcelDate = function($dateStr) {
+            if (empty($dateStr)) return null;
+            $dateStr = trim($dateStr);
+            
+            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateStr)) return $dateStr;
+            
+            $formats = ['d/m/Y', 'd-m-Y', 'Y/m/d', 'm/d/Y'];
+            foreach ($formats as $format) {
+                try {
+                    $parsed = \Carbon\Carbon::createFromFormat($format, $dateStr);
+                    if ($parsed) return $parsed->format('Y-m-d');
+                } catch (\Exception $e) {}
+            }
+            
+            try {
+                return \Carbon\Carbon::parse($dateStr)->format('Y-m-d');
+            } catch (\Exception $e) {
+                return null;
+            }
+        };
+
         foreach ($data['customersData'] as $row) {
             $amount = $row['amount'] ?? 0;
             $paketName = $row['paket'] ?? null;
@@ -629,6 +651,9 @@ Route::middleware(['auth'])->group(function () {
                 $amount = $packagesLower[strtolower($paketName)];
             }
 
+            $parsedRegisterDate = !empty($row['register_date']) ? $parseExcelDate($row['register_date']) : null;
+            $prorataAmount = Customer::calculateProrata($amount, $parsedRegisterDate);
+
             Customer::create([
                 'name' => $row['name'],
                 'amount' => $amount,
@@ -636,10 +661,11 @@ Route::middleware(['auth'])->group(function () {
                 'area' => $row['area'] ?? null,
                 'alamat' => $row['alamat'] ?? null,
                 'paket' => $paketName,
-                'register_date' => !empty($row['register_date']) ? date('Y-m-d', strtotime($row['register_date'])) : null,
+                'register_date' => $parsedRegisterDate,
                 'status_pelanggan' => $row['status_pelanggan'] ?? 'Aktif',
                 'status' => 'pending',
-                'last_paid_date' => !empty($row['last_paid_date']) ? date('Y-m-d', strtotime($row['last_paid_date'])) : null,
+                'prorata_amount' => $prorataAmount,
+                'last_paid_date' => !empty($row['last_paid_date']) ? $parseExcelDate($row['last_paid_date']) : null,
             ]);
         }
         return back()->with('success', 'Data pelanggan berhasil diimport.');
@@ -1043,6 +1069,8 @@ Route::middleware(['auth'])->group(function () {
 
         $data['amount'] = 0; // Default amount
         $data['status'] = 'pending';
+        $data['prorata_amount'] = Customer::calculateProrata($data['base_amount'], $data['register_date'] ?? null);
+        
         Customer::create($data);
         return back()->with('success', 'Data pelanggan baru berhasil ditambahkan.');
     })->name('pelanggan.store');
@@ -1063,6 +1091,9 @@ Route::middleware(['auth'])->group(function () {
                 $baseAmount = $packagesLower[strtolower($paketName)];
             }
 
+            $parsedRegisterDate = !empty($row['register_date']) ? date('Y-m-d', strtotime($row['register_date'])) : null;
+            $prorataAmount = Customer::calculateProrata($baseAmount, $parsedRegisterDate);
+
             Customer::updateOrCreate(
                 ['name' => $row['name']],
                 [
@@ -1070,10 +1101,11 @@ Route::middleware(['auth'])->group(function () {
                     'area' => $row['area'] ?? null,
                     'alamat' => $row['alamat'] ?? null,
                     'paket' => $paketName,
-                    'register_date' => !empty($row['register_date']) ? date('Y-m-d', strtotime($row['register_date'])) : null,
+                    'register_date' => $parsedRegisterDate,
                     'status_pelanggan' => $row['status_pelanggan'] ?? 'Aktif',
                     'no_wa' => $row['no_wa'] ?? null,
                     'status' => 'pending',
+                    'prorata_amount' => $prorataAmount,
                 ]
             );
         }
@@ -1122,6 +1154,10 @@ Route::middleware(['auth'])->group(function () {
         $originalStatus = $customer->status_pelanggan;
         $originalPaket = $customer->paket;
         
+        if (!isset($data['prorata_amount'])) {
+            $data['prorata_amount'] = Customer::calculateProrata($data['base_amount'] ?? $customer->base_amount, $data['register_date'] ?? clone $customer->register_date);
+        }
+
         $isUpgrade = filter_var($request->input('is_upgrade'), FILTER_VALIDATE_BOOLEAN);
         unset($data['is_upgrade']);
         

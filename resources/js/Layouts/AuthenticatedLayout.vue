@@ -62,7 +62,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('dashboard')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -80,7 +80,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('transaksi*')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -99,7 +99,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('billing*')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -117,7 +117,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('voucher-saldo*')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -134,7 +134,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('booking*')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -153,7 +153,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('pelanggan*') && !route().current('pelanggan.inaktif')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -171,7 +171,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('pelanggan.inaktif')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -189,7 +189,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('pelanggan.pantauan')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -207,7 +207,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('laporan*')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -225,7 +225,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('master-data*')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -243,7 +243,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('affiliates*')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -261,7 +261,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('affiliates.diagram')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -278,7 +278,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('komisi*')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -295,7 +295,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('integrasi-billing*')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
@@ -317,7 +317,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :class="[
                         route().current('profile*') || route().current('settings*')
                             ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 hover:text-white hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
+                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
                         'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >

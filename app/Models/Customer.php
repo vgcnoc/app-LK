@@ -8,6 +8,31 @@ class Customer extends Model
 {
     protected $guarded = [];
 
+    public static function calculateProrata($baseAmount, $registerDate)
+    {
+        if (!$registerDate) return null;
+        
+        try {
+            $regDate = \Carbon\Carbon::parse($registerDate);
+            $now = \Carbon\Carbon::now();
+            
+            // Only calculate prorata if register date is in the CURRENT month and year
+            if ($regDate->month !== $now->month || $regDate->year !== $now->year) {
+                return null;
+            }
+            
+            $daysInMonth = $regDate->daysInMonth;
+            $remainingDays = $daysInMonth - $regDate->day + 1;
+            
+            // If they registered on the 1st, they pay full amount, so no prorata needed
+            if ($remainingDays >= $daysInMonth) return null;
+            
+            return round(($baseAmount / $daysInMonth) * $remainingDays);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
     public static function syncBilling()
     {
         $customers = self::whereIn('status_pelanggan', ['Aktif', 'Gratis', ''])->orWhereNull('status_pelanggan')->get();

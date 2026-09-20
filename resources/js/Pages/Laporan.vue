@@ -522,11 +522,11 @@ watch(() => form.company_expense_type_id, () => {
                         <table class="w-full text-left border-collapse print-table">
                         <thead>
                             <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold text-slate-600 uppercase tracking-wider">
-                                <th scope="col" class="py-3.5 px-4 text-center w-12">#</th>
-                                <th scope="col" class="py-3.5 px-4">Nama Pelanggan</th>
-                                <th scope="col" class="py-3.5 px-4">Area</th>
-                                <th scope="col" class="py-3.5 px-4 text-center">Status</th>
-                                <th scope="col" class="py-3.5 px-4 text-right">Jumlah Tagihan</th>
+                                <th scope="col" class="py-3.5 px-4 text-center w-12 whitespace-nowrap">#</th>
+                                <th scope="col" class="py-3.5 px-4 whitespace-nowrap">Nama Pelanggan</th>
+                                <th scope="col" class="py-3.5 px-4 whitespace-nowrap">Area</th>
+                                <th scope="col" class="py-3.5 px-4 text-center whitespace-nowrap">Status</th>
+                                <th scope="col" class="py-3.5 px-4 text-right whitespace-nowrap">Jumlah Tagihan</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 text-sm">
@@ -535,10 +535,10 @@ watch(() => form.company_expense_type_id, () => {
                                 :key="item.id || index"
                                 class="even:bg-slate-50/50 hover:bg-slate-100/60 transition-colors duration-150"
                             >
-                                <td class="py-3.5 px-4 text-center text-xs text-slate-400 font-medium">
+                                <td class="py-3.5 px-4 text-center text-xs text-slate-400 font-medium whitespace-nowrap">
                                     {{ index + 1 }}
                                 </td>
-                                <td class="py-3.5 px-4 text-slate-800 font-semibold">
+                                <td class="py-3.5 px-4 text-slate-800 font-semibold whitespace-nowrap">
                                     {{ item.name }}
                                 </td>
                                 <td class="py-3.5 px-4 whitespace-nowrap text-slate-600 text-xs">
@@ -587,14 +587,14 @@ watch(() => form.company_expense_type_id, () => {
                         <table class="w-full text-left border-collapse print-table">
                         <thead>
                             <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold text-slate-600 uppercase tracking-wider">
-                                <th scope="col" class="py-3.5 px-4 text-center w-12">#</th>
-                                <th scope="col" class="py-3.5 px-4">Tanggal</th>
-                                <th scope="col" class="py-3.5 px-4">Deskripsi</th>
-                                <th scope="col" class="py-3.5 px-4">Area</th>
-                                <th scope="col" class="py-3.5 px-4">Metode Bayar</th>
-                                <th scope="col" class="py-3.5 px-4">Tanggal Bayar</th>
-                                <th scope="col" class="py-3.5 px-4 text-center">Jenis</th>
-                                <th scope="col" class="py-3.5 px-4 text-right">Jumlah</th>
+                                <th scope="col" class="py-3.5 px-4 text-center w-12 whitespace-nowrap">#</th>
+                                <th scope="col" class="py-3.5 px-4 whitespace-nowrap">Tanggal</th>
+                                <th scope="col" class="py-3.5 px-4 whitespace-nowrap">Deskripsi</th>
+                                <th scope="col" class="py-3.5 px-4 whitespace-nowrap">Area</th>
+                                <th scope="col" class="py-3.5 px-4 whitespace-nowrap">Metode Bayar</th>
+                                <th scope="col" class="py-3.5 px-4 whitespace-nowrap">Tanggal Bayar</th>
+                                <th scope="col" class="py-3.5 px-4 text-center whitespace-nowrap">Jenis</th>
+                                <th scope="col" class="py-3.5 px-4 text-right whitespace-nowrap">Jumlah</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 text-sm">

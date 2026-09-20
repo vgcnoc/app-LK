@@ -344,11 +344,11 @@ watch(
     <AuthenticatedLayout>
         <template #header>
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
+                <div class="flex-1 min-w-0">
+                    <h2 class="text-xl sm:text-3xl font-bold text-slate-800 tracking-tight break-words">
                         Selamat Datang, {{ $page.props.auth.user.name }}! 👋
                     </h2>
-                    <p class="text-sm text-slate-500 mt-1">
+                    <p class="text-sm text-slate-500 mt-1 break-words">
                         Pantau bisnis internet Anda dalam satu dashboard.
                     </p>
                 </div>
@@ -369,107 +369,107 @@ watch(
                 <!-- 1. Top 4 Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                     <!-- Income Card -->
-                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 p-6 border border-emerald-100">
+                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 p-5 sm:p-6 border border-emerald-100 min-w-0">
                         <div class="relative z-10">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="text-xs font-bold text-emerald-800 uppercase tracking-wider">Total Pemasukan</p>
-                                    <h3 class="mt-2 text-3xl font-black text-emerald-900 tracking-tight">
+                            <div class="flex justify-between items-start gap-3">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[10px] sm:text-xs font-bold text-emerald-800 uppercase tracking-wider truncate">Total Pemasukan</p>
+                                    <h3 class="mt-1 sm:mt-2 text-xl sm:text-3xl font-black text-emerald-900 tracking-tight truncate">
                                         {{ formatRupiah(summary.income) }}
                                     </h3>
                                 </div>
-                                <div class="bg-emerald-500 text-white p-3 rounded-xl shadow-sm shadow-emerald-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div class="bg-emerald-500 text-white p-2 sm:p-3 rounded-xl shadow-sm shadow-emerald-200 flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
                             </div>
-                            <div class="mt-4 flex items-center gap-2 text-xs">
-                                <span class="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-200/50 px-2 py-0.5 rounded-md">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                            <div class="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs">
+                                <span class="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-200/50 px-1.5 sm:px-2 py-0.5 rounded-md whitespace-nowrap">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
                                     </svg>
                                     {{ percentages.income }}%
                                 </span>
-                                <span class="text-emerald-600/80">dari periode sebelumnya</span>
+                                <span class="text-emerald-600/80 truncate flex-1 min-w-0">dari periode sebelumnya</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Expense Card -->
-                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-rose-100 to-rose-50 p-6 border border-rose-100">
+                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-rose-100 to-rose-50 p-5 sm:p-6 border border-rose-100 min-w-0">
                         <div class="relative z-10">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="text-xs font-bold text-rose-800 uppercase tracking-wider">Total Pengeluaran</p>
-                                    <h3 class="mt-2 text-3xl font-black text-rose-900 tracking-tight">
+                            <div class="flex justify-between items-start gap-3">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[10px] sm:text-xs font-bold text-rose-800 uppercase tracking-wider truncate">Total Pengeluaran</p>
+                                    <h3 class="mt-1 sm:mt-2 text-xl sm:text-3xl font-black text-rose-900 tracking-tight truncate">
                                         {{ formatRupiah(summary.expense) }}
                                     </h3>
                                 </div>
-                                <div class="bg-rose-500 text-white p-3 rounded-xl shadow-sm shadow-rose-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div class="bg-rose-500 text-white p-2 sm:p-3 rounded-xl shadow-sm shadow-rose-200 flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                     </svg>
                                 </div>
                             </div>
-                            <div class="mt-4 flex items-center gap-2 text-xs">
-                                <span class="inline-flex items-center gap-1 font-semibold text-rose-700 bg-rose-200/50 px-2 py-0.5 rounded-md">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                            <div class="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs">
+                                <span class="inline-flex items-center gap-1 font-semibold text-rose-700 bg-rose-200/50 px-1.5 sm:px-2 py-0.5 rounded-md whitespace-nowrap">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
                                     </svg>
                                     {{ percentages.expense }}%
                                 </span>
-                                <span class="text-rose-600/80">dari periode sebelumnya</span>
+                                <span class="text-rose-600/80 truncate flex-1 min-w-0">dari periode sebelumnya</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Balance Card -->
-                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 p-6 border border-blue-100">
+                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 p-5 sm:p-6 border border-blue-100 min-w-0">
                         <div class="relative z-10">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="text-xs font-bold text-blue-800 uppercase tracking-wider">Sisa Saldo Kas</p>
-                                    <h3 class="mt-2 text-3xl font-black text-blue-900 tracking-tight">
+                            <div class="flex justify-between items-start gap-3">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[10px] sm:text-xs font-bold text-blue-800 uppercase tracking-wider truncate">Sisa Saldo Kas</p>
+                                    <h3 class="mt-1 sm:mt-2 text-xl sm:text-3xl font-black text-blue-900 tracking-tight truncate">
                                         {{ formatRupiah(summary.balance) }}
                                     </h3>
                                 </div>
-                                <div class="bg-blue-500 text-white p-3 rounded-xl shadow-sm shadow-blue-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div class="bg-blue-500 text-white p-2 sm:p-3 rounded-xl shadow-sm shadow-blue-200 flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
                                     </svg>
                                 </div>
                             </div>
-                            <div class="mt-4 flex items-center gap-2 text-xs">
-                                <span class="inline-flex items-center gap-1 font-semibold text-blue-700 bg-blue-200/50 px-2 py-0.5 rounded-md">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                            <div class="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs">
+                                <span class="inline-flex items-center gap-1 font-semibold text-blue-700 bg-blue-200/50 px-1.5 sm:px-2 py-0.5 rounded-md whitespace-nowrap">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
                                     </svg>
                                     {{ percentages.balance }}%
                                 </span>
-                                <span class="text-blue-600/80">saldo saat ini</span>
+                                <span class="text-blue-600/80 truncate flex-1 min-w-0">saldo saat ini</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Unpaid Card -->
-                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 p-6 border border-amber-100">
+                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 p-5 sm:p-6 border border-amber-100 min-w-0">
                         <div class="relative z-10">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="text-xs font-bold text-amber-800 uppercase tracking-wider">Belum Lunas</p>
-                                    <h3 class="mt-2 text-3xl font-black text-amber-900 tracking-tight">
+                            <div class="flex justify-between items-start gap-3">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[10px] sm:text-xs font-bold text-amber-800 uppercase tracking-wider truncate">Belum Lunas</p>
+                                    <h3 class="mt-1 sm:mt-2 text-xl sm:text-3xl font-black text-amber-900 tracking-tight truncate">
                                         {{ formatRupiah(unpaid.total) }}
                                     </h3>
                                 </div>
-                                <div class="bg-amber-500 text-white p-3 rounded-xl shadow-sm shadow-amber-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div class="bg-amber-500 text-white p-2 sm:p-3 rounded-xl shadow-sm shadow-amber-200 flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
                             </div>
-                            <div class="mt-4 flex items-center gap-2 text-xs">
-                                <span class="text-amber-700 font-medium">{{ unpaid.count }} pelanggan belum bayar</span>
+                            <div class="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs">
+                                <span class="text-amber-700 font-medium truncate flex-1 min-w-0">{{ unpaid.count }} pelanggan belum bayar</span>
                             </div>
                         </div>
                     </div>
@@ -478,17 +478,17 @@ watch(
                 <!-- 2. Charts Section -->
                 <div class="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 gap-6">
                     <!-- Bar Chart -->
-                    <div class="xl:col-span-2 lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-                        <div class="flex items-center justify-between mb-6">
+                    <div class="xl:col-span-2 lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-100 shadow-sm min-w-0">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 mb-6">
                             <div class="flex items-center gap-3">
                                 <div class="bg-indigo-50 text-indigo-500 p-2 rounded-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                     </svg>
                                 </div>
-                                <div>
-                                    <h3 class="text-base font-bold text-slate-800">Statistik Arus Kas</h3>
-                                    <p class="text-xs text-slate-500">Perbandingan pemasukan dan pengeluaran per periode</p>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="text-base font-bold text-slate-800 truncate">Statistik Arus Kas</h3>
+                                    <p class="text-[10px] sm:text-xs text-slate-500 truncate">Perbandingan pemasukan dan pengeluaran per periode</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-4">
@@ -511,15 +511,15 @@ watch(
                     </div>
 
                     <!-- Donut Chart -->
-                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col">
-                        <div class="flex items-center justify-between mb-4">
+                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col min-w-0">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 mb-4">
                             <div class="flex items-center gap-3">
                                 <div class="bg-blue-50 text-blue-500 p-2 rounded-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                     </svg>
                                 </div>
-                                <h3 class="text-base font-bold text-slate-800">Data Pelanggan</h3>
+                                <h3 class="text-base font-bold text-slate-800 truncate">Data Pelanggan</h3>
                             </div>
                             <select class="text-xs border-slate-200 rounded-lg py-1.5 pl-3 pr-8 text-slate-600 focus:ring-indigo-500 focus:border-indigo-500">
                                 <option>Semua Status</option>
@@ -572,7 +572,7 @@ watch(
                     </div>
 
                     <!-- Paket Terlaris -->
-                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col xl:col-span-1 lg:col-span-3">
+                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col xl:col-span-1 lg:col-span-3 min-w-0">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mb-6">
                             <div class="flex items-center gap-3">
                                 <div class="bg-amber-50 text-amber-500 p-2 rounded-lg">
@@ -580,9 +580,9 @@ watch(
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                                     </svg>
                                 </div>
-                                <div>
-                                    <h3 class="text-base font-bold text-slate-800">Paket Terlaris</h3>
-                                    <p class="text-[10px] text-slate-500">Pelanggan Aktif</p>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="text-base font-bold text-slate-800 truncate">Paket Terlaris</h3>
+                                    <p class="text-[10px] text-slate-500 truncate">Pelanggan Aktif</p>
                                 </div>
                             </div>
                         </div>
@@ -614,18 +614,18 @@ watch(
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     
                     <!-- Pelanggan Baru -->
-                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col">
-                        <div class="flex items-center justify-between mb-5">
+                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col min-w-0">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 mb-5">
                             <div class="flex items-center gap-3">
                                 <div class="bg-blue-50 text-blue-500 p-2 rounded-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                                     </svg>
                                 </div>
-                                <h3 class="text-base font-bold text-slate-800">Pelanggan Baru</h3>
+                                <h3 class="text-base font-bold text-slate-800 truncate">Pelanggan Baru</h3>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <select v-model="formFilters.area" @change="applyFilter" class="text-xs border-slate-200 rounded-lg py-1.5 pl-3 pr-8 text-slate-600 focus:ring-indigo-500 focus:border-indigo-500">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <select v-model="formFilters.area" @change="applyFilter" class="text-xs border-slate-200 rounded-lg py-1.5 pl-3 pr-8 text-slate-600 focus:ring-indigo-500 focus:border-indigo-500 max-w-full">
                                     <option value="">Semua Area</option>
                                     <option v-for="area in areas" :key="area" :value="area">{{ area }}</option>
                                 </select>
@@ -659,35 +659,35 @@ watch(
                     </div>
 
                     <!-- Tagihan Jatuh Tempo -->
-                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col">
-                        <div class="flex items-center justify-between mb-5">
+                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col min-w-0">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 mb-5">
                             <div class="flex items-center gap-3">
                                 <div class="bg-indigo-50 text-indigo-500 p-2 rounded-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                 </div>
-                                <h3 class="text-base font-bold text-slate-800">Tagihan Jatuh Tempo</h3>
+                                <h3 class="text-base font-bold text-slate-800 truncate">Tagihan Jatuh Tempo</h3>
                             </div>
                         </div>
                         <div class="flex-1 overflow-x-auto">
                             <table class="w-full text-left text-sm">
                                 <thead>
                                     <tr class="text-slate-400 text-xs border-b border-slate-100">
-                                        <th class="pb-2 font-medium w-8">#</th>
-                                        <th class="pb-2 font-medium">Nama Pelanggan</th>
-                                        <th class="pb-2 font-medium hidden sm:table-cell">Paket</th>
-                                        <th class="pb-2 font-medium text-right">Status</th>
+                                        <th class="pb-2 font-medium w-8 whitespace-nowrap">#</th>
+                                        <th class="pb-2 font-medium whitespace-nowrap">Nama Pelanggan</th>
+                                        <th class="pb-2 font-medium hidden sm:table-cell whitespace-nowrap">Paket</th>
+                                        <th class="pb-2 font-medium text-right whitespace-nowrap">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-50">
                                     <tr v-for="(bill, i) in overdueBills" :key="bill.id" class="group">
-                                        <td class="py-3 text-xs text-slate-400">{{ i + 1 }}</td>
-                                        <td class="py-3">
+                                        <td class="py-3 text-xs text-slate-400 whitespace-nowrap">{{ i + 1 }}</td>
+                                        <td class="py-3 whitespace-nowrap">
                                             <p class="font-medium text-slate-800 group-hover:text-indigo-600 transition-colors">{{ bill.name }}</p>
                                         </td>
-                                        <td class="py-3 text-slate-500 text-xs hidden sm:table-cell">{{ bill.paket || '-' }}</td>
-                                        <td class="py-3 text-right">
+                                        <td class="py-3 text-slate-500 text-xs hidden sm:table-cell whitespace-nowrap">{{ bill.paket || '-' }}</td>
+                                        <td class="py-3 text-right whitespace-nowrap">
                                             <span :class="['px-2 py-1 text-[10px] font-semibold rounded-md', getDueBadge(bill.promise_date || bill.register_date).class]">
                                                 {{ getDueBadge(bill.promise_date || bill.register_date).text }}
                                             </span>
@@ -707,15 +707,15 @@ watch(
                     </div>
 
                     <!-- Aktivitas Terbaru -->
-                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col">
-                        <div class="flex items-center justify-between mb-5">
+                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col min-w-0">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 mb-5">
                             <div class="flex items-center gap-3">
                                 <div class="bg-blue-50 text-blue-500 p-2 rounded-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                                     </svg>
                                 </div>
-                                <h3 class="text-base font-bold text-slate-800">Aktivitas Terbaru</h3>
+                                <h3 class="text-base font-bold text-slate-800 truncate">Aktivitas Terbaru</h3>
                             </div>
                         </div>
                         <div class="flex-1">
@@ -755,17 +755,17 @@ watch(
 
                 </div>
 
-                <div class="mt-6 bg-blue-50 border border-blue-100 rounded-2xl p-4 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+                <div class="mt-6 bg-blue-50 border border-blue-100 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm min-w-0">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex shrink-0 items-center justify-center">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         </div>
-                        <div>
-                            <h4 class="text-sm font-medium text-slate-700">Informasi Biaya Pemasangan Saat Ini</h4>
-                            <p class="text-xs text-slate-500">Biaya pasang global yang berlaku untuk pelanggan baru.</p>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-sm font-medium text-slate-700 truncate">Informasi Biaya Pemasangan Saat Ini</h4>
+                            <p class="text-[10px] sm:text-xs text-slate-500 truncate">Biaya pasang global yang berlaku untuk pelanggan baru.</p>
                         </div>
                     </div>
-                    <div class="text-lg font-bold text-blue-700">
+                    <div class="text-base sm:text-lg font-bold text-blue-700 shrink-0">
                         {{ globalInstallationFee > 0 ? formatRupiah(globalInstallationFee) : 'Gratis' }}
                     </div>
                 </div>
