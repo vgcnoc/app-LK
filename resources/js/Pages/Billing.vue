@@ -509,6 +509,7 @@ const filteredCustomers = computed(() => {
             (customer.area && customer.area.toLowerCase().includes(query));
 
         const isLunas = String(customer.status).toLowerCase() === 'paid';
+        const isProrata = String(customer.status).toLowerCase() === 'prorata';
         const isPiutang = !isLunas && isAktif(customer);
         const hasJanjiBayar = !!customer.promise_date;
         const isSebagian = checkSebagian(customer);
@@ -516,7 +517,8 @@ const filteredCustomers = computed(() => {
         const matchesStatus =
             appliedStatusFilter.value === 'all' ||
             (appliedStatusFilter.value === 'Lunas' && isLunas) ||
-            (appliedStatusFilter.value === 'Belum Lunas' && !isLunas);
+            (appliedStatusFilter.value === 'Belum Lunas' && !isLunas && !isProrata) ||
+            (appliedStatusFilter.value === 'Prorata' && isProrata);
 
         const matchesArea =
             appliedAreaFilter.value === 'all' || customer.area === appliedAreaFilter.value;
@@ -1210,6 +1212,7 @@ const deleteCustomer = (customer) => {
                                     <option value="all">Semua Status</option>
                                     <option value="Lunas">Lunas</option>
                                     <option value="Belum Lunas">Belum Lunas</option>
+                                    <option value="Prorata">Prorata</option>
                                 </select>
 
                                 <!-- Area Filter -->
