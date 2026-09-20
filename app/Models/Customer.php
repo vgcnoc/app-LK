@@ -66,10 +66,30 @@ class Customer extends Model
                 $diff = $refMonth->diffInMonths($currentMonth, false);
                 $startOfUnpaidPeriod = $refMonth->copy()->addMonth();
             } else {
-                // If never paid, they owe for every month since registration inclusive
+                // If never paid, calculate months owed since registration
                 $registerMonth = \Carbon\Carbon::parse($c->register_date ?? $c->created_at)->startOfMonth();
-                $diff = $registerMonth->diffInMonths($currentMonth, false) + 1;
-                $startOfUnpaidPeriod = $registerMonth;
+                
+                if ($c->prorata_amount !== null) {
+                    // Prorata: billing starts NEXT month after registration
+                    // In registration month: show status 'prorata' with prorata_amount (info only, not billable yet)
+                    // Next month: diff=1 → prorata amount becomes billable
+                    // Month after: diff=2 → prorata + 1x base_amount, etc.
+                    
+                    if ($registerMonth->eq($currentMonth)) {
+                        // Registration month: show prorata status & amount, but not yet billable
+                        if ($c->status !== 'prorata' || $c->amount != $c->prorata_amount || $c->is_partial_payment != 0) {
+                            $c->update(['status' => 'prorata', 'amount' => $c->prorata_amount, 'is_partial_payment' => 0]);
+                        }
+                        continue; // Skip rest of billing logic
+                    }
+                    
+                    $diff = $registerMonth->diffInMonths($currentMonth, false);
+                    $startOfUnpaidPeriod = $registerMonth->copy()->addMonth();
+                } else {
+                    // No prorata: owe for every month since registration inclusive
+                    $diff = $registerMonth->diffInMonths($currentMonth, false) + 1;
+                    $startOfUnpaidPeriod = $registerMonth;
+                }
             }
 
             if ($diff <= 0) {

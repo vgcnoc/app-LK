@@ -174,6 +174,16 @@ const getLamaNunggak = (c) => {
 };
 
 // Summary Statistics
+
+// Helper: check if customer is prorata and registered in current month (not yet billable)
+const isProrataCurrentMonth = (c) => {
+    if (String(c.status).toLowerCase() !== 'prorata') return false;
+    const regDate = c.register_date ? new Date(c.register_date) : (c.created_at ? new Date(c.created_at) : null);
+    if (!regDate || isNaN(regDate.getTime())) return false;
+    const now = new Date();
+    return regDate.getMonth() === now.getMonth() && regDate.getFullYear() === now.getFullYear();
+};
+
 const totalCustomers = computed(() => props.customers.length);
 const totalLunas = computed(() =>
     props.customers.filter((c) => String(c.status).toLowerCase() === 'paid').length
@@ -1474,7 +1484,7 @@ const deleteCustomer = (customer) => {
                                         <div class="flex items-center justify-center gap-2">
                                             <!-- Set Lunas Button -->
                                             <button
-                                                v-if="String(customer.status).toLowerCase() !== 'paid'"
+                                                v-if="String(customer.status).toLowerCase() !== 'paid' && !isProrataCurrentMonth(customer)"
                                                 type="button"
                                                 @click="openLunasModal(customer)"
                                                 class="inline-flex items-center gap-1 rounded-lg bg-emerald-600 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm transition duration-150 hover:bg-emerald-700 hover:shadow focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
@@ -1502,7 +1512,7 @@ const deleteCustomer = (customer) => {
 
                                             <!-- Set Janji Bayar Button -->
                                             <button
-                                                v-if="String(customer.status).toLowerCase() !== 'paid' && isAktif(customer)"
+                                                v-if="String(customer.status).toLowerCase() !== 'paid' && isAktif(customer) && !isProrataCurrentMonth(customer)"
                                                 type="button"
                                                 @click="openJanjiModal(customer)"
                                                 class="inline-flex items-center gap-1 rounded-lg border border-indigo-200 bg-indigo-50 px-2.5 py-1.5 text-xs font-medium text-indigo-600 shadow-sm transition duration-150 hover:bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"

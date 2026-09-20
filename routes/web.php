@@ -597,8 +597,16 @@ Route::middleware(['auth'])->group(function () {
     // BILLING DATA (Pindah dari /pelanggan sebelumnya)
     Route::get('/billing', function () {
         \App\Models\Customer::syncBilling();
-        $customers = Customer::whereNull('status_pelanggan')
-            ->orWhereIn('status_pelanggan', ['Aktif', ''])
+        $excludedAreas = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3', 'BC 1', 'BC 2', 'BC 3'];
+        
+        $customers = Customer::where(function($query) {
+                $query->whereNull('status_pelanggan')
+                      ->orWhereIn('status_pelanggan', ['Aktif', '']);
+            })
+            ->where(function($query) use ($excludedAreas) {
+                $query->whereNotIn('area', $excludedAreas)
+                      ->orWhereNull('area');
+            })
             ->orderByRaw('COALESCE(register_date, created_at) DESC')
             ->get();
         $paymentMethods = PaymentMethod::orderBy('name')->get();
@@ -861,8 +869,13 @@ Route::middleware(['auth'])->group(function () {
     // PELANGGAN INAKTIF (Berhenti / Stop / Gratis)
     Route::get('/pelanggan-inaktif', function () {
         \App\Models\Customer::syncBilling();
+        $excludedAreas = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3', 'BC 1', 'BC 2', 'BC 3'];
+        
         $customers = Customer::with('suspensions')
-            ->whereIn('status_pelanggan', ['Berhenti', 'Nonaktif', 'Suspend', 'Isolir', 'Gratis', 'Stop Permanen', 'Berhenti sementara'])
+            ->where(function($query) use ($excludedAreas) {
+                $query->whereIn('status_pelanggan', ['Berhenti', 'Nonaktif', 'Suspend', 'Isolir', 'Gratis', 'Stop Permanen', 'Berhenti sementara'])
+                      ->orWhereIn('area', $excludedAreas);
+            })
             ->orderBy('created_at', 'desc')
             ->get();
             
