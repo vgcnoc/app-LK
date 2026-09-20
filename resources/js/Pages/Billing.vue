@@ -185,21 +185,7 @@ const isProrataCurrentMonth = (c) => {
     return regDate.getMonth() === now.getMonth() && regDate.getFullYear() === now.getFullYear();
 };
 
-const totalCustomers = computed(() => props.customers.length);
-const totalLunas = computed(() =>
-    props.customers.filter((c) => String(c.status).toLowerCase() === 'paid').length
-);
-const totalBelumLunas = computed(() =>
-    props.customers.filter((c) => String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length
-);
-const totalTagihan = computed(() =>
-    props.customers.reduce((sum, c) => sum + (isAktif(c) ? (Number(c.amount) || 0) : 0), 0)
-);
-
-const percentLunas = computed(() => {
-    if (totalCustomers.value === 0) return 0;
-    return Math.round((totalLunas.value / totalCustomers.value) * 100);
-});
+// (Summary statistics moved below filteredCustomers)
 
 // Excel Import State
 const fileInput = ref(null);
@@ -551,8 +537,21 @@ const filteredCustomers = computed(() => {
     });
 });
 
-const totalTagihanFiltered = computed(() => {
-    return filteredCustomers.value.reduce((sum, c) => sum + (Number(c.amount) || 0), 0);
+const totalTagihan = computed(() => {
+    return filteredCustomers.value.reduce((sum, c) => sum + (isAktif(c) ? (Number(c.amount) || 0) : 0), 0);
+});
+const totalTagihanFiltered = totalTagihan;
+
+const totalCustomers = computed(() => filteredCustomers.value.length);
+const totalLunas = computed(() =>
+    filteredCustomers.value.filter((c) => String(c.status).toLowerCase() === 'paid').length
+);
+const totalBelumLunas = computed(() =>
+    filteredCustomers.value.filter((c) => String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length
+);
+const percentLunas = computed(() => {
+    if (totalCustomers.value === 0) return 0;
+    return Math.round((totalLunas.value / totalCustomers.value) * 100);
 });
 
 const itemsPerPage = ref(10);
