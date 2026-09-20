@@ -504,7 +504,7 @@ const paginatedCustomers = computed(() => {
 });
 
 // Watch for filter changes to reset page
-watch([appliedSearchQuery, appliedStatusFilter, appliedAreaFilter, activeTab, appliedStartDateFilter, appliedEndDateFilter], () => {
+watch([appliedSearchQuery, appliedStatusFilter, appliedAreaFilter, activeTab, appliedStartDateFilter, appliedEndDateFilter, itemsPerPage], () => {
     currentPage.value = 1;
 });
 
@@ -1140,6 +1140,18 @@ const deleteCustomer = (customer) => {
                                     </div>
                                 </div>
                                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                                    <div class="flex items-center gap-2">
+                                        <select
+                                            v-model="itemsPerPage"
+                                            class="rounded-xl border border-slate-300 py-2 pl-3 pr-8 text-xs text-slate-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        >
+                                            <option :value="10">10 baris</option>
+                                            <option :value="50">50 baris</option>
+                                            <option :value="100">100 baris</option>
+                                            <option :value="500">500 baris</option>
+                                        </select>
+                                    </div>
+                                    
                                     <!-- Search Input -->
                                     <div class="relative w-full sm:w-64">
                                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">

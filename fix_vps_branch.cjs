@@ -5,10 +5,15 @@ conn.on('ready', () => {
     console.log('SSH connection established');
     
     const deployCmd = `
-    echo "Cek /var/www/lk.viruzs.my.id"
     cd /var/www/lk.viruzs.my.id
-    ls -la
-    git status
+    echo "Current Branch:"
+    git branch
+    
+    echo "Fetching all..."
+    git fetch origin
+    
+    echo "Checkout main..."
+    git checkout main || git checkout -b main origin/main
     
     echo "Melakukan git pull di direktori sebenarnya..."
     git reset --hard HEAD
@@ -22,7 +27,11 @@ conn.on('ready', () => {
     echo "Membersihkan cache..."
     php artisan optimize:clear
     
-    echo "Deploy selesai dengan sukses di direktori asli!"
+    echo "Fix permissions..."
+    chmod -R 775 storage bootstrap/cache
+    chown -R www-data:www-data storage bootstrap/cache
+    
+    echo "Deploy selesai dengan sukses di branch main!"
     `;
 
     conn.exec(deployCmd, (err, stream) => {

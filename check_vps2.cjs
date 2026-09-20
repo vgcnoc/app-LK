@@ -5,24 +5,15 @@ conn.on('ready', () => {
     console.log('SSH connection established');
     
     const deployCmd = `
-    echo "Cek /var/www/lk.viruzs.my.id"
+    echo "=== Nginx Config ==="
+    cat /etc/nginx/sites-enabled/lk.viruzs.my.id || echo "Config not found"
+    
+    echo "=== Git Status in /var/www/lk.viruzs.my.id ==="
     cd /var/www/lk.viruzs.my.id
-    ls -la
-    git status
+    git log -n 3 --oneline
     
-    echo "Melakukan git pull di direktori sebenarnya..."
-    git reset --hard HEAD
-    git pull origin main
-    
-    echo "Update composer dan npm..."
-    composer install --no-interaction --prefer-dist --optimize-autoloader
-    npm install
-    npm run build
-    
-    echo "Membersihkan cache..."
-    php artisan optimize:clear
-    
-    echo "Deploy selesai dengan sukses di direktori asli!"
+    echo "=== Cek file public/build/manifest.json ==="
+    cat public/build/manifest.json | grep "Pelanggan"
     `;
 
     conn.exec(deployCmd, (err, stream) => {

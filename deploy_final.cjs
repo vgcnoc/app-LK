@@ -5,24 +5,37 @@ conn.on('ready', () => {
     console.log('SSH connection established');
     
     const deployCmd = `
-    echo "Cek /var/www/lk.viruzs.my.id"
+    echo "=== Memulai Update VPS ==="
     cd /var/www/lk.viruzs.my.id
-    ls -la
-    git status
     
-    echo "Melakukan git pull di direktori sebenarnya..."
+    echo "1. Menarik update dari Git..."
+    git fetch origin
     git reset --hard HEAD
+    git checkout main || git checkout -b main origin/main
     git pull origin main
     
-    echo "Update composer dan npm..."
+    echo "2. Install dependensi Backend (PHP)..."
     composer install --no-interaction --prefer-dist --optimize-autoloader
+    
+    echo "3. Install & Build dependensi Frontend (Vue)..."
     npm install
     npm run build
     
-    echo "Membersihkan cache..."
+    echo "4. Membersihkan seluruh Cache (Backend & Frontend)..."
     php artisan optimize:clear
+    php artisan view:clear
+    php artisan route:clear
+    php artisan config:clear
+    php artisan cache:clear
     
-    echo "Deploy selesai dengan sukses di direktori asli!"
+    echo "5. Restart PHP-FPM (jika ada) untuk membersihkan OPcache..."
+    systemctl restart php*-fpm 2>/dev/null || echo "Tidak perlu restart FPM"
+    
+    echo "6. Fix perizinan file..."
+    chmod -R 775 storage bootstrap/cache
+    chown -R www-data:www-data storage bootstrap/cache
+    
+    echo "Update VPS selesai 100%!"
     `;
 
     conn.exec(deployCmd, (err, stream) => {

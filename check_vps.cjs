@@ -4,25 +4,23 @@ const conn = new Client();
 conn.on('ready', () => {
     console.log('SSH connection established');
     
+    // Find all directories named app-LK and check git status
     const deployCmd = `
-    echo "Cek /var/www/lk.viruzs.my.id"
-    cd /var/www/lk.viruzs.my.id
-    ls -la
-    git status
+    echo "Mencari folder app-LK di seluruh VPS..."
+    find / -type d -name "app-LK" -not -path "*/node_modules/*" -not -path "*/vendor/*" 2>/dev/null
     
-    echo "Melakukan git pull di direktori sebenarnya..."
-    git reset --hard HEAD
-    git pull origin main
+    echo "Cek /var/www/html"
+    ls -la /var/www/html
     
-    echo "Update composer dan npm..."
-    composer install --no-interaction --prefer-dist --optimize-autoloader
-    npm install
-    npm run build
+    echo "Cek document root apache/nginx"
+    grep -R -i "DocumentRoot" /etc/apache2/sites-enabled/ 2>/dev/null || echo "Bukan apache"
+    grep -R -i "root " /etc/nginx/sites-enabled/ 2>/dev/null || echo "Bukan nginx"
     
-    echo "Membersihkan cache..."
-    php artisan optimize:clear
-    
-    echo "Deploy selesai dengan sukses di direktori asli!"
+    if [ -d "/var/www/html/app-LK" ]; then
+        echo "Git log di /var/www/html/app-LK:"
+        cd /var/www/html/app-LK
+        git log -n 3 --oneline
+    fi
     `;
 
     conn.exec(deployCmd, (err, stream) => {
