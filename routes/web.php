@@ -1973,5 +1973,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/integrasi/update', [\App\Http\Controllers\IntegrasiController::class, 'update'])->name('integrasi.update');
     Route::post('/integrasi/sync', [\App\Http\Controllers\IntegrasiController::class, 'sync'])->name('integrasi.sync');
 
+    // Integrasi API Billing
+    Route::get('/integrasi-billing', [\App\Http\Controllers\IntegrasiBillingController::class, 'index'])->name('integrasi-billing.index');
+    Route::post('/integrasi-billing/update', [\App\Http\Controllers\IntegrasiBillingController::class, 'update'])->name('integrasi-billing.update');
+    Route::post('/integrasi-billing/sync', [\App\Http\Controllers\IntegrasiBillingController::class, 'sync'])->name('integrasi-billing.sync');
 });
 require __DIR__.'/auth.php';

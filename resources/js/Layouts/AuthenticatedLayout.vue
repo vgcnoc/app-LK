@@ -306,6 +306,24 @@ const can = (perm) => permissions.value.includes(perm);
                     <span>Integrasi / API</span>
                 </Link>
 
+                <!-- Integrasi API Billing -->
+                <Link
+                    v-if="can('akses_integrasi')"
+                    :href="route('integrasi-billing.index')"
+                    :class="[
+                        route().current('integrasi-billing*')
+                            ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
+                            : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
+                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
+                    ]"
+                >
+                    <!-- Receipt / Billing Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Integrasi API Billing</span>
+                </Link>
+
                 <!-- Divider -->
                 <div class="my-3 px-3">
                     <div class="border-t border-slate-700/60"></div>
