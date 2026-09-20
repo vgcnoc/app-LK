@@ -1,23 +1,112 @@
 <script setup>
 import { Head, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 const props = defineProps({
     setting: Object,
 });
 
+// Default mapping entries
+const defaultMappings = [
+    { db_field: 'name_key', label: 'Nama Pelanggan', json_key: 'name', required: true },
+    { db_field: 'address_key', label: 'Alamat', json_key: 'address', required: false },
+    { db_field: 'phone_key', label: 'No. Telepon/WA', json_key: 'phone', required: false },
+    { db_field: 'package_key', label: 'Nama Paket', json_key: 'package', required: false },
+    { db_field: 'price_key', label: 'Harga/Tagihan', json_key: 'price', required: false },
+    { db_field: 'status_key', label: 'Status', json_key: 'status', required: false },
+];
+
+// Build initial mappings from saved setting or defaults
+const buildInitialMappings = () => {
+    const saved = props.setting?.json_mapping;
+    if (saved && typeof saved === 'object') {
+        return defaultMappings.map(dm => ({
+            ...dm,
+            json_key: saved[dm.db_field] ?? dm.json_key,
+        }));
+    }
+    return defaultMappings.map(dm => ({ ...dm }));
+};
+
+const mappings = ref(buildInitialMappings());
+const showCodeView = ref(false);
+const codeContent = ref('');
+const codeError = ref('');
+
+// Convert mappings array to the json_mapping object for form submission
+const buildJsonMapping = () => {
+    const result = {};
+    mappings.value.forEach(m => {
+        if (m.db_field && m.json_key) {
+            result[m.db_field] = m.json_key;
+        }
+    });
+    return result;
+};
+
+// Generate pretty JSON for code view
+const generateCodeJson = () => {
+    const obj = {};
+    mappings.value.forEach(m => {
+        obj[m.db_field] = m.json_key;
+    });
+    return JSON.stringify(obj, null, 2);
+};
+
+const toggleCodeView = () => {
+    if (!showCodeView.value) {
+        codeContent.value = generateCodeJson();
+        codeError.value = '';
+    } else {
+        // Exiting code view → parse and apply
+        applyCodeContent();
+    }
+    showCodeView.value = !showCodeView.value;
+};
+
+const applyCodeContent = () => {
+    try {
+        const parsed = JSON.parse(codeContent.value);
+        if (typeof parsed !== 'object' || Array.isArray(parsed)) {
+            codeError.value = 'JSON harus berupa object {}.';
+            return;
+        }
+        // Rebuild mappings from parsed code
+        const newMappings = [];
+        for (const [dbField, jsonKey] of Object.entries(parsed)) {
+            const existing = defaultMappings.find(dm => dm.db_field === dbField);
+            newMappings.push({
+                db_field: dbField,
+                label: existing?.label || dbField.replace('_key', ''),
+                json_key: String(jsonKey),
+                required: existing?.required || false,
+            });
+        }
+        mappings.value = newMappings;
+        codeError.value = '';
+    } catch (e) {
+        codeError.value = 'JSON tidak valid: ' + e.message;
+    }
+};
+
+const addMapping = () => {
+    mappings.value.push({
+        db_field: 'custom_' + Date.now(),
+        label: '',
+        json_key: '',
+        required: false,
+    });
+};
+
+const removeMapping = (index) => {
+    mappings.value.splice(index, 1);
+};
+
 const form = useForm({
     base_url: props.setting?.base_url || '',
     api_key: props.setting?.api_key || '',
-    json_mapping: props.setting?.json_mapping || {
-        name_key: 'name',
-        address_key: 'address',
-        phone_key: 'phone',
-        package_key: 'package',
-        price_key: 'price',
-        status_key: 'status',
-    }
+    json_mapping: buildJsonMapping(),
 });
 
 const isSaving = ref(false);
@@ -25,6 +114,7 @@ const isSyncing = ref(false);
 
 const saveSettings = () => {
     isSaving.value = true;
+    form.json_mapping = buildJsonMapping();
     form.post(route('integrasi.update'), {
         preserveScroll: true,
         onFinish: () => (isSaving.value = false),
@@ -137,34 +227,128 @@ const syncData = () => {
                         </div>
                         <div class="p-6">
                             <div class="mb-6 space-y-4">
-                                <h4 class="text-sm font-semibold text-slate-700 mb-2">Pencocokan Kolom (Mapping JSON)</h4>
-                                <p class="text-xs text-slate-500 mb-4">Masukkan nama *key* JSON dari API Anda yang sesuai dengan data berikut:</p>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Header with toggle -->
+                                <div class="flex items-center justify-between">
                                     <div>
-                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk Nama Pelanggan *</label>
-                                        <input type="text" v-model="form.json_mapping.name_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: name">
+                                        <h4 class="text-sm font-semibold text-slate-700">Pencocokan Kolom (Mapping JSON)</h4>
+                                        <p class="text-xs text-slate-500 mt-1">Masukkan nama *key* JSON dari API yang sesuai dengan kolom database.</p>
                                     </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk Alamat</label>
-                                        <input type="text" v-model="form.json_mapping.address_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: address">
+                                    <button
+                                        type="button"
+                                        @click="toggleCodeView"
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
+                                        :class="showCodeView 
+                                            ? 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200' 
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                        </svg>
+                                        {{ showCodeView ? 'Form View' : 'Code View' }}
+                                    </button>
+                                </div>
+
+                                <!-- Code View (textarea) -->
+                                <div v-if="showCodeView">
+                                    <div class="rounded-lg border border-slate-300 overflow-hidden">
+                                        <div class="bg-slate-800 px-4 py-2 flex items-center justify-between">
+                                            <span class="text-xs text-slate-400 font-mono">json_mapping.json</span>
+                                            <span class="text-[10px] text-slate-500 uppercase tracking-wider">JSON</span>
+                                        </div>
+                                        <textarea
+                                            v-model="codeContent"
+                                            class="w-full bg-slate-900 text-emerald-400 font-mono text-sm p-4 border-0 focus:ring-0 resize-y"
+                                            rows="10"
+                                            spellcheck="false"
+                                            placeholder='{ "name_key": "name", ... }'
+                                        ></textarea>
                                     </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk No. Telepon/WA</label>
-                                        <input type="text" v-model="form.json_mapping.phone_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: phone">
+                                    <p v-if="codeError" class="text-xs text-rose-500 mt-2 flex items-center gap-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                        </svg>
+                                        {{ codeError }}
+                                    </p>
+                                    <p class="text-xs text-slate-500 mt-2">Edit JSON langsung. Klik <b>Form View</b> untuk kembali ke mode form.</p>
+                                </div>
+
+                                <!-- Form View (dynamic rows) -->
+                                <div v-else class="space-y-3">
+                                    <!-- Table Header -->
+                                    <div class="grid grid-cols-12 gap-2 px-1">
+                                        <div class="col-span-4 text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Kolom Database</div>
+                                        <div class="col-span-4 text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Key JSON API</div>
+                                        <div class="col-span-3 text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Label</div>
+                                        <div class="col-span-1"></div>
                                     </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk Nama Paket</label>
-                                        <input type="text" v-model="form.json_mapping.package_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: package">
+
+                                    <!-- Mapping Rows -->
+                                    <div 
+                                        v-for="(mapping, index) in mappings" 
+                                        :key="index"
+                                        class="grid grid-cols-12 gap-2 items-center group"
+                                    >
+                                        <!-- DB Field -->
+                                        <div class="col-span-4">
+                                            <input
+                                                type="text"
+                                                v-model="mapping.db_field"
+                                                class="w-full font-mono text-xs border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-1.5 bg-slate-50"
+                                                :class="{ 'bg-slate-100 text-slate-500': mapping.required }"
+                                                :readonly="mapping.required"
+                                                placeholder="custom_key"
+                                            />
+                                        </div>
+                                        <!-- JSON Key -->
+                                        <div class="col-span-4">
+                                            <input
+                                                type="text"
+                                                v-model="mapping.json_key"
+                                                class="w-full font-mono text-xs border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-1.5"
+                                                placeholder="api_key_name"
+                                            />
+                                        </div>
+                                        <!-- Label -->
+                                        <div class="col-span-3">
+                                            <input
+                                                type="text"
+                                                v-model="mapping.label"
+                                                class="w-full text-xs border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-1.5"
+                                                placeholder="Label"
+                                            />
+                                        </div>
+                                        <!-- Delete -->
+                                        <div class="col-span-1 flex justify-center">
+                                            <button
+                                                v-if="!mapping.required"
+                                                type="button"
+                                                @click="removeMapping(index)"
+                                                class="p-1 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-md transition-colors opacity-0 group-hover:opacity-100"
+                                                title="Hapus mapping"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                            <span v-else class="text-amber-500" title="Field wajib, tidak bisa dihapus">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v.01M12 12a1 1 0 00-.894.553l-3 6A1 1 0 009 20h6a1 1 0 00.894-1.447l-3-6A1 1 0 0012 12z" />
+                                                </svg>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk Harga/Tagihan</label>
-                                        <input type="text" v-model="form.json_mapping.price_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: price">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-slate-700 mb-1">Key untuk Status</label>
-                                        <input type="text" v-model="form.json_mapping.status_key" class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-1.5" placeholder="Contoh: status">
-                                    </div>
+
+                                    <!-- Add Button -->
+                                    <button
+                                        type="button"
+                                        @click="addMapping"
+                                        class="w-full py-2 border-2 border-dashed border-slate-300 rounded-lg text-xs text-slate-500 font-medium hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50/50 transition-colors flex items-center justify-center gap-1.5"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                        </svg>
+                                        Tambah Mapping Baru
+                                    </button>
                                 </div>
                             </div>
                             

@@ -2,6 +2,7 @@
 import { ref, computed, watch } from 'vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import axios from 'axios';
 import * as XLSX from 'xlsx';
 
 const props = defineProps({
@@ -174,6 +175,9 @@ const selectedFileName = ref('');
 const parsedCount = ref(0);
 const parseError = ref('');
 const isDragging = ref(false);
+const importProgress = ref(0);
+const importTotal = ref(0);
+const isImporting = ref(false);
 
 const importForm = useForm({
     customersData: [],
@@ -283,7 +287,6 @@ const handleFile = (file) => {
                 }
 
                 return {
-                    ...row,
                     name: nameValue,
                     amount: cleanAmount,
                     area: areaValue,
@@ -335,18 +338,40 @@ const removeSelectedFile = () => {
     if (fileInput.value) fileInput.value.value = '';
 };
 
-const submitImport = () => {
+const CHUNK_SIZE = 50;
+
+const submitImport = async () => {
     if (!importForm.customersData || importForm.customersData.length === 0) {
         alert('Mohon pilih file Excel yang memiliki Billing Data.');
         return;
     }
 
-    importForm.post(route('billing.import'), {
-        preserveScroll: true,
-        onSuccess: () => {
-            removeSelectedFile();
-        },
-    });
+    const allData = importForm.customersData;
+    const totalChunks = Math.ceil(allData.length / CHUNK_SIZE);
+    importTotal.value = allData.length;
+    importProgress.value = 0;
+    isImporting.value = true;
+
+    try {
+        for (let i = 0; i < totalChunks; i++) {
+            const chunk = allData.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
+            await axios.post(route('billing.import'), {
+                customersData: chunk,
+            });
+            importProgress.value = Math.min((i + 1) * CHUNK_SIZE, allData.length);
+        }
+
+        removeSelectedFile();
+        router.reload({ preserveScroll: true });
+    } catch (error) {
+        console.error('Import error:', error);
+        const msg = error.response?.data?.message || error.message || 'Terjadi kesalahan saat import.';
+        alert(`Gagal import data (batch ${Math.floor(importProgress.value / CHUNK_SIZE) + 1}/${totalChunks}): ${msg}`);
+    } finally {
+        isImporting.value = false;
+        importProgress.value = 0;
+        importTotal.value = 0;
+    }
 };
 
 // Search and Filtering
@@ -955,11 +980,11 @@ const deleteCustomer = (customer) => {
 
                                 <button
                                     type="submit"
-                                    :disabled="importForm.processing"
+                                    :disabled="isImporting"
                                     class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 hover:shadow focus:outline-none focus:ring-2 focus:ring-indigo-500/30 disabled:cursor-not-allowed disabled:opacity-50"
                                 >
                                     <svg
-                                        v-if="importForm.processing"
+                                        v-if="isImporting"
                                         class="h-4 w-4 animate-spin text-white"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
@@ -971,7 +996,7 @@ const deleteCustomer = (customer) => {
                                     <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                     </svg>
-                                    <span>{{ importForm.processing ? 'Mengimpor...' : 'Mulai Import' }}</span>
+                                    <span>{{ isImporting ? `Mengimpor... ${importProgress}/${importTotal}` : 'Mulai Import' }}</span>
                                 </button>
                             </div>
                         </form>
