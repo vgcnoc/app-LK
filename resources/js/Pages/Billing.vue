@@ -547,7 +547,7 @@ const totalLunas = computed(() =>
     filteredCustomers.value.filter((c) => String(c.status).toLowerCase() === 'paid').length
 );
 const totalBelumLunas = computed(() =>
-    filteredCustomers.value.filter((c) => String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length
+    filteredCustomers.value.filter((c) => String(c.status).toLowerCase() !== 'paid' && String(c.status).toLowerCase() !== 'prorata' && isAktif(c)).length
 );
 const totalNominalLunas = computed(() => {
     return filteredCustomers.value.reduce((sum, c) => {
