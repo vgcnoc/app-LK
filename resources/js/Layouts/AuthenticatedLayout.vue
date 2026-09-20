@@ -288,24 +288,6 @@ const can = (perm) => permissions.value.includes(perm);
                     <span>Data Komisi</span>
                 </Link>
 
-                <!-- Integrasi / API -->
-                <Link
-                    v-if="can('akses_integrasi')"
-                    :href="route('integrasi.index')"
-                    :class="[
-                        route().current('integrasi*')
-                            ? 'bg-white/10 text-white font-semibold border-l-4 border-white pl-3'
-                            : 'text-slate-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150 hover:translate-x-1'
-                    ]"
-                >
-                    <!-- Integration / Cloud Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-                    </svg>
-                    <span>Integrasi / API</span>
-                </Link>
-
                 <!-- Integrasi API Billing -->
                 <Link
                     v-if="can('akses_integrasi')"

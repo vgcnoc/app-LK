@@ -1968,10 +1968,6 @@ Route::middleware(['auth'])->group(function () {
         return back()->with('success', 'Pembayaran komisi berhasil dibatalkan dan ditarik dari laporan keuangan.');
     })->name('komisi.cancel-pay');
 
-    // Integrasi / API
-    Route::get('/integrasi', [\App\Http\Controllers\IntegrasiController::class, 'index'])->name('integrasi.index');
-    Route::post('/integrasi/update', [\App\Http\Controllers\IntegrasiController::class, 'update'])->name('integrasi.update');
-    Route::post('/integrasi/sync', [\App\Http\Controllers\IntegrasiController::class, 'sync'])->name('integrasi.sync');
 
     // Integrasi API Billing
     Route::get('/integrasi-billing', [\App\Http\Controllers\IntegrasiBillingController::class, 'index'])->name('integrasi-billing.index');
