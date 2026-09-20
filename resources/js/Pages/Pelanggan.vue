@@ -3,6 +3,7 @@ import { ref, computed, watch } from 'vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Chart from 'chart.js/auto';
+import * as XLSX from 'xlsx';
 
 const props = defineProps({
     customers: {
@@ -212,6 +213,77 @@ const getStatusBadge = (status) => {
         label: status || 'Nonaktif',
         classes: 'bg-slate-100 text-slate-700 ring-1 ring-slate-600/10 border-slate-200'
     };
+};
+
+// Export & Import logic
+const fileInput = ref(null);
+
+const exportExcel = () => {
+    let dataToExport = filteredCustomers.value.map((c, index) => ({
+        'No': index + 1,
+        'Nama Pelanggan': c.name,
+        'Area': c.area || '-',
+        'Alamat': c.alamat || '-',
+        'Paket': c.paket || '-',
+        'Harga Paket': c.base_amount || 0,
+        'Tgl Registrasi': c.register_date || '-',
+        'Status Pelanggan': c.status_pelanggan || 'Aktif',
+        'No WhatsApp': c.no_wa || '-'
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Data Pelanggan");
+    XLSX.writeFile(wb, `Master_Data_Pelanggan_${new Date().getTime()}.xlsx`);
+};
+
+const triggerFileInput = () => {
+    if (fileInput.value) fileInput.value.click();
+};
+
+const importExcel = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+            const formattedData = jsonData.map(row => ({
+                name: row['Nama Pelanggan'] || row['Nama'] || row['name'] || '',
+                area: row['Area'] || row['area'] || '',
+                alamat: row['Alamat'] || row['alamat'] || '',
+                paket: row['Paket'] || row['paket'] || '',
+                base_amount: row['Harga Paket'] || row['base_amount'] || row['Base Amount'] || 0,
+                register_date: row['Tgl Registrasi'] || row['register_date'] || null,
+                status_pelanggan: row['Status Pelanggan'] || row['status_pelanggan'] || 'Aktif',
+                no_wa: row['No WhatsApp'] || row['no_wa'] || row['No WA'] || ''
+            })).filter(row => row.name); // only keep rows with a name
+
+            if (formattedData.length > 0) {
+                router.post(route('pelanggan.import'), { customersData: formattedData }, {
+                    onSuccess: () => {
+                        event.target.value = ''; // reset file input
+                    },
+                    onError: () => {
+                        alert("Terjadi kesalahan saat import data. Pastikan format file sesuai.");
+                        event.target.value = '';
+                    }
+                });
+            } else {
+                alert("Tidak ada data valid yang ditemukan untuk di-import.");
+            }
+        } catch (err) {
+            console.error("Import error:", err);
+            alert("Gagal memproses file Excel.");
+        }
+    };
+    reader.readAsArrayBuffer(file);
 };
 
 // Chart Setup
@@ -504,6 +576,30 @@ const submitDelete = () => {
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
+                    <input type="file" ref="fileInput" class="hidden" accept=".xlsx, .xls, .csv" @change="importExcel" />
+                    
+                    <button
+                        type="button"
+                        @click="exportExcel"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-emerald-700 focus:outline-none"
+                    >
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                        </svg>
+                        <span class="hidden sm:inline">Export</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        @click="triggerFileInput"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-slate-700 focus:outline-none"
+                    >
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                        <span class="hidden sm:inline">Import</span>
+                    </button>
+
                     <button
                         type="button"
                         @click="openCreateModal"

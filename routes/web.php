@@ -851,6 +851,36 @@ Route::middleware(['auth'])->group(function () {
         ]);
     })->name('pelanggan.inaktif');
 
+    // PELANGGAN PANTAUAN (Suspend, Nunggak, Janji Bayar, Berhenti < 4 bln)
+    Route::get('/pelanggan-pantauan', function () {
+        \App\Models\Customer::syncBilling();
+        
+        $customersQuery = Customer::withCount('suspensions')
+            ->where(function ($query) {
+                $query->whereIn('status_pelanggan', ['Suspend', 'Berhenti sementara', 'Isolir', 'Berhenti', 'Nonaktif', 'Stop Permanen', 'Putus'])
+                      ->orWhere('status', 'nunggak')
+                      ->orWhereNotNull('promise_date');
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        $customers = $customersQuery->filter(function($c) {
+            $isBerhenti = in_array(strtolower($c->status_pelanggan ?? ''), ['berhenti', 'nonaktif', 'stop permanen', 'putus']);
+            if ($isBerhenti) {
+                $start = $c->register_date ? \Carbon\Carbon::parse($c->register_date) : \Carbon\Carbon::parse($c->created_at);
+                $end = $c->stop_date ? \Carbon\Carbon::parse($c->stop_date) : \Carbon\Carbon::parse($c->updated_at);
+                // Return true only if duration is less than 4 months
+                return $start->diffInMonths($end) < 4;
+            }
+            // For other conditions (suspend, nunggak, janji bayar)
+            return true;
+        })->values();
+            
+        return Inertia::render('PelangganPantauan', [
+            'customers' => $customers,
+        ]);
+    })->name('pelanggan.pantauan');
+
     // BOOKING PELANGGAN
     Route::get('/booking', function () {
         $user = auth()->user();
@@ -1016,6 +1046,39 @@ Route::middleware(['auth'])->group(function () {
         Customer::create($data);
         return back()->with('success', 'Data pelanggan baru berhasil ditambahkan.');
     })->name('pelanggan.store');
+
+    Route::post('/pelanggan/import', function (Request $request) {
+        $data = $request->validate([
+            'customersData' => 'required|array'
+        ]);
+        
+        $packages = \App\Models\InternetPackage::all()->pluck('price', 'name')->toArray();
+        $packagesLower = array_change_key_case($packages, CASE_LOWER);
+
+        foreach ($data['customersData'] as $row) {
+            $paketName = $row['paket'] ?? null;
+            $baseAmount = $row['base_amount'] ?? 0;
+
+            if ($paketName && array_key_exists(strtolower($paketName), $packagesLower)) {
+                $baseAmount = $packagesLower[strtolower($paketName)];
+            }
+
+            Customer::updateOrCreate(
+                ['name' => $row['name']],
+                [
+                    'base_amount' => $baseAmount,
+                    'area' => $row['area'] ?? null,
+                    'alamat' => $row['alamat'] ?? null,
+                    'paket' => $paketName,
+                    'register_date' => !empty($row['register_date']) ? date('Y-m-d', strtotime($row['register_date'])) : null,
+                    'status_pelanggan' => $row['status_pelanggan'] ?? 'Aktif',
+                    'no_wa' => $row['no_wa'] ?? null,
+                    'status' => 'pending',
+                ]
+            );
+        }
+        return back()->with('success', 'Data pelanggan berhasil diimport.');
+    })->name('pelanggan.import');
 
     Route::delete('/pelanggan/{customer}', function (Request $request, Customer $customer) {
         if (!$request->user()->can('hapus_pelanggan')) abort(403);
