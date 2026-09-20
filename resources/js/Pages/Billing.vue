@@ -537,20 +537,52 @@ const filteredCustomers = computed(() => {
     });
 });
 
+const cardCustomers = computed(() => {
+    const query = appliedSearchQuery.value.trim().toLowerCase();
+
+    return props.customers.filter((customer) => {
+        const matchesQuery =
+            !query ||
+            (customer.name && customer.name.toLowerCase().includes(query)) ||
+            (customer.area && customer.area.toLowerCase().includes(query));
+
+        const matchesArea =
+            appliedAreaFilter.value === 'all' || customer.area === appliedAreaFilter.value;
+
+        let matchesDate = true;
+        if (appliedStartDateFilter.value || appliedEndDateFilter.value) {
+            const dateToCheck = activeTab.value === 'janji_bayar' 
+                ? customer.promise_date 
+                : (customer.tanggal_register || customer.created_at);
+            
+            if (!dateToCheck) {
+                matchesDate = false;
+            } else {
+                const itemDate = new Date(dateToCheck).getTime();
+                const start = appliedStartDateFilter.value ? new Date(appliedStartDateFilter.value).getTime() : 0;
+                const end = appliedEndDateFilter.value ? new Date(appliedEndDateFilter.value + 'T23:59:59').getTime() : Infinity;
+                matchesDate = itemDate >= start && itemDate <= end;
+            }
+        }
+
+        return matchesQuery && matchesArea && matchesDate;
+    });
+});
+
 const totalTagihan = computed(() => {
-    return filteredCustomers.value.reduce((sum, c) => sum + (isAktif(c) ? (Number(c.amount) || 0) : 0), 0);
+    return cardCustomers.value.reduce((sum, c) => sum + (isAktif(c) ? (Number(c.amount) || 0) : 0), 0);
 });
 const totalTagihanFiltered = totalTagihan;
 
-const totalCustomers = computed(() => filteredCustomers.value.length);
+const totalCustomers = computed(() => cardCustomers.value.length);
 const totalLunas = computed(() =>
-    filteredCustomers.value.filter((c) => String(c.status).toLowerCase() === 'paid').length
+    cardCustomers.value.filter((c) => String(c.status).toLowerCase() === 'paid').length
 );
 const totalBelumLunas = computed(() =>
-    filteredCustomers.value.filter((c) => String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length
+    cardCustomers.value.filter((c) => String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length
 );
 const totalNominalLunas = computed(() => {
-    return filteredCustomers.value.reduce((sum, c) => {
+    return cardCustomers.value.reduce((sum, c) => {
         if (String(c.status).toLowerCase() === 'paid') {
             return sum + (Number(c.base_amount) || 0);
         }
