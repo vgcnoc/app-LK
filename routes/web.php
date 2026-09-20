@@ -1080,6 +1080,15 @@ Route::middleware(['auth'])->group(function () {
         return back()->with('success', 'Data pelanggan berhasil diimport.');
     })->name('pelanggan.import');
 
+    Route::post('/pelanggan/mass-delete', function (Request $request) {
+        $ids = $request->input('ids', []);
+        if (empty($ids)) {
+            return back()->with('error', 'Tidak ada pelanggan yang dipilih.');
+        }
+        Customer::whereIn('id', $ids)->delete();
+        return back()->with('success', count($ids) . ' pelanggan berhasil dihapus.');
+    })->name('pelanggan.mass-delete');
+
     Route::delete('/pelanggan/{customer}', function (Request $request, Customer $customer) {
         if (!$request->user()->can('hapus_pelanggan')) abort(403);
         $customer->delete();

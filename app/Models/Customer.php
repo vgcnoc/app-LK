@@ -11,7 +11,20 @@ class Customer extends Model
     public static function syncBilling()
     {
         $customers = self::whereIn('status_pelanggan', ['Aktif', 'Gratis', ''])->orWhereNull('status_pelanggan')->get();
+        if ($customers->isEmpty()) return;
+
         $currentMonth = \Carbon\Carbon::now()->startOfMonth();
+
+        // Optimize: preload all related transactions to prevent N+1 queries
+        $descriptions = $customers->pluck('name')->map(function($name) {
+            return 'Pembayaran dari ' . $name;
+        })->toArray();
+        
+        $allTransactions = \App\Models\Transaction::where('type', 'income')
+            ->whereIn('description', $descriptions)
+            ->select('description', 'date', 'amount')
+            ->get()
+            ->groupBy('description');
 
         foreach ($customers as $c) {
             // Jika status pelanggan = Gratis
@@ -40,10 +53,16 @@ class Customer extends Model
                     $c->update(['status' => 'paid', 'amount' => 0, 'is_partial_payment' => 0]);
                 }
             } else {
-                $totalPaid = \App\Models\Transaction::where('type', 'income')
-                    ->where('description', 'Pembayaran dari ' . $c->name)
-                    ->where('date', '>=', $startOfUnpaidPeriod)
-                    ->sum('amount');
+                $descKey = 'Pembayaran dari ' . $c->name;
+                $totalPaid = 0;
+                
+                if (isset($allTransactions[$descKey])) {
+                    foreach ($allTransactions[$descKey] as $t) {
+                        if (\Carbon\Carbon::parse($t->date)->gte($startOfUnpaidPeriod)) {
+                            $totalPaid += $t->amount;
+                        }
+                    }
+                }
                 
                 $billableMonths = max(0, $diff - 1);
                 

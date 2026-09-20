@@ -12,7 +12,10 @@ conn.on('ready', () => {
             { local: 'c:/xampp/htdocs/app-LK/routes/web.php', remote: '/var/www/lk.viruzs.my.id/routes/web.php' },
             { local: 'c:/xampp/htdocs/app-LK/resources/js/Pages/Billing.vue', remote: '/var/www/lk.viruzs.my.id/resources/js/Pages/Billing.vue' },
             { local: 'c:/xampp/htdocs/app-LK/resources/js/Pages/Pelanggan.vue', remote: '/var/www/lk.viruzs.my.id/resources/js/Pages/Pelanggan.vue' },
-            { local: 'c:/xampp/htdocs/app-LK/resources/js/Pages/PelangganPantauan.vue', remote: '/var/www/lk.viruzs.my.id/resources/js/Pages/PelangganPantauan.vue' }
+            { local: 'c:/xampp/htdocs/app-LK/resources/js/Pages/PelangganPantauan.vue', remote: '/var/www/lk.viruzs.my.id/resources/js/Pages/PelangganPantauan.vue' },
+            { local: 'c:/xampp/htdocs/app-LK/app/Models/Customer.php', remote: '/var/www/lk.viruzs.my.id/app/Models/Customer.php' },
+            { local: 'c:/xampp/htdocs/app-LK/resources/js/app.js', remote: '/var/www/lk.viruzs.my.id/resources/js/app.js' },
+            { local: 'c:/xampp/htdocs/app-LK/resources/js/Layouts/AuthenticatedLayout.vue', remote: '/var/www/lk.viruzs.my.id/resources/js/Layouts/AuthenticatedLayout.vue' }
         ];
 
         let uploaded = 0;
