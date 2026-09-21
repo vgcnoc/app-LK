@@ -654,9 +654,31 @@ const openLunasModal = (customer) => {
 
 const closeLunasModal = () => {
     isLunasModalOpen.value = false;
-    activeCustomer.value = null;
-    lunasForm.reset();
+    setTimeout(() => {
+        activeCustomer.value = null;
+        lunasForm.reset();
+        lunasForm.clearErrors();
+    }, 200);
 };
+
+watch(() => lunasForm.diskon, (newDiskon) => {
+    if (activeCustomer.value && lunasForm.has_diskon) {
+        const baseAmount = activeCustomer.value.amount || activeCustomer.value.base_amount || 0;
+        lunasForm.payment_amount = Math.max(0, baseAmount - Number(newDiskon || 0));
+    }
+});
+
+watch(() => lunasForm.has_diskon, (has) => {
+    if (activeCustomer.value) {
+        const baseAmount = activeCustomer.value.amount || activeCustomer.value.base_amount || 0;
+        if (!has) {
+            lunasForm.diskon = 0;
+            lunasForm.payment_amount = baseAmount;
+        } else {
+            lunasForm.payment_amount = Math.max(0, baseAmount - Number(lunasForm.diskon || 0));
+        }
+    }
+});
 
 const onPaymentMethodSelect = (event) => {
     const selectedId = event.target.value;
