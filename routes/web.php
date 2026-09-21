@@ -698,6 +698,9 @@ Route::middleware(['auth'])->group(function () {
         $paymentAmount = (float) $request->input('payment_amount', 0);
         $isJanjiBayar = $request->boolean('is_janji_bayar', false);
         $promiseDate = $request->input('promise_date', null);
+        $keterangan = $request->input('keterangan', null);
+        $hasDiskon = $request->boolean('has_diskon', false);
+        $diskon = $hasDiskon ? (float) $request->input('diskon', 0) : 0;
         
         $totalTagihan = $customer->amount > 0 ? $customer->amount : $customer->base_amount;
         
@@ -705,18 +708,26 @@ Route::middleware(['auth'])->group(function () {
             return back()->with('error', 'Nominal pembayaran harus lebih dari 0.');
         }
 
-        DB::transaction(function () use ($customer, $paymentMethod, $paymentDate, $paymentAmount, $totalTagihan, $isJanjiBayar, $promiseDate) {
+        DB::transaction(function () use ($customer, $paymentMethod, $paymentDate, $paymentAmount, $totalTagihan, $isJanjiBayar, $promiseDate, $keterangan, $diskon) {
+            $desc = 'Pembayaran dari ' . $customer->name;
+            if ($diskon > 0) {
+                $desc .= ' (Diskon: Rp ' . number_format($diskon, 0, ',', '.') . ')';
+            }
+            if ($keterangan) {
+                $desc .= ' - ' . $keterangan;
+            }
+
             // Create transaction record for the payment
             $transaction = Transaction::create([
                 'type' => 'income',
                 'date' => $paymentDate,
-                'description' => 'Pembayaran dari ' . $customer->name,
+                'description' => $desc,
                 'amount' => $paymentAmount,
                 'area' => $customer->area,
                 'payment_method' => $paymentMethod
             ]);
 
-            $remaining = $totalTagihan - $paymentAmount;
+            $remaining = $totalTagihan - $paymentAmount - $diskon;
 
             if ($remaining <= 0) {
                 // Full payment - mark as paid
@@ -800,7 +811,7 @@ Route::middleware(['auth'])->group(function () {
             }
         });
 
-        $remaining = $totalTagihan - $paymentAmount;
+        $remaining = $totalTagihan - $paymentAmount - $diskon;
         if ($remaining <= 0) {
             return back()->with('success', 'Pelanggan berhasil ditandai lunas.');
         } else {

@@ -628,6 +628,9 @@ const lunasForm = useForm({
     payment_amount: 0,
     is_janji_bayar: false,
     promise_date: '',
+    keterangan: '',
+    has_diskon: false,
+    diskon: 0,
 });
 
 const openLunasModal = (customer) => {
@@ -643,6 +646,9 @@ const openLunasModal = (customer) => {
     lunasForm.payment_amount = customer.amount || customer.base_amount || 0;
     lunasForm.is_janji_bayar = false;
     lunasForm.promise_date = '';
+    lunasForm.keterangan = '';
+    lunasForm.has_diskon = false;
+    lunasForm.diskon = 0;
     isLunasModalOpen.value = true;
 };
 
@@ -1884,6 +1890,49 @@ const deleteCustomer = (customer) => {
                                     class="w-full rounded-xl border border-slate-300 py-2.5 px-3.5 text-xs sm:text-sm text-slate-800 shadow-sm transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                                     required
                                 />
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Keterangan</label>
+                            <textarea
+                                v-model="lunasForm.keterangan"
+                                class="w-full rounded-xl border border-slate-300 py-2.5 px-3.5 text-xs sm:text-sm text-slate-800 shadow-sm transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                                rows="2"
+                                placeholder="Tambahkan catatan (opsional)"
+                            ></textarea>
+                        </div>
+
+                        <!-- Diskon Toggle -->
+                        <div class="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <div>
+                                        <p class="text-xs sm:text-sm font-semibold text-slate-800">Beri Diskon?</p>
+                                        <p class="text-[11px] text-slate-500">Potongan harga pada tagihan</p>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex cursor-pointer items-center">
+                                    <input type="checkbox" v-model="lunasForm.has_diskon" class="peer sr-only" />
+                                    <div class="peer h-6 w-11 rounded-full bg-slate-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition-all after:content-[''] peer-checked:bg-emerald-600 peer-checked:after:translate-x-full peer-focus:ring-2 peer-focus:ring-emerald-500/30"></div>
+                                </label>
+                            </div>
+                            <div v-if="lunasForm.has_diskon" class="space-y-3 rounded-lg border border-emerald-100 bg-white/80 p-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600">Nominal Diskon <span class="text-rose-500">*</span></label>
+                                    <div class="relative mt-1">
+                                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 sm:text-sm font-medium">Rp</span>
+                                        <input
+                                            type="number"
+                                            v-model="lunasForm.diskon"
+                                            class="block w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-xs sm:text-sm text-slate-800 shadow-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                                            :required="lunasForm.has_diskon"
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
