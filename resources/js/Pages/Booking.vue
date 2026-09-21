@@ -906,16 +906,13 @@ const submitDelete = () => {
                                     <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
                                         Paket Langganan
                                     </label>
-                                    <input
+                                    <select
                                         v-model="createForm.paket"
-                                        type="text"
-                                        list="create-pakets-list"
-                                        placeholder="Contoh: 20 Mbps, Home 2"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                                    />
-                                    <datalist id="create-pakets-list">
-                                        <option v-for="p in availablePakets" :key="p" :value="p" />
-                                    </datalist>
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    >
+                                        <option value="" disabled>-- Pilih Paket Langganan --</option>
+                                        <option v-for="p in availablePakets" :key="p" :value="p">{{ p }}</option>
+                                    </select>
                                     <p v-if="createForm.errors.paket" class="mt-1 text-xs text-rose-600">{{ createForm.errors.paket }}</p>
                                 </div>
                             </div>
@@ -1173,16 +1170,13 @@ const submitDelete = () => {
                                     <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
                                         Paket Langganan
                                     </label>
-                                    <input
+                                    <select
                                         v-model="editForm.paket"
-                                        type="text"
-                                        list="edit-pakets-list"
-                                        placeholder="Contoh: 20 Mbps, Home 2"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                                    />
-                                    <datalist id="edit-pakets-list">
-                                        <option v-for="p in availablePakets" :key="p" :value="p" />
-                                    </datalist>
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    >
+                                        <option value="" disabled>-- Pilih Paket Langganan --</option>
+                                        <option v-for="p in availablePakets" :key="p" :value="p">{{ p }}</option>
+                                    </select>
                                     <p v-if="editForm.errors.paket" class="mt-1 text-xs text-rose-600">{{ editForm.errors.paket }}</p>
                                 </div>
                             </div>
