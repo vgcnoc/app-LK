@@ -83,7 +83,7 @@ const canManage = authPermissions.includes('manajemen_pengguna');
                     </span>
                     Manajemen Pengguna
                 </h2>
-                <p class="mt-1 text-sm text-slate-500">
+                <p class="mt-1 text-xs sm:text-sm text-slate-500">
                     Kelola akun dan tetapkan role untuk setiap pengguna.
                 </p>
             </div>
@@ -97,20 +97,20 @@ const canManage = authPermissions.includes('manajemen_pengguna');
         </header>
 
         <div class="mt-6 overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
-            <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <table class="min-w-full divide-y divide-slate-200 text-xs sm:text-sm">
                 <thead class="bg-slate-50">
                     <tr>
-                        <th class="px-6 py-3.5 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Nama</th>
-                        <th class="px-6 py-3.5 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Email</th>
-                        <th class="px-6 py-3.5 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Role</th>
-                        <th class="px-6 py-3.5 text-right font-semibold text-slate-600 uppercase tracking-wider text-xs">Aksi</th>
+                        <th class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Nama</th>
+                        <th class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Email</th>
+                        <th class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-left font-semibold text-slate-600 uppercase tracking-wider text-xs">Role</th>
+                        <th class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-right font-semibold text-slate-600 uppercase tracking-wider text-xs">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-slate-100">
                     <tr v-for="user in users" :key="user.id" class="hover:bg-slate-50/50 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-800">{{ user.name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-600">{{ user.email }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap font-medium text-slate-800">{{ user.name }}</td>
+                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-slate-600">{{ user.email }}</td>
+                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap">
                             <span :class="{
                                 'bg-indigo-100 text-indigo-700 ring-1 ring-indigo-600/20': user.user_role === 'admin' || user.role === 'admin',
                                 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-600/20': user.user_role !== 'admin' && user.role !== 'admin'
@@ -118,7 +118,7 @@ const canManage = authPermissions.includes('manajemen_pengguna');
                                 {{ user.user_role || user.role || 'staff' }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right font-medium text-sm space-x-2">
+                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-right font-medium text-xs sm:text-sm space-x-2">
                             <button @click="openEditModal(user)" class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 font-semibold transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                 Edit
@@ -144,7 +144,7 @@ const canManage = authPermissions.includes('manajemen_pengguna');
             <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" @click="closeModal"></div>
             <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
                 <!-- Modal Header -->
-                <div class="px-6 py-4 border-b border-slate-200 flex-shrink-0">
+                <div class="px-3 py-3 sm:px-6 sm:py-4 border-b border-slate-200 flex-shrink-0">
                     <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
                         <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg" :class="editingUser ? 'bg-amber-100 text-amber-600' : 'bg-green-100 text-green-600'">
                             <svg v-if="editingUser" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
@@ -160,26 +160,26 @@ const canManage = authPermissions.includes('manajemen_pengguna');
                         <!-- Basic Info -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block font-semibold text-sm text-slate-700 mb-1.5">Nama</label>
+                                <label class="block font-semibold text-xs sm:text-sm text-slate-700 mb-1.5">Nama</label>
                                 <input type="text" v-model="form.name" class="block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm bg-slate-50 focus:bg-white transition-all px-3.5 py-2.5" required placeholder="Nama lengkap" />
                                 <InputError :message="form.errors.name" class="mt-1" />
                             </div>
                             <div>
-                                <label class="block font-semibold text-sm text-slate-700 mb-1.5">Email</label>
+                                <label class="block font-semibold text-xs sm:text-sm text-slate-700 mb-1.5">Email</label>
                                 <input type="email" v-model="form.email" class="block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm bg-slate-50 focus:bg-white transition-all px-3.5 py-2.5" required placeholder="email@domain.com" />
                                 <InputError :message="form.errors.email" class="mt-1" />
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block font-semibold text-sm text-slate-700 mb-1.5">Role</label>
+                                <label class="block font-semibold text-xs sm:text-sm text-slate-700 mb-1.5">Role</label>
                                 <select v-model="form.role" class="block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm bg-slate-50 focus:bg-white transition-all px-3.5 py-2.5">
                                     <option v-for="role in roles" :key="role.id" :value="role.name">{{ role.name.charAt(0).toUpperCase() + role.name.slice(1) }}</option>
                                 </select>
                                 <InputError :message="form.errors.role" class="mt-1" />
                             </div>
                             <div>
-                                <label class="block font-semibold text-sm text-slate-700 mb-1.5">Password {{ editingUser ? '(Kosongkan jika tidak diubah)' : '' }}</label>
+                                <label class="block font-semibold text-xs sm:text-sm text-slate-700 mb-1.5">Password {{ editingUser ? '(Kosongkan jika tidak diubah)' : '' }}</label>
                                 <input type="password" v-model="form.password" class="block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm bg-slate-50 focus:bg-white transition-all px-3.5 py-2.5" :required="!editingUser" placeholder="••••••••" />
                                 <InputError :message="form.errors.password" class="mt-1" />
                             </div>
@@ -188,7 +188,7 @@ const canManage = authPermissions.includes('manajemen_pengguna');
                 </div>
 
                 <!-- Modal Footer -->
-                <div class="px-6 py-4 border-t border-slate-200 flex items-center justify-end gap-3 flex-shrink-0 bg-slate-50">
+                <div class="px-3 py-3 sm:px-6 sm:py-4 border-t border-slate-200 flex items-center justify-end gap-3 flex-shrink-0 bg-slate-50">
                     <button type="button" @click="closeModal" class="px-4 py-2.5 bg-white border border-slate-300 rounded-xl font-semibold text-xs text-slate-700 uppercase tracking-widest shadow-sm hover:bg-slate-50 transition">
                         Batal
                     </button>

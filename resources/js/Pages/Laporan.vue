@@ -206,7 +206,7 @@ watch(() => form.company_expense_type_id, () => {
                     <h2 class="font-bold text-2xl text-slate-800 tracking-tight leading-tight">
                         Laporan Keuangan
                     </h2>
-                    <p class="text-sm text-slate-500 mt-0.5">
+                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
                         Ringkasan dan detail riwayat transaksi keuangan
                     </p>
                 </div>
@@ -215,7 +215,7 @@ watch(() => form.company_expense_type_id, () => {
                     <button
                         type="button"
                         @click="exportExcel"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 active:bg-emerald-800 shadow-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-xs sm:text-sm font-medium hover:bg-emerald-700 active:bg-emerald-800 shadow-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                     >
                         <svg class="w-4 h-4 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -225,7 +225,7 @@ watch(() => form.company_expense_type_id, () => {
                     <button
                         type="button"
                         @click="printReport"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 active:bg-slate-950 shadow-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-slate-900/20"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-medium hover:bg-slate-800 active:bg-slate-950 shadow-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-slate-900/20"
                     >
                         <!-- Printer SVG Icon -->
                         <svg class="w-4 h-4 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,7 +243,7 @@ watch(() => form.company_expense_type_id, () => {
                 <h1 class="text-2xl font-bold tracking-tight text-slate-900 uppercase">
                     LAPORAN KEUANGAN
                 </h1>
-                <div class="flex items-center justify-center gap-6 mt-2 text-sm text-slate-700">
+                <div class="flex items-center justify-center gap-6 mt-2 text-xs sm:text-sm text-slate-700">
                     <p>
                         <span class="font-semibold text-slate-900">Periode:</span>
                         <template v-if="filters?.start_date || filters?.end_date">
@@ -272,7 +272,7 @@ watch(() => form.company_expense_type_id, () => {
                             id="start_date"
                             v-model="form.start_date"
                             type="date"
-                            class="w-full rounded-lg border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                            class="w-full rounded-lg border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                         />
                     </div>
 
@@ -285,7 +285,7 @@ watch(() => form.company_expense_type_id, () => {
                             id="end_date"
                             v-model="form.end_date"
                             type="date"
-                            class="w-full rounded-lg border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                            class="w-full rounded-lg border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                         />
                     </div>
 
@@ -297,7 +297,7 @@ watch(() => form.company_expense_type_id, () => {
                         <select
                             id="kategori"
                             v-model="form.kategori"
-                            class="w-full rounded-lg border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                            class="w-full rounded-lg border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                         >
                             <option value="">Semua Transaksi</option>
                             <option value="income">Pemasukan</option>
@@ -319,7 +319,7 @@ watch(() => form.company_expense_type_id, () => {
                         <select
                             id="area"
                             v-model="form.area"
-                            class="w-full rounded-lg border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                            class="w-full rounded-lg border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                         >
                             <option value="">Semua Area</option>
                             <option v-for="a in areas" :key="a" :value="a">
@@ -336,7 +336,7 @@ watch(() => form.company_expense_type_id, () => {
                         <select
                             id="payment_method"
                             v-model="form.payment_method"
-                            class="w-full rounded-lg border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                            class="w-full rounded-lg border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                         >
                             <option value="">Semua Metode</option>
                             <option v-for="method in paymentMethods" :key="method.id" :value="method.name">
@@ -353,7 +353,7 @@ watch(() => form.company_expense_type_id, () => {
                         <select
                             id="company_expense_type_id"
                             v-model="form.company_expense_type_id"
-                            class="w-full rounded-lg border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                            class="w-full rounded-lg border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                         >
                             <option value="">Semua Jenis</option>
                             <option v-for="type in companyExpenseTypes" :key="type.id" :value="type.id">
@@ -370,7 +370,7 @@ watch(() => form.company_expense_type_id, () => {
                         <select
                             id="material_id"
                             v-model="form.material_id"
-                            class="w-full rounded-lg border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                            class="w-full rounded-lg border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                         >
                             <option value="">Semua Material</option>
                             <option v-for="mat in materials" :key="mat.id" :value="mat.id">
@@ -384,7 +384,7 @@ watch(() => form.company_expense_type_id, () => {
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-50"
+                            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 text-white text-xs sm:text-sm font-medium hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-50"
                         >
                             <!-- Filter SVG Icon -->
                             <svg class="w-4 h-4 text-indigo-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -397,7 +397,7 @@ watch(() => form.company_expense_type_id, () => {
                             v-if="form.start_date || form.end_date || form.area || form.kategori || form.payment_method"
                             type="button"
                             @click="handleReset"
-                            class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 active:bg-slate-300 transition-all focus:outline-none"
+                            class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-slate-100 text-slate-600 text-xs sm:text-sm font-medium hover:bg-slate-200 active:bg-slate-300 transition-all focus:outline-none"
                             title="Reset Filter"
                         >
                             <!-- Reset/X Icon -->
@@ -529,7 +529,7 @@ watch(() => form.company_expense_type_id, () => {
                                 <th scope="col" class="py-3.5 px-4 text-right whitespace-nowrap">Jumlah Tagihan</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 text-sm">
+                        <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
                             <tr
                                 v-for="(item, index) in unpaid_list"
                                 :key="item.id || index"
@@ -564,7 +564,7 @@ watch(() => form.company_expense_type_id, () => {
                                         <svg class="w-12 h-12 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
-                                        <p class="text-sm font-medium text-slate-600">Tidak ada pelanggan belum lunas</p>
+                                        <p class="text-xs sm:text-sm font-medium text-slate-600">Tidak ada pelanggan belum lunas</p>
                                     </div>
                                 </td>
                             </tr>
@@ -597,7 +597,7 @@ watch(() => form.company_expense_type_id, () => {
                                 <th scope="col" class="py-3.5 px-4 text-right whitespace-nowrap">Jumlah</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 text-sm">
+                        <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
                             <tr
                                 v-for="(item, index) in transactions"
                                 :key="item.id || index"
@@ -665,7 +665,7 @@ watch(() => form.company_expense_type_id, () => {
                                         <svg class="w-12 h-12 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
-                                        <p class="text-sm font-medium text-slate-600">Tidak ada transaksi ditemukan</p>
+                                        <p class="text-xs sm:text-sm font-medium text-slate-600">Tidak ada transaksi ditemukan</p>
                                         <p class="text-xs text-slate-400 mt-1">Coba sesuaikan rentang tanggal atau filter area</p>
                                     </div>
                                 </td>

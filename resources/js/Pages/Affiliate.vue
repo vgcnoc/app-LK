@@ -300,7 +300,7 @@ const deleteSales = (id) => {
                                 activeTab === 'sales' 
                                     ? 'border-indigo-500 text-indigo-600' 
                                     : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300',
-                                'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors'
+                                'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors'
                             ]"
                         >
                             Daftar Sales (Multi-Tier)
@@ -311,7 +311,7 @@ const deleteSales = (id) => {
                                 activeTab === 'sales_account' 
                                     ? 'border-indigo-500 text-indigo-600' 
                                     : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300',
-                                'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors'
+                                'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors'
                             ]"
                         >
                             Akun Sales
@@ -333,23 +333,23 @@ const deleteSales = (id) => {
                     <!-- Affiliates Table -->
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm whitespace-nowrap">
+<table class="w-full text-left text-xs sm:text-sm whitespace-nowrap">
                                 <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
                                     <tr>
-                                        <th class="px-6 py-4">Anggota</th>
-                                        <th class="px-6 py-4">Kontak</th>
-                                        <th class="px-6 py-4">Upline (Parent)</th>
-                                        <th class="px-6 py-4">Rek. Bank</th>
-                                        <th class="px-6 py-4">Tgl Gabung</th>
-                                        <th class="px-6 py-4 text-center">Downline</th>
-                                        <th class="px-6 py-4">Komisi</th>
-                                        <th class="px-6 py-4 text-center">Status</th>
-                                        <th class="px-6 py-4 text-right">Aksi</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Anggota</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Kontak</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Upline (Parent)</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Rek. Bank</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Tgl Gabung</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4 text-center">Downline</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Komisi</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4 text-center">Status</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4 text-right">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100">
                                     <tr v-for="affiliate in affiliates" :key="affiliate.id" class="hover:bg-slate-50/70 transition-colors">
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <div class="flex items-center gap-2 mb-1">
                                                 <div class="font-bold text-slate-800">{{ affiliate.name }}</div>
                                                 <span :class="[
@@ -363,32 +363,32 @@ const deleteSales = (id) => {
                                                 {{ affiliate.member_number || 'ID: ' + affiliate.id }}
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <div class="text-slate-700">{{ affiliate.phone || '-' }}</div>
                                             <div class="text-xs text-slate-500">{{ affiliate.email || '-' }}</div>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <span v-if="affiliate.parent" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700 text-xs font-semibold border border-indigo-100">
                                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
                                                 {{ affiliate.parent.name }}
                                             </span>
                                             <span v-else class="text-slate-400 italic text-xs">Tanpa Upline</span>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <div class="text-slate-700 font-medium">{{ affiliate.bank_account || '-' }}</div>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <div class="text-slate-700">{{ affiliate.join_date || '-' }}</div>
                                         </td>
-                                        <td class="px-6 py-4 text-center">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 text-center">
                                             <button @click="viewTree(affiliate, 'affiliate')" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700 transition-colors tooltip" :title="'Lihat Hierarki (' + affiliate.children_count + ' langsung)'">
                                                 <span class="font-bold">{{ affiliate.children_count || 0 }}</span>
                                             </button>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <span class="font-medium text-slate-700">{{ affiliate.commission_rate }}%</span>
                                         </td>
-                                        <td class="px-6 py-4 text-center">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 text-center">
                                             <span :class="[
                                                 'px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
                                                 affiliate.status === 'Aktif' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
@@ -396,7 +396,7 @@ const deleteSales = (id) => {
                                                 {{ affiliate.status }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 text-right">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 text-right">
                                             <div class="flex items-center justify-end gap-2">
                                                 <button @click="openEditModal(affiliate)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-lg transition-colors" title="Edit">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
@@ -432,23 +432,23 @@ const deleteSales = (id) => {
                     <!-- Sales Table -->
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm whitespace-nowrap">
+<table class="w-full text-left text-xs sm:text-sm whitespace-nowrap">
                                 <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
                                     <tr>
-                                        <th class="px-6 py-4">Anggota</th>
-                                        <th class="px-6 py-4">Kontak</th>
-                                        <th class="px-6 py-4">Upline (Parent)</th>
-                                        <th class="px-6 py-4">Rek. Bank</th>
-                                        <th class="px-6 py-4">Tgl Gabung</th>
-                                        <th class="px-6 py-4 text-center">Downline</th>
-                                        <th class="px-6 py-4">Area</th>
-                                        <th class="px-6 py-4 text-center">Status</th>
-                                        <th class="px-6 py-4 text-right">Aksi</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Anggota</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Kontak</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Upline (Parent)</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Rek. Bank</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Tgl Gabung</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4 text-center">Downline</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Area</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4 text-center">Status</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4 text-right">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100">
                                     <tr v-for="sale in sortedSales" :key="sale.id" class="hover:bg-slate-50/70 transition-colors">
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <div class="flex items-center gap-2 mb-1">
                                                 <div class="font-bold text-slate-800">{{ sale.name }}</div>
                                                 <span v-if="sale.is_current_user" class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 ml-1">
@@ -467,32 +467,32 @@ const deleteSales = (id) => {
                                                 {{ sale.member_number || 'ID: ' + sale.id }}
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <div class="text-slate-700">{{ sale.phone || '-' }}</div>
                                             <div class="text-xs text-slate-500">{{ sale.email || '-' }}</div>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <span v-if="sale.parent" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700 text-xs font-semibold border border-indigo-100">
                                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
                                                 {{ sale.parent.name }}
                                             </span>
                                             <span v-else class="text-slate-400 italic text-xs">Tanpa Upline</span>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <div class="text-slate-700 font-medium">{{ sale.bank_account || '-' }}</div>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <div class="text-slate-700">{{ sale.join_date || '-' }}</div>
                                         </td>
-                                        <td class="px-6 py-4 text-center">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 text-center">
                                             <button @click="viewTree(sale, 'sales')" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700 transition-colors tooltip" :title="'Lihat Hierarki (' + sale.children_count + ' langsung)'">
                                                 <span class="font-bold">{{ sale.children_count || 0 }}</span>
                                             </button>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <span class="text-slate-700">{{ sale.area || '-' }}</span>
                                         </td>
-                                        <td class="px-6 py-4 text-center">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 text-center">
                                             <span :class="[
                                                 'px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
                                                 sale.status === 'Aktif' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
@@ -500,7 +500,7 @@ const deleteSales = (id) => {
                                                 {{ sale.status }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 text-right">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 text-right">
                                             <div class="flex items-center justify-end gap-2">
                                                 <button @click="openSalesEditModal(sale)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-lg transition-colors" title="Edit">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
@@ -527,28 +527,28 @@ const deleteSales = (id) => {
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="p-6 border-b border-slate-200">
                             <h3 class="text-lg font-bold text-slate-800">Manajemen Akun Login Sales</h3>
-                            <p class="text-sm text-slate-500 mt-1">Buat akun agar sales dapat login ke dalam aplikasi.</p>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1">Buat akun agar sales dapat login ke dalam aplikasi.</p>
                         </div>
                         <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm whitespace-nowrap">
+<table class="w-full text-left text-xs sm:text-sm whitespace-nowrap">
                                 <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
                                     <tr>
-                                        <th class="px-6 py-4">Nama Sales</th>
-                                        <th class="px-6 py-4">Email</th>
-                                        <th class="px-6 py-4 text-center">Status Akun</th>
-                                        <th class="px-6 py-4 text-right">Aksi</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Nama Sales</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4">Email</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4 text-center">Status Akun</th>
+                                        <th class="px-3 py-3 sm:px-6 sm:py-4 text-right">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100">
                                     <tr v-for="sale in sales" :key="'acc-'+sale.id" class="hover:bg-slate-50/70 transition-colors">
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <div class="font-bold text-slate-800">{{ sale.name }}</div>
                                             <div class="text-xs text-slate-500">{{ sale.member_number }}</div>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4">
                                             <div class="text-slate-700">{{ sale.email || '-' }}</div>
                                         </td>
-                                        <td class="px-6 py-4 text-center">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 text-center">
                                             <span v-if="sale.user_id" class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">
                                                 Aktif (Bisa Login)
                                             </span>
@@ -556,7 +556,7 @@ const deleteSales = (id) => {
                                                 Belum Punya Akun
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 text-right">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 text-right">
                                             <div class="flex items-center justify-end gap-2">
                                                 <button v-if="!sale.user_id" @click="openAccountModal(sale)" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-semibold rounded-lg text-xs transition-colors">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
@@ -622,7 +622,7 @@ const deleteSales = (id) => {
 
                             <div>
                                 <InputLabel for="parent_id" value="Upline / Parent (Opsional)" />
-                                <select id="parent_id" v-model="form.parent_id" class="mt-1 block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-sm">
+                                <select id="parent_id" v-model="form.parent_id" class="mt-1 block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-xs sm:text-sm">
                                     <option value="">-- Tanpa Upline (Master) --</option>
                                     <option v-for="opt in affiliates.filter(a => a.id !== currentAffiliate?.id && getAffiliateNumLevel(a) < 2)" :key="opt.id" :value="opt.id">
                                         {{ opt.name }} (ID: {{ opt.id }})
@@ -639,7 +639,7 @@ const deleteSales = (id) => {
                                 </div>
                                 <div>
                                     <InputLabel for="status" value="Status" />
-                                    <select id="status" v-model="form.status" class="mt-1 block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-sm">
+                                    <select id="status" v-model="form.status" class="mt-1 block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-xs sm:text-sm">
                                         <option value="Aktif">Aktif</option>
                                         <option value="Nonaktif">Nonaktif</option>
                                     </select>
@@ -687,7 +687,7 @@ const deleteSales = (id) => {
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <InputLabel for="sales_area" value="Area / Wilayah" />
-                                    <select id="sales_area" v-model="salesForm.area" class="mt-1 block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-sm">
+                                    <select id="sales_area" v-model="salesForm.area" class="mt-1 block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-xs sm:text-sm">
                                         <option value="">-- Pilih Area --</option>
                                         <option v-for="area in areas" :key="area" :value="area">{{ area }}</option>
                                     </select>
@@ -695,7 +695,7 @@ const deleteSales = (id) => {
                                 </div>
                                 <div>
                                     <InputLabel for="sales_status" value="Status" />
-                                    <select id="sales_status" v-model="salesForm.status" class="mt-1 block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-sm">
+                                    <select id="sales_status" v-model="salesForm.status" class="mt-1 block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-xs sm:text-sm">
                                         <option value="Aktif">Aktif</option>
                                         <option value="Nonaktif">Nonaktif</option>
                                     </select>
@@ -706,7 +706,7 @@ const deleteSales = (id) => {
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                 <div>
                                     <InputLabel for="sales_parent" value="Upline (Parent)" />
-                                    <select id="sales_parent" v-model="salesForm.parent_id" class="mt-1 block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-sm">
+                                    <select id="sales_parent" v-model="salesForm.parent_id" class="mt-1 block w-full border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-xs sm:text-sm">
                                         <option value="">-- Tanpa Upline (Root) --</option>
                                         <option v-for="s in sales.filter(item => item.id !== currentSale?.id && getSalesNumLevel(item) < 2)" :key="s.id" :value="s.id">{{ s.name }} ({{ s.member_number || 'ID: '+s.id }})</option>
                                     </select>
@@ -744,7 +744,7 @@ const deleteSales = (id) => {
                         <div class="flex justify-between items-start mb-6 border-b border-slate-100 pb-4">
                             <div>
                                 <h2 class="text-lg font-bold text-slate-800">Hierarki Downline</h2>
-                                <p class="text-sm text-slate-500">Upline: <span class="font-bold text-indigo-600">{{ currentAffiliate?.name }}</span></p>
+                                <p class="text-xs sm:text-sm text-slate-500">Upline: <span class="font-bold text-indigo-600">{{ currentAffiliate?.name }}</span></p>
                             </div>
                             <button @click="closeTreeModal" class="text-slate-400 hover:text-slate-600">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -772,7 +772,7 @@ const deleteSales = (id) => {
                                             <template v-for="level2 in getActiveDownlines(level1.id)" :key="level2.id">
                                                 <div class="py-1 flex items-center gap-2">
                                                     <div class="w-4 border-b-2 border-slate-200"></div>
-                                                    <span class="text-sm text-slate-600">{{ level2.name }}</span>
+                                                    <span class="text-xs sm:text-sm text-slate-600">{{ level2.name }}</span>
                                                     <span v-if="treeType === 'affiliate'" class="text-xs px-1.5 py-0.5 rounded-full bg-slate-200 text-slate-600">{{ level2.commission_rate }}%</span>
                                                     <span v-if="treeType === 'sales'" class="text-xs px-1.5 py-0.5 rounded-full bg-slate-200 text-slate-600">{{ level2.area || 'Tanpa Area' }}</span>
                                                 </div>
@@ -780,7 +780,7 @@ const deleteSales = (id) => {
                                         </div>
                                     </div>
                                 </template>
-                                <div v-if="getActiveDownlines(currentAffiliate?.id).length === 0" class="py-2 text-sm text-slate-500 italic flex items-center gap-2">
+                                <div v-if="getActiveDownlines(currentAffiliate?.id).length === 0" class="py-2 text-xs sm:text-sm text-slate-500 italic flex items-center gap-2">
                                     <div class="w-4 border-b-2 border-indigo-200"></div>
                                     Belum ada downline.
                                 </div>
@@ -800,12 +800,12 @@ const deleteSales = (id) => {
                 </div>
                 
                 <form @submit.prevent="createAccount" class="space-y-5">
-                    <div class="bg-indigo-50 text-indigo-800 p-4 rounded-xl text-sm mb-4">
+                    <div class="bg-indigo-50 text-indigo-800 p-4 rounded-xl text-xs sm:text-sm mb-4">
                         <span class="block font-semibold mb-1">Sales: {{ currentSaleForAccount?.name }}</span>
                         <span class="block">Email: {{ currentSaleForAccount?.email || 'TIDAK ADA EMAIL' }}</span>
                     </div>
 
-                    <div v-if="!currentSaleForAccount?.email" class="bg-rose-50 text-rose-700 p-3 rounded-lg text-sm">
+                    <div v-if="!currentSaleForAccount?.email" class="bg-rose-50 text-rose-700 p-3 rounded-lg text-xs sm:text-sm">
                         Anda harus mengisi email sales terlebih dahulu sebelum bisa membuat akun.
                     </div>
 

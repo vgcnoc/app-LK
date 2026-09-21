@@ -18,7 +18,7 @@
                     <div class="p-6 md:p-8 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
                         <div>
                             <h3 class="text-xl font-bold text-slate-800">Hierarki Jaringan Sales</h3>
-                            <p class="text-slate-500 text-sm mt-1">Struktur visual jaringan (Upline, Downline 1, Downline 2)</p>
+                            <p class="text-slate-500 text-xs sm:text-sm mt-1">Struktur visual jaringan (Upline, Downline 1, Downline 2)</p>
                         </div>
                     </div>
                     

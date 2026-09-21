@@ -593,7 +593,7 @@ const submitDelete = () => {
                     <h2 class="text-2xl font-bold tracking-tight text-slate-800">
                         Data Master Pelanggan
                     </h2>
-                    <p class="mt-1 text-sm text-slate-500">
+                    <p class="mt-1 text-xs sm:text-sm text-slate-500">
                         Kelola data pelanggan, wilayah area, paket langganan, dan tarif dasar.
                     </p>
                 </div>
@@ -601,7 +601,7 @@ const submitDelete = () => {
                     <button
                         v-if="selectedCustomers.length > 0"
                         @click="deleteSelected"
-                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-red-700 focus:outline-none"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-red-700 focus:outline-none"
                     >
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
@@ -614,7 +614,7 @@ const submitDelete = () => {
                     <button
                         type="button"
                         @click="exportExcel"
-                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-emerald-700 focus:outline-none"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-emerald-700 focus:outline-none"
                     >
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -625,7 +625,7 @@ const submitDelete = () => {
                     <button
                         type="button"
                         @click="triggerFileInput"
-                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-slate-700 focus:outline-none"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-slate-700 focus:outline-none"
                     >
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
@@ -636,7 +636,7 @@ const submitDelete = () => {
                     <button
                         type="button"
                         @click="openCreateModal"
-                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-indigo-700 hover:shadow focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-indigo-700 hover:shadow focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -711,7 +711,7 @@ const submitDelete = () => {
 
                 <!-- Registration & Stops Chart -->
                 <div class="rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm mb-6">
-                    <h3 class="text-sm font-semibold text-slate-800 mb-4">Grafik Pertambahan & Pelanggan Berhenti (6 Bulan Terakhir)</h3>
+                    <h3 class="text-xs sm:text-sm font-semibold text-slate-800 mb-4">Grafik Pertambahan & Pelanggan Berhenti (6 Bulan Terakhir)</h3>
                     <div class="h-64 w-full">
                         <canvas ref="chartCanvas"></canvas>
                     </div>
@@ -731,7 +731,7 @@ const submitDelete = () => {
                                 v-model="searchQuery"
                                 type="text"
                                 placeholder="Cari nama, area, alamat, paket..."
-                                class="w-full rounded-lg border border-slate-300 bg-white py-2 pl-10 pr-4 text-sm text-slate-800 placeholder-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                class="w-full rounded-lg border border-slate-300 bg-white py-2 pl-10 pr-4 text-xs sm:text-sm text-slate-800 placeholder-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                             />
                             <button
                                 v-if="searchQuery"
@@ -749,7 +749,7 @@ const submitDelete = () => {
                             <!-- Area Filter -->
                             <select
                                 v-model="selectedArea"
-                                class="rounded-lg border border-slate-300 bg-white py-2 pl-3 pr-8 text-sm text-slate-700 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                class="rounded-lg border border-slate-300 bg-white py-2 pl-3 pr-8 text-xs sm:text-sm text-slate-700 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                             >
                                 <option value="">Semua Area</option>
                                 <option v-for="area in availableAreas" :key="area" :value="area">
@@ -760,7 +760,7 @@ const submitDelete = () => {
                             <!-- Status Filter -->
                             <select
                                 v-model="selectedStatus"
-                                class="rounded-lg border border-slate-300 bg-white py-2 pl-3 pr-8 text-sm text-slate-700 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                class="rounded-lg border border-slate-300 bg-white py-2 pl-3 pr-8 text-xs sm:text-sm text-slate-700 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                             >
                                 <option value="">Semua Status</option>
                                 <option value="Aktif">Aktif (Lunas)</option>
@@ -811,7 +811,7 @@ const submitDelete = () => {
                 <!-- Table Card -->
                 <div class="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm">
                     <div class="overflow-x-auto w-full pb-4">
-<table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+<table class="min-w-full divide-y divide-slate-200 text-left text-xs sm:text-sm">
                             <thead class="bg-slate-50/80 text-xs font-semibold uppercase tracking-wider text-slate-600">
                                 <tr>
                                     <th scope="col" class="py-3.5 pl-4 pr-2 text-center sm:pl-6 w-16">
@@ -1025,7 +1025,7 @@ const submitDelete = () => {
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                                             </svg>
                                         </div>
-                                        <h3 class="mt-3 text-sm font-semibold text-slate-800">Tidak ada data pelanggan</h3>
+                                        <h3 class="mt-3 text-xs sm:text-sm font-semibold text-slate-800">Tidak ada data pelanggan</h3>
                                         <p class="mt-1 text-xs text-slate-500">
                                             {{ searchQuery || selectedArea || selectedStatus ? 'Coba ubah kata kunci atau bersihkan filter pencarian.' : 'Belum ada data pelanggan yang ditambahkan.' }}
                                         </p>
@@ -1055,9 +1055,9 @@ const submitDelete = () => {
 
                     <!-- Pagination Controls -->
                     <div
-                        class="px-6 py-4 flex items-center justify-between border-t border-slate-200 bg-white"
+                        class="px-3 py-3 sm:px-6 sm:py-4 flex items-center justify-between border-t border-slate-200 bg-white"
                     >
-                        <div class="text-sm text-slate-500">
+                        <div class="text-xs sm:text-sm text-slate-500">
                             Menampilkan <span class="font-medium text-slate-900">{{ (currentPage - 1) * perPage + 1 }}</span> - 
                             <span class="font-medium text-slate-900">{{ Math.min(currentPage * perPage, filteredCustomers.length) }}</span> dari 
                             <span class="font-medium text-slate-900">{{ filteredCustomers.length }}</span> pelanggan
@@ -1091,7 +1091,7 @@ const submitDelete = () => {
             <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
                 <div class="relative w-full max-w-xl transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 border border-slate-100">
                     <!-- Modal Header -->
-                    <div class="flex items-center justify-between border-b border-slate-100 bg-slate-50/75 px-6 py-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 bg-slate-50/75 px-3 py-3 sm:px-6 sm:py-4">
                         <div class="flex items-center gap-3">
                             <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -1128,7 +1128,7 @@ const submitDelete = () => {
                                         type="text"
                                         required
                                         placeholder="Contoh: Budi Santoso"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <p v-if="createForm.errors.name" class="mt-1 text-xs text-rose-600">{{ createForm.errors.name }}</p>
                                 </div>
@@ -1140,7 +1140,7 @@ const submitDelete = () => {
                                         v-model="createForm.no_wa"
                                         type="text"
                                         placeholder="Contoh: 08123456789"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <p v-if="createForm.errors.no_wa" class="mt-1 text-xs text-rose-600">{{ createForm.errors.no_wa }}</p>
                                 </div>
@@ -1155,7 +1155,7 @@ const submitDelete = () => {
                                     <select
                                         v-model="createForm.area"
                                         required
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 bg-white"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 bg-white"
                                     >
                                         <option value="" disabled>-- Pilih Area --</option>
                                         <option v-for="a in availableAreas" :key="a" :value="a">{{ a }}</option>
@@ -1172,7 +1172,7 @@ const submitDelete = () => {
                                         type="text"
                                         list="create-pakets-list"
                                         placeholder="Contoh: 20 Mbps, Home 2"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <datalist id="create-pakets-list">
                                         <option v-for="p in availablePakets" :key="p" :value="p" />
@@ -1190,7 +1190,7 @@ const submitDelete = () => {
                                     v-model="createForm.alamat"
                                     rows="2"
                                     placeholder="Jl. Melati No. 12, RT 02/RW 04..."
-                                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                 ></textarea>
                                 <p v-if="createForm.errors.alamat" class="mt-1 text-xs text-rose-600">{{ createForm.errors.alamat }}</p>
                             </div>
@@ -1205,13 +1205,13 @@ const submitDelete = () => {
                                         v-model="createForm.coordinate"
                                         type="text"
                                         placeholder="Contoh: -6.200000, 106.816666"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <button
                                         type="button"
                                         @click="fetchCoordinate(createForm)"
                                         :disabled="isFetchingCoordinate"
-                                        class="shrink-0 flex items-center justify-center rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 border border-slate-300 disabled:opacity-50"
+                                        class="shrink-0 flex items-center justify-center rounded-lg bg-slate-100 px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 hover:bg-slate-200 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 border border-slate-300 disabled:opacity-50"
                                         title="Dapatkan lokasi saat ini"
                                     >
                                         <svg v-if="isFetchingCoordinate" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -1245,7 +1245,7 @@ const submitDelete = () => {
                                             step="1"
                                             required
                                             placeholder="150000"
-                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                         />
                                     </div>
                                     <p v-if="createForm.errors.base_amount" class="mt-1 text-xs text-rose-600">{{ createForm.errors.base_amount }}</p>
@@ -1258,7 +1258,7 @@ const submitDelete = () => {
                                     <input
                                         v-model="createForm.register_date"
                                         type="date"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <p v-if="createForm.errors.register_date" class="mt-1 text-xs text-rose-600">{{ createForm.errors.register_date }}</p>
                                 </div>
@@ -1279,7 +1279,7 @@ const submitDelete = () => {
                                             min="0"
                                             step="1"
                                             placeholder="0"
-                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                         />
                                     </div>
                                     <p v-if="createForm.errors.installation_fee" class="mt-1 text-xs text-rose-600">{{ createForm.errors.installation_fee }}</p>
@@ -1293,7 +1293,7 @@ const submitDelete = () => {
                                     <select
                                         v-model="createForm.status_pelanggan"
                                         required
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     >
                                         <option value="Aktif">Aktif</option>
                                         <option value="Suspend">Suspend</option>
@@ -1308,7 +1308,7 @@ const submitDelete = () => {
                                     <template v-if="!is_sales">
                                         <select
                                             v-model="createForm.sales_id"
-                                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                         >
                                             <option value="">-- Tanpa Sales --</option>
                                             <option v-for="s in sales" :key="s.id" :value="s.id">{{ s.name }} ({{ s.member_number }})</option>
@@ -1320,7 +1320,7 @@ const submitDelete = () => {
                                             type="text"
                                             disabled
                                             :value="$page.props.auth.user.name"
-                                            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 cursor-not-allowed"
+                                            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs sm:text-sm text-slate-500 cursor-not-allowed"
                                         />
                                         <p class="mt-1 text-[11px] text-slate-500">Otomatis dialokasikan ke akun Anda</p>
                                     </template>
@@ -1329,18 +1329,18 @@ const submitDelete = () => {
                         </div>
 
                         <!-- Modal Footer -->
-                        <div class="flex items-center justify-end gap-3 border-t border-slate-100 bg-slate-50/75 px-6 py-4">
+                        <div class="flex items-center justify-end gap-3 border-t border-slate-100 bg-slate-50/75 px-3 py-3 sm:px-6 sm:py-4">
                             <button
                                 type="button"
                                 @click="closeCreateModal"
-                                class="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none"
+                                class="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs sm:text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none"
                             >
                                 Batal
                             </button>
                             <button
                                 type="submit"
                                 :disabled="createForm.processing"
-                                class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none disabled:opacity-50"
+                                class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none disabled:opacity-50"
                             >
                                 <svg v-if="createForm.processing" class="h-4 w-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -1360,7 +1360,7 @@ const submitDelete = () => {
             <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
                 <div class="relative w-full max-w-xl transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 border border-slate-100">
                     <!-- Modal Header -->
-                    <div class="flex items-center justify-between border-b border-slate-100 bg-slate-50/75 px-6 py-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 bg-slate-50/75 px-3 py-3 sm:px-6 sm:py-4">
                         <div class="flex items-center gap-3">
                             <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -1397,7 +1397,7 @@ const submitDelete = () => {
                                         type="text"
                                         required
                                         placeholder="Contoh: Budi Santoso"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <p v-if="editForm.errors.name" class="mt-1 text-xs text-rose-600">{{ editForm.errors.name }}</p>
                                 </div>
@@ -1409,7 +1409,7 @@ const submitDelete = () => {
                                         v-model="editForm.no_wa"
                                         type="text"
                                         placeholder="Contoh: 08123456789"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <p v-if="editForm.errors.no_wa" class="mt-1 text-xs text-rose-600">{{ editForm.errors.no_wa }}</p>
                                 </div>
@@ -1424,7 +1424,7 @@ const submitDelete = () => {
                                     <select
                                         v-model="editForm.area"
                                         required
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 bg-white"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 bg-white"
                                     >
                                         <option value="" disabled>-- Pilih Area --</option>
                                         <option v-for="a in availableAreas" :key="a" :value="a">{{ a }}</option>
@@ -1441,7 +1441,7 @@ const submitDelete = () => {
                                         type="text"
                                         list="edit-pakets-list"
                                         placeholder="Contoh: 20 Mbps, Home 2"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <datalist id="edit-pakets-list">
                                         <option v-for="p in availablePakets" :key="p" :value="p" />
@@ -1459,7 +1459,7 @@ const submitDelete = () => {
                                     v-model="editForm.alamat"
                                     rows="2"
                                     placeholder="Jl. Melati No. 12, RT 02/RW 04..."
-                                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                 ></textarea>
                                 <p v-if="editForm.errors.alamat" class="mt-1 text-xs text-rose-600">{{ editForm.errors.alamat }}</p>
                             </div>
@@ -1474,13 +1474,13 @@ const submitDelete = () => {
                                         v-model="editForm.coordinate"
                                         type="text"
                                         placeholder="Contoh: -6.200000, 106.816666"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <button
                                         type="button"
                                         @click="fetchCoordinate(editForm)"
                                         :disabled="isFetchingCoordinate"
-                                        class="shrink-0 flex items-center justify-center rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 border border-slate-300 disabled:opacity-50"
+                                        class="shrink-0 flex items-center justify-center rounded-lg bg-slate-100 px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 hover:bg-slate-200 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 border border-slate-300 disabled:opacity-50"
                                         title="Dapatkan lokasi saat ini"
                                     >
                                         <svg v-if="isFetchingCoordinate" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -1514,7 +1514,7 @@ const submitDelete = () => {
                                             step="1"
                                             required
                                             placeholder="150000"
-                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                         />
                                     </div>
                                     <p v-if="editForm.errors.base_amount" class="mt-1 text-xs text-rose-600">{{ editForm.errors.base_amount }}</p>
@@ -1527,7 +1527,7 @@ const submitDelete = () => {
                                     <input
                                         v-model="editForm.register_date"
                                         type="date"
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <p v-if="editForm.errors.register_date" class="mt-1 text-xs text-rose-600">{{ editForm.errors.register_date }}</p>
                                 </div>
@@ -1548,7 +1548,7 @@ const submitDelete = () => {
                                             min="0"
                                             step="1"
                                             placeholder="0"
-                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                         />
                                     </div>
                                     <p v-if="editForm.errors.installation_fee" class="mt-1 text-xs text-rose-600">{{ editForm.errors.installation_fee }}</p>
@@ -1562,7 +1562,7 @@ const submitDelete = () => {
                                     <select
                                         v-model="editForm.status_pelanggan"
                                         required
-                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                     >
                                         <option value="Aktif">Aktif</option>
                                         <option value="Suspend">Suspend</option>
@@ -1577,7 +1577,7 @@ const submitDelete = () => {
                                     <template v-if="!is_sales">
                                         <select
                                             v-model="editForm.sales_id"
-                                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                         >
                                             <option value="">-- Tanpa Sales --</option>
                                             <option v-for="s in sales" :key="s.id" :value="s.id">{{ s.name }} ({{ s.member_number }})</option>
@@ -1589,7 +1589,7 @@ const submitDelete = () => {
                                             type="text"
                                             disabled
                                             :value="$page.props.auth.user.name"
-                                            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 cursor-not-allowed"
+                                            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs sm:text-sm text-slate-500 cursor-not-allowed"
                                         />
                                         <p class="mt-1 text-[11px] text-slate-500">Otomatis dialokasikan ke akun Anda</p>
                                     </template>
@@ -1598,18 +1598,18 @@ const submitDelete = () => {
                         </div>
 
                         <!-- Modal Footer -->
-                        <div class="flex items-center justify-end gap-3 border-t border-slate-100 bg-slate-50/75 px-6 py-4">
+                        <div class="flex items-center justify-end gap-3 border-t border-slate-100 bg-slate-50/75 px-3 py-3 sm:px-6 sm:py-4">
                             <button
                                 type="button"
                                 @click="closeEditModal"
-                                class="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none"
+                                class="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs sm:text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none"
                             >
                                 Batal
                             </button>
                             <button
                                 type="submit"
                                 :disabled="editForm.processing"
-                                class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none disabled:opacity-50"
+                                class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none disabled:opacity-50"
                             >
                                 <svg v-if="editForm.processing" class="h-4 w-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

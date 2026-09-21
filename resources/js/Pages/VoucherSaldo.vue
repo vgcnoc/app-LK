@@ -438,14 +438,14 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                     <h2 class="text-xl font-bold tracking-tight text-slate-800">
                         Voucher & Saldo
                     </h2>
-                    <p class="mt-1 text-sm text-slate-500">
+                    <p class="mt-1 text-xs sm:text-sm text-slate-500">
                         Kelola data reseller, penjualan voucher, dan pengisian saldo.
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
                     <button
                         @click="openModal('')"
-                        class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -464,7 +464,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                     <button 
                         @click="activeTab = 'reseller'" 
                         :class="[
-                            'py-3 px-6 text-sm font-medium border-b-2 transition-colors duration-200 focus:outline-none',
+                            'py-3 px-6 text-xs sm:text-sm font-medium border-b-2 transition-colors duration-200 focus:outline-none',
                             activeTab === 'reseller' ? 'border-indigo-500 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                         ]"
                     >
@@ -473,7 +473,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                     <button 
                         @click="activeTab = 'riwayat'" 
                         :class="[
-                            'py-3 px-6 text-sm font-medium border-b-2 transition-colors duration-200 focus:outline-none',
+                            'py-3 px-6 text-xs sm:text-sm font-medium border-b-2 transition-colors duration-200 focus:outline-none',
                             activeTab === 'riwayat' ? 'border-indigo-500 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                         ]"
                     >
@@ -488,7 +488,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                         <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
                             <div class="flex-1">
                                 <h3 class="text-base font-semibold text-slate-900">Import Reseller dari Excel</h3>
-                                <p class="mt-1 text-sm text-slate-500">Unggah file Excel (.xlsx, .xls) berisi data Reseller. Kolom akan dideteksi otomatis (Nama, Area, Alamat, Telp).</p>
+                                <p class="mt-1 text-xs sm:text-sm text-slate-500">Unggah file Excel (.xlsx, .xls) berisi data Reseller. Kolom akan dideteksi otomatis (Nama, Area, Alamat, Telp).</p>
                             </div>
                             
                             <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -497,7 +497,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                     <button 
                                         type="button" 
                                         @click="triggerFileInput"
-                                        class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 transition-all duration-200"
+                                        class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 transition-all duration-200"
                                     >
                                         <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -518,7 +518,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-medium text-slate-900">{{ selectedFileName }}</p>
+                                        <p class="text-xs sm:text-sm font-medium text-slate-900">{{ selectedFileName }}</p>
                                         <p class="text-xs text-slate-500">
                                             <span v-if="parsedCount > 0" class="text-emerald-600 font-medium">{{ parsedCount }} data ditemukan</span>
                                             <span v-else-if="parseError" class="text-rose-500">{{ parseError }}</span>
@@ -527,10 +527,10 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
-                                    <button @click="removeSelectedFile" class="rounded-lg px-3 py-2 text-sm font-semibold text-rose-600 hover:bg-rose-50 transition-colors duration-200">
+                                    <button @click="removeSelectedFile" class="rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-rose-600 hover:bg-rose-50 transition-colors duration-200">
                                         Batal
                                     </button>
-                                    <button v-if="parsedCount > 0" @click="submitImport" :disabled="importForm.processing" class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <button v-if="parsedCount > 0" @click="submitImport" :disabled="importForm.processing" class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-xs sm:text-sm font-semibold text-white hover:bg-indigo-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
                                         <svg v-if="importForm.processing" class="animate-spin -ml-1 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                                         Import Sekarang
                                     </button>
@@ -542,7 +542,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                     <!-- Reseller List & Search -->
                     <div class="flex flex-col gap-4 sm:flex-row justify-between">
                         <div class="flex items-center gap-3">
-                            <button @click="openAddResellerModal" class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 transition-all duration-200">
+                            <button @click="openAddResellerModal" class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 transition-all duration-200">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                 </svg>
@@ -580,22 +580,22 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                 </thead>
                                 <tbody class="divide-y divide-slate-200 bg-white">
                                     <tr v-for="r in paginatedResellers" :key="r.id" class="transition-colors hover:bg-slate-50">
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm font-semibold text-slate-900 border-b border-slate-100">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm font-semibold text-slate-900 border-b border-slate-100">
                                             {{ r.name }}
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-slate-600 border-b border-slate-100">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm text-slate-600 border-b border-slate-100">
                                             {{ r.phone || '-' }}
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-slate-600 border-b border-slate-100 max-w-xs truncate" :title="r.alamat">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm text-slate-600 border-b border-slate-100 max-w-xs truncate" :title="r.alamat">
                                             {{ r.alamat || '-' }}
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-slate-600 border-b border-slate-100">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm text-slate-600 border-b border-slate-100">
                                             {{ r.area || '-' }}
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm font-semibold text-slate-900 border-b border-slate-100">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm font-semibold text-slate-900 border-b border-slate-100">
                                             {{ formatRupiah(r.total_piutang) }}
                                         </td>
-                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium border-b border-slate-100">
+                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-xs sm:text-sm font-medium border-b border-slate-100">
                                             <div class="flex items-center justify-center gap-2">
                                                 <button @click="openEditResellerModal(r)" type="button" title="Edit Reseller" class="p-1.5 text-blue-500 hover:text-white hover:bg-blue-500 bg-blue-50 rounded-lg transition-colors border border-blue-100">
                                                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -611,7 +611,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                         </td>
                                     </tr>
                                     <tr v-if="filteredResellers.length === 0">
-                                        <td colspan="6" class="px-6 py-8 text-center text-sm text-slate-500">
+                                        <td colspan="6" class="px-6 py-8 text-center text-xs sm:text-sm text-slate-500">
                                             Tidak ada data reseller.
                                         </td>
                                     </tr>
@@ -620,8 +620,8 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
 </div>
                             
                             <!-- Pagination Controls for Reseller -->
-                            <div class="px-6 py-4 flex items-center justify-between border-t border-slate-200 bg-white">
-                                <div class="text-sm text-slate-500">
+                            <div class="px-3 py-3 sm:px-6 sm:py-4 flex items-center justify-between border-t border-slate-200 bg-white">
+                                <div class="text-xs sm:text-sm text-slate-500">
                                     Menampilkan <span class="font-medium text-slate-900">{{ (currentPageResellers - 1) * itemsPerPage + 1 }}</span> - 
                                     <span class="font-medium text-slate-900">{{ Math.min(currentPageResellers * itemsPerPage, filteredResellers.length) }}</span> 
                                     dari <span class="font-medium text-slate-900">{{ filteredResellers.length }}</span> data
@@ -652,7 +652,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                     <div class="hidden print:block mb-8 text-center border-b-2 border-slate-800 pb-4">
                         <h1 class="text-2xl font-bold text-slate-900 uppercase tracking-widest">Laporan Keuangan</h1>
                         <h2 class="text-lg font-semibold text-slate-700 mt-1">Riwayat Transaksi Voucher & Saldo</h2>
-                        <p class="text-sm text-slate-500 mt-2">
+                        <p class="text-xs sm:text-sm text-slate-500 mt-2">
                             Periode: 
                             <span class="font-medium text-slate-800">{{ formatDate(filterForm.start_date) }}</span> 
                             s/d 
@@ -669,7 +669,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                                     </svg>
                                 </div>
-                                <p class="ml-16 truncate text-sm font-medium text-slate-500">Pemasukan Voucher</p>
+                                <p class="ml-16 truncate text-xs sm:text-sm font-medium text-slate-500">Pemasukan Voucher</p>
                             </dt>
                             <dd class="ml-16 flex items-baseline pb-1 sm:pb-2">
                                 <p class="text-2xl font-bold text-slate-900">{{ formatRupiah(totalVoucher) }}</p>
@@ -683,7 +683,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
-                                <p class="ml-16 truncate text-sm font-medium text-slate-500">Pemasukan Saldo</p>
+                                <p class="ml-16 truncate text-xs sm:text-sm font-medium text-slate-500">Pemasukan Saldo</p>
                             </dt>
                             <dd class="ml-16 flex items-baseline pb-1 sm:pb-2">
                                 <p class="text-2xl font-bold text-slate-900">{{ formatRupiah(totalSaldo) }}</p>
@@ -697,7 +697,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                     </svg>
                                 </div>
-                                <p class="ml-16 truncate text-sm font-medium text-slate-500">Total Piutang</p>
+                                <p class="ml-16 truncate text-xs sm:text-sm font-medium text-slate-500">Total Piutang</p>
                             </dt>
                             <dd class="ml-16 flex items-baseline pb-1 sm:pb-2">
                                 <p class="text-2xl font-bold text-slate-900">{{ formatRupiah(totalPiutang) }}</p>
@@ -752,13 +752,13 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                             <div>
                                 <button
                                     @click="applyFilters"
-                                    class="inline-flex items-center gap-2 rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                                    class="inline-flex items-center gap-2 rounded-lg bg-slate-800 px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
                                 >
                                     Terapkan Filter
                                 </button>
                                 <button
                                     @click="exportExcel"
-                                    class="inline-flex items-center gap-2 rounded-lg bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700 shadow-sm ring-1 ring-inset ring-emerald-600/20 hover:bg-emerald-100 focus:outline-none transition-colors ml-2"
+                                    class="inline-flex items-center gap-2 rounded-lg bg-emerald-50 px-4 py-2 text-xs sm:text-sm font-semibold text-emerald-700 shadow-sm ring-1 ring-inset ring-emerald-600/20 hover:bg-emerald-100 focus:outline-none transition-colors ml-2"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
@@ -767,7 +767,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                 </button>
                                 <button
                                     @click="exportPDF"
-                                    class="inline-flex items-center gap-2 rounded-lg bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-700 shadow-sm ring-1 ring-inset ring-rose-600/20 hover:bg-rose-100 focus:outline-none transition-colors ml-2"
+                                    class="inline-flex items-center gap-2 rounded-lg bg-rose-50 px-4 py-2 text-xs sm:text-sm font-semibold text-rose-700 shadow-sm ring-1 ring-inset ring-rose-600/20 hover:bg-rose-100 focus:outline-none transition-colors ml-2"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
@@ -813,37 +813,37 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                 </thead>
                                 <tbody class="divide-y divide-slate-200 bg-white">
                                     <tr v-for="t in paginatedTransactions" :key="t.id" class="transition-colors hover:bg-slate-50">
-                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-slate-900 font-medium">
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-xs sm:text-sm text-slate-900 font-medium">
                                             {{ formatDate(t.date) }}
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm font-semibold text-slate-900">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm font-semibold text-slate-900">
                                             {{ t.reseller ? t.reseller.name : '-' }}
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-slate-600">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm text-slate-600">
                                             {{ t.area || (t.reseller ? t.reseller.area : '-') }}
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm">
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
                                                 :class="t.income_source === 'voucher' ? 'bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-200' : 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200'">
                                                 {{ t.income_source === 'voucher' ? 'Voucher' : 'Saldo' }}
                                             </span>
                                         </td>
-                                        <td class="px-3 py-4 text-sm text-slate-600 max-w-sm truncate" :title="t.description">
+                                        <td class="px-3 py-4 text-xs sm:text-sm text-slate-600 max-w-sm truncate" :title="t.description">
                                             {{ t.description }}
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-slate-600">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm text-slate-600">
                                             <span v-if="t.transaction_mode !== 'Piutang'" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700">
                                                 {{ t.payment_method || '-' }}
                                             </span>
                                             <span v-else>-</span>
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm">
                                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
                                                 :class="t.transaction_mode === 'Tunai' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'">
                                                 {{ t.transaction_mode }}
                                             </span>
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm font-bold text-slate-900">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm font-bold text-slate-900">
                                             <span v-if="t.transaction_mode === 'Piutang' && t.payment_status === 'unpaid'" class="text-amber-600">
                                                 {{ formatRupiah(getRemainingPiutang(t)) }}
                                                 <div v-if="getDaysOverdue(t.date) > 0" class="text-xs text-rose-500 font-medium mt-1">
@@ -854,7 +854,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                                 {{ formatRupiah(t.amount) }}
                                             </span>
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-center print:hidden">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm text-center print:hidden">
                                             <div class="flex items-center justify-center gap-2">
                                                 <!-- Only show Set Lunas button for unpaid Piutang that is not a child payment itself -->
                                                 <button v-if="t.transaction_mode === 'Piutang' && t.payment_status === 'unpaid' && !t.parent_id"
@@ -897,17 +897,17 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                         </td>
                                     </tr>
                                     <tr v-if="filteredTransactions.length === 0">
-                                        <td colspan="8" class="px-6 py-8 text-center text-sm text-slate-500">
+                                        <td colspan="8" class="px-6 py-8 text-center text-xs sm:text-sm text-slate-500">
                                             Tidak ada riwayat transaksi.
                                         </td>
                                     </tr>
                                 </tbody>
                                 <tfoot class="hidden print:table-footer-group bg-slate-50 border-t-2 border-slate-200">
                                     <tr>
-                                        <td colspan="7" class="py-4 pl-4 pr-3 text-right text-sm font-bold text-slate-900 uppercase tracking-widest">
+                                        <td colspan="7" class="py-4 pl-4 pr-3 text-right text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-widest">
                                             Total Nominal
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm font-bold text-slate-900">
+                                        <td class="whitespace-nowrap px-3 py-4 text-xs sm:text-sm font-bold text-slate-900">
                                             {{ formatRupiah(totalFilteredNominal) }}
                                         </td>
                                         <td class="print:hidden"></td>
@@ -917,8 +917,8 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
 </div>
                             
                             <!-- Pagination Controls for Transactions -->
-                            <div class="px-6 py-4 flex items-center justify-between border-t border-slate-200 bg-white">
-                                <div class="text-sm text-slate-500">
+                            <div class="px-3 py-3 sm:px-6 sm:py-4 flex items-center justify-between border-t border-slate-200 bg-white">
+                                <div class="text-xs sm:text-sm text-slate-500">
                                     Menampilkan <span class="font-medium text-slate-900">{{ (currentPageTransactions - 1) * itemsPerPage + 1 }}</span> - 
                                     <span class="font-medium text-slate-900">{{ Math.min(currentPageTransactions * itemsPerPage, filteredTransactions.length) }}</span> 
                                     dari <span class="font-medium text-slate-900">{{ filteredTransactions.length }}</span> data
@@ -964,7 +964,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                     <div class="mt-4 space-y-4">
                                         <!-- Reseller Select -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Pilih Reseller (Opsional)</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Pilih Reseller (Opsional)</label>
                                             <select
                                                 v-model="transactionForm.reseller_id"
                                                 class="mt-2 block w-full rounded-xl border-0 py-2.5 pl-3 pr-10 text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -974,14 +974,14 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                                     {{ r.name }} {{ r.area ? `(${r.area})` : '' }}
                                                 </option>
                                             </select>
-                                            <div v-if="transactionForm.errors.reseller_id" class="mt-1 text-sm text-rose-500">
+                                            <div v-if="transactionForm.errors.reseller_id" class="mt-1 text-xs sm:text-sm text-rose-500">
                                                 {{ transactionForm.errors.reseller_id }}
                                             </div>
                                         </div>
 
                                         <!-- Area Select -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Area</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Area</label>
                                             <select
                                                 v-model="transactionForm.area"
                                                 class="mt-2 block w-full rounded-xl border-0 py-2.5 pl-3 pr-10 text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -989,14 +989,14 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                                 <option value="">-- Pilih Area --</option>
                                                 <option v-for="area in areas" :key="area" :value="area">{{ area }}</option>
                                             </select>
-                                            <div v-if="transactionForm.errors.area" class="mt-1 text-sm text-rose-500">
+                                            <div v-if="transactionForm.errors.area" class="mt-1 text-xs sm:text-sm text-rose-500">
                                                 {{ transactionForm.errors.area }}
                                             </div>
                                         </div>
 
                                         <!-- Jenis -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Jenis Transaksi</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Jenis Transaksi</label>
                                             <select
                                                 v-model="transactionForm.income_source"
                                                 class="mt-2 block w-full rounded-xl border-0 py-2.5 pl-3 pr-10 text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -1004,44 +1004,44 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                                 <option value="voucher">Penjualan Voucher</option>
                                                 <option value="saldo">Pengisian Saldo</option>
                                             </select>
-                                            <div v-if="transactionForm.errors.income_source" class="mt-1 text-sm text-rose-500">
+                                            <div v-if="transactionForm.errors.income_source" class="mt-1 text-xs sm:text-sm text-rose-500">
                                                 {{ transactionForm.errors.income_source }}
                                             </div>
                                         </div>
 
                                         <!-- Date -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Tanggal</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Tanggal</label>
                                             <input
                                                 type="date"
                                                 v-model="transactionForm.date"
                                                 class="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
-                                            <div v-if="transactionForm.errors.date" class="mt-1 text-sm text-rose-500">
+                                            <div v-if="transactionForm.errors.date" class="mt-1 text-xs sm:text-sm text-rose-500">
                                                 {{ transactionForm.errors.date }}
                                             </div>
                                         </div>
 
                                         <!-- Description -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Keterangan</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Keterangan</label>
                                             <input
                                                 type="text"
                                                 v-model="transactionForm.description"
                                                 placeholder="Contoh: Voucher 10 Mbps atau Top up"
                                                 class="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
-                                            <div v-if="transactionForm.errors.description" class="mt-1 text-sm text-rose-500">
+                                            <div v-if="transactionForm.errors.description" class="mt-1 text-xs sm:text-sm text-rose-500">
                                                 {{ transactionForm.errors.description }}
                                             </div>
                                         </div>
 
                                         <!-- Amount -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Nominal (Rp)</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Nominal (Rp)</label>
                                             <div class="relative mt-2">
                                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                    <span class="text-slate-500 sm:text-sm">Rp</span>
+                                                    <span class="text-slate-500 sm:text-xs sm:text-sm">Rp</span>
                                                 </div>
                                                 <input
                                                     type="number"
@@ -1050,14 +1050,14 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                                     class="block w-full rounded-xl border-0 py-2.5 pl-10 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
-                                            <div v-if="transactionForm.errors.amount" class="mt-1 text-sm text-rose-500">
+                                            <div v-if="transactionForm.errors.amount" class="mt-1 text-xs sm:text-sm text-rose-500">
                                                 {{ transactionForm.errors.amount }}
                                             </div>
                                         </div>
 
                                         <!-- Transaction Mode -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Mode Transaksi</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Mode Transaksi</label>
                                             <select
                                                 v-model="transactionForm.transaction_mode"
                                                 class="mt-2 block w-full rounded-xl border-0 py-2.5 pl-3 pr-10 text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -1065,14 +1065,14 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                                 <option value="Tunai">Tunai</option>
                                                 <option value="Piutang">Piutang</option>
                                             </select>
-                                            <div v-if="transactionForm.errors.transaction_mode" class="mt-1 text-sm text-rose-500">
+                                            <div v-if="transactionForm.errors.transaction_mode" class="mt-1 text-xs sm:text-sm text-rose-500">
                                                 {{ transactionForm.errors.transaction_mode }}
                                             </div>
                                         </div>
 
                                         <!-- Payment Method -->
                                         <div v-show="transactionForm.transaction_mode === 'Tunai'">
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Metode Pembayaran</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Metode Pembayaran</label>
                                             <select
                                                 v-model="transactionForm.payment_method"
                                                 class="mt-2 block w-full rounded-xl border-0 py-2.5 pl-3 pr-10 text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -1082,7 +1082,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                                 </option>
                                                 <option v-if="paymentMethods.length === 0" value="Tunai">Tunai</option>
                                             </select>
-                                            <div v-if="transactionForm.errors.payment_method" class="mt-1 text-sm text-rose-500">
+                                            <div v-if="transactionForm.errors.payment_method" class="mt-1 text-xs sm:text-sm text-rose-500">
                                                 {{ transactionForm.errors.payment_method }}
                                             </div>
                                         </div>
@@ -1096,7 +1096,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                 type="button"
                                 @click="submitTransaction"
                                 :disabled="transactionForm.processing"
-                                class="inline-flex w-full justify-center rounded-xl bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto disabled:opacity-70"
+                                class="inline-flex w-full justify-center rounded-xl bg-indigo-600 px-3 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto disabled:opacity-70"
                             >
                                 <svg v-if="transactionForm.processing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -1107,7 +1107,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                             <button
                                 type="button"
                                 @click="closeModal"
-                                class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
+                                class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-xs sm:text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
                             >
                                 Batal
                             </button>
@@ -1135,27 +1135,27 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                     
                                     <div class="mt-4 space-y-4">
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Nama Reseller <span class="text-rose-500">*</span></label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Nama Reseller <span class="text-rose-500">*</span></label>
                                             <input type="text" v-model="resellerForm.name" class="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                            <div v-if="resellerForm.errors.name" class="mt-1 text-sm text-rose-500">{{ resellerForm.errors.name }}</div>
+                                            <div v-if="resellerForm.errors.name" class="mt-1 text-xs sm:text-sm text-rose-500">{{ resellerForm.errors.name }}</div>
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Area</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Area</label>
                                             <select v-model="resellerForm.area" class="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-white">
                                                 <option value="">-- Pilih Area --</option>
                                                 <option v-for="area in areas" :key="area" :value="area">{{ area }}</option>
                                             </select>
-                                            <div v-if="resellerForm.errors.area" class="mt-1 text-sm text-rose-500">{{ resellerForm.errors.area }}</div>
+                                            <div v-if="resellerForm.errors.area" class="mt-1 text-xs sm:text-sm text-rose-500">{{ resellerForm.errors.area }}</div>
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Nomor Telepon / WA</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Nomor Telepon / WA</label>
                                             <input type="text" v-model="resellerForm.phone" class="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                            <div v-if="resellerForm.errors.phone" class="mt-1 text-sm text-rose-500">{{ resellerForm.errors.phone }}</div>
+                                            <div v-if="resellerForm.errors.phone" class="mt-1 text-xs sm:text-sm text-rose-500">{{ resellerForm.errors.phone }}</div>
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Alamat Lengkap</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Alamat Lengkap</label>
                                             <textarea v-model="resellerForm.alamat" rows="2" class="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
-                                            <div v-if="resellerForm.errors.alamat" class="mt-1 text-sm text-rose-500">{{ resellerForm.errors.alamat }}</div>
+                                            <div v-if="resellerForm.errors.alamat" class="mt-1 text-xs sm:text-sm text-rose-500">{{ resellerForm.errors.alamat }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1166,7 +1166,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                 type="button"
                                 @click="submitReseller"
                                 :disabled="resellerForm.processing"
-                                class="inline-flex w-full justify-center rounded-xl bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto disabled:opacity-70"
+                                class="inline-flex w-full justify-center rounded-xl bg-indigo-600 px-3 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto disabled:opacity-70"
                             >
                                 <svg v-if="resellerForm.processing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                                 Simpan
@@ -1174,7 +1174,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                             <button
                                 type="button"
                                 @click="closeResellerModal"
-                                class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
+                                class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-xs sm:text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
                             >
                                 Batal
                             </button>
@@ -1204,10 +1204,10 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                     <div class="mt-4 space-y-4">
                                         <!-- Amount -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Nominal Pembayaran (Rp)</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Nominal Pembayaran (Rp)</label>
                                             <div class="relative mt-2">
                                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                    <span class="text-slate-500 sm:text-sm">Rp</span>
+                                                    <span class="text-slate-500 sm:text-xs sm:text-sm">Rp</span>
                                                 </div>
                                                 <input
                                                     type="number"
@@ -1215,23 +1215,23 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                                     class="block w-full rounded-xl border-0 py-2.5 pl-10 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
-                                            <div v-if="lunasForm.errors.amount" class="mt-1 text-sm text-rose-500">{{ lunasForm.errors.amount }}</div>
+                                            <div v-if="lunasForm.errors.amount" class="mt-1 text-xs sm:text-sm text-rose-500">{{ lunasForm.errors.amount }}</div>
                                         </div>
 
                                         <!-- Date -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Tanggal Pembayaran</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Tanggal Pembayaran</label>
                                             <input
                                                 type="date"
                                                 v-model="lunasForm.date"
                                                 class="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
                                             />
-                                            <div v-if="lunasForm.errors.date" class="mt-1 text-sm text-rose-500">{{ lunasForm.errors.date }}</div>
+                                            <div v-if="lunasForm.errors.date" class="mt-1 text-xs sm:text-sm text-rose-500">{{ lunasForm.errors.date }}</div>
                                         </div>
 
                                         <!-- Payment Method -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Metode Pembayaran</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Metode Pembayaran</label>
                                             <select
                                                 v-model="lunasForm.payment_method"
                                                 class="mt-2 block w-full rounded-xl border-0 py-2.5 pl-3 pr-10 text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-emerald-600 sm:text-sm sm:leading-6"
@@ -1239,31 +1239,31 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                                 <option v-for="pm in paymentMethods" :key="pm.id" :value="pm.name">{{ pm.name }}</option>
                                                 <option v-if="paymentMethods.length === 0" value="Tunai">Tunai</option>
                                             </select>
-                                            <div v-if="lunasForm.errors.payment_method" class="mt-1 text-sm text-rose-500">{{ lunasForm.errors.payment_method }}</div>
+                                            <div v-if="lunasForm.errors.payment_method" class="mt-1 text-xs sm:text-sm text-rose-500">{{ lunasForm.errors.payment_method }}</div>
                                         </div>
 
                                         <!-- Collector -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Penagih / Penerima</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Penagih / Penerima</label>
                                             <input
                                                 type="text"
                                                 v-model="lunasForm.collector"
                                                 placeholder="Nama yang menerima pembayaran"
                                                 class="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
                                             />
-                                            <div v-if="lunasForm.errors.collector" class="mt-1 text-sm text-rose-500">{{ lunasForm.errors.collector }}</div>
+                                            <div v-if="lunasForm.errors.collector" class="mt-1 text-xs sm:text-sm text-rose-500">{{ lunasForm.errors.collector }}</div>
                                         </div>
 
                                         <!-- Proof (Bukti Pembayaran) -->
                                         <div>
-                                            <label class="block text-sm font-medium leading-6 text-slate-900">Bukti Pembayaran (Opsional)</label>
+                                            <label class="block text-xs sm:text-sm font-medium leading-6 text-slate-900">Bukti Pembayaran (Opsional)</label>
                                             <input
                                                 type="file"
                                                 @input="lunasForm.proof = $event.target.files[0]"
                                                 accept="image/*"
-                                                class="mt-2 block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+                                                class="mt-2 block w-full text-xs sm:text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs sm:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
                                             />
-                                            <div v-if="lunasForm.errors.proof" class="mt-1 text-sm text-rose-500">{{ lunasForm.errors.proof }}</div>
+                                            <div v-if="lunasForm.errors.proof" class="mt-1 text-xs sm:text-sm text-rose-500">{{ lunasForm.errors.proof }}</div>
                                         </div>
 
                                     </div>
@@ -1275,7 +1275,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                 type="button"
                                 @click="submitLunas"
                                 :disabled="lunasForm.processing"
-                                class="inline-flex w-full justify-center rounded-xl bg-emerald-600 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 sm:ml-3 sm:w-auto disabled:opacity-70"
+                                class="inline-flex w-full justify-center rounded-xl bg-emerald-600 px-3 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 sm:ml-3 sm:w-auto disabled:opacity-70"
                             >
                                 <svg v-if="lunasForm.processing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                                 Simpan Pembayaran
@@ -1283,7 +1283,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                             <button
                                 type="button"
                                 @click="closeLunasModal"
-                                class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
+                                class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-xs sm:text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
                             >
                                 Batal
                             </button>
@@ -1311,40 +1311,40 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                     
                                     <div class="mt-4 space-y-4">
                                         <div>
-                                            <p class="text-sm text-slate-500">Tanggal</p>
-                                            <p class="text-sm font-semibold text-slate-900">{{ formatDate(selectedDetail.date) }}</p>
+                                            <p class="text-xs sm:text-sm text-slate-500">Tanggal</p>
+                                            <p class="text-xs sm:text-sm font-semibold text-slate-900">{{ formatDate(selectedDetail.date) }}</p>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-slate-500">Keterangan</p>
-                                            <p class="text-sm font-semibold text-slate-900">{{ selectedDetail.description }}</p>
+                                            <p class="text-xs sm:text-sm text-slate-500">Keterangan</p>
+                                            <p class="text-xs sm:text-sm font-semibold text-slate-900">{{ selectedDetail.description }}</p>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-slate-500">Reseller</p>
-                                            <p class="text-sm font-semibold text-slate-900">{{ selectedDetail.reseller?.name || 'Transaksi Umum' }}</p>
+                                            <p class="text-xs sm:text-sm text-slate-500">Reseller</p>
+                                            <p class="text-xs sm:text-sm font-semibold text-slate-900">{{ selectedDetail.reseller?.name || 'Transaksi Umum' }}</p>
                                         </div>
                                         <div class="grid grid-cols-2 gap-4">
                                             <div>
-                                                <p class="text-sm text-slate-500">Nominal</p>
-                                                <p class="text-sm font-semibold text-slate-900">{{ formatRupiah(selectedDetail.amount) }}</p>
+                                                <p class="text-xs sm:text-sm text-slate-500">Nominal</p>
+                                                <p class="text-xs sm:text-sm font-semibold text-slate-900">{{ formatRupiah(selectedDetail.amount) }}</p>
                                             </div>
                                             <div>
-                                                <p class="text-sm text-slate-500">Mode</p>
-                                                <p class="text-sm font-semibold text-slate-900">{{ selectedDetail.transaction_mode }}</p>
+                                                <p class="text-xs sm:text-sm text-slate-500">Mode</p>
+                                                <p class="text-xs sm:text-sm font-semibold text-slate-900">{{ selectedDetail.transaction_mode }}</p>
                                             </div>
                                         </div>
                                         <div class="grid grid-cols-2 gap-4">
                                             <div v-if="selectedDetail.payment_method">
-                                                <p class="text-sm text-slate-500">Metode Bayar</p>
-                                                <p class="text-sm font-semibold text-slate-900">{{ selectedDetail.payment_method }}</p>
+                                                <p class="text-xs sm:text-sm text-slate-500">Metode Bayar</p>
+                                                <p class="text-xs sm:text-sm font-semibold text-slate-900">{{ selectedDetail.payment_method }}</p>
                                             </div>
                                             <div v-if="selectedDetail.collector">
-                                                <p class="text-sm text-slate-500">Penagih / Penerima</p>
-                                                <p class="text-sm font-semibold text-slate-900">{{ selectedDetail.collector }}</p>
+                                                <p class="text-xs sm:text-sm text-slate-500">Penagih / Penerima</p>
+                                                <p class="text-xs sm:text-sm font-semibold text-slate-900">{{ selectedDetail.collector }}</p>
                                             </div>
                                         </div>
 
                                         <div v-if="selectedDetail.proof" class="mt-4">
-                                            <p class="text-sm font-medium text-slate-700 mb-2">Bukti Pembayaran</p>
+                                            <p class="text-xs sm:text-sm font-medium text-slate-700 mb-2">Bukti Pembayaran</p>
                                             <div class="overflow-hidden rounded-xl border border-slate-200">
                                                 <img :src="'/storage/' + selectedDetail.proof" alt="Bukti Pembayaran" class="w-full object-cover" />
                                             </div>
@@ -1357,7 +1357,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                             <button
                                 type="button"
                                 @click="closeDetailModal"
-                                class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
+                                class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2.5 text-xs sm:text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
                             >
                                 Tutup
                             </button>

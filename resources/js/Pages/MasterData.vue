@@ -274,7 +274,7 @@ const saveEditArea = (area) => {
                 <h2 class="text-2xl font-bold tracking-tight text-slate-800">
                     Master Data
                 </h2>
-                <p class="text-sm text-slate-500">
+                <p class="text-xs sm:text-sm text-slate-500">
                     Kelola data master seperti Kategori Pengeluaran, Jenis Pengeluaran, Metode Pembayaran, dan Material.
                 </p>
             </div>
@@ -306,7 +306,7 @@ const saveEditArea = (area) => {
                                             min="1" max="31"
                                             v-model="settingsForm.global_due_date" 
                                             placeholder="Contoh: 10"
-                                            class="w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
+                                            class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
                                         />
                                     </div>
                                     <div>
@@ -314,7 +314,7 @@ const saveEditArea = (area) => {
                                         <input 
                                             type="time" 
                                             v-model="settingsForm.global_due_time" 
-                                            class="w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
+                                            class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
                                         />
                                     </div>
                                 </div>
@@ -322,7 +322,7 @@ const saveEditArea = (area) => {
                                     <button 
                                         type="submit" 
                                         :disabled="settingsForm.processing"
-                                        class="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-colors disabled:opacity-50 flex items-center gap-2"
+                                        class="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-colors disabled:opacity-50 flex items-center gap-2"
                                     >
                                         <svg v-if="settingsForm.processing" class="animate-spin -ml-1 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -362,7 +362,7 @@ const saveEditArea = (area) => {
                                             type="number" 
                                             v-model="settingsForm.commission_sales_booking" 
                                             placeholder="Contoh: 50000"
-                                            class="w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
+                                            class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
                                         />
                                     </div>
                                     <div>
@@ -371,7 +371,7 @@ const saveEditArea = (area) => {
                                             type="number" 
                                             v-model="settingsForm.commission_sales_monthly" 
                                             placeholder="Contoh: 10000"
-                                            class="w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
+                                            class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
                                         />
                                     </div>
                                     <div>
@@ -380,7 +380,7 @@ const saveEditArea = (area) => {
                                             type="number" 
                                             v-model="settingsForm.commission_upline_1_monthly" 
                                             placeholder="Contoh: 5000"
-                                            class="w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
+                                            class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
                                         />
                                     </div>
                                     <div>
@@ -389,7 +389,7 @@ const saveEditArea = (area) => {
                                             type="number" 
                                             v-model="settingsForm.commission_upline_2_monthly" 
                                             placeholder="Contoh: 2000"
-                                            class="w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
+                                            class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
                                         />
                                     </div>
                                     <div>
@@ -398,7 +398,7 @@ const saveEditArea = (area) => {
                                             type="number" 
                                             v-model="settingsForm.global_installation_fee" 
                                             placeholder="Contoh: 150000 (Kosongkan jika gratis)"
-                                            class="w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
+                                            class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
                                         />
                                     </div>
                                 </div>
@@ -406,7 +406,7 @@ const saveEditArea = (area) => {
                                     <button 
                                         type="submit" 
                                         :disabled="settingsForm.processing"
-                                        class="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-colors disabled:opacity-50 flex items-center gap-2"
+                                        class="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-colors disabled:opacity-50 flex items-center gap-2"
                                     >
                                         <svg v-if="settingsForm.processing" class="animate-spin -ml-1 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -436,14 +436,14 @@ const saveEditArea = (area) => {
                                         v-model="form.name" 
                                         placeholder="Nama Kategori (contoh: Operasional, Gaji, dll)"
                                         required
-                                        class="w-full rounded-xl border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                        class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                                     />
                                     <p v-if="form.errors.name" class="mt-1 text-xs text-rose-600">{{ form.errors.name }}</p>
                                 </div>
                                 <button 
                                     type="submit" 
                                     :disabled="form.processing"
-                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
                                 >
                                     Tambah
                                 </button>
@@ -452,19 +452,19 @@ const saveEditArea = (area) => {
 
                         <div class="p-0">
                             <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm">
+<table class="w-full text-left text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold uppercase text-slate-500">
-                                        <th class="px-6 py-3">Nama Kategori</th>
-                                        <th class="px-6 py-3 w-24 text-right">Aksi</th>
+                                        <th class="px-3 py-2 sm:px-6 sm:py-3">Nama Kategori</th>
+                                        <th class="px-3 py-2 sm:px-6 sm:py-3 w-24 text-right">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100">
                                     <tr v-for="cat in expenseCategories" :key="cat.id" class="hover:bg-slate-50/80">
-                                        <td class="px-6 py-3 font-medium text-slate-700">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 font-medium text-slate-700">
                                             {{ cat.name }}
                                         </td>
-                                        <td class="px-6 py-3 text-right">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 text-right">
                                             <button 
                                                 @click="deleteCategory(cat)"
                                                 class="text-rose-500 hover:text-rose-700 hover:bg-rose-50 p-1.5 rounded-lg transition-colors"
@@ -502,14 +502,14 @@ const saveEditArea = (area) => {
                                         v-model="incomeCatForm.name" 
                                         placeholder="Nama Kategori (contoh: Biaya Pemasangan, Voucher, dll)"
                                         required
-                                        class="w-full rounded-xl border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                        class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                                     />
                                     <p v-if="incomeCatForm.errors.name" class="mt-1 text-xs text-rose-600">{{ incomeCatForm.errors.name }}</p>
                                 </div>
                                 <button 
                                     type="submit" 
                                     :disabled="incomeCatForm.processing"
-                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
                                 >
                                     Tambah
                                 </button>
@@ -518,19 +518,19 @@ const saveEditArea = (area) => {
 
                         <div class="p-0">
                             <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm">
+<table class="w-full text-left text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold uppercase text-slate-500">
-                                        <th class="px-6 py-3">Nama Kategori</th>
-                                        <th class="px-6 py-3 w-24 text-right">Aksi</th>
+                                        <th class="px-3 py-2 sm:px-6 sm:py-3">Nama Kategori</th>
+                                        <th class="px-3 py-2 sm:px-6 sm:py-3 w-24 text-right">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100">
                                     <tr v-for="cat in incomeCategories" :key="cat.id" class="hover:bg-slate-50/80">
-                                        <td class="px-6 py-3 font-medium text-slate-700">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 font-medium text-slate-700">
                                             {{ cat.name }}
                                         </td>
-                                        <td class="px-6 py-3 text-right">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 text-right">
                                             <button 
                                                 @click="deleteIncomeCategory(cat)"
                                                 class="text-rose-500 hover:text-rose-700 hover:bg-rose-50 p-1.5 rounded-lg transition-colors"
@@ -568,14 +568,14 @@ const saveEditArea = (area) => {
                                         v-model="pmForm.name" 
                                         placeholder="Nama Metode Pembayaran"
                                         required
-                                        class="w-full rounded-xl border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                        class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                                     />
                                     <p v-if="pmForm.errors.name" class="mt-1 text-xs text-rose-600">{{ pmForm.errors.name }}</p>
                                 </div>
                                 <button 
                                     type="submit" 
                                     :disabled="pmForm.processing"
-                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
                                 >
                                     Tambah
                                 </button>
@@ -584,19 +584,19 @@ const saveEditArea = (area) => {
 
                         <div class="p-0">
                             <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm">
+<table class="w-full text-left text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold uppercase text-slate-500">
-                                        <th class="px-6 py-3">Nama Metode</th>
-                                        <th class="px-6 py-3 w-24 text-right">Aksi</th>
+                                        <th class="px-3 py-2 sm:px-6 sm:py-3">Nama Metode</th>
+                                        <th class="px-3 py-2 sm:px-6 sm:py-3 w-24 text-right">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100">
                                     <tr v-for="pm in paymentMethods" :key="pm.id" class="hover:bg-slate-50/80">
-                                        <td class="px-6 py-3 font-medium text-slate-700">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 font-medium text-slate-700">
                                             {{ pm.name }}
                                         </td>
-                                        <td class="px-6 py-3 text-right">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 text-right">
                                             <button 
                                                 @click="deletePaymentMethod(pm)"
                                                 class="text-rose-500 hover:text-rose-700 hover:bg-rose-50 p-1.5 rounded-lg transition-colors"
@@ -635,14 +635,14 @@ const saveEditArea = (area) => {
                                     v-model="matForm.name" 
                                     placeholder="Nama Material (contoh: Kabel FO, Router, Konektor)"
                                     required
-                                    class="w-full rounded-xl border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                    class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                                 />
                                 <p v-if="matForm.errors.name" class="mt-1 text-xs text-rose-600">{{ matForm.errors.name }}</p>
                             </div>
                             <button 
                                 type="submit" 
                                 :disabled="matForm.processing"
-                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
                             >
                                 Tambah
                             </button>
@@ -651,19 +651,19 @@ const saveEditArea = (area) => {
 
                     <div class="p-0">
                         <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm">
+<table class="w-full text-left text-xs sm:text-sm">
                             <thead>
                                 <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold uppercase text-slate-500">
-                                    <th class="px-6 py-3">Nama Material</th>
-                                    <th class="px-6 py-3 w-24 text-right">Aksi</th>
+                                    <th class="px-3 py-2 sm:px-6 sm:py-3">Nama Material</th>
+                                    <th class="px-3 py-2 sm:px-6 sm:py-3 w-24 text-right">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 <tr v-for="mat in materials" :key="mat.id" class="hover:bg-slate-50/80">
-                                    <td class="px-6 py-3 font-medium text-slate-700">
+                                    <td class="px-3 py-2 sm:px-6 sm:py-3 font-medium text-slate-700">
                                         {{ mat.name }}
                                     </td>
-                                    <td class="px-6 py-3 text-right">
+                                    <td class="px-3 py-2 sm:px-6 sm:py-3 text-right">
                                         <button 
                                             @click="deleteMaterial(mat)"
                                             class="text-rose-500 hover:text-rose-700 hover:bg-rose-50 p-1.5 rounded-lg transition-colors"
@@ -701,14 +701,14 @@ const saveEditArea = (area) => {
                                     v-model="cetForm.name" 
                                     placeholder="Nama Jenis Pengeluaran (contoh: Material)"
                                     required
-                                    class="w-full rounded-xl border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                    class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                                 />
                                 <p v-if="cetForm.errors.name" class="mt-1 text-xs text-rose-600">{{ cetForm.errors.name }}</p>
                             </div>
                             <button 
                                 type="submit" 
                                 :disabled="cetForm.processing"
-                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
                             >
                                 Tambah
                             </button>
@@ -717,19 +717,19 @@ const saveEditArea = (area) => {
 
                     <div class="p-0">
                         <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm">
+<table class="w-full text-left text-xs sm:text-sm">
                             <thead>
                                 <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold uppercase text-slate-500">
-                                    <th class="px-6 py-3">Nama Jenis</th>
-                                    <th class="px-6 py-3 w-24 text-right">Aksi</th>
+                                    <th class="px-3 py-2 sm:px-6 sm:py-3">Nama Jenis</th>
+                                    <th class="px-3 py-2 sm:px-6 sm:py-3 w-24 text-right">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 <tr v-for="type in companyExpenseTypes" :key="type.id" class="hover:bg-slate-50/80">
-                                    <td class="px-6 py-3 font-medium text-slate-700">
+                                    <td class="px-3 py-2 sm:px-6 sm:py-3 font-medium text-slate-700">
                                         {{ type.name }}
                                     </td>
-                                    <td class="px-6 py-3 text-right">
+                                    <td class="px-3 py-2 sm:px-6 sm:py-3 text-right">
                                         <button 
                                             @click="deleteCet(type)"
                                             class="text-rose-500 hover:text-rose-700 hover:bg-rose-50 p-1.5 rounded-lg transition-colors"
@@ -768,7 +768,7 @@ const saveEditArea = (area) => {
                                         v-model="ipForm.name" 
                                         placeholder="Nama Paket (contoh: 10 Mbps)"
                                         required
-                                        class="w-full rounded-xl border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                        class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                                     />
                                     <p v-if="ipForm.errors.name" class="mt-1 text-xs text-rose-600">{{ ipForm.errors.name }}</p>
                                 </div>
@@ -779,7 +779,7 @@ const saveEditArea = (area) => {
                                         placeholder="Harga (contoh: 150000)"
                                         required
                                         min="0"
-                                        class="w-full rounded-xl border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                        class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                                     />
                                     <p v-if="ipForm.errors.price" class="mt-1 text-xs text-rose-600">{{ ipForm.errors.price }}</p>
                                 </div>
@@ -788,7 +788,7 @@ const saveEditArea = (area) => {
                                         type="number" 
                                         v-model="ipForm.installation_fee" 
                                         placeholder="Biaya Pasang (opsional)"
-                                        class="w-full rounded-xl border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                        class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                                     />
                                     <p v-if="ipForm.errors.installation_fee" class="mt-1 text-xs text-rose-600">{{ ipForm.errors.installation_fee }}</p>
                                 </div>
@@ -796,7 +796,7 @@ const saveEditArea = (area) => {
                             <button 
                                 type="submit" 
                                 :disabled="ipForm.processing"
-                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
                             >
                                 Tambah
                             </button>
@@ -805,28 +805,28 @@ const saveEditArea = (area) => {
 
                     <div class="p-0">
                         <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm">
+<table class="w-full text-left text-xs sm:text-sm">
                             <thead>
                                 <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold uppercase text-slate-500">
-                                    <th class="px-6 py-3">Nama Paket</th>
-                                    <th class="px-6 py-3">Harga</th>
-                                    <th class="px-6 py-3 w-24 text-right">Aksi</th>
+                                    <th class="px-3 py-2 sm:px-6 sm:py-3">Nama Paket</th>
+                                    <th class="px-3 py-2 sm:px-6 sm:py-3">Harga</th>
+                                    <th class="px-3 py-2 sm:px-6 sm:py-3 w-24 text-right">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 <tr v-for="pkg in internetPackages" :key="pkg.id" class="hover:bg-slate-50/80">
                                     <template v-if="editingIpId === pkg.id">
-                                        <td class="px-6 py-3">
-                                            <input type="text" v-model="editIpForm.name" class="w-full rounded-lg border-slate-300 text-sm py-1.5 focus:ring-indigo-500 focus:border-indigo-500" required>
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3">
+                                            <input type="text" v-model="editIpForm.name" class="w-full rounded-lg border-slate-300 text-xs sm:text-sm py-1.5 focus:ring-indigo-500 focus:border-indigo-500" required>
                                             <p v-if="editIpForm.errors.name" class="mt-1 text-[10px] text-rose-600">{{ editIpForm.errors.name }}</p>
                                         </td>
-                                        <td class="px-6 py-3">
-                                            <input type="number" v-model="editIpForm.price" class="w-full rounded-lg border-slate-300 text-sm py-1.5 focus:ring-indigo-500 focus:border-indigo-500" required>
-                                            <input type="number" v-model="editIpForm.installation_fee" placeholder="Biaya pasang" class="w-full rounded-lg border-slate-300 text-sm py-1.5 focus:ring-indigo-500 focus:border-indigo-500 mt-1">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3">
+                                            <input type="number" v-model="editIpForm.price" class="w-full rounded-lg border-slate-300 text-xs sm:text-sm py-1.5 focus:ring-indigo-500 focus:border-indigo-500" required>
+                                            <input type="number" v-model="editIpForm.installation_fee" placeholder="Biaya pasang" class="w-full rounded-lg border-slate-300 text-xs sm:text-sm py-1.5 focus:ring-indigo-500 focus:border-indigo-500 mt-1">
                                             <p v-if="editIpForm.errors.price" class="mt-1 text-[10px] text-rose-600">{{ editIpForm.errors.price }}</p>
                                             <p v-if="editIpForm.errors.installation_fee" class="mt-1 text-[10px] text-rose-600">{{ editIpForm.errors.installation_fee }}</p>
                                         </td>
-                                        <td class="px-6 py-3 text-right whitespace-nowrap">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 text-right whitespace-nowrap">
                                             <button 
                                                 @click="saveEditIp(pkg)"
                                                 :disabled="editIpForm.processing"
@@ -843,14 +843,14 @@ const saveEditArea = (area) => {
                                         </td>
                                     </template>
                                     <template v-else>
-                                        <td class="px-6 py-3 font-medium text-slate-700">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 font-medium text-slate-700">
                                             {{ pkg.name }}
                                         </td>
-                                        <td class="px-6 py-3">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3">
                                             <div class="font-semibold text-slate-800">{{ formatRupiah(pkg.price) }}</div>
                                             <div v-if="pkg.installation_fee !== null" class="text-xs text-slate-500">Pasang: {{ formatRupiah(pkg.installation_fee) }}</div>
                                         </td>
-                                        <td class="px-6 py-3 text-right whitespace-nowrap">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 text-right whitespace-nowrap">
                                             <button 
                                                 @click="startEditIp(pkg)"
                                                 class="text-amber-500 hover:text-amber-700 hover:bg-amber-50 p-1.5 rounded-lg transition-colors mr-1"
@@ -899,7 +899,7 @@ const saveEditArea = (area) => {
                                         v-model="areaForm.name" 
                                         placeholder="Nama Area (contoh: Komplek A)"
                                         required
-                                        class="w-full rounded-xl border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                        class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                                     />
                                     <p v-if="areaForm.errors.name" class="mt-1 text-xs text-rose-600">{{ areaForm.errors.name }}</p>
                                 </div>
@@ -908,7 +908,7 @@ const saveEditArea = (area) => {
                                         type="text" 
                                         v-model="areaForm.description" 
                                         placeholder="Keterangan (opsional)"
-                                        class="w-full rounded-xl border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                        class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                                     />
                                     <p v-if="areaForm.errors.description" class="mt-1 text-xs text-rose-600">{{ areaForm.errors.description }}</p>
                                 </div>
@@ -917,7 +917,7 @@ const saveEditArea = (area) => {
                                         type="number" 
                                         v-model="areaForm.installation_fee" 
                                         placeholder="Biaya Pasang (opsional)"
-                                        class="w-full rounded-xl border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
+                                        class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
                                     />
                                     <p v-if="areaForm.errors.installation_fee" class="mt-1 text-xs text-rose-600">{{ areaForm.errors.installation_fee }}</p>
                                 </div>
@@ -925,7 +925,7 @@ const saveEditArea = (area) => {
                             <button 
                                 type="submit" 
                                 :disabled="areaForm.processing"
-                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
                             >
                                 Tambah
                             </button>
@@ -934,28 +934,28 @@ const saveEditArea = (area) => {
 
                     <div class="p-0">
                         <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm">
+<table class="w-full text-left text-xs sm:text-sm">
                             <thead>
                                 <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold uppercase text-slate-500">
-                                    <th class="px-6 py-3">Nama Area</th>
-                                    <th class="px-6 py-3">Keterangan</th>
-                                    <th class="px-6 py-3 w-24 text-right">Aksi</th>
+                                    <th class="px-3 py-2 sm:px-6 sm:py-3">Nama Area</th>
+                                    <th class="px-3 py-2 sm:px-6 sm:py-3">Keterangan</th>
+                                    <th class="px-3 py-2 sm:px-6 sm:py-3 w-24 text-right">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 <tr v-for="area in areas" :key="area.id" class="hover:bg-slate-50/80">
                                     <template v-if="editingAreaId === area.id">
-                                        <td class="px-6 py-3">
-                                            <input type="text" v-model="editAreaForm.name" class="w-full rounded-md border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 py-1 px-2" required>
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3">
+                                            <input type="text" v-model="editAreaForm.name" class="w-full rounded-md border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 py-1 px-2" required>
                                             <p v-if="editAreaForm.errors.name" class="mt-1 text-[10px] text-rose-600">{{ editAreaForm.errors.name }}</p>
                                         </td>
-                                        <td class="px-6 py-3">
-                                            <input type="text" v-model="editAreaForm.description" class="w-full rounded-md border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 py-1 px-2">
-                                            <input type="number" v-model="editAreaForm.installation_fee" placeholder="Biaya pasang" class="w-full rounded-md border-slate-300 text-sm focus:border-indigo-500 focus:ring-indigo-500 py-1 px-2 mt-1">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3">
+                                            <input type="text" v-model="editAreaForm.description" class="w-full rounded-md border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 py-1 px-2">
+                                            <input type="number" v-model="editAreaForm.installation_fee" placeholder="Biaya pasang" class="w-full rounded-md border-slate-300 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500 py-1 px-2 mt-1">
                                             <p v-if="editAreaForm.errors.description" class="mt-1 text-[10px] text-rose-600">{{ editAreaForm.errors.description }}</p>
                                             <p v-if="editAreaForm.errors.installation_fee" class="mt-1 text-[10px] text-rose-600">{{ editAreaForm.errors.installation_fee }}</p>
                                         </td>
-                                        <td class="px-6 py-3 text-right whitespace-nowrap">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 text-right whitespace-nowrap">
                                             <button 
                                                 @click="saveEditArea(area)"
                                                 :disabled="editAreaForm.processing"
@@ -972,14 +972,14 @@ const saveEditArea = (area) => {
                                         </td>
                                     </template>
                                     <template v-else>
-                                        <td class="px-6 py-3 font-medium text-slate-700">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 font-medium text-slate-700">
                                             {{ area.name }}
                                         </td>
-                                        <td class="px-6 py-3">
-                                            <div class="text-sm text-slate-600">{{ area.description || '-' }}</div>
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3">
+                                            <div class="text-xs sm:text-sm text-slate-600">{{ area.description || '-' }}</div>
                                             <div v-if="area.installation_fee !== null" class="text-xs text-slate-500 mt-0.5">Pasang: {{ formatRupiah(area.installation_fee) }}</div>
                                         </td>
-                                        <td class="px-6 py-3 text-right whitespace-nowrap">
+                                        <td class="px-3 py-2 sm:px-6 sm:py-3 text-right whitespace-nowrap">
                                             <button 
                                                 @click="startEditArea(area)"
                                                 class="text-amber-500 hover:text-amber-700 hover:bg-amber-50 p-1.5 rounded-lg transition-colors mr-1"

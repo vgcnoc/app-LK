@@ -143,7 +143,7 @@ function handleImageError() {
                                             Documentation
                                         </h2>
 
-                                        <p class="mt-4 text-sm/relaxed">
+                                        <p class="mt-4 text-xs sm:text-sm/relaxed">
                                             Laravel has wonderful documentation
                                             covering every aspect of the
                                             framework. Whether you are a
@@ -199,7 +199,7 @@ function handleImageError() {
                                     Laracasts
                                 </h2>
 
-                                <p class="mt-4 text-sm/relaxed">
+                                <p class="mt-4 text-xs sm:text-sm/relaxed">
                                     Laracasts offers thousands of video
                                     tutorials on Laravel, PHP, and JavaScript
                                     development. Check them out, see for
@@ -257,7 +257,7 @@ function handleImageError() {
                                     Laravel News
                                 </h2>
 
-                                <p class="mt-4 text-sm/relaxed">
+                                <p class="mt-4 text-xs sm:text-sm/relaxed">
                                     Laravel News is a community driven portal
                                     and newsletter aggregating all of the latest
                                     and most important news in the Laravel
@@ -308,7 +308,7 @@ function handleImageError() {
                                     Vibrant Ecosystem
                                 </h2>
 
-                                <p class="mt-4 text-sm/relaxed">
+                                <p class="mt-4 text-xs sm:text-sm/relaxed">
                                     Laravel's robust library of first-party
                                     tools and libraries, such as
                                     <a
@@ -376,7 +376,7 @@ function handleImageError() {
                 </main>
 
                 <footer
-                    class="py-16 text-center text-sm text-black dark:text-white/70"
+                    class="py-16 text-center text-xs sm:text-sm text-black dark:text-white/70"
                 >
                     Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }})
                 </footer>

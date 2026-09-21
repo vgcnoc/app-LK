@@ -867,7 +867,7 @@ const deleteCustomer = (customer) => {
                     <h2 class="text-2xl font-bold tracking-tight text-slate-800 break-words">
                         Billing Data
                     </h2>
-                    <p class="text-sm text-slate-500 break-words">
+                    <p class="text-xs sm:text-sm text-slate-500 break-words">
                         Kelola Billing Data, pantau status tagihan, dan import data dari Excel.
                     </p>
                 </div>
@@ -992,7 +992,7 @@ const deleteCustomer = (customer) => {
 
                 <!-- 2. IMPORT SECTION -->
                 <div class="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm print:hidden">
-                    <div class="border-b border-slate-100 px-6 py-4">
+                    <div class="border-b border-slate-100 px-3 py-3 sm:px-6 sm:py-4">
                         <div class="flex items-center gap-2.5">
                             <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -1039,7 +1039,7 @@ const deleteCustomer = (customer) => {
                                             </svg>
                                         </div>
 
-                                        <div class="text-sm text-left">
+                                        <div class="text-xs sm:text-sm text-left">
                                             <div class="text-slate-600">
                                                 <span class="font-semibold text-indigo-600 group-hover:underline">Pilih file</span> atau seret & lepas file ke sini
                                             </div>
@@ -1100,7 +1100,7 @@ const deleteCustomer = (customer) => {
                                 <button
                                     type="submit"
                                     :disabled="isImporting"
-                                    class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 hover:shadow focus:outline-none focus:ring-2 focus:ring-indigo-500/30 disabled:cursor-not-allowed disabled:opacity-50"
+                                    class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 hover:shadow focus:outline-none focus:ring-2 focus:ring-indigo-500/30 disabled:cursor-not-allowed disabled:opacity-50"
                                 >
                                     <svg
                                         v-if="isImporting"
@@ -1126,7 +1126,7 @@ const deleteCustomer = (customer) => {
                 <!-- Print Header -->
                 <div class="hidden print:block mb-6 text-center">
                     <h2 class="text-2xl font-bold text-slate-800">Laporan Billing Data</h2>
-                    <p class="text-sm text-slate-600 mt-1">
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1">
                         Kategori: <span class="font-semibold">{{ activeTab.toUpperCase().replace('_', ' ') }}</span>
                     </p>
                     <p class="text-xs text-slate-500 mt-1">
@@ -1336,24 +1336,24 @@ const deleteCustomer = (customer) => {
                     <!-- Table -->
                     <div v-if="activeTab !== 'riwayat_upgrade'" class="overflow-x-auto print:overflow-visible print:w-full">
                         <div class="overflow-x-auto w-full pb-4">
-<table class="min-w-full divide-y divide-slate-200 text-left text-sm print:text-[11px]">
+<table class="min-w-full divide-y divide-slate-200 text-left text-xs sm:text-sm print:text-[11px]">
                             <thead class="bg-slate-50/80 text-xs font-semibold uppercase tracking-wider text-slate-500 print:text-[10px]">
                                 <tr>
-                                    <th scope="col" class="w-12 px-4 py-3.5 text-center print:hidden whitespace-nowrap">
+                                    <th scope="col" class="w-12 px-2 py-2.5 sm:px-4 sm:py-3.5 text-center print:hidden whitespace-nowrap">
                                         <input type="checkbox" class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500" @change="toggleSelectAll" :checked="selectedCustomers.length === paginatedCustomers.length && paginatedCustomers.length > 0" />
                                     </th>
-                                    <th scope="col" class="w-16 px-4 py-3.5 text-center whitespace-nowrap">No</th>
-                                    <th scope="col" class="px-6 py-3.5 whitespace-nowrap">Nama Pelanggan</th>
-                                    <th scope="col" class="px-6 py-3.5 whitespace-nowrap">Area</th>
-                                    <th scope="col" class="px-6 py-3.5 whitespace-nowrap">Alamat</th>
-                                    <th scope="col" class="px-6 py-3.5 print:hidden whitespace-nowrap">Nama Paket</th>
-                                    <th scope="col" class="px-6 py-3.5 print:hidden whitespace-nowrap">Tanggal Register</th>
-                                    <th scope="col" class="px-6 py-3.5 print:hidden whitespace-nowrap">Pembayaran Terakhir</th>
-                                    <th scope="col" class="px-6 py-3.5 text-right whitespace-nowrap">Tagihan</th>
-                                    <th scope="col" class="px-6 py-3.5 text-center print:hidden whitespace-nowrap">Status Pelanggan</th>
-                                    <th scope="col" class="px-6 py-3.5 text-center print:hidden whitespace-nowrap">Status</th>
-                                    <th scope="col" class="px-6 py-3.5 text-center print:hidden whitespace-nowrap">Janji Bayar</th>
-                                    <th scope="col" class="w-36 px-6 py-3.5 text-center print:hidden whitespace-nowrap">Aksi</th>
+                                    <th scope="col" class="w-16 px-2 py-2.5 sm:px-4 sm:py-3.5 text-center whitespace-nowrap">No</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 whitespace-nowrap">Nama Pelanggan</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 whitespace-nowrap">Area</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 whitespace-nowrap">Alamat</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 print:hidden whitespace-nowrap">Nama Paket</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 print:hidden whitespace-nowrap">Tanggal Register</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 print:hidden whitespace-nowrap">Pembayaran Terakhir</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-right whitespace-nowrap">Tagihan</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center print:hidden whitespace-nowrap">Status Pelanggan</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center print:hidden whitespace-nowrap">Status</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center print:hidden whitespace-nowrap">Janji Bayar</th>
+                                    <th scope="col" class="w-36 px-3 py-2.5 sm:px-6 sm:py-3.5 text-center print:hidden whitespace-nowrap">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 bg-white">
@@ -1363,17 +1363,17 @@ const deleteCustomer = (customer) => {
                                     class="transition-colors duration-150 hover:bg-slate-50/80"
                                 >
                                     <!-- Checkbox -->
-                                    <td class="whitespace-nowrap px-4 py-4 text-center print:hidden">
+                                    <td class="whitespace-nowrap px-2 py-3 sm:px-4 sm:py-4 text-center print:hidden">
                                         <input type="checkbox" class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500" v-model="selectedCustomers" :value="customer.id" />
                                     </td>
                                     
                                     <!-- Row Number -->
-                                    <td class="whitespace-nowrap print:whitespace-normal px-4 py-4 text-center text-xs font-medium text-slate-400">
+                                    <td class="whitespace-nowrap print:whitespace-normal px-2 py-3 sm:px-4 sm:py-4 text-center text-xs font-medium text-slate-400">
                                         {{ index + 1 }}
                                     </td>
 
                                     <!-- Customer Name -->
-                                    <td class="whitespace-nowrap print:whitespace-normal px-6 py-4">
+                                    <td class="whitespace-nowrap print:whitespace-normal px-3 py-3 sm:px-6 sm:py-4">
                                         <div class="flex items-center gap-3">
                                             <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600 ring-1 ring-slate-200">
                                                 {{ (customer.name || '?').charAt(0).toUpperCase() }}
@@ -1387,7 +1387,7 @@ const deleteCustomer = (customer) => {
                                     </td>
 
                                     <!-- Area -->
-                                    <td class="whitespace-nowrap print:whitespace-normal px-6 py-4 text-slate-600">
+                                    <td class="whitespace-nowrap print:whitespace-normal px-3 py-3 sm:px-6 sm:py-4 text-slate-600">
                                         <div class="flex items-center gap-1.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -1398,34 +1398,34 @@ const deleteCustomer = (customer) => {
                                     </td>
 
                                     <!-- Address -->
-                                    <td class="px-6 py-4 text-slate-600">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 text-slate-600">
                                         <span class="line-clamp-2 max-w-[200px]" :title="customer.alamat">
                                             {{ customer.alamat || '-' }}
                                         </span>
                                     </td>
 
                                     <!-- Package -->
-                                    <td class="whitespace-nowrap print:hidden px-6 py-4 font-medium text-slate-700">
+                                    <td class="whitespace-nowrap print:hidden px-3 py-3 sm:px-6 sm:py-4 font-medium text-slate-700">
                                         {{ customer.paket || '-' }}
                                     </td>
 
                                     <!-- Tanggal Register -->
-                                    <td class="whitespace-nowrap print:hidden px-6 py-4 text-xs text-slate-600">
+                                    <td class="whitespace-nowrap print:hidden px-3 py-3 sm:px-6 sm:py-4 text-xs text-slate-600">
                                         {{ formatDate(customer.register_date) }}
                                     </td>
 
                                     <!-- Pembayaran Terakhir -->
-                                    <td class="whitespace-nowrap print:hidden px-6 py-4 text-xs text-slate-600">
+                                    <td class="whitespace-nowrap print:hidden px-3 py-3 sm:px-6 sm:py-4 text-xs text-slate-600">
                                         {{ formatDate(customer.last_paid_date) }}
                                     </td>
 
                                     <!-- Amount -->
-                                    <td class="whitespace-nowrap px-6 py-4 text-right font-medium text-slate-800">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-right font-medium text-slate-800">
                                         {{ isAktif(customer) ? formatRupiah(customer.amount) : formatRupiah(0) }}
                                     </td>
 
                                     <!-- Status Pelanggan -->
-                                    <td class="whitespace-nowrap px-6 py-4 text-center">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center">
                                         <span
                                             v-if="String(customer.status_pelanggan || 'Aktif').toLowerCase() === 'aktif'"
                                             class="inline-flex items-center gap-1.5 rounded-md bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700"
@@ -1459,7 +1459,7 @@ const deleteCustomer = (customer) => {
                                     </td>
 
                                     <!-- Status Badge -->
-                                    <td class="whitespace-nowrap print:hidden px-6 py-4 text-center">
+                                    <td class="whitespace-nowrap print:hidden px-3 py-3 sm:px-6 sm:py-4 text-center">
                                         <span
                                             v-if="String(customer.status_pelanggan || 'Aktif').toLowerCase() !== 'aktif'"
                                             class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 ring-1 ring-inset ring-slate-600/20"
@@ -1503,7 +1503,7 @@ const deleteCustomer = (customer) => {
                                     </td>
 
                                     <!-- Janji Bayar -->
-                                    <td class="whitespace-nowrap print:hidden px-6 py-4 text-center">
+                                    <td class="whitespace-nowrap print:hidden px-3 py-3 sm:px-6 sm:py-4 text-center">
                                         <div v-if="customer.promise_date && String(customer.status).toLowerCase() !== 'paid'" class="flex flex-col items-center gap-1">
                                             <span class="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-inset ring-indigo-600/20">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -1518,7 +1518,7 @@ const deleteCustomer = (customer) => {
                                     </td>
 
                                     <!-- Actions -->
-                                    <td class="whitespace-nowrap px-6 py-4 text-center print:hidden">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center print:hidden">
                                         <div class="flex items-center justify-center gap-2">
                                             <!-- Set Lunas Button -->
                                             <button
@@ -1611,7 +1611,7 @@ const deleteCustomer = (customer) => {
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                             </svg>
                                         </div>
-                                        <h4 class="mt-3 text-sm font-semibold text-slate-800">
+                                        <h4 class="mt-3 text-xs sm:text-sm font-semibold text-slate-800">
                                             Tidak Ada Billing Data
                                         </h4>
                                         <p class="mt-1 text-xs text-slate-500">
@@ -1636,8 +1636,8 @@ const deleteCustomer = (customer) => {
                             </tbody>
                             <tfoot class="bg-slate-50 font-semibold text-slate-800 hidden print:table-footer-group border-t-2 border-slate-200">
                                 <tr>
-                                    <td colspan="4" class="px-6 py-4 text-right uppercase tracking-wider text-xs text-slate-500">Total Keseluruhan</td>
-                                    <td class="px-6 py-4 text-right whitespace-nowrap">{{ formatRupiah(totalTagihanFiltered) }}</td>
+                                    <td colspan="4" class="px-3 py-3 sm:px-6 sm:py-4 text-right uppercase tracking-wider text-xs text-slate-500">Total Keseluruhan</td>
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 text-right whitespace-nowrap">{{ formatRupiah(totalTagihanFiltered) }}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -1645,7 +1645,7 @@ const deleteCustomer = (customer) => {
 
                         <!-- Pagination -->
                         <div class="flex items-center justify-between border-t border-slate-100 bg-slate-50 px-5 py-4 print:hidden">
-                            <div class="text-sm text-slate-500">
+                            <div class="text-xs sm:text-sm text-slate-500">
                                 Menampilkan <span class="font-medium text-slate-900">{{ (currentPage - 1) * itemsPerPage + 1 }}</span> - 
                                 <span class="font-medium text-slate-900">{{ Math.min(currentPage * itemsPerPage, filteredCustomers.length) }}</span> dari 
                                 <span class="font-medium text-slate-900">{{ filteredCustomers.length }}</span> data
@@ -1676,27 +1676,27 @@ const deleteCustomer = (customer) => {
 <table class="min-w-full divide-y divide-slate-200">
                             <thead class="bg-slate-50">
                                 <tr>
-                                    <th scope="col" class="px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Nama Pelanggan</th>
-                                    <th scope="col" class="px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Paket Sebelumnya</th>
-                                    <th scope="col" class="px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Paket Sekarang</th>
-                                    <th scope="col" class="px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Tanggal Upgrade/Downgrade</th>
-                                    <th scope="col" class="px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Keterangan</th>
+                                    <th scope="col" class="px-2 py-2.5 sm:px-4 sm:py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Nama Pelanggan</th>
+                                    <th scope="col" class="px-2 py-2.5 sm:px-4 sm:py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Paket Sebelumnya</th>
+                                    <th scope="col" class="px-2 py-2.5 sm:px-4 sm:py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Paket Sekarang</th>
+                                    <th scope="col" class="px-2 py-2.5 sm:px-4 sm:py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Tanggal Upgrade/Downgrade</th>
+                                    <th scope="col" class="px-2 py-2.5 sm:px-4 sm:py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-200 bg-white">
                                 <tr v-for="history in props.upgradeHistories" :key="history.id" class="hover:bg-slate-50 transition-colors">
-                                    <td class="whitespace-nowrap px-4 py-4 text-sm font-bold text-slate-900">{{ history.customer?.name || 'Pelanggan Dihapus' }}</td>
-                                    <td class="whitespace-nowrap px-4 py-4 text-sm text-slate-600">
-                                        <span class="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-0.5 text-sm font-medium text-slate-800">
+                                    <td class="whitespace-nowrap px-2 py-3 sm:px-4 sm:py-4 text-xs sm:text-sm font-bold text-slate-900">{{ history.customer?.name || 'Pelanggan Dihapus' }}</td>
+                                    <td class="whitespace-nowrap px-2 py-3 sm:px-4 sm:py-4 text-xs sm:text-sm text-slate-600">
+                                        <span class="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-0.5 text-xs sm:text-sm font-medium text-slate-800">
                                             {{ history.old_paket || '-' }}
                                         </span>
                                     </td>
-                                    <td class="whitespace-nowrap px-4 py-4 text-sm text-slate-600">
-                                        <span class="inline-flex items-center rounded-md bg-indigo-100 px-2.5 py-0.5 text-sm font-medium text-indigo-800">
+                                    <td class="whitespace-nowrap px-2 py-3 sm:px-4 sm:py-4 text-xs sm:text-sm text-slate-600">
+                                        <span class="inline-flex items-center rounded-md bg-indigo-100 px-2.5 py-0.5 text-xs sm:text-sm font-medium text-indigo-800">
                                             {{ history.new_paket || '-' }}
                                         </span>
                                     </td>
-                                    <td class="whitespace-nowrap px-4 py-4 text-sm text-slate-600">
+                                    <td class="whitespace-nowrap px-2 py-3 sm:px-4 sm:py-4 text-xs sm:text-sm text-slate-600">
                                         <div class="flex items-center gap-1.5 text-slate-500">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -1704,9 +1704,9 @@ const deleteCustomer = (customer) => {
                                             {{ new Date(history.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) }}
                                         </div>
                                     </td>
-                                    <td class="whitespace-nowrap px-4 py-4 text-sm text-slate-600">
+                                    <td class="whitespace-nowrap px-2 py-3 sm:px-4 sm:py-4 text-xs sm:text-sm text-slate-600">
                                         <span 
-                                            class="inline-flex items-center rounded-md px-2.5 py-0.5 text-sm font-bold"
+                                            class="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs sm:text-sm font-bold"
                                             :class="{
                                                 'bg-emerald-100 text-emerald-800': getUpgradeStatus(history.old_paket, history.new_paket).color === 'emerald',
                                                 'bg-rose-100 text-rose-800': getUpgradeStatus(history.old_paket, history.new_paket).color === 'rose',
@@ -1721,7 +1721,7 @@ const deleteCustomer = (customer) => {
                                     </td>
                                 </tr>
                                 <tr v-if="props.upgradeHistories.length === 0">
-                                    <td colspan="5" class="px-4 py-12 text-center text-sm text-slate-500">
+                                    <td colspan="5" class="px-4 py-12 text-center text-xs sm:text-sm text-slate-500">
                                         Tidak ada riwayat perubahan paket.
                                     </td>
                                 </tr>
@@ -1786,7 +1786,7 @@ const deleteCustomer = (customer) => {
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">
                                     Nama Pelanggan
                                 </span>
-                                <p class="text-sm font-bold text-slate-800">
+                                <p class="text-xs sm:text-sm font-bold text-slate-800">
                                     {{ activeCustomer.name }}
                                 </p>
                                 <span class="mt-1 inline-flex items-center gap-1 rounded bg-white px-2 py-0.5 text-xs text-slate-600 ring-1 ring-slate-200">
@@ -1821,7 +1821,7 @@ const deleteCustomer = (customer) => {
                                     v-model.number="lunasForm.payment_amount"
                                     :max="activeCustomer?.amount"
                                     min="1"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 pl-10 pr-3.5 text-sm text-slate-800 shadow-sm transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 pl-10 pr-3.5 text-xs sm:text-sm text-slate-800 shadow-sm transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                                     required
                                 />
                             </div>
@@ -1856,7 +1856,7 @@ const deleteCustomer = (customer) => {
                                     id="payment-method"
                                     v-model="lunasForm.payment_method_id"
                                     @change="onPaymentMethodSelect"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 pl-3.5 pr-10 text-sm text-slate-800 shadow-sm transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 pl-3.5 pr-10 text-xs sm:text-sm text-slate-800 shadow-sm transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                                     required
                                 >
                                     <option value="" disabled>Pilih metode pembayaran...</option>
@@ -1881,7 +1881,7 @@ const deleteCustomer = (customer) => {
                                     id="payment-date"
                                     type="date"
                                     v-model="lunasForm.payment_date"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3.5 text-sm text-slate-800 shadow-sm transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3.5 text-xs sm:text-sm text-slate-800 shadow-sm transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                                     required
                                 />
                             </div>
@@ -1895,7 +1895,7 @@ const deleteCustomer = (customer) => {
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     <div>
-                                        <p class="text-sm font-semibold text-slate-800">Janji Bayar Sisa</p>
+                                        <p class="text-xs sm:text-sm font-semibold text-slate-800">Janji Bayar Sisa</p>
                                         <p class="text-[11px] text-slate-500">Atur tanggal pelanggan berjanji bayar sisa tagihan</p>
                                     </div>
                                 </div>
@@ -1912,7 +1912,7 @@ const deleteCustomer = (customer) => {
                                     <input
                                         type="date"
                                         v-model="lunasForm.promise_date"
-                                        class="mt-1 w-full rounded-lg border border-slate-300 py-2 px-3 text-sm text-slate-800 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="mt-1 w-full rounded-lg border border-slate-300 py-2 px-3 text-xs sm:text-sm text-slate-800 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                         :required="lunasForm.is_janji_bayar"
                                     />
                                 </div>
@@ -1961,7 +1961,7 @@ const deleteCustomer = (customer) => {
 
             <!-- Modal Panel -->
             <div class="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white shadow-2xl transition-all">
-                <div class="border-b border-slate-100 bg-slate-50/50 px-6 py-4">
+                <div class="border-b border-slate-100 bg-slate-50/50 px-3 py-3 sm:px-6 sm:py-4">
                     <h3 class="text-lg font-bold text-slate-800">Edit Pelanggan</h3>
                     <p class="mt-1 text-xs text-slate-500">Perbarui informasi Billing Data.</p>
                 </div>
@@ -1977,7 +1977,7 @@ const deleteCustomer = (customer) => {
                                 <input
                                     v-model="editForm.name"
                                     type="text"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                     required
                                 />
                                 <p v-if="editForm.errors.name" class="mt-1 text-xs text-rose-600">{{ editForm.errors.name }}</p>
@@ -1990,7 +1990,7 @@ const deleteCustomer = (customer) => {
                                 </label>
                                 <select
                                     v-model="editForm.area"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 bg-white"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 bg-white"
                                 >
                                     <option value="">-- Pilih Area --</option>
                                     <option v-for="a in uniqueAreas" :key="a" :value="a">{{ a }}</option>
@@ -2006,7 +2006,7 @@ const deleteCustomer = (customer) => {
                                 <textarea
                                     v-model="editForm.alamat"
                                     rows="2"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                 ></textarea>
                                 <p v-if="editForm.errors.alamat" class="mt-1 text-xs text-rose-600">{{ editForm.errors.alamat }}</p>
                             </div>
@@ -2027,7 +2027,7 @@ const deleteCustomer = (customer) => {
                                     v-model="editForm.paket" 
                                     @change="onPaketChange"
                                     :disabled="!isUpgrade"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 disabled:bg-slate-100 disabled:text-slate-500"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 disabled:bg-slate-100 disabled:text-slate-500"
                                 >
                                     <option value="" disabled>Pilih Paket Internet</option>
                                     <option v-for="pkg in internetPackages" :key="pkg.id" :value="pkg.name">
@@ -2044,7 +2044,7 @@ const deleteCustomer = (customer) => {
                                     <input
                                         v-model="editForm.amount"
                                         type="number"
-                                        class="w-full rounded-lg border border-indigo-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-lg border border-indigo-200 bg-white py-2 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                         placeholder="0"
                                     />
                                     <p class="text-[10px] text-indigo-600 mt-1">Atur nominal tagihan secara manual untuk satu bulan ini saja.</p>
@@ -2059,7 +2059,7 @@ const deleteCustomer = (customer) => {
                                 <input
                                     v-model="editForm.register_date"
                                     type="date"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                 />
                                 <p v-if="editForm.errors.register_date" class="mt-1 text-xs text-rose-600">{{ editForm.errors.register_date }}</p>
                             </div>
@@ -2071,7 +2071,7 @@ const deleteCustomer = (customer) => {
                                 </label>
                                 <select
                                     v-model="editForm.status_pelanggan"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                 >
                                     <option value="Aktif">Aktif</option>
                                     <option value="Berhenti sementara">Berhenti sementara</option>
@@ -2090,7 +2090,7 @@ const deleteCustomer = (customer) => {
                                     <input
                                         v-model="editForm.suspend_start_date"
                                         type="date"
-                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <p v-if="editForm.errors.suspend_start_date" class="mt-1 text-xs text-rose-600">{{ editForm.errors.suspend_start_date }}</p>
                                 </div>
@@ -2101,7 +2101,7 @@ const deleteCustomer = (customer) => {
                                     <input
                                         v-model="editForm.suspend_end_date"
                                         type="date"
-                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <p v-if="editForm.errors.suspend_end_date" class="mt-1 text-xs text-rose-600">{{ editForm.errors.suspend_end_date }}</p>
                                 </div>
@@ -2115,7 +2115,7 @@ const deleteCustomer = (customer) => {
                                 <input
                                     v-model="editForm.stop_date"
                                     type="date"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                 />
                                 <p v-if="editForm.errors.stop_date" class="mt-1 text-xs text-rose-600">{{ editForm.errors.stop_date }}</p>
                             </div>
@@ -2128,7 +2128,7 @@ const deleteCustomer = (customer) => {
                                 <input
                                     v-model="editForm.last_paid_date"
                                     type="date"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                 />
                                 <p v-if="editForm.errors.last_paid_date" class="mt-1 text-xs text-rose-600">{{ editForm.errors.last_paid_date }}</p>
                             </div>
@@ -2142,7 +2142,7 @@ const deleteCustomer = (customer) => {
                                     v-model="editForm.base_amount"
                                     type="number"
                                     min="0"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                     required
                                 />
                                 <p v-if="editForm.errors.base_amount" class="mt-1 text-xs text-rose-600">{{ editForm.errors.base_amount }}</p>
@@ -2151,13 +2151,13 @@ const deleteCustomer = (customer) => {
                             <!-- Toggle Prorata (untuk pelanggan baru) -->
                             <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-200">
                                 <div>
-                                    <h4 class="text-sm font-semibold text-slate-800">Prorata Awal</h4>
+                                    <h4 class="text-xs sm:text-sm font-semibold text-slate-800">Prorata Awal</h4>
                                     <p class="text-xs text-slate-500">Atur nominal tagihan secara manual untuk bulan pertama.</p>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" v-model="isProrata" class="sr-only peer">
                                     <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                                    <span class="ml-3 text-sm font-medium text-slate-700">{{ isProrata ? 'ON' : 'OFF' }}</span>
+                                    <span class="ml-3 text-xs sm:text-sm font-medium text-slate-700">{{ isProrata ? 'ON' : 'OFF' }}</span>
                                 </label>
                             </div>
 
@@ -2170,7 +2170,7 @@ const deleteCustomer = (customer) => {
                                     v-model="editForm.amount"
                                     type="number"
                                     min="0"
-                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                    class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                     required
                                 />
                                 <p v-if="editForm.errors.amount" class="mt-1 text-xs text-rose-600">{{ editForm.errors.amount }}</p>
@@ -2213,7 +2213,7 @@ const deleteCustomer = (customer) => {
             <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" @click="closeJanjiModal"></div>
             <div class="relative w-full max-w-md rounded-2xl bg-white/95 backdrop-blur-xl shadow-2xl ring-1 ring-slate-200/60">
                 <!-- Header -->
-                <div class="border-b border-slate-100 px-6 py-4">
+                <div class="border-b border-slate-100 px-3 py-3 sm:px-6 sm:py-4">
                     <div class="flex items-center gap-3">
                         <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -2250,12 +2250,12 @@ const deleteCustomer = (customer) => {
 
                         <!-- Promise Date Input -->
                         <div>
-                            <label for="promise_date_input" class="block text-sm font-medium text-slate-700">Tanggal Janji Bayar</label>
+                            <label for="promise_date_input" class="block text-xs sm:text-sm font-medium text-slate-700">Tanggal Janji Bayar</label>
                             <input
                                 id="promise_date_input"
                                 type="date"
                                 v-model="janjiForm.promise_date"
-                                class="mt-1.5 block w-full rounded-xl border-0 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                                class="mt-1.5 block w-full rounded-xl border-0 px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                             />
                             <p v-if="janjiForm.errors.promise_date" class="mt-1.5 text-xs text-rose-600">{{ janjiForm.errors.promise_date }}</p>
                         </div>
@@ -2266,14 +2266,14 @@ const deleteCustomer = (customer) => {
                         <button
                             type="button"
                             @click="closeJanjiModal"
-                            class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
+                            class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs sm:text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
                         >
                             Batal
                         </button>
                         <button
                             type="submit"
                             :disabled="janjiForm.processing"
-                            class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500/30 disabled:opacity-50"
+                            class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500/30 disabled:opacity-50"
                         >
                             <svg
                                 v-if="janjiForm.processing"

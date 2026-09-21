@@ -351,7 +351,7 @@ watch(
                     <h2 class="text-xl sm:text-3xl font-bold text-slate-800 tracking-tight break-words">
                         Selamat Datang, {{ $page.props.auth.user.name }}! 👋
                     </h2>
-                    <p class="text-sm text-slate-500 mt-1 break-words">
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1 break-words">
                         Pantau bisnis internet Anda dalam satu dashboard.
                     </p>
                 </div>
@@ -359,7 +359,7 @@ watch(
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <span class="text-sm font-medium text-slate-700">{{ formattedTodayDate }}</span>
+                    <span class="text-xs sm:text-sm font-medium text-slate-700">{{ formattedTodayDate }}</span>
                 </div>
             </div>
         </template>
@@ -372,7 +372,7 @@ watch(
                 <!-- Mobile Welcome Banner -->
                 <div class="sm:hidden relative overflow-hidden bg-blue-50 rounded-2xl p-5 mb-4">
                     <div class="relative z-10 w-2/3">
-                        <p class="text-sm text-slate-600 mb-1">Selamat datang,</p>
+                        <p class="text-xs sm:text-sm text-slate-600 mb-1">Selamat datang,</p>
                         <h2 class="text-xl font-bold text-slate-900 leading-tight">
                             {{ $page.props.auth.user.name }} 👋
                         </h2>
@@ -387,12 +387,12 @@ watch(
                 </div>
 
                 <!-- Mobile Date Picker -->
-                <div class="sm:hidden flex items-center justify-between bg-white border border-slate-200 px-4 py-3 rounded-2xl shadow-sm">
+                <div class="sm:hidden flex items-center justify-between bg-white border border-slate-200 px-2 py-2 sm:px-4 sm:py-3 rounded-2xl shadow-sm">
                     <div class="flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        <span class="text-sm font-medium text-slate-700">{{ formattedTodayDate }}</span>
+                        <span class="text-xs sm:text-sm font-medium text-slate-700">{{ formattedTodayDate }}</span>
                     </div>
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                 </div>
@@ -604,28 +604,28 @@ watch(
                                 </div>
                                 <!-- Legend -->
                                 <div class="space-y-2 xl:space-y-3 min-w-[120px] flex-1">
-                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-sm">
+                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-xs sm:text-sm">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
                                             <span class="text-slate-600 truncate">Aktif</span>
                                         </div>
                                         <div class="font-semibold text-slate-800 flex-shrink-0">{{ customerStats.aktif }} <span class="text-slate-400 font-normal text-[10px] xl:text-xs">({{ customerStats.total ? Math.round((customerStats.aktif/customerStats.total)*100) : 0 }}%)</span></div>
                                     </div>
-                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-sm">
+                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-xs sm:text-sm">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-rose-500 flex-shrink-0"></span>
                                             <span class="text-slate-600 truncate">Nonaktif</span>
                                         </div>
                                         <div class="font-semibold text-slate-800 flex-shrink-0">{{ customerStats.nonaktif }} <span class="text-slate-400 font-normal text-[10px] xl:text-xs">({{ customerStats.total ? Math.round((customerStats.nonaktif/customerStats.total)*100) : 0 }}%)</span></div>
                                     </div>
-                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-sm">
+                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-xs sm:text-sm">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-amber-500 flex-shrink-0"></span>
                                             <span class="text-slate-600 truncate">Suspend</span>
                                         </div>
                                         <div class="font-semibold text-slate-800 flex-shrink-0">{{ customerStats.suspend }} <span class="text-slate-400 font-normal text-[10px] xl:text-xs">({{ customerStats.total ? Math.round((customerStats.suspend/customerStats.total)*100) : 0 }}%)</span></div>
                                     </div>
-                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-sm">
+                                    <div class="flex items-center justify-between gap-2 xl:gap-4 text-xs xl:text-xs sm:text-sm">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-purple-500 flex-shrink-0"></span>
                                             <span class="text-slate-600 truncate">Janji</span>
@@ -662,14 +662,14 @@ watch(
                                     <li v-for="(paket, index) in paketStats" :key="paket.paket" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 group">
                                         <div class="flex items-center gap-3">
                                             <div class="w-3 h-3 rounded-full flex-shrink-0" :style="{ backgroundColor: ['#f59e0b', '#64748b', '#fb923c', '#60a5fa', '#a78bfa', '#34d399'][index % 6] }"></div>
-                                            <span class="text-sm font-semibold text-slate-700 group-hover:text-indigo-600 transition-colors">{{ paket.paket }}</span>
+                                            <span class="text-xs sm:text-sm font-semibold text-slate-700 group-hover:text-indigo-600 transition-colors">{{ paket.paket }}</span>
                                         </div>
                                         <div class="text-right">
                                             <span class="font-bold text-slate-800">{{ paket.total }}</span>
                                             <span class="text-[10px] text-slate-400 ml-1">user</span>
                                         </div>
                                     </li>
-                                    <li v-if="paketStats?.length === 0" class="text-center text-sm text-slate-500 py-4">Belum ada data paket.</li>
+                                    <li v-if="paketStats?.length === 0" class="text-center text-xs sm:text-sm text-slate-500 py-4">Belum ada data paket.</li>
                                 </ul>
                             </div>
                         </div>
@@ -701,11 +701,11 @@ watch(
                             <ul class="space-y-4">
                                 <li v-for="customer in recentCustomers" :key="customer.id" class="flex items-center justify-between group">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm ring-1 ring-indigo-100">
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs sm:text-sm ring-1 ring-indigo-100">
                                             {{ (customer.name || '?').substring(0, 2).toUpperCase() }}
                                         </div>
                                         <div>
-                                            <p class="text-sm font-semibold text-slate-800 group-hover:text-indigo-600 transition-colors">{{ customer.name }}</p>
+                                            <p class="text-xs sm:text-sm font-semibold text-slate-800 group-hover:text-indigo-600 transition-colors">{{ customer.name }}</p>
                                             <p class="text-xs text-slate-500">{{ formatDate(customer.created_at) }}</p>
                                         </div>
                                     </div>
@@ -714,7 +714,7 @@ watch(
                                         <span class="px-2.5 py-1 text-[10px] font-semibold rounded-md bg-emerald-100 text-emerald-700">Baru</span>
                                     </div>
                                 </li>
-                                <li v-if="recentCustomers.length === 0" class="text-center text-sm text-slate-500 py-4">Belum ada pelanggan.</li>
+                                <li v-if="recentCustomers.length === 0" class="text-center text-xs sm:text-sm text-slate-500 py-4">Belum ada pelanggan.</li>
                             </ul>
                         </div>
                         <div class="mt-4 pt-4 border-t border-slate-100 text-center">
@@ -737,7 +737,7 @@ watch(
                             </div>
                         </div>
                         <div class="flex-1 overflow-x-auto">
-                            <table class="w-full text-left text-sm">
+                            <table class="w-full text-left text-xs sm:text-sm">
                                 <thead>
                                     <tr class="text-slate-400 text-xs border-b border-slate-100">
                                         <th class="pb-2 font-medium w-8 whitespace-nowrap">#</th>
@@ -760,7 +760,7 @@ watch(
                                         </td>
                                     </tr>
                                     <tr v-if="overdueBills.length === 0">
-                                        <td colspan="4" class="py-6 text-center text-sm text-slate-500">Tidak ada tagihan tertunggak.</td>
+                                        <td colspan="4" class="py-6 text-center text-xs sm:text-sm text-slate-500">Tidak ada tagihan tertunggak.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -800,7 +800,7 @@ watch(
                                         </div>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-semibold text-slate-800 truncate">
+                                        <p class="text-xs sm:text-sm font-semibold text-slate-800 truncate">
                                             {{ t.type === 'income' ? 'Pembayaran diterima' : 'Pengeluaran dicatat' }}
                                         </p>
                                         <p class="text-xs text-slate-500 truncate">{{ t.description }} - {{ formatRupiah(t.amount) }}</p>
@@ -809,7 +809,7 @@ watch(
                                         {{ formatDate(t.date) }}
                                     </div>
                                 </li>
-                                <li v-if="transactions.length === 0" class="text-center text-sm text-slate-500 py-4">Belum ada aktivitas.</li>
+                                <li v-if="transactions.length === 0" class="text-center text-xs sm:text-sm text-slate-500 py-4">Belum ada aktivitas.</li>
                             </ul>
                         </div>
                         <div class="mt-4 pt-4 border-t border-slate-100 text-center">
@@ -827,7 +827,7 @@ watch(
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h4 class="text-sm font-medium text-slate-700 truncate">Informasi Biaya Pemasangan Saat Ini</h4>
+                            <h4 class="text-xs sm:text-sm font-medium text-slate-700 truncate">Informasi Biaya Pemasangan Saat Ini</h4>
                             <p class="text-[10px] sm:text-xs text-slate-500 truncate">Biaya pasang global yang berlaku untuk pelanggan baru.</p>
                         </div>
                     </div>

@@ -153,7 +153,7 @@ const syncData = () => {
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm text-emerald-700">{{ $page.props.flash.success }}</p>
+                            <p class="text-xs sm:text-sm text-emerald-700">{{ $page.props.flash.success }}</p>
                         </div>
                     </div>
                 </div>
@@ -166,7 +166,7 @@ const syncData = () => {
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm text-rose-700">{{ $page.props.flash.error }}</p>
+                            <p class="text-xs sm:text-sm text-rose-700">{{ $page.props.flash.error }}</p>
                         </div>
                     </div>
                 </div>
@@ -177,27 +177,27 @@ const syncData = () => {
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl border border-slate-200">
                         <div class="p-6 border-b border-slate-200 bg-slate-50/50">
                             <h3 class="text-lg font-bold text-slate-800">Pengaturan API</h3>
-                            <p class="text-sm text-slate-500 mt-1">Konfigurasi alamat endpoint dari aplikasi billing lama Anda.</p>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1">Konfigurasi alamat endpoint dari aplikasi billing lama Anda.</p>
                         </div>
                         <div class="p-6">
                             <form @submit.prevent="saveSettings" class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Base URL Endpoint API</label>
+                                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Base URL Endpoint API</label>
                                     <input 
                                         type="url" 
                                         v-model="form.base_url" 
-                                        class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" 
+                                        class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-xs sm:text-sm" 
                                         placeholder="Contoh: https://billinglama.com/api/customers" 
                                     />
                                     <p class="text-xs text-slate-500 mt-1">Pastikan URL lengkap dengan http:// atau https://</p>
                                 </div>
                                 
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">API Key / Token (Opsional)</label>
+                                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">API Key / Token (Opsional)</label>
                                     <input 
                                         type="text" 
                                         v-model="form.api_key" 
-                                        class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" 
+                                        class="w-full border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-xs sm:text-sm" 
                                         placeholder="Masukkan Bearer Token jika diperlukan" 
                                     />
                                 </div>
@@ -223,14 +223,14 @@ const syncData = () => {
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl border border-slate-200">
                         <div class="p-6 border-b border-slate-200 bg-slate-50/50">
                             <h3 class="text-lg font-bold text-slate-800">Sinkronisasi Data</h3>
-                            <p class="text-sm text-slate-500 mt-1">Tarik data pelanggan dari billing external.</p>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1">Tarik data pelanggan dari billing external.</p>
                         </div>
                         <div class="p-6">
                             <div class="mb-6 space-y-4">
                                 <!-- Header with toggle -->
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <h4 class="text-sm font-semibold text-slate-700">Pencocokan Kolom (Mapping JSON)</h4>
+                                        <h4 class="text-xs sm:text-sm font-semibold text-slate-700">Pencocokan Kolom (Mapping JSON)</h4>
                                         <p class="text-xs text-slate-500 mt-1">Masukkan nama *key* JSON dari API yang sesuai dengan kolom database.</p>
                                     </div>
                                     <button
@@ -257,7 +257,7 @@ const syncData = () => {
                                         </div>
                                         <textarea
                                             v-model="codeContent"
-                                            class="w-full bg-slate-900 text-emerald-400 font-mono text-sm p-4 border-0 focus:ring-0 resize-y"
+                                            class="w-full bg-slate-900 text-emerald-400 font-mono text-xs sm:text-sm p-4 border-0 focus:ring-0 resize-y"
                                             rows="10"
                                             spellcheck="false"
                                             placeholder='{ "name_key": "name", ... }'
@@ -357,7 +357,7 @@ const syncData = () => {
                                     <span class="font-bold">Penting:</span> Pastikan Anda sudah mengklik <b>Simpan Pengaturan</b> di form sebelah kiri sebelum menarik data jika ada perubahan mapping.
                                 </p>
                                 <div class="flex items-center justify-between">
-                                    <div class="text-sm text-slate-600">
+                                    <div class="text-xs sm:text-sm text-slate-600">
                                         Terakhir Sinkron: 
                                         <span class="font-semibold text-slate-800">
                                             {{ setting?.last_sync_at ? new Date(setting.last_sync_at).toLocaleString('id-ID') : 'Belum pernah' }}

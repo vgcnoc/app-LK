@@ -35,7 +35,7 @@ const updateLogo = () => {
     <section>
         <header>
             <h2 class="text-lg font-medium text-gray-900">Logo Aplikasi</h2>
-            <p class="mt-1 text-sm text-gray-600">
+            <p class="mt-1 text-xs sm:text-sm text-gray-600">
                 Perbarui logo aplikasi yang akan ditampilkan pada halaman Login dan Navigasi.
             </p>
         </header>
@@ -51,7 +51,7 @@ const updateLogo = () => {
                         </svg>
                     </div>
                     <div>
-                        <input type="file" accept="image/*" @change="onLogoChange" class="text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-colors" />
+                        <input type="file" accept="image/*" @change="onLogoChange" class="text-xs sm:text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs sm:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-colors" />
                         <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF atau SVG maksimal 2MB.</p>
                     </div>
                 </div>
@@ -66,7 +66,7 @@ const updateLogo = () => {
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Tersimpan.</p>
+                    <p v-if="form.recentlySuccessful" class="text-xs sm:text-sm text-gray-600">Tersimpan.</p>
                 </Transition>
             </div>
         </form>

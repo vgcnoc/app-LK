@@ -130,12 +130,12 @@ const getTypeText = (type) => {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col relative overflow-hidden group">
                         <div class="absolute -right-6 -top-6 w-24 h-24 bg-amber-50 rounded-full group-hover:scale-110 transition-transform duration-500"></div>
-                        <div class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2 relative z-10">Total Pending</div>
+                        <div class="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2 relative z-10">Total Pending</div>
                         <div class="text-3xl font-black text-amber-600 relative z-10">Rp {{ formatCurrency(totalPending) }}</div>
                     </div>
                     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col relative overflow-hidden group">
                         <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-50 rounded-full group-hover:scale-110 transition-transform duration-500"></div>
-                        <div class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2 relative z-10">Total Sudah Dibayar</div>
+                        <div class="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2 relative z-10">Total Sudah Dibayar</div>
                         <div class="text-3xl font-black text-emerald-600 relative z-10">Rp {{ formatCurrency(totalPaid) }}</div>
                     </div>
                 </div>
@@ -151,13 +151,13 @@ const getTypeText = (type) => {
                                     v-model="search"
                                     type="text"
                                     placeholder="Cari sales, pelanggan..."
-                                    class="w-full pl-10 pr-4 py-2 border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                    class="w-full pl-10 pr-4 py-2 border-slate-200 rounded-xl text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 >
                                 <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                             </div>
                             <select 
                                 v-model="statusFilter"
-                                class="w-full sm:w-auto border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                class="w-full sm:w-auto border-slate-200 rounded-xl text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500"
                             >
                                 <option value="">Semua Status</option>
                                 <option value="pending">Pending</option>
@@ -169,33 +169,33 @@ const getTypeText = (type) => {
                     </div>
                     
                     <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm whitespace-nowrap">
+<table class="w-full text-left text-xs sm:text-sm whitespace-nowrap">
                             <thead class="bg-slate-50 border-b border-slate-100 text-slate-600 font-semibold">
                                 <tr>
-                                    <th class="px-6 py-4">Tanggal</th>
-                                    <th v-if="!is_sales" class="px-6 py-4">Sales / Afiliator</th>
-                                    <th class="px-6 py-4">Pelanggan (Sumber)</th>
-                                    <th class="px-6 py-4">Jenis Komisi</th>
-                                    <th class="px-6 py-4">Nominal</th>
-                                    <th class="px-6 py-4 text-center">Status</th>
-                                    <th class="px-6 py-4 text-center">Aksi / Bukti</th>
+                                    <th class="px-3 py-3 sm:px-6 sm:py-4">Tanggal</th>
+                                    <th v-if="!is_sales" class="px-3 py-3 sm:px-6 sm:py-4">Sales / Afiliator</th>
+                                    <th class="px-3 py-3 sm:px-6 sm:py-4">Pelanggan (Sumber)</th>
+                                    <th class="px-3 py-3 sm:px-6 sm:py-4">Jenis Komisi</th>
+                                    <th class="px-3 py-3 sm:px-6 sm:py-4">Nominal</th>
+                                    <th class="px-3 py-3 sm:px-6 sm:py-4 text-center">Status</th>
+                                    <th class="px-3 py-3 sm:px-6 sm:py-4 text-center">Aksi / Bukti</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 <tr v-for="c in filteredCommissions" :key="c.id" class="hover:bg-slate-50/70 transition-colors">
-                                    <td class="px-6 py-4">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4">
                                         <div class="text-slate-700">{{ new Date(c.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'}) }}</div>
                                     </td>
-                                    <td v-if="!is_sales" class="px-6 py-4">
+                                    <td v-if="!is_sales" class="px-3 py-3 sm:px-6 sm:py-4">
                                         <div class="font-bold text-slate-800">{{ c.sales?.name || '-' }}</div>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4">
                                         <div class="font-medium text-slate-700">{{ c.customer?.name || '-' }}</div>
                                         <div v-if="c.customer?.sales?.id && c.customer.sales.id !== c.sales_id" class="text-[10px] text-slate-500 mt-0.5">
                                             dari downline: <span class="font-semibold">{{ c.customer.sales.name }}</span>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4">
                                         <div class="flex flex-col gap-1">
                                             <span :class="['w-fit px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider', getTypeBadgeColor(c.type)]">
                                                 {{ getTypeText(c.type) }}
@@ -203,15 +203,15 @@ const getTypeText = (type) => {
                                             <span class="text-xs text-slate-500 truncate max-w-xs" :title="c.description">{{ c.description }}</span>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4">
                                         <div class="font-bold text-slate-800">Rp {{ formatCurrency(c.amount) }}</div>
                                     </td>
-                                    <td class="px-6 py-4 text-center">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 text-center">
                                         <span :class="['px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full', getBadgeColor(c.status)]">
                                             {{ getBadgeText(c.status) }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-right text-xs sm:text-sm font-medium">
                                         <button v-if="can_pay && c.status === 'pending'" @click="openPayModal(c)" class="text-xs bg-indigo-50 text-indigo-600 hover:bg-indigo-100 font-semibold px-3 py-1.5 rounded-lg transition-colors border border-indigo-200">
                                             Tandai Dibayar
                                         </button>
@@ -249,33 +249,33 @@ const getTypeText = (type) => {
             <h2 class="text-lg font-medium text-slate-900 mb-4">
                 Tandai Komisi Dibayar
             </h2>
-            <p class="text-sm text-slate-600 mb-6">
+            <p class="text-xs sm:text-sm text-slate-600 mb-6">
                 Silakan unggah foto atau dokumen bukti pencairan komisi.
             </p>
 
             <form @submit.prevent="submitPay">
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Tanggal Pembayaran</label>
-                    <input type="date" v-model="payForm.date" class="block w-full text-sm border border-slate-300 rounded-md p-2 focus:border-indigo-500 focus:ring-indigo-500" required />
-                    <div v-if="payForm.errors.date" class="text-sm text-red-600 mt-1">{{ payForm.errors.date }}</div>
+                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Tanggal Pembayaran</label>
+                    <input type="date" v-model="payForm.date" class="block w-full text-xs sm:text-sm border border-slate-300 rounded-md p-2 focus:border-indigo-500 focus:ring-indigo-500" required />
+                    <div v-if="payForm.errors.date" class="text-xs sm:text-sm text-red-600 mt-1">{{ payForm.errors.date }}</div>
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Metode Bayar</label>
-                    <select v-model="payForm.payment_method" class="block w-full text-sm border border-slate-300 rounded-md p-2 focus:border-indigo-500 focus:ring-indigo-500" required>
+                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Metode Bayar</label>
+                    <select v-model="payForm.payment_method" class="block w-full text-xs sm:text-sm border border-slate-300 rounded-md p-2 focus:border-indigo-500 focus:ring-indigo-500" required>
                         <option v-for="method in props.paymentMethods" :key="method.id" :value="method.name">{{ method.name }}</option>
                     </select>
-                    <div v-if="payForm.errors.payment_method" class="text-sm text-red-600 mt-1">{{ payForm.errors.payment_method }}</div>
+                    <div v-if="payForm.errors.payment_method" class="text-xs sm:text-sm text-red-600 mt-1">{{ payForm.errors.payment_method }}</div>
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Bukti Pencairan</label>
-                    <input type="file" @input="payForm.proof = $event.target.files[0]" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-slate-300 rounded-md p-2" required accept="image/jpeg,image/png,image/jpg,application/pdf" />
-                    <div v-if="payForm.errors.proof" class="text-sm text-red-600 mt-1">{{ payForm.errors.proof }}</div>
+                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Bukti Pencairan</label>
+                    <input type="file" @input="payForm.proof = $event.target.files[0]" class="block w-full text-xs sm:text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs sm:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-slate-300 rounded-md p-2" required accept="image/jpeg,image/png,image/jpg,application/pdf" />
+                    <div v-if="payForm.errors.proof" class="text-xs sm:text-sm text-red-600 mt-1">{{ payForm.errors.proof }}</div>
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <button type="button" @click="closePayModal" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-800 mr-2">Batal</button>
+                    <button type="button" @click="closePayModal" class="px-4 py-2 text-xs sm:text-sm text-slate-600 hover:text-slate-800 mr-2">Batal</button>
                     <PrimaryButton :class="{ 'opacity-25': payForm.processing }" :disabled="payForm.processing">
                         Simpan
                     </PrimaryButton>

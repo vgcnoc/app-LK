@@ -281,7 +281,7 @@ const confirmDelete = (id) => {
                     <h2 class="text-2xl font-bold tracking-tight text-slate-800">
                         Pelanggan Non-Aktif
                     </h2>
-                    <p class="mt-1 text-sm text-slate-500">
+                    <p class="mt-1 text-xs sm:text-sm text-slate-500">
                         Kelola data pelanggan yang berhenti sementara atau stop permanen.
                     </p>
                 </div>
@@ -298,7 +298,7 @@ const confirmDelete = (id) => {
                     <button
                         @click="activeTab = 'Suspend'"
                         :class="[
-                            'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-all',
+                            'w-full rounded-lg py-2.5 text-xs sm:text-sm font-medium leading-5 transition-all',
                             activeTab === 'Suspend'
                                 ? 'bg-white text-indigo-700 shadow ring-1 ring-black/5'
                                 : 'text-slate-600 hover:bg-white/50 hover:text-slate-900'
@@ -309,7 +309,7 @@ const confirmDelete = (id) => {
                     <button
                         @click="activeTab = 'Berhenti'"
                         :class="[
-                            'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-all',
+                            'w-full rounded-lg py-2.5 text-xs sm:text-sm font-medium leading-5 transition-all',
                             activeTab === 'Berhenti'
                                 ? 'bg-white text-indigo-700 shadow ring-1 ring-black/5'
                                 : 'text-slate-600 hover:bg-white/50 hover:text-slate-900'
@@ -320,7 +320,7 @@ const confirmDelete = (id) => {
                     <button
                         @click="activeTab = 'Gratis'"
                         :class="[
-                            'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-all',
+                            'w-full rounded-lg py-2.5 text-xs sm:text-sm font-medium leading-5 transition-all',
                             activeTab === 'Gratis'
                                 ? 'bg-white text-indigo-700 shadow ring-1 ring-black/5'
                                 : 'text-slate-600 hover:bg-white/50 hover:text-slate-900'
@@ -331,7 +331,7 @@ const confirmDelete = (id) => {
                     <button
                         @click="activeTab = 'Riwayat'"
                         :class="[
-                            'w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-all',
+                            'w-full rounded-lg py-2.5 text-xs sm:text-sm font-medium leading-5 transition-all',
                             activeTab === 'Riwayat'
                                 ? 'bg-white text-indigo-700 shadow ring-1 ring-black/5'
                                 : 'text-slate-600 hover:bg-white/50 hover:text-slate-900'
@@ -369,7 +369,7 @@ const confirmDelete = (id) => {
                 <!-- Print Header -->
                 <div class="hidden print:block mb-6 text-center">
                     <h2 class="text-2xl font-bold text-slate-800">Laporan Pelanggan Non-Aktif</h2>
-                    <p class="text-sm text-slate-600 mt-1">
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1">
                         Kategori: <span class="font-semibold">{{ activeTab.toUpperCase() }}</span>
                     </p>
                     <p class="text-xs text-slate-500 mt-1">
@@ -384,24 +384,24 @@ const confirmDelete = (id) => {
                         <table class="min-w-full divide-y divide-slate-200 print:text-[11px]">
                             <thead class="bg-slate-50/50 print:text-[10px]">
                                 <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-                                    <th scope="col" class="w-16 px-6 py-3.5 text-center">No</th>
-                                    <th scope="col" class="px-6 py-3.5">Nama Pelanggan</th>
-                                    <th scope="col" class="px-6 py-3.5">Area / Wilayah</th>
-                                    <th scope="col" class="px-6 py-3.5">Alamat</th>
-                                    <th scope="col" class="px-6 py-3.5">Nama Paket</th>
+                                    <th scope="col" class="w-16 px-3 py-2.5 sm:px-6 sm:py-3.5 text-center">No</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5">Nama Pelanggan</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5">Area / Wilayah</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5">Alamat</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5">Nama Paket</th>
                                     
                                     <!-- Conditional Headers based on Tab -->
-                                    <th v-if="activeTab === 'Suspend' || activeTab === 'Riwayat'" scope="col" class="px-6 py-3.5 text-center">Tanggal Mulai</th>
-                                    <th v-if="activeTab === 'Suspend'" scope="col" class="px-6 py-3.5 text-center">Tanggal Selesai</th>
-                                    <th v-if="activeTab === 'Riwayat'" scope="col" class="px-6 py-3.5 text-center">Tanggal Pengaktifan</th>
-                                    <th v-if="activeTab === 'Suspend' || activeTab === 'Riwayat'" scope="col" class="px-6 py-3.5 text-center">Jumlah Hari</th>
-                                    <th v-if="activeTab === 'Berhenti'" scope="col" class="px-6 py-3.5 text-center">Tanggal Berhenti</th>
-                                    <th v-if="activeTab === 'Gratis'" scope="col" class="px-6 py-3.5 text-center">Tanggal Register</th>
+                                    <th v-if="activeTab === 'Suspend' || activeTab === 'Riwayat'" scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center">Tanggal Mulai</th>
+                                    <th v-if="activeTab === 'Suspend'" scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center">Tanggal Selesai</th>
+                                    <th v-if="activeTab === 'Riwayat'" scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center">Tanggal Pengaktifan</th>
+                                    <th v-if="activeTab === 'Suspend' || activeTab === 'Riwayat'" scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center">Jumlah Hari</th>
+                                    <th v-if="activeTab === 'Berhenti'" scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center">Tanggal Berhenti</th>
+                                    <th v-if="activeTab === 'Gratis'" scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center">Tanggal Register</th>
                                     
                                     <!-- Lama Berlangganan -->
-                                    <th scope="col" class="px-6 py-3.5 text-center">Lama Berlangganan</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center">Lama Berlangganan</th>
                                     
-                                    <th v-if="activeTab !== 'Riwayat'" scope="col" class="w-36 px-6 py-3.5 text-center print:hidden">Aksi</th>
+                                    <th v-if="activeTab !== 'Riwayat'" scope="col" class="w-36 px-3 py-2.5 sm:px-6 sm:py-3.5 text-center print:hidden">Aksi</th>
                                 </tr>
                             </thead>
                             <!-- Table Body for Non-Riwayat Tabs -->
@@ -412,12 +412,12 @@ const confirmDelete = (id) => {
                                     class="transition-colors duration-150 hover:bg-slate-50/80"
                                 >
                                     <!-- Row Number -->
-                                    <td class="whitespace-nowrap print:whitespace-normal px-4 py-4 text-center text-xs font-medium text-slate-400">
+                                    <td class="whitespace-nowrap print:whitespace-normal px-2 py-3 sm:px-4 sm:py-4 text-center text-xs font-medium text-slate-400">
                                         {{ index + 1 }}
                                     </td>
 
                                     <!-- Customer Name -->
-                                    <td class="whitespace-nowrap print:whitespace-normal px-6 py-4">
+                                    <td class="whitespace-nowrap print:whitespace-normal px-3 py-3 sm:px-6 sm:py-4">
                                         <div class="flex items-center gap-3">
                                             <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600 ring-1 ring-slate-200">
                                                 {{ (customer.name || '?').charAt(0).toUpperCase() }}
@@ -431,28 +431,28 @@ const confirmDelete = (id) => {
                                     </td>
 
                                     <!-- Area -->
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm text-slate-600">
                                         {{ customer.area || '-' }}
                                     </td>
 
                                     <!-- Alamat -->
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm text-slate-600">
                                         {{ customer.alamat || '-' }}
                                     </td>
 
                                     <!-- Package -->
-                                    <td class="whitespace-nowrap print:whitespace-normal px-6 py-4">
-                                        <div class="text-sm font-medium text-slate-900">{{ customer.paket || '-' }}</div>
+                                    <td class="whitespace-nowrap print:whitespace-normal px-3 py-3 sm:px-6 sm:py-4">
+                                        <div class="text-xs sm:text-sm font-medium text-slate-900">{{ customer.paket || '-' }}</div>
                                     </td>
 
                                     <!-- Conditional Dates -->
-                                    <td v-if="activeTab === 'Suspend'" class="whitespace-nowrap px-6 py-4 text-center text-xs font-medium text-amber-700">
+                                    <td v-if="activeTab === 'Suspend'" class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center text-xs font-medium text-amber-700">
                                         {{ formatDate(customer.suspend_start_date) }}
                                     </td>
-                                    <td v-if="activeTab === 'Suspend'" class="whitespace-nowrap px-6 py-4 text-center text-xs font-medium text-amber-700">
+                                    <td v-if="activeTab === 'Suspend'" class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center text-xs font-medium text-amber-700">
                                         {{ formatDate(customer.suspend_end_date) }}
                                     </td>
-                                    <td v-if="activeTab === 'Suspend'" class="whitespace-nowrap px-6 py-4 text-center text-xs font-medium">
+                                    <td v-if="activeTab === 'Suspend'" class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center text-xs font-medium">
                                         <div v-if="calculateDays(customer.suspend_start_date, customer.suspend_end_date) !== '-'"
                                             class="inline-flex items-center gap-1.5"
                                             :class="calculateDaysFromToday(customer.suspend_start_date) > 30 ? 'text-rose-600 font-bold' : 'text-indigo-600'"
@@ -468,21 +468,21 @@ const confirmDelete = (id) => {
                                         <span v-else class="text-slate-400">-</span>
                                     </td>
                                     
-                                    <td v-if="activeTab === 'Berhenti'" class="whitespace-nowrap px-6 py-4 text-center text-xs font-medium text-rose-700">
+                                    <td v-if="activeTab === 'Berhenti'" class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center text-xs font-medium text-rose-700">
                                         {{ formatDate(customer.stop_date) }}
                                     </td>
 
-                                    <td v-if="activeTab === 'Gratis'" class="whitespace-nowrap px-6 py-4 text-center text-xs font-medium text-emerald-700">
+                                    <td v-if="activeTab === 'Gratis'" class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center text-xs font-medium text-emerald-700">
                                         {{ formatDate(customer.register_date) }}
                                     </td>
                                     
                                     <!-- Lama Berlangganan Data -->
-                                    <td class="whitespace-nowrap px-6 py-4 text-center text-xs font-medium text-slate-700">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center text-xs font-medium text-slate-700">
                                         {{ getLamaBerlangganan(customer) }}
                                     </td>
 
                                     <!-- Actions -->
-                                    <td class="whitespace-nowrap px-6 py-4 text-center print:hidden">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center print:hidden">
                                         <div class="flex items-center justify-center gap-2">
                                             <!-- Edit Button -->
                                             <button
@@ -513,8 +513,8 @@ const confirmDelete = (id) => {
                                         <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
-                                        <h3 class="mt-2 text-sm font-medium text-slate-900">Belum Ada Data</h3>
-                                        <p class="mt-1 text-sm text-slate-500">
+                                        <h3 class="mt-2 text-xs sm:text-sm font-medium text-slate-900">Belum Ada Data</h3>
+                                        <p class="mt-1 text-xs sm:text-sm text-slate-500">
                                             Tidak ada pelanggan dengan status ini.
                                         </p>
                                     </td>
@@ -528,10 +528,10 @@ const confirmDelete = (id) => {
                                     :key="suspension.id || index"
                                     class="transition-colors duration-150 hover:bg-slate-50/80"
                                 >
-                                    <td class="whitespace-nowrap print:whitespace-normal px-4 py-4 text-center text-xs font-medium text-slate-400">
+                                    <td class="whitespace-nowrap print:whitespace-normal px-2 py-3 sm:px-4 sm:py-4 text-center text-xs font-medium text-slate-400">
                                         {{ index + 1 }}
                                     </td>
-                                    <td class="whitespace-nowrap print:whitespace-normal px-6 py-4">
+                                    <td class="whitespace-nowrap print:whitespace-normal px-3 py-3 sm:px-6 sm:py-4">
                                         <div class="flex items-center gap-3">
                                             <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600 ring-1 ring-slate-200">
                                                 {{ (suspension.customer?.name || '?').charAt(0).toUpperCase() }}
@@ -543,22 +543,22 @@ const confirmDelete = (id) => {
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm text-slate-600">
                                         {{ suspension.customer?.area || '-' }}
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm text-slate-600">
                                         {{ suspension.customer?.alamat || '-' }}
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-xs text-slate-600">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-xs text-slate-600">
                                         {{ suspension.customer?.paket || '-' }}
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-center text-xs font-medium text-amber-700">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center text-xs font-medium text-amber-700">
                                         {{ formatDate(suspension.suspend_start_date) }}
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-center text-xs font-medium text-amber-700">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center text-xs font-medium text-amber-700">
                                         {{ formatDate(suspension.suspend_end_date) }}
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-center text-xs font-medium text-indigo-600">
+                                    <td class="whitespace-nowrap px-3 py-3 sm:px-6 sm:py-4 text-center text-xs font-medium text-indigo-600">
                                         {{ calculateDays(suspension.suspend_start_date, suspension.suspend_end_date) }} <span v-if="calculateDays(suspension.suspend_start_date, suspension.suspend_end_date) !== '-'">Hari</span>
                                     </td>
                                 </tr>
@@ -567,8 +567,8 @@ const confirmDelete = (id) => {
                                         <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <h3 class="mt-2 text-sm font-medium text-slate-900">Belum Ada Riwayat</h3>
-                                        <p class="mt-1 text-sm text-slate-500">
+                                        <h3 class="mt-2 text-xs sm:text-sm font-medium text-slate-900">Belum Ada Riwayat</h3>
+                                        <p class="mt-1 text-xs sm:text-sm text-slate-500">
                                             Belum ada pelanggan yang disuspend.
                                         </p>
                                     </td>
@@ -578,8 +578,8 @@ const confirmDelete = (id) => {
                     </div>
 
                     <!-- Pagination Controls -->
-                    <div class="px-6 py-4 flex items-center justify-between border-t border-slate-200 bg-white print:hidden" v-if="activeTab !== 'riwayat'">
-                        <div class="text-sm text-slate-500">
+                    <div class="px-3 py-3 sm:px-6 sm:py-4 flex items-center justify-between border-t border-slate-200 bg-white print:hidden" v-if="activeTab !== 'riwayat'">
+                        <div class="text-xs sm:text-sm text-slate-500">
                             Menampilkan <span class="font-medium text-slate-900">{{ (currentPage - 1) * itemsPerPage + 1 }}</span> - 
                             <span class="font-medium text-slate-900">{{ Math.min(currentPage * itemsPerPage, filteredCustomers.length) }}</span> 
                             dari <span class="font-medium text-slate-900">{{ filteredCustomers.length }}</span> data
@@ -601,8 +601,8 @@ const confirmDelete = (id) => {
                         </div>
                     </div>
                     
-                    <div class="px-6 py-4 flex items-center justify-between border-t border-slate-200 bg-white print:hidden" v-if="activeTab === 'riwayat'">
-                        <div class="text-sm text-slate-500">
+                    <div class="px-3 py-3 sm:px-6 sm:py-4 flex items-center justify-between border-t border-slate-200 bg-white print:hidden" v-if="activeTab === 'riwayat'">
+                        <div class="text-xs sm:text-sm text-slate-500">
                             Menampilkan <span class="font-medium text-slate-900">{{ (currentPageSuspensions - 1) * itemsPerPage + 1 }}</span> - 
                             <span class="font-medium text-slate-900">{{ Math.min(currentPageSuspensions * itemsPerPage, allSuspensions.length) }}</span> 
                             dari <span class="font-medium text-slate-900">{{ allSuspensions.length }}</span> data
@@ -665,7 +665,7 @@ const confirmDelete = (id) => {
                                     <input
                                         v-model="editForm.name"
                                         type="text"
-                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                         required
                                     />
                                     <p v-if="editForm.errors.name" class="mt-1 text-xs text-rose-600">{{ editForm.errors.name }}</p>
@@ -678,7 +678,7 @@ const confirmDelete = (id) => {
                                     </label>
                                     <select
                                         v-model="editForm.area"
-                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 bg-white"
+                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 bg-white"
                                     >
                                         <option value="">-- Pilih Area --</option>
                                         <option v-for="a in areas" :key="a" :value="a">{{ a }}</option>
@@ -694,7 +694,7 @@ const confirmDelete = (id) => {
                                     <textarea
                                         v-model="editForm.alamat"
                                         rows="2"
-                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                     ></textarea>
                                     <p v-if="editForm.errors.alamat" class="mt-1 text-xs text-rose-600">{{ editForm.errors.alamat }}</p>
                                 </div>
@@ -707,7 +707,7 @@ const confirmDelete = (id) => {
                                     <input
                                         v-model="editForm.paket"
                                         type="text"
-                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <p v-if="editForm.errors.paket" class="mt-1 text-xs text-rose-600">{{ editForm.errors.paket }}</p>
                                 </div>
@@ -720,7 +720,7 @@ const confirmDelete = (id) => {
                                     <input
                                         v-model="editForm.register_date"
                                         type="date"
-                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <p v-if="editForm.errors.register_date" class="mt-1 text-xs text-rose-600">{{ editForm.errors.register_date }}</p>
                                 </div>
@@ -732,7 +732,7 @@ const confirmDelete = (id) => {
                                     </label>
                                     <select
                                         v-model="editForm.status_pelanggan"
-                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                     >
                                         <option value="Aktif">Aktif</option>
                                         <option value="Suspend">Suspend</option>
@@ -751,7 +751,7 @@ const confirmDelete = (id) => {
                                         <input
                                             v-model="editForm.suspend_start_date"
                                             type="date"
-                                            class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                            class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                         />
                                         <p v-if="editForm.errors.suspend_start_date" class="mt-1 text-xs text-rose-600">{{ editForm.errors.suspend_start_date }}</p>
                                     </div>
@@ -762,7 +762,7 @@ const confirmDelete = (id) => {
                                         <input
                                             v-model="editForm.suspend_end_date"
                                             type="date"
-                                            class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                            class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                         />
                                         <p v-if="editForm.errors.suspend_end_date" class="mt-1 text-xs text-rose-600">{{ editForm.errors.suspend_end_date }}</p>
                                     </div>
@@ -776,7 +776,7 @@ const confirmDelete = (id) => {
                                     <input
                                         v-model="editForm.suspend_end_date"
                                         type="date"
-                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                         required
                                     />
                                     <p class="mt-1 text-xs text-slate-500">Tanggal ini akan dicatat ke dalam riwayat suspend sebagai tanggal akhir.</p>
@@ -791,7 +791,7 @@ const confirmDelete = (id) => {
                                     <input
                                         v-model="editForm.stop_date"
                                         type="date"
-                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                     />
                                     <p v-if="editForm.errors.stop_date" class="mt-1 text-xs text-rose-600">{{ editForm.errors.stop_date }}</p>
                                 </div>
@@ -805,7 +805,7 @@ const confirmDelete = (id) => {
                                         v-model="editForm.amount"
                                         type="number"
                                         min="0"
-                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                                        class="w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs sm:text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                                         required
                                     />
                                     <p v-if="editForm.errors.amount" class="mt-1 text-xs text-rose-600">{{ editForm.errors.amount }}</p>

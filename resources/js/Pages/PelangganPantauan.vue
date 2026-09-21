@@ -121,31 +121,31 @@ const exportExcel = () => {
                 <!-- Data Overview Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
                     <div class="bg-white overflow-hidden shadow-sm rounded-lg p-6 border-l-4 border-red-500">
-                        <div class="text-sm font-medium text-gray-500 mb-1">Total Sedang Suspend</div>
+                        <div class="text-xs sm:text-sm font-medium text-gray-500 mb-1">Total Sedang Suspend</div>
                         <div class="text-2xl font-bold text-gray-900">
                             {{ customers.filter(c => ['suspend', 'berhenti sementara', 'isolir'].includes((c.status_pelanggan || '').toLowerCase())).length }}
                         </div>
                     </div>
                     <div class="bg-white overflow-hidden shadow-sm rounded-lg p-6 border-l-4 border-orange-500">
-                        <div class="text-sm font-medium text-gray-500 mb-1">Total Nunggak</div>
+                        <div class="text-xs sm:text-sm font-medium text-gray-500 mb-1">Total Nunggak</div>
                         <div class="text-2xl font-bold text-gray-900">
                             {{ customers.filter(c => c.status === 'nunggak').length }}
                         </div>
                     </div>
                     <div class="bg-white overflow-hidden shadow-sm rounded-lg p-6 border-l-4 border-yellow-500">
-                        <div class="text-sm font-medium text-gray-500 mb-1">Total Janji Bayar</div>
+                        <div class="text-xs sm:text-sm font-medium text-gray-500 mb-1">Total Janji Bayar</div>
                         <div class="text-2xl font-bold text-gray-900">
                             {{ customers.filter(c => c.promise_date).length }}
                         </div>
                     </div>
                     <div class="bg-white overflow-hidden shadow-sm rounded-lg p-6 border-l-4 border-blue-500">
-                        <div class="text-sm font-medium text-gray-500 mb-1">Sering Suspend (> 1 kali)</div>
+                        <div class="text-xs sm:text-sm font-medium text-gray-500 mb-1">Sering Suspend (> 1 kali)</div>
                         <div class="text-2xl font-bold text-gray-900">
                             {{ customers.filter(c => c.suspensions_count > 1).length }}
                         </div>
                     </div>
                     <div class="bg-white overflow-hidden shadow-sm rounded-lg p-6 border-l-4 border-gray-500">
-                        <div class="text-sm font-medium text-gray-500 mb-1">Berhenti < 4 Bulan</div>
+                        <div class="text-xs sm:text-sm font-medium text-gray-500 mb-1">Berhenti < 4 Bulan</div>
                         <div class="text-2xl font-bold text-gray-900">
                             {{ customers.filter(c => ['berhenti', 'nonaktif', 'stop permanen', 'putus'].includes((c.status_pelanggan || '').toLowerCase())).length }}
                         </div>
@@ -179,48 +179,48 @@ const exportExcel = () => {
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pelanggan</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status Berlangganan</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status Tagihan</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Janji Bayar</th>
-                                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Total Suspend</th>
-                                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                        <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pelanggan</th>
+                                        <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status Berlangganan</th>
+                                        <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status Tagihan</th>
+                                        <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Janji Bayar</th>
+                                        <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Total Suspend</th>
+                                        <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <tr v-for="c in paginatedCustomers" :key="c.id" class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap">
                                             <div class="font-medium text-gray-900">{{ c.name }}</div>
-                                            <div class="text-sm text-gray-500">{{ c.alamat || '-' }} / {{ c.area }}</div>
+                                            <div class="text-xs sm:text-sm text-gray-500">{{ c.alamat || '-' }} / {{ c.area }}</div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap">
                                             <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border"
                                                   :class="getStatusColor(c.status_pelanggan)">
                                                 {{ c.status_pelanggan || 'Aktif' }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap">
                                             <div v-if="c.status === 'nunggak'" class="flex flex-col gap-1 items-start">
                                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 border border-red-200">
                                                     Nunggak {{ getBulanMenunggak(c) }} Bulan
                                                 </span>
                                                 <span class="text-xs text-red-600 font-medium">Total: {{ formatRupiah(c.amount) }}</span>
                                             </div>
-                                            <span v-else class="text-sm text-gray-500">{{ c.status === 'pending' ? 'Belum Bayar' : (c.status || '-') }}</span>
+                                            <span v-else class="text-xs sm:text-sm text-gray-500">{{ c.status === 'pending' ? 'Belum Bayar' : (c.status || '-') }}</span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap">
                                             <span v-if="c.promise_date" class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">
                                                 {{ formatDate(c.promise_date) }}
                                             </span>
                                             <span v-else class="text-gray-400">-</span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-center">
                                             <span v-if="c.suspensions_count > 0" :class="c.suspensions_count > 1 ? 'font-bold text-red-600' : 'text-gray-700'">
                                                 {{ c.suspensions_count }} kali
                                             </span>
                                             <span v-else class="text-gray-400">-</span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-right text-xs sm:text-sm font-medium">
                                             <Link :href="route('pelanggan.index') + '?search=' + encodeURIComponent(c.name)" class="text-indigo-600 hover:text-indigo-900 border border-indigo-200 px-3 py-1 rounded hover:bg-indigo-50 transition-colors">Lihat Detail</Link>
                                         </td>
                                     </tr>
@@ -238,14 +238,14 @@ const exportExcel = () => {
 
                         <!-- Pagination Controls -->
                         <div v-if="totalPages > 1" class="flex justify-between items-center mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
-                            <span class="text-sm text-gray-700">
+                            <span class="text-xs sm:text-sm text-gray-700">
                                 Menampilkan <span class="font-semibold">{{ ((currentPage - 1) * itemsPerPage) + 1 }}</span> 
                                 sampai <span class="font-semibold">{{ Math.min(currentPage * itemsPerPage, filteredCustomers.length) }}</span> 
                                 dari <span class="font-semibold">{{ filteredCustomers.length }}</span> data
                             </span>
                             <div class="flex gap-2">
-                                <button @click="currentPage--" :disabled="currentPage === 1" class="px-4 py-2 border rounded shadow-sm text-sm font-medium" :class="currentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'">Sebelumnya</button>
-                                <button @click="currentPage++" :disabled="currentPage === totalPages" class="px-4 py-2 border rounded shadow-sm text-sm font-medium" :class="currentPage === totalPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'">Selanjutnya</button>
+                                <button @click="currentPage--" :disabled="currentPage === 1" class="px-4 py-2 border rounded shadow-sm text-xs sm:text-sm font-medium" :class="currentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'">Sebelumnya</button>
+                                <button @click="currentPage++" :disabled="currentPage === totalPages" class="px-4 py-2 border rounded shadow-sm text-xs sm:text-sm font-medium" :class="currentPage === totalPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'">Selanjutnya</button>
                             </div>
                         </div>
 

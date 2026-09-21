@@ -69,7 +69,7 @@ const submit = () => {
                         </div>
                         <div>
                             <h4 class="font-semibold text-white text-base">Komisi Berjenjang</h4>
-                            <p class="text-indigo-200 text-sm mt-0.5">Dapatkan komisi dari penjualan langsung dan downline Anda</p>
+                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Dapatkan komisi dari penjualan langsung dan downline Anda</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4 group">
@@ -78,7 +78,7 @@ const submit = () => {
                         </div>
                         <div>
                             <h4 class="font-semibold text-white text-base">Penghasilan Pasif</h4>
-                            <p class="text-indigo-200 text-sm mt-0.5">Komisi bulanan berulang selama pelanggan aktif berlangganan</p>
+                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Komisi bulanan berulang selama pelanggan aktif berlangganan</p>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@ const submit = () => {
                 
                 <div class="mb-8">
                     <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Pendaftaran Mitra Sales</h2>
-                    <p class="mt-1.5 text-sm text-slate-500 font-medium">Lengkapi data diri Anda di bawah ini</p>
+                    <p class="mt-1.5 text-xs sm:text-sm text-slate-500 font-medium">Lengkapi data diri Anda di bawah ini</p>
                 </div>
 
                 <form @submit.prevent="submit" class="space-y-4">
@@ -110,7 +110,7 @@ const submit = () => {
                     <!-- Name -->
                     <div>
                         <label for="name" class="block text-xs font-bold text-slate-700 mb-1.5">Nama Lengkap *</label>
-                        <input id="name" type="text" v-model="form.name" required class="block w-full py-3 px-4 sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="Nama lengkap sesuai KTP" />
+                        <input id="name" type="text" v-model="form.name" required class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="Nama lengkap sesuai KTP" />
                         <p v-if="form.errors.name" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.name }}</p>
                     </div>
 
@@ -118,14 +118,14 @@ const submit = () => {
                         <!-- Email -->
                         <div>
                             <label for="email" class="block text-xs font-bold text-slate-700 mb-1.5">Email *</label>
-                            <input id="email" type="email" v-model="form.email" required class="block w-full py-3 px-4 sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="nama@email.com" />
+                            <input id="email" type="email" v-model="form.email" required class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="nama@email.com" />
                             <p v-if="form.errors.email" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.email }}</p>
                         </div>
                         
                         <!-- Phone -->
                         <div>
                             <label for="phone" class="block text-xs font-bold text-slate-700 mb-1.5">No. WhatsApp</label>
-                            <input id="phone" type="text" v-model="form.phone" class="block w-full py-3 px-4 sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="0812xxxx" />
+                            <input id="phone" type="text" v-model="form.phone" class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="0812xxxx" />
                             <p v-if="form.errors.phone" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.phone }}</p>
                         </div>
                     </div>
@@ -134,7 +134,7 @@ const submit = () => {
                         <!-- Area -->
                         <div>
                             <label for="area" class="block text-xs font-bold text-slate-700 mb-1.5">Area (Opsional)</label>
-                            <select id="area" v-model="form.area" class="block w-full py-3 px-4 sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white">
+                            <select id="area" v-model="form.area" class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white">
                                 <option value="">-- Pilih Area --</option>
                                 <option v-for="a in areas" :key="a" :value="a">{{ a }}</option>
                             </select>
@@ -144,7 +144,7 @@ const submit = () => {
                         <!-- Upline Code -->
                         <div>
                             <label for="upline_code" class="block text-xs font-bold text-slate-700 mb-1.5">Kode Referral (Opsional)</label>
-                            <input id="upline_code" type="text" v-model="form.upline_code" class="block w-full py-3 px-4 sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="Contoh: SL-xxx-001" />
+                            <input id="upline_code" type="text" v-model="form.upline_code" class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="Contoh: SL-xxx-001" />
                             <p v-if="form.errors.upline_code" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.upline_code }}</p>
                         </div>
                     </div>
@@ -153,7 +153,7 @@ const submit = () => {
                     <div>
                         <label for="password" class="block text-xs font-bold text-slate-700 mb-1.5">Kata Sandi (Minimal 8 karakter) *</label>
                         <div class="relative">
-                            <input id="password" :type="showPassword ? 'text' : 'password'" v-model="form.password" required class="block w-full py-3 pl-4 pr-10 sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="••••••••" />
+                            <input id="password" :type="showPassword ? 'text' : 'password'" v-model="form.password" required class="block w-full py-3 pl-4 pr-10 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="••••••••" />
                             <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
                                 <button type="button" @click="showPassword = !showPassword" class="text-slate-400 hover:text-indigo-600 focus:outline-none">
                                     <svg v-if="!showPassword" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
@@ -168,7 +168,7 @@ const submit = () => {
                     <div>
                         <label for="password_confirmation" class="block text-xs font-bold text-slate-700 mb-1.5">Konfirmasi Kata Sandi *</label>
                         <div class="relative">
-                            <input id="password_confirmation" :type="showPasswordConfirmation ? 'text' : 'password'" v-model="form.password_confirmation" required class="block w-full py-3 pl-4 pr-10 sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="••••••••" />
+                            <input id="password_confirmation" :type="showPasswordConfirmation ? 'text' : 'password'" v-model="form.password_confirmation" required class="block w-full py-3 pl-4 pr-10 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="••••••••" />
                             <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
                                 <button type="button" @click="showPasswordConfirmation = !showPasswordConfirmation" class="text-slate-400 hover:text-indigo-600 focus:outline-none">
                                     <svg v-if="!showPasswordConfirmation" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
@@ -183,7 +183,7 @@ const submit = () => {
                     <div class="pt-4">
                         <button 
                             type="submit" 
-                            class="w-full flex justify-center items-center py-4 px-4 border border-transparent rounded-xl shadow-lg shadow-indigo-500/30 text-sm font-bold text-white bg-gradient-to-r from-indigo-500 via-indigo-600 to-blue-500 hover:from-indigo-600 hover:via-indigo-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:-translate-y-0.5"
+                            class="w-full flex justify-center items-center py-4 px-4 border border-transparent rounded-xl shadow-lg shadow-indigo-500/30 text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-500 via-indigo-600 to-blue-500 hover:from-indigo-600 hover:via-indigo-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:-translate-y-0.5"
                             :class="{ 'opacity-70 cursor-not-allowed': form.processing }"
                             :disabled="form.processing"
                         >
@@ -195,7 +195,7 @@ const submit = () => {
 
                 <!-- Registration Link -->
                 <div class="mt-8 text-center">
-                    <p class="text-sm text-slate-500 font-medium">
+                    <p class="text-xs sm:text-sm text-slate-500 font-medium">
                         Sudah punya akun? 
                         <Link :href="route('login')" class="font-bold text-indigo-600 hover:text-indigo-800 transition-colors underline-offset-2 hover:underline">Masuk Disini</Link>
                     </p>

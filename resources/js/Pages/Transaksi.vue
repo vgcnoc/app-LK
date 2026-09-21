@@ -349,7 +349,7 @@ const deleteTransaction = (id) => {
                     <h2 class="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
                         Menu Transaksi
                     </h2>
-                    <p class="text-sm text-slate-500 mt-1 flex items-center gap-1.5">
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1 flex items-center gap-1.5">
                         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -381,7 +381,7 @@ const deleteTransaction = (id) => {
                             <button
                                 @click="openModal"
                                 type="button"
-                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#4F46E5] hover:bg-indigo-700 active:bg-indigo-800 text-white text-sm font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5"
+                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#4F46E5] hover:bg-indigo-700 active:bg-indigo-800 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5"
                             >
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
@@ -404,7 +404,7 @@ const deleteTransaction = (id) => {
                             class="relative overflow-hidden bg-white rounded-2xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100 p-5 transition-all duration-300 hover:shadow-[0_8px_20px_-6px_rgba(6,81,237,0.15)] hover:-translate-y-1 group min-w-0"
                         >
                             <div class="flex items-center justify-between pb-3 border-b border-slate-50 mb-4">
-                                <h4 class="font-bold text-slate-800 text-sm flex items-center gap-3 truncate group-hover:text-indigo-600 transition-colors" :title="area.area_name || area.area || area.name">
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-3 truncate group-hover:text-indigo-600 transition-colors" :title="area.area_name || area.area || area.name">
                                     <div class="p-2 bg-indigo-50/80 text-indigo-500 rounded-full shrink-0">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
@@ -414,7 +414,7 @@ const deleteTransaction = (id) => {
                                 </h4>
                                 <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                             </div>
-                            <div class="space-y-3 text-sm">
+                            <div class="space-y-3 text-xs sm:text-sm">
                                 <div class="flex items-center justify-between text-slate-500">
                                     <span class="flex items-center gap-2">
                                         <div class="p-1 rounded-full bg-emerald-50 text-emerald-500">
@@ -435,7 +435,7 @@ const deleteTransaction = (id) => {
                                 </div>
                                 <div class="pt-4 mt-2">
                                     <div :class="(Number(area.total_income || 0) - Number(area.total_expense || 0)) >= 0 ? 'bg-emerald-50/80 text-emerald-700' : 'bg-rose-50/80 text-rose-700'" class="flex items-center justify-between px-3 py-2.5 rounded-xl font-bold">
-                                        <span class="flex items-center gap-2 text-sm">
+                                        <span class="flex items-center gap-2 text-xs sm:text-sm">
                                             <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
                                             Saldo Net
                                         </span>
@@ -447,7 +447,7 @@ const deleteTransaction = (id) => {
                             </div>
                         </div>
                     </div>
-                    <div v-else class="bg-white rounded-xl border border-slate-100 p-6 text-center text-sm text-slate-400">
+                    <div v-else class="bg-white rounded-xl border border-slate-100 p-6 text-center text-xs sm:text-sm text-slate-400">
                         Belum ada data ringkasan area yang tersedia.
                     </div>
                 </div>
@@ -481,7 +481,7 @@ const deleteTransaction = (id) => {
                                         v-model="filterStartDate"
                                         type="date"
                                         title="Dari Tanggal"
-                                        class="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-sm transition-all duration-200 text-slate-700 w-full sm:w-[145px]"
+                                        class="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-xs sm:text-sm transition-all duration-200 text-slate-700 w-full sm:w-[145px]"
                                     >
                                 </div>
                                 <span class="text-slate-400 text-xs font-medium text-center hidden sm:block">s/d</span>
@@ -493,7 +493,7 @@ const deleteTransaction = (id) => {
                                         v-model="filterEndDate"
                                         type="date"
                                         title="Sampai Tanggal"
-                                        class="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-sm transition-all duration-200 text-slate-700 w-full sm:w-[145px]"
+                                        class="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-xs sm:text-sm transition-all duration-200 text-slate-700 w-full sm:w-[145px]"
                                     >
                                 </div>
                             </div>
@@ -508,7 +508,7 @@ const deleteTransaction = (id) => {
                                     v-model="searchQuery"
                                     type="text"
                                     placeholder="Cari transaksi..."
-                                    class="pl-9 pr-4 py-2 w-full md:w-48 bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-sm transition-all duration-200"
+                                    class="pl-9 pr-4 py-2 w-full md:w-48 bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-xs sm:text-sm transition-all duration-200"
                                 >
                             </div>
                             <!-- Filter Type -->
@@ -519,7 +519,7 @@ const deleteTransaction = (id) => {
                                     </div>
                                     <select
                                         v-model="filterType"
-                                        class="pl-9 pr-10 py-2 w-full md:w-auto bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-sm font-medium text-slate-700 appearance-none transition-all duration-200 cursor-pointer"
+                                        class="pl-9 pr-10 py-2 w-full md:w-auto bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl text-xs sm:text-sm font-medium text-slate-700 appearance-none transition-all duration-200 cursor-pointer"
                                     >
                                         <option value="all">Semua Tipe</option>
                                         <option value="income">Pemasukan</option>
@@ -537,18 +537,18 @@ const deleteTransaction = (id) => {
                     
                     <div class="overflow-x-auto">
                         <div class="overflow-x-auto w-full pb-4">
-<table class="w-full text-left text-sm border-collapse">
+<table class="w-full text-left text-xs sm:text-sm border-collapse">
                             <thead class="bg-slate-50/80 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100">
                                 <tr>
-                                    <th scope="col" class="px-6 py-4 w-12 text-center whitespace-nowrap">#</th>
-                                    <th scope="col" class="px-6 py-4 whitespace-nowrap">Tanggal <span class="ml-1 inline-block text-slate-300">↕</span></th>
-                                    <th scope="col" class="px-6 py-4 whitespace-nowrap">Keterangan</th>
-                                    <th scope="col" class="px-6 py-4 whitespace-nowrap">Area</th>
-                                    <th scope="col" class="px-6 py-4 text-center whitespace-nowrap">Metode Bayar</th>
-                                    <th scope="col" class="px-6 py-4 text-center whitespace-nowrap">Tanggal Bayar</th>
-                                    <th scope="col" class="px-6 py-4 text-center whitespace-nowrap">Tipe</th>
-                                    <th scope="col" class="px-6 py-4 text-right whitespace-nowrap">Jumlah</th>
-                                    <th scope="col" class="px-6 py-4 text-center whitespace-nowrap">Aksi</th>
+                                    <th scope="col" class="px-3 py-3 sm:px-6 sm:py-4 w-12 text-center whitespace-nowrap">#</th>
+                                    <th scope="col" class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap">Tanggal <span class="ml-1 inline-block text-slate-300">↕</span></th>
+                                    <th scope="col" class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap">Keterangan</th>
+                                    <th scope="col" class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap">Area</th>
+                                    <th scope="col" class="px-3 py-3 sm:px-6 sm:py-4 text-center whitespace-nowrap">Metode Bayar</th>
+                                    <th scope="col" class="px-3 py-3 sm:px-6 sm:py-4 text-center whitespace-nowrap">Tanggal Bayar</th>
+                                    <th scope="col" class="px-3 py-3 sm:px-6 sm:py-4 text-center whitespace-nowrap">Tipe</th>
+                                    <th scope="col" class="px-3 py-3 sm:px-6 sm:py-4 text-right whitespace-nowrap">Jumlah</th>
+                                    <th scope="col" class="px-3 py-3 sm:px-6 sm:py-4 text-center whitespace-nowrap">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 text-slate-700">
@@ -557,14 +557,14 @@ const deleteTransaction = (id) => {
                                     :key="item.id"
                                     class="hover:bg-slate-50/75 transition-colors group"
                                 >
-                                    <td class="px-6 py-4 text-center text-sm font-medium text-slate-900">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 text-center text-xs sm:text-sm font-medium text-slate-900">
                                         {{ (currentPage - 1) * itemsPerPage + index + 1 }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-slate-800">{{ formatDate(item.date) }}</div>
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap">
+                                        <div class="text-xs sm:text-sm font-medium text-slate-800">{{ formatDate(item.date) }}</div>
                                         <div class="text-xs text-slate-400 mt-0.5">{{ new Date(item.created_at || item.date).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) }}</div>
                                     </td>
-                                    <td class="px-6 py-4 text-sm font-medium text-slate-700 max-w-xs truncate" :title="item.description">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-medium text-slate-700 max-w-xs truncate" :title="item.description">
                                         {{ item.description || '-' }}
                                         <div v-if="item.type === 'income' && item.income_category_id" class="mt-1 text-xs text-slate-500 truncate max-w-xs">
                                             Kategori: {{ (incomeCategories.find(c => c.id === item.income_category_id) || {}).name || '-' }}
@@ -573,7 +573,7 @@ const deleteTransaction = (id) => {
                                             </span>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600">
                                         <span class="inline-flex items-center gap-1.5">
                                             <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -582,15 +582,15 @@ const deleteTransaction = (id) => {
                                             {{ item.area || '-' }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-center">
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold tracking-wide uppercase bg-blue-50 text-blue-600">
                                             {{ item.payment_method || '-' }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-slate-600">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-center text-xs sm:text-sm text-slate-600">
                                         {{ item.paid_at ? formatDate(item.paid_at) : '-' }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-center">
                                         <span
                                             v-if="isIncome(item.type)"
                                             class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-bold tracking-wide uppercase bg-emerald-50/80 text-emerald-600"
@@ -610,12 +610,12 @@ const deleteTransaction = (id) => {
                                             Pengeluaran
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right font-bold text-sm">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-right font-bold text-xs sm:text-sm">
                                         <span :class="isIncome(item.type) ? 'text-emerald-600' : 'text-rose-600'">
                                             {{ isIncome(item.type) ? '+ ' : '- ' }}{{ formatRupiah(item.amount) }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-center">
                                         <div class="flex items-center justify-center gap-2">
                                             <button
                                                 @click="editTransaction(item)"
@@ -644,14 +644,14 @@ const deleteTransaction = (id) => {
                                             <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                             </svg>
-                                            <p class="text-sm font-medium">Tidak ada transaksi yang ditemukan.</p>
+                                            <p class="text-xs sm:text-sm font-medium">Tidak ada transaksi yang ditemukan.</p>
                                         </div>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
 </div>
-                        <div class="p-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-sm gap-4">
+                        <div class="p-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs sm:text-sm gap-4">
                             <div class="text-slate-500">
                                 Menampilkan {{ paginatedTransactions.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0 }} - 
                                 {{ Math.min(currentPage * itemsPerPage, filteredTransactions.length) }} dari {{ filteredTransactions.length }} data
@@ -711,7 +711,7 @@ const deleteTransaction = (id) => {
                                     <h3 class="text-xl font-bold text-slate-800" id="modal-title">
                                         {{ isEdit ? 'Edit Transaksi' : 'Tambah Transaksi Baru' }}
                                     </h3>
-                                    <p class="text-sm text-slate-500 mt-1">
+                                    <p class="text-xs sm:text-sm text-slate-500 mt-1">
                                         {{ isEdit ? 'Perbarui detail transaksi yang sudah ada.' : 'Catat data pemasukan atau pengeluaran baru ke dalam sistem.' }}
                                     </p>
                                 </div>
@@ -736,7 +736,7 @@ const deleteTransaction = (id) => {
                                             type="button"
                                             @click="changeType('income')"
                                             :class="form.type === 'income' ? 'bg-emerald-50 border-emerald-500 text-emerald-700 ring-2 ring-emerald-500/20 font-semibold' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'"
-                                            class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-sm transition-all"
+                                            class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-xs sm:text-sm transition-all"
                                         >
                                             <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
@@ -747,7 +747,7 @@ const deleteTransaction = (id) => {
                                             type="button"
                                             @click="changeType('expense')"
                                             :class="form.type === 'expense' ? 'bg-rose-50 border-rose-500 text-rose-700 ring-2 ring-rose-500/20 font-semibold' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'"
-                                            class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-sm transition-all"
+                                            class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-xs sm:text-sm transition-all"
                                         >
                                             <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
@@ -767,7 +767,7 @@ const deleteTransaction = (id) => {
                                             v-model="form.date"
                                             type="date"
                                             required
-                                            class="w-full rounded-xl border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                            class="w-full rounded-xl border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500"
                                         />
                                         <p v-if="form.errors.date" class="mt-1 text-xs text-rose-600">{{ form.errors.date }}</p>
                                     </div>
@@ -778,7 +778,7 @@ const deleteTransaction = (id) => {
                                             id="paid_at"
                                             v-model="form.paid_at"
                                             type="date"
-                                            class="w-full rounded-xl border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                            class="w-full rounded-xl border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500"
                                         />
                                         <p v-if="form.errors.paid_at" class="mt-1 text-xs text-rose-600">{{ form.errors.paid_at }}</p>
                                     </div>
@@ -793,7 +793,7 @@ const deleteTransaction = (id) => {
                                             step="any"
                                             placeholder="Contoh: 100000"
                                             required
-                                            class="w-full rounded-xl border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                            class="w-full rounded-xl border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500"
                                         />
                                         <p v-if="form.errors.amount" class="mt-1 text-xs text-rose-600">{{ form.errors.amount }}</p>
                                     </div>
@@ -808,7 +808,7 @@ const deleteTransaction = (id) => {
                                         type="text"
                                         placeholder="Keterangan transaksi..."
                                         required
-                                        class="w-full rounded-xl border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        class="w-full rounded-xl border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500"
                                     />
                                     <p v-if="form.errors.description" class="mt-1 text-xs text-rose-600">{{ form.errors.description }}</p>
                                 </div>
@@ -819,7 +819,7 @@ const deleteTransaction = (id) => {
                                     <select
                                         id="expense_category_id"
                                         v-model="form.expense_category_id"
-                                        class="w-full rounded-xl border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        class="w-full rounded-xl border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500"
                                     >
                                         <option value="">-- Pilih Kategori --</option>
                                         <option v-for="cat in expenseCategories" :key="cat.id" :value="cat.id">
@@ -835,7 +835,7 @@ const deleteTransaction = (id) => {
                                     <select
                                         id="income_category_id"
                                         v-model="form.income_category_id"
-                                        class="w-full rounded-xl border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        class="w-full rounded-xl border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500"
                                     >
                                         <option value="">-- Pilih Kategori --</option>
                                         <option v-for="c in incomeCategories" :key="c.id" :value="c.id">{{ c.name }}</option>
@@ -854,15 +854,15 @@ const deleteTransaction = (id) => {
                                             @focus="showCustomerDropdown = true"
                                             @blur="setTimeout(() => showCustomerDropdown = false, 200)"
                                             placeholder="Cari nama pelanggan..." 
-                                            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 bg-white"
+                                            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-xs sm:text-sm py-2.5 px-3 bg-white"
                                         >
                                         <div v-if="showCustomerDropdown" class="absolute z-10 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
-                                            <div v-if="filteredCustomers.length === 0" class="px-3 py-2 text-sm text-slate-500">Tidak ada pelanggan baru (bulan ini) ditemukan.</div>
+                                            <div v-if="filteredCustomers.length === 0" class="px-3 py-2 text-xs sm:text-sm text-slate-500">Tidak ada pelanggan baru (bulan ini) ditemukan.</div>
                                             <div 
                                                 v-for="c in filteredCustomers" 
                                                 :key="c.id" 
                                                 @mousedown.prevent="selectCustomer(c)"
-                                                class="px-3 py-2 text-sm cursor-pointer hover:bg-indigo-50 text-slate-700"
+                                                class="px-3 py-2 text-xs sm:text-sm cursor-pointer hover:bg-indigo-50 text-slate-700"
                                             >
                                                 {{ c.name }} <span class="text-xs text-slate-400">({{ c.area || 'Tanpa Area' }})</span>
                                             </div>
@@ -877,7 +877,7 @@ const deleteTransaction = (id) => {
                                     <select
                                         id="company_expense_type_id"
                                         v-model="form.company_expense_type_id"
-                                        class="w-full rounded-xl border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        class="w-full rounded-xl border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500"
                                     >
                                         <option value="">-- Pilih Jenis --</option>
                                         <option v-for="type in companyExpenseTypes" :key="type.id" :value="type.id">
@@ -894,7 +894,7 @@ const deleteTransaction = (id) => {
                                     <select
                                         id="material_id"
                                         v-model="form.material_id"
-                                        class="w-full rounded-xl border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        class="w-full rounded-xl border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500"
                                     >
                                         <option value="">-- Pilih Material --</option>
                                         <option v-for="mat in materials" :key="mat.id" :value="mat.id">
@@ -912,7 +912,7 @@ const deleteTransaction = (id) => {
                                         <select
                                             id="area"
                                             v-model="form.area"
-                                            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 bg-white"
+                                            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-xs sm:text-sm py-2.5 px-3 bg-white"
                                         >
                                             <option value="">-- Pilih Area --</option>
                                             <option v-for="a in areas" :key="a" :value="a">{{ a }}</option>
@@ -926,7 +926,7 @@ const deleteTransaction = (id) => {
                                             id="payment_method"
                                             v-model="form.payment_method"
                                             required
-                                            class="w-full rounded-xl border-slate-200 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                            class="w-full rounded-xl border-slate-200 text-xs sm:text-sm focus:border-indigo-500 focus:ring-indigo-500"
                                         >
                                             <option value="" disabled>Pilih Metode Bayar</option>
                                             <option
@@ -946,14 +946,14 @@ const deleteTransaction = (id) => {
                                     <button
                                         type="button"
                                         @click="closeModal"
-                                        class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
+                                        class="px-4 py-2 text-xs sm:text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
                                     >
                                         Batal
                                     </button>
                                     <button
                                         type="submit"
                                         :disabled="form.processing"
-                                        class="inline-flex justify-center w-full sm:w-auto px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        class="inline-flex justify-center w-full sm:w-auto px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-xs sm:text-sm font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         <svg v-if="form.processing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
