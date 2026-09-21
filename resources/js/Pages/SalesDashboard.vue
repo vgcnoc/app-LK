@@ -56,10 +56,10 @@ const formatCurrency = (value) => {
                         Tingkatkan terus jaringan Anda dan dapatkan komisi tanpa batas.
                     </p>
                     
-                    <div class="inline-flex items-center gap-3 bg-indigo-900 bg-opacity-30 px-4 py-2 rounded-xl border border-indigo-300 border-opacity-20">
-                        <span class="text-indigo-100 text-sm">Kode Referral Anda:</span>
-                        <span class="font-mono font-bold text-lg tracking-wider text-white">{{ profile?.member_number || '-' }}</span>
-                        <button class="p-1.5 hover:bg-indigo-900 hover:bg-opacity-50 rounded-lg transition-colors text-indigo-100 hover:text-white" title="Salin" @click="navigator.clipboard.writeText(profile?.member_number)">
+                    <div class="flex items-center justify-between sm:justify-start gap-2 sm:gap-3 bg-indigo-900 bg-opacity-30 px-3 sm:px-4 py-2 rounded-xl border border-indigo-300 border-opacity-20 overflow-hidden">
+                        <span class="text-indigo-100 text-xs sm:text-sm whitespace-nowrap">Kode Referral:</span>
+                        <span class="font-mono font-bold text-sm sm:text-lg tracking-wide text-white truncate">{{ profile?.member_number || '-' }}</span>
+                        <button class="p-1 sm:p-1.5 hover:bg-indigo-900 hover:bg-opacity-50 rounded-lg transition-colors text-indigo-100 hover:text-white flex-shrink-0" title="Salin" @click="navigator.clipboard.writeText(profile?.member_number)">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
                         </button>
                     </div>
