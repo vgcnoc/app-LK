@@ -22,9 +22,9 @@
                         </div>
                     </div>
                     
-                    <div class="p-6 md:p-12 flex-grow overflow-auto bg-slate-50/50">
-                        <div v-if="treeData.length > 0" class="min-w-max flex justify-center py-10 pb-20">
-                            <div class="flex justify-center gap-16">
+                    <div class="p-4 sm:p-6 md:p-12 flex-grow overflow-auto bg-slate-50/50">
+                        <div v-if="treeData.length > 0" class="min-w-max flex justify-center py-6 sm:py-10 pb-16 sm:pb-20">
+                            <div class="flex justify-center gap-6 sm:gap-12 md:gap-16">
                                 <OrgNode v-for="root in treeData" :key="root.id" :node="root" :level="0" />
                             </div>
                         </div>

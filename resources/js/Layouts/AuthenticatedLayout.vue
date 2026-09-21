@@ -21,11 +21,11 @@ const can = (perm) => permissions.value.includes(perm);
         <aside
             :class="[
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
-                'fixed lg:static inset-y-0 left-0 z-30 w-64 bg-gradient-to-b from-indigo-950 via-purple-950 to-slate-950 border-r border-purple-800/30 text-white flex flex-col flex-shrink-0 transition-transform duration-300 ease-in-out no-print shadow-2xl lg:shadow-none print:hidden'
+                'fixed lg:static inset-y-0 left-0 z-30 w-64 bg-[#24134a] text-white flex flex-col flex-shrink-0 transition-transform duration-300 ease-in-out no-print shadow-2xl lg:shadow-none print:hidden'
             ]"
         >
             <!-- Logo / Brand Area -->
-            <div class="h-16 flex items-center justify-between px-6 border-b border-purple-800/40 flex-shrink-0">
+            <div class="h-16 flex items-center justify-between px-6 border-b border-white/5 flex-shrink-0">
                 <Link :href="route('dashboard')" class="flex items-center gap-3 text-white group">
                     <template v-if="$page.props.app_logo">
                         <img :src="$page.props.app_logo" class="h-8 max-w-full object-contain" alt="Logo" />
@@ -54,16 +54,16 @@ const can = (perm) => permissions.value.includes(perm);
             </div>
 
             <!-- Navigation Links -->
-            <nav class="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
                 <!-- Dashboard -->
                 <Link
                     v-if="can('akses_dashboard')"
                     :href="route('dashboard')"
                     :class="[
                         route().current('dashboard')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Dashboard Icon -->
@@ -79,9 +79,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('transaksi')"
                     :class="[
                         route().current('transaksi*')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Transactions Icon -->
@@ -98,9 +98,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('billing.index')"
                     :class="[
                         route().current('billing*')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Receipt/Billing Icon -->
@@ -116,9 +116,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('voucher-saldo.index')"
                     :class="[
                         route().current('voucher-saldo*')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Ticket/Voucher Icon -->
@@ -133,9 +133,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('booking.index')"
                     :class="[
                         route().current('booking*')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Clipboard Document Icon -->
@@ -152,9 +152,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('pelanggan.index')"
                     :class="[
                         route().current('pelanggan*') && !route().current('pelanggan.inaktif')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Users Icon -->
@@ -170,9 +170,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('pelanggan.inaktif')"
                     :class="[
                         route().current('pelanggan.inaktif')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Archive/Pause Icon -->
@@ -188,9 +188,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('pelanggan.pantauan')"
                     :class="[
                         route().current('pelanggan.pantauan')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Exclamation Icon -->
@@ -206,9 +206,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('laporan')"
                     :class="[
                         route().current('laporan*')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Report / Chart Icon -->
@@ -224,9 +224,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('master-data.index')"
                     :class="[
                         route().current('master-data*')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Database / Master Data Icon -->
@@ -242,9 +242,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('affiliates.index')"
                     :class="[
                         route().current('affiliates*')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Affiliate / Network Icon -->
@@ -260,9 +260,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('affiliates.diagram')"
                     :class="[
                         route().current('affiliates.diagram')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -277,9 +277,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('komisi.index')"
                     :class="[
                         route().current('komisi*')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -294,9 +294,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('integrasi-billing.index')"
                     :class="[
                         route().current('integrasi-billing*')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Receipt / Billing Icon -->
@@ -316,9 +316,9 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route().has('profile.edit') ? route('profile.edit') : (route().has('settings') ? route('settings') : '#')"
                     :class="[
                         route().current('profile*') || route().current('settings*')
-                            ? 'bg-fuchsia-500/15 text-white font-semibold border-l-4 border-fuchsia-400 pl-3 shadow-[inset_0_0_12px_rgba(232,121,249,0.1)]'
-                            : 'text-purple-200/70 lg:hover:text-white lg:hover:bg-fuchsia-500/10 border-l-4 border-transparent pl-3',
-                        'flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-sm font-medium transition-all duration-150'
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <!-- Settings / Cog Icon -->
@@ -334,7 +334,7 @@ const can = (perm) => permissions.value.includes(perm);
                     :href="route('logout')"
                     method="post"
                     as="button"
-                    class="lg:hidden flex items-center gap-3 px-3 py-2.5 mt-2 rounded-r-xl text-sm font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300 border-l-4 border-transparent transition-all duration-150 w-full text-left"
+                    class="lg:hidden flex items-center gap-3 px-4 py-2.5 mt-2 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-150 w-full text-left"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -342,6 +342,24 @@ const can = (perm) => permissions.value.includes(perm);
                     <span>Keluar</span>
                 </Link>
             </nav>
+
+            <!-- Butuh Bantuan -->
+            <div class="px-4 pb-6 pt-4 mt-auto">
+                <div class="bg-[#1c0d38] p-4 rounded-2xl flex flex-col items-start shadow-inner border border-white/5">
+                    <div class="p-2 bg-[#432386] rounded-xl mb-3">
+                        <!-- Headset icon -->
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-sm font-bold text-white mb-1">Butuh bantuan?</h4>
+                    <p class="text-xs text-slate-400 mb-3">Hubungi tim support kami</p>
+                    <button class="w-full py-2.5 bg-[#432386] hover:bg-[#5a31b5] text-white text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <span>Hubungi Support</span>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                    </button>
+                </div>
+            </div>
         </aside>
 
         <!-- Content Wrapper -->
@@ -386,21 +404,53 @@ const can = (perm) => permissions.value.includes(perm);
                     <div class="flex items-center gap-3 truncate">
                         <slot name="header" />
                     </div>
-                    <div class="flex items-center gap-4">
-                        <span class="text-sm font-medium text-slate-600">
-                            Halo, <span class="font-semibold text-slate-800">{{ $page.props.auth.user.name }}</span>
-                        </span>
-                        <Link
-                            :href="route('logout')"
-                            method="post"
-                            as="button"
-                            title="Keluar"
-                            class="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-xl transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-500/20 shadow-sm"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                        </Link>
+
+                    <!-- Middle: Search Box -->
+                    <div class="flex-1 max-w-xl px-8 hidden xl:block">
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            </div>
+                            <input type="text" placeholder="Cari pelanggan, transaksi, atau area..." class="w-full pl-10 pr-16 py-2 bg-slate-100/70 border-none rounded-xl text-sm focus:ring-2 focus:ring-indigo-100 transition-all placeholder-slate-400">
+                            <div class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
+                                <span class="text-[10px] text-slate-400 font-medium px-2 py-0.5 bg-white rounded border border-slate-200">Ctrl + K</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-5">
+                        <!-- Notification Bell -->
+                        <button class="relative p-2 text-slate-500 hover:text-slate-700 transition-colors focus:outline-none">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                            <span class="absolute top-1.5 right-1.5 block h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white"></span>
+                        </button>
+
+                        <div class="h-8 w-px bg-slate-200"></div>
+
+                        <!-- Profile Dropdown Trigger (Dummy UI, using Logout directly to match functionality) -->
+                        <div class="flex items-center gap-3 relative group">
+                            <div class="w-9 h-9 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold shadow-sm">
+                                {{ $page.props.auth.user.name.substring(0,1).toUpperCase() }}
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium text-slate-700 group-hover:text-slate-900 transition-colors">
+                                    Halo, <span class="font-bold">{{ $page.props.auth.user.name }}</span>
+                                </span>
+                                <span class="text-xs text-slate-500">Administrator</span>
+                            </div>
+                            
+                            <Link
+                                :href="route('logout')"
+                                method="post"
+                                as="button"
+                                class="ml-2 text-slate-400 hover:text-red-500 transition-colors focus:outline-none p-1"
+                                title="Keluar"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </header>
