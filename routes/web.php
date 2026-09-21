@@ -29,9 +29,8 @@ Route::middleware('guest')->group(function () {
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users|unique:sales',
             'phone' => 'nullable|string|max:255',
-            'area' => 'nullable|string|max:255',
             'password' => 'required|string|min:8|confirmed',
-            'upline_code' => 'nullable|string',
+            'upline_code' => 'required|string',
         ]);
 
         $parent_id = null;

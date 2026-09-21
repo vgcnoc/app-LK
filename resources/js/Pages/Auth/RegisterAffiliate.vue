@@ -13,7 +13,6 @@ const form = useForm({
     name: '',
     email: '',
     phone: '',
-    area: '',
     upline_code: '',
     password: '',
     password_confirmation: '',
@@ -130,23 +129,11 @@ const submit = () => {
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Area -->
-                        <div>
-                            <label for="area" class="block text-xs font-bold text-slate-700 mb-1.5">Area (Opsional)</label>
-                            <select id="area" v-model="form.area" class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white">
-                                <option value="">-- Pilih Area --</option>
-                                <option v-for="a in areas" :key="a" :value="a">{{ a }}</option>
-                            </select>
-                            <p v-if="form.errors.area" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.area }}</p>
-                        </div>
-
-                        <!-- Upline Code -->
-                        <div>
-                            <label for="upline_code" class="block text-xs font-bold text-slate-700 mb-1.5">Kode Referral (Opsional)</label>
-                            <input id="upline_code" type="text" v-model="form.upline_code" class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="Contoh: SL-xxx-001" />
-                            <p v-if="form.errors.upline_code" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.upline_code }}</p>
-                        </div>
+                    <!-- Upline Code -->
+                    <div>
+                        <label for="upline_code" class="block text-xs font-bold text-slate-700 mb-1.5">Kode Referral *</label>
+                        <input id="upline_code" type="text" v-model="form.upline_code" required class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="Contoh: SL-xxx-001" />
+                        <p v-if="form.errors.upline_code" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.upline_code }}</p>
                     </div>
 
                     <!-- Password -->
