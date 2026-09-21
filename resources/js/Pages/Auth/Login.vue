@@ -35,7 +35,7 @@ const submit = () => {
         <div class="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-[#2f3cb3] via-[#321d8b] to-[#0f0729] overflow-hidden flex-col justify-between p-12 text-white">
             
             <!-- Abstract Glow Effects -->
-            <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl -mr-20 -mt-20"></div>
+            <div class="absolute top-0 right-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl -mr-20 -mt-20"></div>
             <div class="absolute bottom-40 left-0 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl -ml-20"></div>
             
             <!-- Header -->
@@ -47,16 +47,16 @@ const submit = () => {
                     </div>
                     <div>
                         <h1 class="text-xl font-bold tracking-tight leading-tight">VIRUZS</h1>
-                        <p class="text-[10px] tracking-widest text-indigo-200 uppercase">ISP Billing System</p>
+                        <p class="text-[10px] tracking-widest text-purple-200 uppercase">ISP Billing System</p>
                     </div>
                 </div>
                 
                 <!-- Tagline -->
                 <div class="text-right">
-                    <p class="text-xs text-indigo-200 font-medium tracking-wide">Reliable Connection</p>
+                    <p class="text-xs text-purple-200 font-medium tracking-wide">Reliable Connection</p>
                     <div class="flex items-center justify-end gap-2 mt-0.5">
                         <p class="text-xs text-white font-semibold">Brighter Tomorrow</p>
-                        <div class="w-6 h-px bg-indigo-400"></div>
+                        <div class="w-6 h-px bg-purple-400"></div>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@ const submit = () => {
                     Kelola Bisnis<br/>Internet Anda<br/>Lebih Mudah
                 </h2>
                 
-                <p class="text-indigo-100 text-base leading-relaxed mb-10 max-w-md">
+                <p class="text-purple-100 text-base leading-relaxed mb-10 max-w-md">
                     V-Billing membantu Anda mengelola pelanggan, tagihan, pembayaran, dan jaringan dalam satu sistem yang terintegrasi.
                 </p>
                 
@@ -80,7 +80,7 @@ const submit = () => {
                         </div>
                         <div>
                             <h4 class="font-semibold text-white text-base">Manajemen Pelanggan</h4>
-                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Data pelanggan terpusat dan aman</p>
+                            <p class="text-purple-200 text-xs sm:text-sm mt-0.5">Data pelanggan terpusat dan aman</p>
                         </div>
                     </div>
                     
@@ -91,7 +91,7 @@ const submit = () => {
                         </div>
                         <div>
                             <h4 class="font-semibold text-white text-base">Billing & Tagihan</h4>
-                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Pembuatan tagihan otomatis</p>
+                            <p class="text-purple-200 text-xs sm:text-sm mt-0.5">Pembuatan tagihan otomatis</p>
                         </div>
                     </div>
                     
@@ -102,18 +102,18 @@ const submit = () => {
                         </div>
                         <div>
                             <h4 class="font-semibold text-white text-base">Multi Metode Pembayaran</h4>
-                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Mendukung berbagai payment gateway</p>
+                            <p class="text-purple-200 text-xs sm:text-sm mt-0.5">Mendukung berbagai payment gateway</p>
                         </div>
                     </div>
                     
                     <!-- Feature 4 -->
                     <div class="flex items-start gap-4 group">
-                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0 border border-blue-400/30 group-hover:bg-blue-500/40 transition-colors shadow-lg shadow-blue-900/50">
-                            <svg class="w-6 h-6 text-blue-300" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0 border border-purple-400/30 group-hover:bg-purple-500/40 transition-colors shadow-lg shadow-purple-900/50">
+                            <svg class="w-6 h-6 text-purple-300" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
                         </div>
                         <div>
                             <h4 class="font-semibold text-white text-base">Laporan Lengkap</h4>
-                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Pantau pertumbuhan bisnis secara real-time</p>
+                            <p class="text-purple-200 text-xs sm:text-sm mt-0.5">Pantau pertumbuhan bisnis secara real-time</p>
                         </div>
                     </div>
                 </div>
@@ -121,34 +121,34 @@ const submit = () => {
             
             <!-- Cityscape / Abstract wave graphic at bottom -->
             <div class="absolute bottom-0 left-0 w-full h-64 overflow-hidden pointer-events-none opacity-80 mix-blend-screen">
-                <svg viewBox="0 0 1440 320" class="absolute bottom-0 w-full h-auto text-indigo-900/50 fill-current" preserveAspectRatio="none"><path d="M0,256L48,229.3C96,203,192,149,288,154.7C384,160,480,224,576,218.7C672,213,768,139,864,128C960,117,1056,171,1152,197.3C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+                <svg viewBox="0 0 1440 320" class="absolute bottom-0 w-full h-auto text-purple-900/50 fill-current" preserveAspectRatio="none"><path d="M0,256L48,229.3C96,203,192,149,288,154.7C384,160,480,224,576,218.7C672,213,768,139,864,128C960,117,1056,171,1152,197.3C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
                 <svg viewBox="0 0 1440 320" class="absolute bottom-0 w-full h-auto text-purple-900/60 fill-current opacity-70" preserveAspectRatio="none" style="transform: scaleX(-1);"><path d="M0,192L48,202.7C96,213,192,235,288,218.7C384,203,480,149,576,144C672,139,768,181,864,202.7C960,224,1056,224,1152,197.3C1248,171,1344,117,1392,90.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
                 
                 <!-- Fake buildings -->
-                <div class="absolute bottom-0 left-32 w-16 h-24 bg-indigo-950/80 rounded-t-sm shadow-[0_0_15px_rgba(79,70,229,0.3)]"></div>
-                <div class="absolute bottom-0 left-[18%] w-12 h-32 bg-indigo-950/90 rounded-t-sm"></div>
-                <div class="absolute bottom-0 left-[35%] w-24 h-20 bg-indigo-950/70 rounded-t-sm shadow-[0_0_15px_rgba(79,70,229,0.2)]">
+                <div class="absolute bottom-0 left-32 w-16 h-24 bg-purple-950/80 rounded-t-sm shadow-[0_0_15px_rgba(79,70,229,0.3)]"></div>
+                <div class="absolute bottom-0 left-[18%] w-12 h-32 bg-purple-950/90 rounded-t-sm"></div>
+                <div class="absolute bottom-0 left-[35%] w-24 h-20 bg-purple-950/70 rounded-t-sm shadow-[0_0_15px_rgba(79,70,229,0.2)]">
                     <div class="flex gap-2 mt-4 ml-4"><div class="w-2 h-2 bg-cyan-200 shadow-[0_0_5px_#a5f3fc]"></div><div class="w-2 h-2 bg-cyan-200 shadow-[0_0_5px_#a5f3fc]"></div></div>
                 </div>
-                <div class="absolute bottom-0 left-[50%] w-32 h-16 bg-indigo-950/80 rounded-t-sm">
-                    <div class="flex gap-2 mt-4 justify-center"><div class="w-2 h-2 bg-indigo-300"></div><div class="w-2 h-2 bg-indigo-300"></div><div class="w-2 h-2 bg-indigo-300"></div></div>
+                <div class="absolute bottom-0 left-[50%] w-32 h-16 bg-purple-950/80 rounded-t-sm">
+                    <div class="flex gap-2 mt-4 justify-center"><div class="w-2 h-2 bg-purple-300"></div><div class="w-2 h-2 bg-purple-300"></div><div class="w-2 h-2 bg-purple-300"></div></div>
                 </div>
                 
                 <!-- Cell tower abstraction -->
-                <div class="absolute bottom-0 right-[25%] w-0.5 h-48 bg-indigo-500/50"></div>
-                <div class="absolute bottom-24 right-[25%] -mr-6 w-12 h-px bg-indigo-500/50"></div>
-                <div class="absolute bottom-12 right-[25%] -mr-10 w-20 h-px bg-indigo-500/50"></div>
+                <div class="absolute bottom-0 right-[25%] w-0.5 h-48 bg-purple-500/50"></div>
+                <div class="absolute bottom-24 right-[25%] -mr-6 w-12 h-px bg-purple-500/50"></div>
+                <div class="absolute bottom-12 right-[25%] -mr-10 w-20 h-px bg-purple-500/50"></div>
                 <div class="absolute bottom-40 right-[25%] -mr-0.5 w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee] animate-pulse"></div>
                 
                 <!-- Connection dots -->
-                <div class="absolute bottom-32 left-[30%] w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_10px_#818cf8]"></div>
+                <div class="absolute bottom-32 left-[30%] w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_10px_#818cf8]"></div>
                 <div class="absolute bottom-48 left-[45%] w-1.5 h-1.5 rounded-full bg-cyan-300 shadow-[0_0_10px_#67e8f9]"></div>
             </div>
 
             <!-- Footer Text -->
-            <div class="relative z-10 text-indigo-200 text-xs max-w-sm font-medium mt-12 italic">
+            <div class="relative z-10 text-purple-200 text-xs max-w-sm font-medium mt-12 italic">
                 <p>" Koneksi lebih dekat untuk masa depan yang lebih baik "</p>
-                <p class="mt-2 text-indigo-300 not-italic">&mdash; PT Viruzs Global Connection</p>
+                <p class="mt-2 text-purple-300 not-italic">&mdash; PT Viruzs Global Connection</p>
             </div>
             
         </div>
@@ -158,7 +158,7 @@ const submit = () => {
             
             <!-- Theme Toggle (Visual Only) -->
             <div class="absolute top-6 right-6 bg-white border border-slate-200 rounded-full p-1 shadow-sm flex items-center">
-                <button class="w-8 h-8 rounded-full flex items-center justify-center bg-indigo-50 text-indigo-600 transition-colors">
+                <button class="w-8 h-8 rounded-full flex items-center justify-center bg-purple-50 text-purple-600 transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                 </button>
                 <button class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors">
@@ -167,12 +167,12 @@ const submit = () => {
             </div>
 
             <!-- Main Card -->
-            <div class="w-full max-w-[460px] bg-white rounded-[2rem] shadow-2xl shadow-indigo-100/50 p-8 sm:p-10 border border-slate-100 relative z-10">
+            <div class="w-full max-w-[460px] bg-white rounded-[2rem] shadow-2xl shadow-purple-100/50 p-8 sm:p-10 border border-slate-100 relative z-10">
                 
                 <!-- Logo & Badge -->
                 <div class="flex items-center justify-between mb-10">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-md">
+                        <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-md">
                             V
                         </div>
                         <div>
@@ -214,7 +214,7 @@ const submit = () => {
                                 required 
                                 autofocus 
                                 autocomplete="username"
-                                class="block w-full pl-11 pr-10 py-3.5 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 placeholder-slate-400 transition-colors bg-white hover:bg-slate-50 focus:bg-white" 
+                                class="block w-full pl-11 pr-10 py-3.5 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-purple-500 focus:border-purple-500 shadow-sm font-medium text-slate-800 placeholder-slate-400 transition-colors bg-white hover:bg-slate-50 focus:bg-white" 
                                 placeholder="nama@email.com"
                             />
                             <div v-if="form.email" class="absolute inset-y-0 right-0 pr-4 flex items-center">
@@ -239,11 +239,11 @@ const submit = () => {
                                 v-model="form.password" 
                                 required 
                                 autocomplete="current-password"
-                                class="block w-full pl-11 pr-10 py-3.5 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 placeholder-slate-400 tracking-wider transition-colors bg-white hover:bg-slate-50 focus:bg-white" 
+                                class="block w-full pl-11 pr-10 py-3.5 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-purple-500 focus:border-purple-500 shadow-sm font-medium text-slate-800 placeholder-slate-400 tracking-wider transition-colors bg-white hover:bg-slate-50 focus:bg-white" 
                                 placeholder="••••••••"
                             />
                             <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
-                                <button type="button" @click="showPassword = !showPassword" class="text-slate-400 hover:text-indigo-600 focus:outline-none transition-colors">
+                                <button type="button" @click="showPassword = !showPassword" class="text-slate-400 hover:text-purple-600 focus:outline-none transition-colors">
                                     <svg v-if="!showPassword" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                                     <svg v-else class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
                                 </button>
@@ -256,12 +256,12 @@ const submit = () => {
                     <div class="flex items-center justify-between pt-1">
                         <label class="flex items-center group cursor-pointer">
                             <div class="relative flex items-center justify-center w-5 h-5 mr-2">
-                                <input type="checkbox" v-model="form.remember" class="w-5 h-5 border-2 border-slate-300 rounded text-indigo-600 focus:ring-indigo-500 transition-all cursor-pointer peer" />
+                                <input type="checkbox" v-model="form.remember" class="w-5 h-5 border-2 border-slate-300 rounded text-purple-600 focus:ring-purple-500 transition-all cursor-pointer peer" />
                             </div>
-                            <span class="text-xs sm:text-sm font-semibold text-slate-700 group-hover:text-indigo-600 transition-colors">Ingat Saya</span>
+                            <span class="text-xs sm:text-sm font-semibold text-slate-700 group-hover:text-purple-600 transition-colors">Ingat Saya</span>
                         </label>
 
-                        <Link v-if="canResetPassword" :href="route('password.request')" class="text-xs sm:text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors underline-offset-2 hover:underline">
+                        <Link v-if="canResetPassword" :href="route('password.request')" class="text-xs sm:text-sm font-bold text-purple-600 hover:text-purple-800 transition-colors underline-offset-2 hover:underline">
                             Lupa kata sandi?
                         </Link>
                     </div>
@@ -270,7 +270,7 @@ const submit = () => {
                     <div class="pt-4">
                         <button 
                             type="submit" 
-                            class="w-full flex justify-center items-center py-4 px-4 border border-transparent rounded-xl shadow-lg shadow-indigo-500/30 text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-500 via-indigo-600 to-blue-500 hover:from-indigo-600 hover:via-indigo-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:-translate-y-0.5"
+                            class="w-full flex justify-center items-center py-4 px-4 border border-transparent rounded-xl shadow-lg shadow-purple-500/30 text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-500 hover:from-purple-600 hover:via-purple-700 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all transform hover:-translate-y-0.5"
                             :class="{ 'opacity-70 cursor-not-allowed': form.processing }"
                             :disabled="form.processing"
                         >
@@ -307,7 +307,7 @@ const submit = () => {
                 <div class="mt-8 text-center">
                     <p class="text-xs sm:text-sm text-slate-500 font-medium">
                         Ingin bergabung sebagai Mitra/Sales? 
-                        <Link :href="route('register.affiliate')" class="font-bold text-indigo-600 hover:text-indigo-800 transition-colors underline-offset-2 hover:underline">Daftar Disini</Link>
+                        <Link :href="route('register.affiliate')" class="font-bold text-purple-600 hover:text-purple-800 transition-colors underline-offset-2 hover:underline">Daftar Disini</Link>
                     </p>
                 </div>
             </div>
@@ -329,3 +329,4 @@ const submit = () => {
         </div>
     </div>
 </template>
+
