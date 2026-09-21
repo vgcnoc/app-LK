@@ -147,7 +147,7 @@ function getLevelColors(lvl) {
             borderTop: 'border-indigo-500',
             avatarBg: 'bg-indigo-100',
             line: 'bg-indigo-300',
-            cardBg: 'bg-indigo-50/60'
+            cardBg: 'bg-indigo-50'
         };
     } else if (lvl === 1) {
         return {
@@ -156,7 +156,7 @@ function getLevelColors(lvl) {
             borderTop: 'border-emerald-500',
             avatarBg: 'bg-emerald-100',
             line: 'bg-emerald-300',
-            cardBg: 'bg-emerald-50/60'
+            cardBg: 'bg-emerald-50'
         };
     } else {
         return {
@@ -165,7 +165,7 @@ function getLevelColors(lvl) {
             borderTop: 'border-amber-500',
             avatarBg: 'bg-amber-100',
             line: 'bg-amber-300',
-            cardBg: 'bg-amber-50/60'
+            cardBg: 'bg-amber-50'
         };
     }
 }

@@ -84,7 +84,7 @@
                         </div>
                     </div>
                     
-                    <div class="relative p-4 sm:p-6 md:p-12 flex-grow overflow-auto bg-[#F8F9FE]">
+                    <div class="relative p-4 sm:p-6 md:p-12 flex-grow overflow-auto bg-slate-50">
                         <!-- SVG Background Wave -->
                         <div class="absolute bottom-0 left-0 right-0 pointer-events-none z-0 opacity-[0.15]">
                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#6366f1" fill-opacity="1" d="M0,160L48,170.7C96,181,192,203,288,208C384,213,480,203,576,170.7C672,139,768,85,864,80C960,75,1056,117,1152,144C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
