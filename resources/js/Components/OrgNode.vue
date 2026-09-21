@@ -1,8 +1,8 @@
 <template>
     <div class="flex flex-col items-center">
         <!-- Node Card -->
-        <div class="relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] w-[260px] sm:w-[280px] border border-slate-100 z-10 mx-2 mt-4" 
-             :class="[`border-t-4`, levelColors.borderTop]">
+        <div class="relative rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] w-[260px] sm:w-[280px] border border-slate-100 z-10 mx-2 mt-4" 
+             :class="[`border-t-4`, levelColors.borderTop, levelColors.cardBg]">
             
             <!-- Badge Level -->
             <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 z-20">
@@ -143,26 +143,29 @@ function getLevelColors(lvl) {
     if (lvl === 0) {
         return {
             bg: 'bg-indigo-500',
-            text: 'text-indigo-500',
+            text: 'text-indigo-600',
             borderTop: 'border-indigo-500',
             avatarBg: 'bg-indigo-100',
-            line: 'bg-indigo-300'
+            line: 'bg-indigo-300',
+            cardBg: 'bg-indigo-50/60'
         };
     } else if (lvl === 1) {
         return {
             bg: 'bg-emerald-500',
-            text: 'text-emerald-500',
+            text: 'text-emerald-600',
             borderTop: 'border-emerald-500',
             avatarBg: 'bg-emerald-100',
-            line: 'bg-emerald-300'
+            line: 'bg-emerald-300',
+            cardBg: 'bg-emerald-50/60'
         };
     } else {
         return {
             bg: 'bg-amber-500',
-            text: 'text-amber-500',
+            text: 'text-amber-600',
             borderTop: 'border-amber-500',
             avatarBg: 'bg-amber-100',
-            line: 'bg-amber-300'
+            line: 'bg-amber-300',
+            cardBg: 'bg-amber-50/60'
         };
     }
 }

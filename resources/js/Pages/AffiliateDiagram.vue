@@ -101,11 +101,10 @@
                             </svg>
                             <p class="text-lg font-medium">Belum ada data jaringan yang dapat ditampilkan.</p>
                         </div>
-                        
-                        <!-- Info Card -->
-                        <div class="absolute bottom-6 left-6 right-6 md:left-12 md:right-12 z-20 flex justify-between items-end pointer-events-none">
-                            <div class="bg-white/80 backdrop-blur border border-indigo-100 rounded-2xl p-4 flex gap-4 items-center shadow-lg pointer-events-auto max-w-md">
-                                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex justify-center items-center shrink-0">
+                        <!-- Info Card (Moved to normal flow to prevent overlap) -->
+                        <div class="relative z-20 mt-10 w-full flex justify-start">
+                            <div class="bg-white/90 backdrop-blur border border-indigo-100 rounded-2xl p-4 flex gap-4 items-center shadow-sm max-w-md w-full">
+                                <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex justify-center items-center shrink-0">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                 </div>
                                 <div>
