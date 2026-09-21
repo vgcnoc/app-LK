@@ -1270,6 +1270,7 @@ const deleteCustomer = (customer) => {
 
                                     <!-- Reset Filters -->
                                     <button
+                                        v-if="searchQuery || statusFilter !== 'all' || areaFilter !== 'all' || startDateFilter || endDateFilter"
                                         @click="resetFilters"
                                         type="button"
                                         class="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm transition hover:bg-slate-50 focus:ring-2 focus:ring-slate-200"
