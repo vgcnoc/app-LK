@@ -392,8 +392,8 @@ const getDaysOverdue = (dateStr) => {
     return Math.floor(diffTime / (1000 * 60 * 60 * 24));
 };
 
-const totalVoucher = computed(() => props.transactions.filter(t => t.income_source === 'voucher' && (t.payment_status === 'paid' || !t.payment_status) && !t.parent_id).reduce((sum, t) => sum + Number(t.amount), 0));
-const totalSaldo = computed(() => props.transactions.filter(t => t.income_source === 'saldo' && (t.payment_status === 'paid' || !t.payment_status) && !t.parent_id).reduce((sum, t) => sum + Number(t.amount), 0));
+const totalVoucher = computed(() => props.transactions.filter(t => t.income_source === 'voucher' && t.transaction_mode !== 'Piutang').reduce((sum, t) => sum + Number(t.amount), 0));
+const totalSaldo = computed(() => props.transactions.filter(t => t.income_source === 'saldo' && t.transaction_mode !== 'Piutang').reduce((sum, t) => sum + Number(t.amount), 0));
 const totalPiutang = computed(() => props.transactions.filter(t => t.payment_status === 'unpaid' && t.transaction_mode === 'Piutang').reduce((sum, t) => sum + getRemainingPiutang(t), 0));
 
 const totalFilteredNominal = computed(() => {
@@ -749,7 +749,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                     <option v-for="area in areas" :key="area" :value="area">{{ area }}</option>
                                 </select>
                             </div>
-                            <div>
+                            <div class="flex flex-wrap items-center gap-2 mt-2 sm:mt-0 w-full sm:w-auto">
                                 <button
                                     @click="applyFilters"
                                     class="inline-flex items-center gap-2 rounded-lg bg-slate-800 px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
@@ -758,7 +758,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                 </button>
                                 <button
                                     @click="exportExcel"
-                                    class="inline-flex items-center gap-2 rounded-lg bg-emerald-50 px-4 py-2 text-xs sm:text-sm font-semibold text-emerald-700 shadow-sm ring-1 ring-inset ring-emerald-600/20 hover:bg-emerald-100 focus:outline-none transition-colors ml-2"
+                                    class="inline-flex items-center gap-2 rounded-lg bg-emerald-50 px-4 py-2 text-xs sm:text-sm font-semibold text-emerald-700 shadow-sm ring-1 ring-inset ring-emerald-600/20 hover:bg-emerald-100 focus:outline-none transition-colors"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
@@ -767,7 +767,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                 </button>
                                 <button
                                     @click="exportPDF"
-                                    class="inline-flex items-center gap-2 rounded-lg bg-rose-50 px-4 py-2 text-xs sm:text-sm font-semibold text-rose-700 shadow-sm ring-1 ring-inset ring-rose-600/20 hover:bg-rose-100 focus:outline-none transition-colors ml-2"
+                                    class="inline-flex items-center gap-2 rounded-lg bg-rose-50 px-4 py-2 text-xs sm:text-sm font-semibold text-rose-700 shadow-sm ring-1 ring-inset ring-rose-600/20 hover:bg-rose-100 focus:outline-none transition-colors"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
