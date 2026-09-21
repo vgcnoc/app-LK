@@ -1,12 +1,12 @@
 <template>
     <div class="flex flex-col items-center">
         <!-- Node Card -->
-        <div class="relative rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] w-[260px] sm:w-[280px] border border-slate-100 z-10 mx-2 mt-4" 
-             :class="[`border-t-4`, levelColors.borderTop, levelColors.cardBg]">
+        <div class="relative rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] w-[260px] sm:w-[280px] border border-slate-100 z-10 mx-2 mt-4 transition-all duration-300 hover:-translate-y-1" 
+             :class="[`border-t-4`, levelColors.borderTop, levelColors.cardBg, levelColors.hoverShadow]">
             
             <!-- Badge Level -->
             <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 z-20">
-                <div :class="`px-5 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white shadow-sm whitespace-nowrap ${levelColors.bg}`">
+                <div :class="`px-5 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white whitespace-nowrap ${levelColors.badgeBg}`">
                     {{ levelName }}
                 </div>
             </div>
@@ -143,29 +143,35 @@ function getLevelColors(lvl) {
     if (lvl === 0) {
         return {
             bg: 'bg-indigo-500',
+            badgeBg: 'bg-gradient-to-r from-indigo-500 to-indigo-600 shadow-md shadow-indigo-500/30',
             text: 'text-indigo-600',
             borderTop: 'border-indigo-500',
-            avatarBg: 'bg-indigo-100',
+            avatarBg: 'bg-indigo-50 ring-4 ring-indigo-50/50',
             line: 'bg-indigo-300',
-            cardBg: 'bg-indigo-50'
+            cardBg: 'bg-gradient-to-b from-white to-indigo-50/30',
+            hoverShadow: 'hover:shadow-xl hover:shadow-indigo-500/10'
         };
     } else if (lvl === 1) {
         return {
             bg: 'bg-emerald-500',
+            badgeBg: 'bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-md shadow-emerald-500/30',
             text: 'text-emerald-600',
             borderTop: 'border-emerald-500',
-            avatarBg: 'bg-emerald-100',
+            avatarBg: 'bg-emerald-50 ring-4 ring-emerald-50/50',
             line: 'bg-emerald-300',
-            cardBg: 'bg-emerald-50'
+            cardBg: 'bg-gradient-to-b from-white to-emerald-50/30',
+            hoverShadow: 'hover:shadow-xl hover:shadow-emerald-500/10'
         };
     } else {
         return {
             bg: 'bg-amber-500',
+            badgeBg: 'bg-gradient-to-r from-amber-500 to-amber-600 shadow-md shadow-amber-500/30',
             text: 'text-amber-600',
             borderTop: 'border-amber-500',
-            avatarBg: 'bg-amber-100',
+            avatarBg: 'bg-amber-50 ring-4 ring-amber-50/50',
             line: 'bg-amber-300',
-            cardBg: 'bg-amber-50'
+            cardBg: 'bg-gradient-to-b from-white to-amber-50/30',
+            hoverShadow: 'hover:shadow-xl hover:shadow-amber-500/10'
         };
     }
 }
