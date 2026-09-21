@@ -343,7 +343,7 @@ watch(
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="hidden sm:flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div class="flex-1 min-w-0">
                     <h2 class="text-xl sm:text-3xl font-bold text-slate-800 tracking-tight break-words">
                         Selamat Datang, {{ $page.props.auth.user.name }}! 👋
@@ -363,112 +363,126 @@ watch(
 
 
 
-        <div class="py-6 sm:py-8 bg-slate-50 min-h-screen">
-            <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div class="py-4 sm:py-8 bg-slate-50 min-h-screen">
+            <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6">
                 
+                <!-- Mobile Welcome Banner -->
+                <div class="sm:hidden relative overflow-hidden bg-blue-50 rounded-2xl p-5 mb-4">
+                    <div class="relative z-10 w-2/3">
+                        <p class="text-sm text-slate-600 mb-1">Selamat datang,</p>
+                        <h2 class="text-xl font-bold text-slate-900 leading-tight">
+                            {{ $page.props.auth.user.name }} 👋
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-2">Pantau bisnis internet Anda dalam satu dashboard.</p>
+                    </div>
+                    <!-- Illustration Placeholder (Circles for effect) -->
+                    <div class="absolute right-0 top-0 h-full w-1/3 flex items-center justify-center pointer-events-none opacity-80">
+                        <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg class="w-12 h-12 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Date Picker -->
+                <div class="sm:hidden flex items-center justify-between bg-white border border-slate-200 px-4 py-3 rounded-2xl shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span class="text-sm font-medium text-slate-700">{{ formattedTodayDate }}</span>
+                    </div>
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </div>
+
                 <!-- 1. Top 4 Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
                     <!-- Income Card -->
-                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 p-5 sm:p-6 border border-emerald-100 min-w-0">
-                        <div class="relative z-10">
-                            <div class="flex justify-between items-start gap-3">
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-[10px] sm:text-xs font-bold text-emerald-800 uppercase tracking-wider truncate">Total Pemasukan</p>
-                                    <h3 class="mt-1 sm:mt-2 text-xl sm:text-3xl font-black text-emerald-900 tracking-tight truncate">
-                                        {{ formatRupiah(summary.income) }}
-                                    </h3>
-                                </div>
-                                <div class="bg-emerald-500 text-white p-2 sm:p-3 rounded-xl shadow-sm shadow-emerald-200 flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <div class="relative overflow-hidden rounded-2xl bg-emerald-50 sm:bg-gradient-to-br sm:from-emerald-100 sm:to-emerald-50 p-4 sm:p-6 border border-emerald-100 min-w-0">
+                        <div class="relative z-10 flex flex-col h-full">
+                            <div class="flex items-center gap-2 mb-2 sm:mb-3">
+                                <div class="bg-emerald-500 text-white p-1.5 sm:p-3 rounded-lg sm:rounded-xl shadow-sm flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                                     </svg>
                                 </div>
+                                <p class="text-[10px] sm:text-xs font-bold text-emerald-800 uppercase tracking-wider truncate">Total Pemasukan</p>
                             </div>
-                            <div class="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs">
-                                <span class="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-200/50 px-1.5 sm:px-2 py-0.5 rounded-md whitespace-nowrap">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                                    </svg>
+                            <h3 class="text-lg sm:text-3xl font-black text-emerald-900 tracking-tight truncate">
+                                {{ formatRupiah(summary.income) }}
+                            </h3>
+                            <div class="mt-auto pt-2 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[9px] sm:text-xs">
+                                <span class="inline-flex items-center gap-0.5 sm:gap-1 font-semibold text-emerald-700 bg-emerald-200/50 px-1 sm:px-2 py-0.5 rounded-md whitespace-nowrap">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
                                     {{ percentages.income }}%
                                 </span>
-                                <span class="text-emerald-600/80 truncate flex-1 min-w-0">dari periode sebelumnya</span>
+                                <span class="text-emerald-600/80 truncate flex-1 min-w-0 leading-tight">dari periode sebelumnya</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Expense Card -->
-                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-rose-100 to-rose-50 p-5 sm:p-6 border border-rose-100 min-w-0">
-                        <div class="relative z-10">
-                            <div class="flex justify-between items-start gap-3">
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-[10px] sm:text-xs font-bold text-rose-800 uppercase tracking-wider truncate">Total Pengeluaran</p>
-                                    <h3 class="mt-1 sm:mt-2 text-xl sm:text-3xl font-black text-rose-900 tracking-tight truncate">
-                                        {{ formatRupiah(summary.expense) }}
-                                    </h3>
-                                </div>
-                                <div class="bg-rose-500 text-white p-2 sm:p-3 rounded-xl shadow-sm shadow-rose-200 flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="relative overflow-hidden rounded-2xl bg-rose-50 sm:bg-gradient-to-br sm:from-rose-100 sm:to-rose-50 p-4 sm:p-6 border border-rose-100 min-w-0">
+                        <div class="relative z-10 flex flex-col h-full">
+                            <div class="flex items-center gap-2 mb-2 sm:mb-3">
+                                <div class="bg-rose-500 text-white p-1.5 sm:p-3 rounded-lg sm:rounded-xl shadow-sm flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                     </svg>
                                 </div>
+                                <p class="text-[10px] sm:text-xs font-bold text-rose-800 uppercase tracking-wider truncate">Total Pengeluaran</p>
                             </div>
-                            <div class="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs">
-                                <span class="inline-flex items-center gap-1 font-semibold text-rose-700 bg-rose-200/50 px-1.5 sm:px-2 py-0.5 rounded-md whitespace-nowrap">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                                    </svg>
+                            <h3 class="text-lg sm:text-3xl font-black text-rose-900 tracking-tight truncate">
+                                {{ formatRupiah(summary.expense) }}
+                            </h3>
+                            <div class="mt-auto pt-2 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[9px] sm:text-xs">
+                                <span class="inline-flex items-center gap-0.5 sm:gap-1 font-semibold text-rose-700 bg-rose-200/50 px-1 sm:px-2 py-0.5 rounded-md whitespace-nowrap">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
                                     {{ percentages.expense }}%
                                 </span>
-                                <span class="text-rose-600/80 truncate flex-1 min-w-0">dari periode sebelumnya</span>
+                                <span class="text-rose-600/80 truncate flex-1 min-w-0 leading-tight">dari periode sebelumnya</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Balance Card -->
-                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 p-5 sm:p-6 border border-blue-100 min-w-0">
-                        <div class="relative z-10">
-                            <div class="flex justify-between items-start gap-3">
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-[10px] sm:text-xs font-bold text-blue-800 uppercase tracking-wider truncate">Sisa Saldo Kas</p>
-                                    <h3 class="mt-1 sm:mt-2 text-xl sm:text-3xl font-black text-blue-900 tracking-tight truncate">
-                                        {{ formatRupiah(summary.balance) }}
-                                    </h3>
-                                </div>
-                                <div class="bg-blue-500 text-white p-2 sm:p-3 rounded-xl shadow-sm shadow-blue-200 flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="relative overflow-hidden rounded-2xl bg-blue-50 sm:bg-gradient-to-br sm:from-blue-100 sm:to-blue-50 p-4 sm:p-6 border border-blue-100 min-w-0">
+                        <div class="relative z-10 flex flex-col h-full">
+                            <div class="flex items-center gap-2 mb-2 sm:mb-3">
+                                <div class="bg-blue-500 text-white p-1.5 sm:p-3 rounded-lg sm:rounded-xl shadow-sm flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
                                     </svg>
                                 </div>
+                                <p class="text-[10px] sm:text-xs font-bold text-blue-800 uppercase tracking-wider truncate">Sisa Saldo Kas</p>
                             </div>
-                            <div class="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs">
-                                <span class="inline-flex items-center gap-1 font-semibold text-blue-700 bg-blue-200/50 px-1.5 sm:px-2 py-0.5 rounded-md whitespace-nowrap">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                                    </svg>
+                            <h3 class="text-lg sm:text-3xl font-black text-blue-900 tracking-tight truncate">
+                                {{ formatRupiah(summary.balance) }}
+                            </h3>
+                            <div class="mt-auto pt-2 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[9px] sm:text-xs">
+                                <span class="inline-flex items-center gap-0.5 sm:gap-1 font-semibold text-blue-700 bg-blue-200/50 px-1 sm:px-2 py-0.5 rounded-md whitespace-nowrap">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
                                     {{ percentages.balance }}%
                                 </span>
-                                <span class="text-blue-600/80 truncate flex-1 min-w-0">saldo saat ini</span>
+                                <span class="text-blue-600/80 truncate flex-1 min-w-0 leading-tight">saldo saat ini</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Unpaid Card -->
-                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 p-5 sm:p-6 border border-amber-100 min-w-0">
-                        <div class="relative z-10">
-                            <div class="flex justify-between items-start gap-3">
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-[10px] sm:text-xs font-bold text-amber-800 uppercase tracking-wider truncate">Belum Lunas</p>
-                                    <h3 class="mt-1 sm:mt-2 text-xl sm:text-3xl font-black text-amber-900 tracking-tight truncate">
-                                        {{ formatRupiah(unpaid.total) }}
-                                    </h3>
-                                </div>
-                                <div class="bg-amber-500 text-white p-2 sm:p-3 rounded-xl shadow-sm shadow-amber-200 flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="relative overflow-hidden rounded-2xl bg-amber-50 sm:bg-gradient-to-br sm:from-amber-100 sm:to-amber-50 p-4 sm:p-6 border border-amber-100 min-w-0">
+                        <div class="relative z-10 flex flex-col h-full">
+                            <div class="flex items-center gap-2 mb-2 sm:mb-3">
+                                <div class="bg-amber-500 text-white p-1.5 sm:p-3 rounded-lg sm:rounded-xl shadow-sm flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
+                                <p class="text-[10px] sm:text-xs font-bold text-amber-800 uppercase tracking-wider truncate">Belum Lunas</p>
                             </div>
-                            <div class="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs">
+                            <h3 class="text-lg sm:text-3xl font-black text-amber-900 tracking-tight truncate">
+                                {{ formatRupiah(unpaid.total) }}
+                            </h3>
+                            <div class="mt-auto pt-2 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[9px] sm:text-xs">
                                 <span class="text-amber-700 font-medium truncate flex-1 min-w-0">{{ unpaid.count }} pelanggan belum bayar</span>
                             </div>
                         </div>
@@ -478,7 +492,7 @@ watch(
                 <!-- 2. Charts Section -->
                 <div class="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 gap-6">
                     <!-- Bar Chart -->
-                    <div class="xl:col-span-2 lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-100 shadow-sm min-w-0">
+                    <div class="xl:col-span-2 lg:col-span-2 bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm min-w-0">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 mb-6">
                             <div class="flex items-center gap-3">
                                 <div class="bg-indigo-50 text-indigo-500 p-2 rounded-lg">
@@ -488,25 +502,70 @@ watch(
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <h3 class="text-base font-bold text-slate-800 truncate">Statistik Arus Kas</h3>
-                                    <p class="text-[10px] sm:text-xs text-slate-500 truncate">Perbandingan pemasukan dan pengeluaran per periode</p>
+                                    <p class="text-[10px] sm:text-xs text-slate-500 truncate">Perbandingan pemasukan dan pengeluaran</p>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-4">
-                                <div class="hidden sm:flex items-center gap-3 text-xs text-slate-500 mr-2">
-                                    <span class="inline-flex items-center gap-1.5">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Pemasukan
-                                    </span>
-                                    <span class="inline-flex items-center gap-1.5">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Pengeluaran
-                                    </span>
-                                </div>
+                            <div class="flex items-center gap-2 sm:gap-4">
                                 <select class="text-xs border-slate-200 rounded-lg py-1.5 pl-3 pr-8 text-slate-600 focus:ring-indigo-500 focus:border-indigo-500">
-                                    <option>7 Hari Terakhir</option>
+                                    <option>6 Bulan</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="relative h-64 w-full">
+                        <div class="relative h-48 sm:h-64 w-full">
                             <canvas ref="chartCanvas"></canvas>
+                        </div>
+                        <div class="flex sm:hidden justify-center items-center gap-4 text-[10px] text-slate-500 mt-2">
+                            <span class="inline-flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Pemasukan
+                            </span>
+                            <span class="inline-flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-rose-500"></span> Pengeluaran
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Menu Cepat (Quick Menu) -->
+                    <div class="sm:hidden mt-2">
+                        <div class="flex items-center justify-between mb-4 px-1">
+                            <h3 class="text-base font-bold text-slate-800">Menu Cepat</h3>
+                            <Link href="#" class="text-xs font-medium text-blue-600 hover:text-blue-700 flex items-center">Lihat Semua <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></Link>
+                        </div>
+                        <div class="flex justify-between items-center bg-transparent gap-2">
+                            <!-- Menu 1 -->
+                            <Link :href="route('pelanggan.index')" class="flex flex-col items-center gap-2 w-16">
+                                <div class="w-14 h-14 bg-emerald-50 border border-emerald-100 rounded-2xl shadow-sm flex items-center justify-center text-emerald-600">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                                </div>
+                                <span class="text-[10px] text-slate-700 font-medium">Pelanggan</span>
+                            </Link>
+                            <!-- Menu 2 -->
+                            <Link :href="route('billing.index')" class="flex flex-col items-center gap-2 w-16">
+                                <div class="w-14 h-14 bg-blue-50 border border-blue-100 rounded-2xl shadow-sm flex items-center justify-center text-blue-600">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                </div>
+                                <span class="text-[10px] text-slate-700 font-medium">Tagihan</span>
+                            </Link>
+                            <!-- Menu 3 -->
+                            <Link href="#" class="flex flex-col items-center gap-2 w-16">
+                                <div class="w-14 h-14 bg-amber-50 border border-amber-100 rounded-2xl shadow-sm flex items-center justify-center text-amber-500">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
+                                </div>
+                                <span class="text-[10px] text-slate-700 font-medium">Layanan</span>
+                            </Link>
+                            <!-- Menu 4 -->
+                            <Link href="#" class="flex flex-col items-center gap-2 w-16">
+                                <div class="w-14 h-14 bg-purple-50 border border-purple-100 rounded-2xl shadow-sm flex items-center justify-center text-purple-600">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
+                                </div>
+                                <span class="text-[10px] text-slate-700 font-medium">Gangguan</span>
+                            </Link>
+                            <!-- Menu 5 -->
+                            <button @click="sidebarOpen = true" class="flex flex-col items-center gap-2 w-16">
+                                <div class="w-14 h-14 bg-slate-100 border border-slate-200 rounded-2xl shadow-sm flex items-center justify-center text-slate-500">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/></svg>
+                                </div>
+                                <span class="text-[10px] text-slate-700 font-medium">Lainnya</span>
+                            </button>
                         </div>
                     </div>
 

@@ -335,51 +335,87 @@ const can = (perm) => permissions.value.includes(perm);
         <div class="flex-1 flex flex-col overflow-hidden min-w-0 print:overflow-visible print:block">
             <!-- Topbar -->
             <header class="h-16 bg-white shadow-sm border-b border-slate-200/80 flex items-center justify-between px-4 sm:px-6 z-10 no-print flex-shrink-0 print:hidden">
-                <div class="flex items-center gap-3">
-                    <!-- Mobile Hamburger Button -->
-                    <button
-                        @click="sidebarOpen = !sidebarOpen"
-                        class="lg:hidden p-2 -ml-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 focus:outline-none"
-                        aria-label="Toggle Navigation"
-                    >
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-
-                    <div class="truncate">
-                        <slot name="header" />
+                <!-- Mobile Topbar -->
+                <div class="flex items-center justify-between w-full lg:hidden">
+                    <div class="flex items-center gap-3">
+                        <button @click="sidebarOpen = !sidebarOpen" class="p-2 -ml-2 rounded-lg text-slate-700 hover:bg-slate-100 focus:outline-none">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                        <Link :href="route('dashboard')" class="flex items-center">
+                            <template v-if="$page.props.app_logo">
+                                <img :src="$page.props.app_logo" class="h-6 max-w-full object-contain" alt="Logo" />
+                            </template>
+                            <template v-else>
+                                <span class="text-lg font-bold text-indigo-700">V-Billing</span>
+                            </template>
+                        </Link>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button class="relative p-2 text-slate-600 hover:bg-slate-100 rounded-full focus:outline-none">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                            <span class="absolute top-1.5 right-2 block h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white"></span>
+                        </button>
+                        <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold shadow-sm">
+                            {{ $page.props.auth.user.name.substring(0,2).toUpperCase() }}
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2 sm:gap-4">
-                    <span class="hidden sm:inline text-sm font-medium text-slate-600">
-                        Halo, <span class="font-semibold text-slate-800">{{ $page.props.auth.user.name }}</span>
-                    </span>
-                    <Link
-                        :href="route('logout')"
-                        method="post"
-                        as="button"
-                        title="Keluar"
-                        class="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-xl transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-500/20 shadow-sm"
-                    >
-                        <!-- Red Logout SVG Icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                    </Link>
+                <!-- Desktop Topbar -->
+                <div class="hidden lg:flex items-center justify-between w-full">
+                    <div class="flex items-center gap-3 truncate">
+                        <slot name="header" />
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm font-medium text-slate-600">
+                            Halo, <span class="font-semibold text-slate-800">{{ $page.props.auth.user.name }}</span>
+                        </span>
+                        <Link
+                            :href="route('logout')"
+                            method="post"
+                            as="button"
+                            title="Keluar"
+                            class="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-xl transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-500/20 shadow-sm"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                        </Link>
+                    </div>
                 </div>
             </header>
 
             <!-- Main Content -->
-            <main class="flex-1 overflow-x-auto overflow-y-auto bg-slate-50 p-6 print:overflow-visible print:bg-white print:p-0 print:block">
+            <main class="flex-1 overflow-x-auto overflow-y-auto bg-slate-50 p-4 sm:p-6 pb-20 lg:pb-6 print:overflow-visible print:bg-white print:p-0 print:block">
                 <slot />
                 
                 <!-- Footer -->
-                <footer class="mt-8 pt-4 border-t border-slate-200/80 text-center text-sm text-slate-500 print:hidden">
+                <footer class="mt-8 pt-4 border-t border-slate-200/80 text-center text-sm text-slate-500 print:hidden mb-16 lg:mb-0">
                     &copy; {{ new Date().getFullYear() }} viruzs global connection.
                 </footer>
             </main>
+
+            <!-- Mobile Bottom Navigation -->
+            <nav class="lg:hidden fixed bottom-0 w-full bg-white border-t border-slate-200 flex justify-around items-center pb-safe z-40 h-16 shadow-[0_-2px_10px_rgba(0,0,0,0.02)]">
+                <Link :href="route('dashboard')" :class="[route().current('dashboard') ? 'text-blue-600' : 'text-slate-500', 'flex flex-col items-center justify-center w-full h-full space-y-1']">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    <span class="text-[10px] font-medium">Dashboard</span>
+                </Link>
+                <Link v-if="can('akses_data_pelanggan')" :href="route('pelanggan.index')" :class="[route().current('pelanggan.index') ? 'text-blue-600' : 'text-slate-500', 'flex flex-col items-center justify-center w-full h-full space-y-1']">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <span class="text-[10px] font-medium">Pelanggan</span>
+                </Link>
+                <Link v-if="can('akses_billing')" :href="route('billing.index')" :class="[route().current('billing*') ? 'text-blue-600' : 'text-slate-500', 'flex flex-col items-center justify-center w-full h-full space-y-1']">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span class="text-[10px] font-medium">Tagihan</span>
+                </Link>
+                <button @click="sidebarOpen = true" class="text-slate-500 flex flex-col items-center justify-center w-full h-full space-y-1 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/></svg>
+                    <span class="text-[10px] font-medium">Lainnya</span>
+                </button>
+            </nav>
         </div>
     </div>
 </template>
