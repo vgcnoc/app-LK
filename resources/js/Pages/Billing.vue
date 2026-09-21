@@ -104,7 +104,7 @@ const isOverdue = (c) => {
     if (globalDueDate) {
         // If customer registered this month, and the register date is after the global due date,
         // they shouldn't be marked as overdue for the current month.
-        const registerDate = c.tgl_register ? new Date(c.tgl_register) : new Date(c.created_at);
+        const registerDate = c.register_date ? new Date(c.register_date) : new Date(c.created_at);
         if (registerDate.getMonth() === todayDate.getMonth() && registerDate.getFullYear() === todayDate.getFullYear()) {
             if (registerDate.getDate() > globalDueDate) {
                 return false; 
@@ -521,7 +521,7 @@ const filteredCustomers = computed(() => {
         if (appliedStartDateFilter.value || appliedEndDateFilter.value) {
             const dateToCheck = activeTab.value === 'janji_bayar' 
                 ? customer.promise_date 
-                : (customer.tanggal_register || customer.created_at);
+                : (customer.register_date || customer.created_at);
             
             if (!dateToCheck) {
                 matchesDate = false;
