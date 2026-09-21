@@ -17,6 +17,7 @@ conn.on('ready', () => {
             { local: 'c:/xampp/htdocs/app-LK/resources/js/Pages/VoucherSaldo.vue', remote: '/var/www/lk.viruzs.my.id/resources/js/Pages/VoucherSaldo.vue' },
             { local: 'c:/xampp/htdocs/app-LK/resources/js/Pages/Laporan.vue', remote: '/var/www/lk.viruzs.my.id/resources/js/Pages/Laporan.vue' },
             { local: 'c:/xampp/htdocs/app-LK/resources/js/Pages/Transaksi.vue', remote: '/var/www/lk.viruzs.my.id/resources/js/Pages/Transaksi.vue' },
+            { local: 'c:/xampp/htdocs/app-LK/resources/js/Pages/PelangganInaktif.vue', remote: '/var/www/lk.viruzs.my.id/resources/js/Pages/PelangganInaktif.vue' },
             { local: 'c:/xampp/htdocs/app-LK/app/Models/Customer.php', remote: '/var/www/lk.viruzs.my.id/app/Models/Customer.php' },
             { local: 'c:/xampp/htdocs/app-LK/resources/js/app.js', remote: '/var/www/lk.viruzs.my.id/resources/js/app.js' },
             { local: 'c:/xampp/htdocs/app-LK/vite.config.js', remote: '/var/www/lk.viruzs.my.id/vite.config.js' },
