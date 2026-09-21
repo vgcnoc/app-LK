@@ -512,7 +512,7 @@ const filteredCustomers = computed(() => {
         const isJatuhTempo = isOverdue(customer);
 
         const matchesTab = 
-            (activeTab.value === 'semua' && !hasJanjiBayar && !isSebagian) ||
+            (activeTab.value === 'semua' && !hasJanjiBayar && !isSebagian && !isJatuhTempo) ||
             (activeTab.value === 'piutang' && isSebagian && isPiutang && !hasJanjiBayar) ||
             (activeTab.value === 'janji_bayar' && isPiutang && hasJanjiBayar) ||
             (activeTab.value === 'jatuh_tempo' && isJatuhTempo);
@@ -1148,7 +1148,7 @@ const deleteCustomer = (customer) => {
                                 ]"
                             >
                                 📋 Daftar Tagihan
-                                <span class="ml-1.5 rounded-md bg-slate-200/80 px-1.5 py-0.5 text-[10px] font-bold text-slate-600">{{ props.customers.filter(c => !c.promise_date && !checkSebagian(c)).length }}</span>
+                                <span class="ml-1.5 rounded-md bg-slate-200/80 px-1.5 py-0.5 text-[10px] font-bold text-slate-600">{{ props.customers.filter(c => !c.promise_date && !checkSebagian(c) && !isOverdue(c)).length }}</span>
                             </button>
                             <button
                                 @click="activeTab = 'jatuh_tempo'"
