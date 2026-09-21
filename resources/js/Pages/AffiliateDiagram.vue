@@ -77,10 +77,10 @@
                                 Tampilan Diagram
                             </button>
                             <!-- If it's for Sales, link to /manage-sales. If for Affiliate, /affiliate. Assuming we use inertia link if needed, but let's just make it a generic button back for now, or just history.back() -->
-                            <button @click="goBack" class="px-4 py-2 rounded-lg text-slate-600 hover:bg-white hover:text-indigo-600 text-xs font-bold flex items-center gap-2 transition-colors">
+                            <Link :href="route('affiliates.index')" class="px-4 py-2 rounded-lg text-slate-600 hover:bg-white hover:text-indigo-600 text-xs font-bold flex items-center gap-2 transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
                                 Tampilan List
-                            </button>
+                            </Link>
                         </div>
                     </div>
                     
@@ -122,7 +122,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import OrgNode from '@/Components/OrgNode.vue';
 
@@ -178,7 +178,5 @@ const downline2Count = computed(() => {
 
 const totalMemberCount = computed(() => uplineCount.value + downline1Count.value + downline2Count.value);
 
-const goBack = () => {
-    window.history.back();
-};
+// removed goBack
 </script>

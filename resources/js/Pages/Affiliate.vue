@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { Head, useForm, router } from '@inertiajs/vue3';
+import { Head, useForm, router, Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
@@ -324,10 +324,16 @@ const deleteSales = (id) => {
                     <!-- Action Bar -->
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-bold text-slate-800">Daftar Afiliasi</h3>
-                        <PrimaryButton @click="openModal" class="flex items-center gap-2 rounded-xl py-2.5 shadow-md hover:shadow-lg transition-all">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                            Tambah Afiliasi
-                        </PrimaryButton>
+                        <div class="flex items-center gap-3">
+                            <Link :href="route('affiliates.diagram')" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-semibold rounded-xl text-sm transition-colors shadow-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                                Tampilan Diagram
+                            </Link>
+                            <PrimaryButton @click="openModal" class="flex items-center gap-2 rounded-xl py-2.5 shadow-md hover:shadow-lg transition-all">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                                Tambah Afiliasi
+                            </PrimaryButton>
+                        </div>
                     </div>
 
                     <!-- Affiliates Table -->
@@ -423,10 +429,16 @@ const deleteSales = (id) => {
                     <!-- Action Bar -->
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-bold text-slate-800">{{ is_sales ? 'Jaringan Downline Saya' : 'Daftar Sales' }}</h3>
-                        <PrimaryButton @click="openSalesModal" class="flex items-center gap-2 rounded-xl py-2.5 shadow-md hover:shadow-lg transition-all">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                            Tambah Sales
-                        </PrimaryButton>
+                        <div class="flex items-center gap-3">
+                            <Link :href="route('affiliates.diagram')" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-semibold rounded-xl text-sm transition-colors shadow-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                                Tampilan Diagram
+                            </Link>
+                            <PrimaryButton @click="openSalesModal" class="flex items-center gap-2 rounded-xl py-2.5 shadow-md hover:shadow-lg transition-all">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                                Tambah Sales
+                            </PrimaryButton>
+                        </div>
                     </div>
 
                     <!-- Sales Table -->
