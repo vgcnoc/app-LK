@@ -538,7 +538,13 @@ const filteredCustomers = computed(() => {
 });
 
 const totalTagihan = computed(() => {
-    return filteredCustomers.value.reduce((sum, c) => sum + (isAktif(c) ? (Number(c.amount) || 0) : 0), 0);
+    return filteredCustomers.value.reduce((sum, c) => {
+        const status = String(c.status).toLowerCase();
+        if (isAktif(c) && status !== 'paid' && status !== 'prorata') {
+            return sum + (Number(c.amount) || 0);
+        }
+        return sum;
+    }, 0);
 });
 const totalTagihanFiltered = totalTagihan;
 
