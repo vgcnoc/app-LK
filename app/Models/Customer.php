@@ -109,11 +109,11 @@ class Customer extends Model
                     }
                 }
                 
-                $billableMonths = max(0, $diff - 1);
-                
                 if ($c->prorata_amount !== null) {
+                    $billableMonths = max(0, $diff - 1);
                     $expectedAmount = $c->prorata_amount + ($c->base_amount * $billableMonths) - $totalPaid;
                 } else {
+                    $billableMonths = max(0, $diff);
                     $expectedAmount = ($c->base_amount * $billableMonths) - $totalPaid;
                 }
                 if ($expectedAmount < 0) $expectedAmount = 0;
