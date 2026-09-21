@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
-import { Head, useForm, router, Link } from '@inertiajs/vue3';
+import { Head, useForm, router, Link, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Chart from 'chart.js/auto';
 
@@ -62,6 +62,9 @@ const props = defineProps({
         default: () => [],
     },
 });
+
+const permissions = computed(() => usePage().props.auth?.permissions || []);
+const can = (perm) => permissions.value.includes(perm);
 
 // Helper: Indonesian Currency Formatting
 const formatRupiah = (number) => {
