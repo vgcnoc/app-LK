@@ -648,7 +648,7 @@ const submitDelete = () => {
         </template>
 
         <div class="py-8">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-6">
+            <div class="mx-auto max-w-full space-y-6">
 
                 <!-- Master Stats Overview (Pure Customer Counters) -->
                 <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">

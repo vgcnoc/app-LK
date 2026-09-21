@@ -875,7 +875,7 @@ const deleteCustomer = (customer) => {
         </template>
 
         <div class="py-8">
-            <div class="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-full space-y-6">
                 <!-- 1. STATS CARDS -->
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5 print:hidden">
                     <!-- Total Pelanggan -->
@@ -1029,7 +1029,7 @@ const deleteCustomer = (customer) => {
                                         isDragging
                                             ? 'border-indigo-500 bg-indigo-50/60 ring-2 ring-indigo-500/20'
                                             : 'border-slate-300 bg-slate-50/50 hover:border-indigo-400 hover:bg-slate-50'
-                                    ]"
+                                   ]"
                                 >
                                     <div class="flex items-center justify-center gap-3">
                                         <!-- Upload Cloud Icon -->
@@ -1145,7 +1145,7 @@ const deleteCustomer = (customer) => {
                                     activeTab === 'semua'
                                         ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200/60'
                                         : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                ]"
+                               ]"
                             >
                                 📋 Daftar Tagihan
                                 <span class="ml-1.5 rounded-md bg-slate-200/80 px-1.5 py-0.5 text-[10px] font-bold text-slate-600">{{ props.customers.filter(c => !c.promise_date && !checkSebagian(c) && !isOverdue(c)).length }}</span>
@@ -1157,7 +1157,7 @@ const deleteCustomer = (customer) => {
                                     activeTab === 'jatuh_tempo'
                                         ? 'bg-white text-rose-700 shadow-sm ring-1 ring-rose-200/60'
                                         : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                ]"
+                               ]"
                             >
                                 ⏳ Tagihan Jatuh Tempo
                                 <span class="ml-1.5 rounded-md bg-rose-100 px-1.5 py-0.5 text-[10px] font-bold text-rose-700">{{ props.customers.filter(c => isOverdue(c)).length }}</span>
@@ -1169,7 +1169,7 @@ const deleteCustomer = (customer) => {
                                     activeTab === 'piutang'
                                         ? 'bg-white text-amber-700 shadow-sm ring-1 ring-amber-200/60'
                                         : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                ]"
+                               ]"
                             >
                                 💰 Piutang (Bayar Sebagian)
                                 <span class="ml-1.5 rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-700">{{ props.customers.filter(c => checkSebagian(c) && String(c.status).toLowerCase() !== 'paid' && isAktif(c) && !c.promise_date).length }}</span>
@@ -1181,7 +1181,7 @@ const deleteCustomer = (customer) => {
                                     activeTab === 'janji_bayar'
                                         ? 'bg-white text-indigo-700 shadow-sm ring-1 ring-indigo-200/60'
                                         : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                ]"
+                               ]"
                             >
                                 📅 Janji Bayar
                                 <span class="ml-1.5 rounded-md bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold text-indigo-700">{{ props.customers.filter(c => !!c.promise_date && String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length }}</span>
@@ -1193,7 +1193,7 @@ const deleteCustomer = (customer) => {
                                     activeTab === 'riwayat_upgrade'
                                         ? 'bg-white text-purple-700 shadow-sm ring-1 ring-purple-200/60'
                                         : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
-                                ]"
+                               ]"
                             >
                                 📈 Riwayat Upgrade
                                 <span class="ml-1.5 rounded-md bg-purple-100 px-1.5 py-0.5 text-[10px] font-bold text-purple-700">{{ props.upgradeHistories?.length || 0 }}</span>
@@ -1711,7 +1711,7 @@ const deleteCustomer = (customer) => {
                                                 'bg-emerald-100 text-emerald-800': getUpgradeStatus(history.old_paket, history.new_paket).color === 'emerald',
                                                 'bg-rose-100 text-rose-800': getUpgradeStatus(history.old_paket, history.new_paket).color === 'rose',
                                                 'bg-amber-100 text-amber-800': getUpgradeStatus(history.old_paket, history.new_paket).color === 'amber'
-                                            }"
+                                           }"
                                         >
                                             <svg v-if="getUpgradeStatus(history.old_paket, history.new_paket).color === 'emerald'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
                                             <svg v-else-if="getUpgradeStatus(history.old_paket, history.new_paket).color === 'rose'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" /></svg>

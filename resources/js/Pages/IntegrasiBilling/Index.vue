@@ -138,7 +138,7 @@ const syncData = () => {
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="max-w-full mx-auto space-y-6">
 
                 <!-- Alert Messages -->
                 <div v-if="$page.props.flash?.success" class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-md">
@@ -235,7 +235,7 @@ const syncData = () => {
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
                                         :class="showCodeView 
                                             ? 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200' 
-                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
+                                           : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />

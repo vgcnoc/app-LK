@@ -457,7 +457,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
         </template>
 
         <div class="py-8">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-6">
+            <div class="mx-auto max-w-full space-y-6">
 
                 <!-- Tabs Navigation -->
                 <div class="flex border-b border-slate-200 print:hidden">
@@ -466,7 +466,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                         :class="[
                             'py-3 px-6 text-xs sm:text-sm font-medium border-b-2 transition-colors duration-200 focus:outline-none',
                             activeTab === 'reseller' ? 'border-indigo-500 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-                        ]"
+                       ]"
                     >
                         Daftar Reseller
                     </button>
@@ -475,7 +475,7 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                         :class="[
                             'py-3 px-6 text-xs sm:text-sm font-medium border-b-2 transition-colors duration-200 focus:outline-none',
                             activeTab === 'riwayat' ? 'border-indigo-500 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-                        ]"
+                       ]"
                     >
                         Riwayat Transaksi
                     </button>

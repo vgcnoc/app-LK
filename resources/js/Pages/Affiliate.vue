@@ -280,7 +280,7 @@ const deleteSales = (id) => {
         </template>
 
         <div class="py-6">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div class="max-w-full mx-auto space-y-6">
                 <!-- Notifications -->
                 <div v-if="$page.props.flash?.success" class="bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl p-4 flex items-center shadow-sm">
                     <svg class="w-5 h-5 mr-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -301,7 +301,7 @@ const deleteSales = (id) => {
                                     ? 'border-indigo-500 text-indigo-600' 
                                     : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300',
                                 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors'
-                            ]"
+                           ]"
                         >
                             Daftar Sales (Multi-Tier)
                         </button>
@@ -312,7 +312,7 @@ const deleteSales = (id) => {
                                     ? 'border-indigo-500 text-indigo-600' 
                                     : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300',
                                 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors'
-                            ]"
+                           ]"
                         >
                             Akun Sales
                         </button>
@@ -355,7 +355,7 @@ const deleteSales = (id) => {
                                                 <span :class="[
                                                     'text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider',
                                                     !affiliate.parent_id ? 'bg-indigo-100 text-indigo-700' : 'bg-amber-100 text-amber-800'
-                                                ]">
+                                               ]">
                                                     {{ getLevel(affiliate) }}
                                                 </span>
                                             </div>
@@ -392,7 +392,7 @@ const deleteSales = (id) => {
                                             <span :class="[
                                                 'px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
                                                 affiliate.status === 'Aktif' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
-                                            ]">
+                                           ]">
                                                 {{ affiliate.status }}
                                             </span>
                                         </td>
@@ -457,7 +457,7 @@ const deleteSales = (id) => {
                                                 <span v-else :class="[
                                                     'text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider',
                                                     !sale.parent_id ? 'bg-indigo-100 text-indigo-700' : 'bg-amber-100 text-amber-800'
-                                                ]">
+                                               ]">
                                                     {{ getSalesLevel(sale) }}
                                                     <span v-if="getSalesLevel(sale) === 'Downline 1'" class="lowercase font-normal ml-1">(Rp {{ formatCurrency(commissions?.upline_1_monthly) }})</span>
                                                     <span v-if="getSalesLevel(sale) === 'Downline 2'" class="lowercase font-normal ml-1">(Rp {{ formatCurrency(commissions?.upline_2_monthly) }})</span>
@@ -496,7 +496,7 @@ const deleteSales = (id) => {
                                             <span :class="[
                                                 'px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
                                                 sale.status === 'Aktif' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
-                                            ]">
+                                           ]">
                                                 {{ sale.status }}
                                             </span>
                                         </td>

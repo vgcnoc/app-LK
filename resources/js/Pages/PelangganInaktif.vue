@@ -289,7 +289,7 @@ const confirmDelete = (id) => {
         </template>
 
         <div class="py-8">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-full">
                 
                 <!-- Controls Section -->
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 print:hidden">
@@ -302,7 +302,7 @@ const confirmDelete = (id) => {
                             activeTab === 'Suspend'
                                 ? 'bg-white text-indigo-700 shadow ring-1 ring-black/5'
                                 : 'text-slate-600 hover:bg-white/50 hover:text-slate-900'
-                        ]"
+                       ]"
                     >
                         Suspend / Berhenti Sementara
                     </button>
@@ -313,7 +313,7 @@ const confirmDelete = (id) => {
                             activeTab === 'Berhenti'
                                 ? 'bg-white text-indigo-700 shadow ring-1 ring-black/5'
                                 : 'text-slate-600 hover:bg-white/50 hover:text-slate-900'
-                        ]"
+                       ]"
                     >
                         Pelanggan Berhenti
                     </button>
@@ -324,7 +324,7 @@ const confirmDelete = (id) => {
                             activeTab === 'Gratis'
                                 ? 'bg-white text-indigo-700 shadow ring-1 ring-black/5'
                                 : 'text-slate-600 hover:bg-white/50 hover:text-slate-900'
-                        ]"
+                       ]"
                     >
                         Gratis
                     </button>
@@ -335,7 +335,7 @@ const confirmDelete = (id) => {
                             activeTab === 'Riwayat'
                                 ? 'bg-white text-indigo-700 shadow ring-1 ring-black/5'
                                 : 'text-slate-600 hover:bg-white/50 hover:text-slate-900'
-                        ]"
+                       ]"
                     >
                         Riwayat Suspend
                     </button>

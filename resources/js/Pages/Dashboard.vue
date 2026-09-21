@@ -367,7 +367,7 @@ watch(
 
 
         <div class="py-4 sm:py-8 bg-slate-50 min-h-screen">
-            <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6">
+            <div class="max-w-full mx-auto space-y-4 sm:space-y-6">
                 
                 <!-- Mobile Welcome Banner -->
                 <div class="sm:hidden relative overflow-hidden bg-blue-50 rounded-2xl p-5 mb-4">

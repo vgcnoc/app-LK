@@ -12,7 +12,7 @@
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-full mx-auto">
                 <!-- Main Container -->
                 <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden min-h-[600px] flex flex-col">
                     <div class="p-6 md:p-8 bg-slate-50 border-b border-slate-200 flex justify-between items-center">

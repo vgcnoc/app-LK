@@ -281,7 +281,7 @@ const saveEditArea = (area) => {
         </template>
 
         <div class="py-8">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-full">
                 <div class="mb-8">
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-hidden">
                         <div class="p-6 border-b border-slate-100 flex items-center justify-between">
