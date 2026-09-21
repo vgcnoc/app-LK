@@ -29,6 +29,7 @@ Route::middleware('guest')->group(function () {
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users|unique:sales',
             'phone' => 'nullable|string|max:255',
+            'bank_account' => 'required|string|max:255',
             'password' => 'required|string|min:8|confirmed',
             'upline_code' => 'required|string',
         ]);
@@ -69,7 +70,7 @@ Route::middleware('guest')->group(function () {
             'member_number' => $member_number,
             'phone' => $request->phone,
             'email' => $request->email,
-            'area' => $request->area,
+            'bank_account' => $request->bank_account,
             'status' => 'Aktif',
             'parent_id' => $parent_id,
             'join_date' => date('Y-m-d'),
