@@ -102,10 +102,10 @@ const filteredTransactions = computed(() => {
     
     // Filter by date range
     if (filterStartDate.value) {
-        result = result.filter(t => t.date >= filterStartDate.value);
+        result = result.filter(t => t.date && String(t.date).substring(0, 10) >= filterStartDate.value);
     }
     if (filterEndDate.value) {
-        result = result.filter(t => t.date <= filterEndDate.value);
+        result = result.filter(t => t.date && String(t.date).substring(0, 10) <= filterEndDate.value);
     }
     
     // Filter by search query (description, area, payment method)
@@ -119,6 +119,25 @@ const filteredTransactions = computed(() => {
     }
     
     return result;
+});
+
+// Pagination State
+const currentPage = ref(1);
+const itemsPerPage = ref(20);
+
+const totalPages = computed(() => {
+    return Math.ceil(filteredTransactions.value.length / itemsPerPage.value) || 1;
+});
+
+const paginatedTransactions = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage.value;
+    const end = start + itemsPerPage.value;
+    return filteredTransactions.value.slice(start, end);
+});
+
+// Reset page when filters change
+watch([searchQuery, filterType, filterStartDate, filterEndDate], () => {
+    currentPage.value = 1;
 });
 
 // Add Transaction Modal & Inertia Form
@@ -225,6 +244,18 @@ watch(() => form.income_category_id, () => {
         form.customer_id = '';
     }
 });
+
+const changeType = (newType) => {
+    if (form.type !== newType) {
+        form.type = newType;
+        form.expense_category_id = '';
+        form.income_category_id = '';
+        form.company_expense_type_id = '';
+        form.material_id = '';
+        form.customer_id = '';
+        customerSearchText.value = '';
+    }
+};
 
 const openModal = () => {
     isEdit.value = false;
@@ -522,12 +553,12 @@ const deleteTransaction = (id) => {
                             </thead>
                             <tbody class="divide-y divide-slate-100 text-slate-700">
                                 <tr
-                                    v-for="(item, index) in filteredTransactions"
+                                    v-for="(item, index) in paginatedTransactions"
                                     :key="item.id"
                                     class="hover:bg-slate-50/75 transition-colors group"
                                 >
                                     <td class="px-6 py-4 text-center text-sm font-medium text-slate-900">
-                                        {{ index + 1 }}
+                                        {{ (currentPage - 1) * itemsPerPage + index + 1 }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-slate-800">{{ formatDate(item.date) }}</div>
@@ -622,12 +653,27 @@ const deleteTransaction = (id) => {
 </div>
                         <div class="p-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-sm gap-4">
                             <div class="text-slate-500">
-                                Menampilkan 1 - {{ filteredTransactions.length }} dari {{ filteredTransactions.length }} data
+                                Menampilkan {{ paginatedTransactions.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0 }} - 
+                                {{ Math.min(currentPage * itemsPerPage, filteredTransactions.length) }} dari {{ filteredTransactions.length }} data
                             </div>
                             <div class="flex items-center gap-1">
-                                <button class="px-3 py-1.5 border border-slate-200 rounded-lg text-slate-400 bg-slate-50 hover:bg-slate-100 transition-colors">&lt;</button>
-                                <button class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-medium shadow-sm">1</button>
-                                <button class="px-3 py-1.5 border border-slate-200 rounded-lg text-slate-400 bg-slate-50 hover:bg-slate-100 transition-colors">&gt;</button>
+                                <button 
+                                    @click="currentPage > 1 ? currentPage-- : null"
+                                    :disabled="currentPage === 1"
+                                    class="px-3 py-1.5 border border-slate-200 rounded-lg text-slate-400 bg-slate-50 hover:bg-slate-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    &lt;
+                                </button>
+                                <div class="flex items-center gap-1 mx-2 text-slate-600 font-medium">
+                                    <span>Halaman {{ currentPage }} dari {{ totalPages }}</span>
+                                </div>
+                                <button 
+                                    @click="currentPage < totalPages ? currentPage++ : null"
+                                    :disabled="currentPage === totalPages"
+                                    class="px-3 py-1.5 border border-slate-200 rounded-lg text-slate-400 bg-slate-50 hover:bg-slate-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    &gt;
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -688,7 +734,7 @@ const deleteTransaction = (id) => {
                                     <div class="grid grid-cols-2 gap-3">
                                         <button
                                             type="button"
-                                            @click="form.type = 'income'"
+                                            @click="changeType('income')"
                                             :class="form.type === 'income' ? 'bg-emerald-50 border-emerald-500 text-emerald-700 ring-2 ring-emerald-500/20 font-semibold' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'"
                                             class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-sm transition-all"
                                         >
@@ -699,7 +745,7 @@ const deleteTransaction = (id) => {
                                         </button>
                                         <button
                                             type="button"
-                                            @click="form.type = 'expense'"
+                                            @click="changeType('expense')"
                                             :class="form.type === 'expense' ? 'bg-rose-50 border-rose-500 text-rose-700 ring-2 ring-rose-500/20 font-semibold' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'"
                                             class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-sm transition-all"
                                         >
