@@ -1,7 +1,6 @@
 <script setup>
 import { Head, useForm, Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import * as XLSX from 'xlsx';
 
 const props = defineProps({
     filters: {
@@ -92,7 +91,7 @@ const printReport = () => {
     window.print();
 };
 
-const exportExcel = () => {
+const exportExcel = async () => {
     const dataToExport = form.kategori === 'belum_lunas' ? props.unpaid_list : props.transactions;
     
     if (!dataToExport || dataToExport.length === 0) {
@@ -137,6 +136,7 @@ const exportExcel = () => {
         });
     }
 
+    const XLSX = await import('xlsx');
     const ws = XLSX.utils.json_to_sheet(formattedData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Laporan");

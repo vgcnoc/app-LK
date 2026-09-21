@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue';
 import { Head, useForm, router, Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import * as XLSX from 'xlsx';
 
 const props = defineProps({
     customers: {
@@ -87,7 +86,7 @@ const getStatusColor = (status) => {
     return 'bg-gray-100 text-gray-800 border-gray-200';
 };
 
-const exportExcel = () => {
+const exportExcel = async () => {
     let dataToExport = filteredCustomers.value.map((c, index) => ({
         'No': index + 1,
         'Nama Pelanggan': c.name,
@@ -100,6 +99,7 @@ const exportExcel = () => {
         'Riwayat Suspend': `${c.suspensions_count || 0} kali`
     }));
 
+    const XLSX = await import('xlsx');
     const ws = XLSX.utils.json_to_sheet(dataToExport);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Pantauan Pelanggan");

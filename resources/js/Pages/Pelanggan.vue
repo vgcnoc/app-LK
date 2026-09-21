@@ -2,8 +2,6 @@
 import { ref, computed, watch } from 'vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import Chart from 'chart.js/auto';
-import * as XLSX from 'xlsx';
 
 const props = defineProps({
     customers: {
@@ -240,7 +238,7 @@ const getStatusBadge = (status) => {
 // Export & Import logic
 const fileInput = ref(null);
 
-const exportExcel = () => {
+const exportExcel = async () => {
     let dataToExport = filteredCustomers.value.map((c, index) => ({
         'No': index + 1,
         'Nama Pelanggan': c.name,
@@ -253,6 +251,7 @@ const exportExcel = () => {
         'No WhatsApp': c.no_wa || '-'
     }));
 
+    const XLSX = await import('xlsx');
     const ws = XLSX.utils.json_to_sheet(dataToExport);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Data Pelanggan");
@@ -268,9 +267,10 @@ const importExcel = (event) => {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
         try {
             const data = new Uint8Array(e.target.result);
+            const XLSX = await import('xlsx');
             const workbook = XLSX.read(data, { type: 'array' });
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
@@ -312,12 +312,13 @@ const importExcel = (event) => {
 const chartCanvas = ref(null);
 let chartInstance = null;
 
-const renderChart = () => {
+const renderChart = async () => {
     if (!chartCanvas.value) return;
     if (chartInstance) {
         chartInstance.destroy();
     }
     
+    const { default: Chart } = await import('chart.js/auto');
     const ctx = chartCanvas.value.getContext('2d');
     chartInstance = new Chart(ctx, {
         type: 'line',

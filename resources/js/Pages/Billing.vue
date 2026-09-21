@@ -3,7 +3,6 @@ import { ref, computed, watch } from 'vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import axios from 'axios';
-import * as XLSX from 'xlsx';
 
 const props = defineProps({
     customers: {
@@ -272,9 +271,10 @@ const handleFile = (file) => {
     };
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
         try {
             const data = new Uint8Array(e.target.result);
+            const XLSX = await import('xlsx');
             const workbook = XLSX.read(data, { type: 'array', cellDates: true });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
@@ -592,7 +592,7 @@ const resetFilters = () => {
     applyFilters();
 };
 
-const exportExcel = () => {
+const exportExcel = async () => {
     const data = filteredCustomers.value.map((c, index) => ({
         'No': index + 1,
         'Nama Pelanggan': c.name,
@@ -607,6 +607,7 @@ const exportExcel = () => {
         'Status': String(c.status).toLowerCase() === 'paid' ? 'Lunas' : 'Belum Bayar',
     }));
     
+    const XLSX = await import('xlsx');
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Data Billing");

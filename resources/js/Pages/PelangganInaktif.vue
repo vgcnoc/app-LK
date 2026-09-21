@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import * as XLSX from 'xlsx';
 
 const startDateFilter = ref('');
 const endDateFilter = ref('');
@@ -99,7 +98,7 @@ watch([activeTab, startDateFilter, endDateFilter], () => {
     currentPageSuspensions.value = 1;
 });
 
-const exportExcel = () => {
+const exportExcel = async () => {
     let dataToExport = [];
     
     if (activeTab.value === 'Riwayat') {
@@ -124,6 +123,7 @@ const exportExcel = () => {
         }));
     }
     
+    const XLSX = await import('xlsx');
     const ws = XLSX.utils.json_to_sheet(dataToExport);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, `Data ${activeTab.value}`);

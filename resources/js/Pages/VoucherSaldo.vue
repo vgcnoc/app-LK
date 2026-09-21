@@ -2,7 +2,6 @@
 import { ref, computed, watch } from 'vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import * as XLSX from 'xlsx';
 
 const props = defineProps({
     transactions: {
@@ -93,9 +92,10 @@ const handleFile = (file) => {
     parseError.value = '';
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
         try {
             const data = new Uint8Array(e.target.result);
+            const XLSX = await import('xlsx');
             const workbook = XLSX.read(data, { type: 'array' });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
@@ -236,7 +236,7 @@ const applyFilters = () => {
     });
 };
 
-const exportExcel = () => {
+const exportExcel = async () => {
     const data = filteredTransactions.value.map((t, index) => ({
         'No': index + 1,
         'Tanggal': formatDate(t.date),
@@ -252,6 +252,7 @@ const exportExcel = () => {
         'Status': t.payment_status === 'paid' ? 'Lunas' : 'Piutang',
     }));
     
+    const XLSX = await import('xlsx');
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Rekap Transaksi");

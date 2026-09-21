@@ -2,7 +2,6 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import { Head, useForm, router, Link, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import Chart from 'chart.js/auto';
 
 const props = defineProps({
     filters: {
@@ -121,12 +120,13 @@ const getDueBadge = (dateStr) => {
 const chartCanvas = ref(null);
 let chartInstance = null;
 
-const renderChart = () => {
+const renderChart = async () => {
     if (!chartCanvas.value) return;
     if (chartInstance) {
         chartInstance.destroy();
     }
 
+    const { default: Chart } = await import('chart.js/auto');
     const ctx = chartCanvas.value.getContext('2d');
     chartInstance = new Chart(ctx, {
         type: 'bar',
@@ -205,10 +205,11 @@ const renderChart = () => {
 const donutCanvas = ref(null);
 let donutInstance = null;
 
-const renderDonut = () => {
+const renderDonut = async () => {
     if (!donutCanvas.value) return;
     if (donutInstance) donutInstance.destroy();
     
+    const { default: Chart } = await import('chart.js/auto');
     const ctx = donutCanvas.value.getContext('2d');
     donutInstance = new Chart(ctx, {
         type: 'doughnut',
@@ -265,12 +266,13 @@ const applyFilter = () => {
 const paketCanvas = ref(null);
 let paketInstance = null;
 
-const renderPaketDonut = () => {
+const renderPaketDonut = async () => {
     if (!paketCanvas.value) return;
     if (paketInstance) paketInstance.destroy();
     
     if (!props.paketStats || props.paketStats.length === 0) return;
 
+    const { default: Chart } = await import('chart.js/auto');
     const ctx = paketCanvas.value.getContext('2d');
     
     const colors = [
