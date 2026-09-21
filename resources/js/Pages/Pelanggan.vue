@@ -80,6 +80,31 @@ const aktifCount = computed(() => customerList.value.filter(c => (c.status_pelan
 const berhentiCount = computed(() => customerList.value.filter(c => ['berhenti', 'nonaktif', 'putus'].includes((c.status_pelanggan || '').toLowerCase())).length);
 const suspendCount = computed(() => customerList.value.filter(c => ['suspend', 'isolir'].includes((c.status_pelanggan || '').toLowerCase())).length);
 
+const newCustomersPerArea = computed(() => {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    
+    const newCustomers = customerList.value.filter(c => {
+        if (!c.register_date) return false;
+        // Parse date handling potential formatting differences
+        const d = new Date(c.register_date);
+        if (isNaN(d.getTime())) return false; // Invalid date
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+    });
+
+    const counts = {};
+    newCustomers.forEach(c => {
+        const area = c.area || 'Tanpa Area';
+        counts[area] = (counts[area] || 0) + 1;
+    });
+    
+    // Sort areas alphabetically
+    return Object.keys(counts).sort().map(area => ({
+        area,
+        count: counts[area]
+    }));
+});
+
 // Filtered and sorted customers
 const filteredCustomers = computed(() => {
     const query = searchQuery.value.toLowerCase().trim();
@@ -710,8 +735,36 @@ const submitDelete = () => {
                     </div>
                 </div>
 
-                <!-- Registration & Stops Chart -->
-                <div class="rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm mb-6">
+                <!-- Pelanggan Baru (Bulan Ini) Per Area -->
+                <div v-if="newCustomersPerArea.length > 0" class="mt-6">
+                    <h3 class="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                        <svg class="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Pelanggan Baru (Bulan Ini)
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+                        <div v-for="item in newCustomersPerArea" :key="item.area" class="rounded-xl border border-blue-200/80 bg-gradient-to-br from-blue-50 to-white p-4 shadow-sm transition hover:border-blue-300 hover:shadow-md">
+                            <div class="flex flex-col gap-2">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide truncate pr-2" :title="item.area">{{ item.area }}</p>
+                                    <div class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-blue-100 text-blue-600">
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-bold text-blue-700">{{ item.count }}</p>
+                                    <p class="text-[10px] text-blue-500 font-medium">Pelanggan baru</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grafik Pertambahan & Berhenti -->
+                <div class="rounded-xl border border-slate-200/80 bg-white p-6 shadow-sm mt-6">
                     <h3 class="text-xs sm:text-sm font-semibold text-slate-800 mb-4">Grafik Pertambahan & Pelanggan Berhenti (6 Bulan Terakhir)</h3>
                     <div class="h-64 w-full">
                         <canvas ref="chartCanvas"></canvas>
