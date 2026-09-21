@@ -531,40 +531,44 @@ watch(
                             <Link href="#" class="text-xs font-medium text-blue-600 hover:text-blue-700 flex items-center">Lihat Semua <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></Link>
                         </div>
                         <div class="flex justify-between items-center bg-transparent gap-2">
-                            <!-- Menu 1 -->
-                            <Link :href="route('pelanggan.index')" class="flex flex-col items-center gap-2 w-16">
+                            <!-- Menu 1: Pelanggan -->
+                            <Link v-if="can('akses_data_pelanggan')" :href="route('pelanggan.index')" class="flex flex-col items-center gap-2 w-16">
                                 <div class="w-14 h-14 bg-emerald-50 border border-emerald-100 rounded-2xl shadow-sm flex items-center justify-center text-emerald-600">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                                 </div>
-                                <span class="text-[10px] text-slate-700 font-medium">Pelanggan</span>
+                                <span class="text-[10px] text-slate-700 font-medium text-center leading-tight">Pelanggan</span>
                             </Link>
-                            <!-- Menu 2 -->
-                            <Link :href="route('billing.index')" class="flex flex-col items-center gap-2 w-16">
+                            
+                            <!-- Menu 2: Tagihan (Billing) -->
+                            <Link v-if="can('akses_billing')" :href="route('billing.index')" class="flex flex-col items-center gap-2 w-16">
                                 <div class="w-14 h-14 bg-blue-50 border border-blue-100 rounded-2xl shadow-sm flex items-center justify-center text-blue-600">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                 </div>
-                                <span class="text-[10px] text-slate-700 font-medium">Tagihan</span>
+                                <span class="text-[10px] text-slate-700 font-medium text-center leading-tight">Tagihan</span>
                             </Link>
-                            <!-- Menu 3 -->
-                            <Link href="#" class="flex flex-col items-center gap-2 w-16">
+                            
+                            <!-- Menu 3: Transaksi -->
+                            <Link v-if="can('akses_transaksi')" :href="route('transaksi')" class="flex flex-col items-center gap-2 w-16">
                                 <div class="w-14 h-14 bg-amber-50 border border-amber-100 rounded-2xl shadow-sm flex items-center justify-center text-amber-500">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                 </div>
-                                <span class="text-[10px] text-slate-700 font-medium">Layanan</span>
+                                <span class="text-[10px] text-slate-700 font-medium text-center leading-tight">Transaksi</span>
                             </Link>
-                            <!-- Menu 4 -->
-                            <Link href="#" class="flex flex-col items-center gap-2 w-16">
+                            
+                            <!-- Menu 4: Laporan -->
+                            <Link v-if="can('akses_laporan')" :href="route('laporan')" class="flex flex-col items-center gap-2 w-16">
                                 <div class="w-14 h-14 bg-purple-50 border border-purple-100 rounded-2xl shadow-sm flex items-center justify-center text-purple-600">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                                 </div>
-                                <span class="text-[10px] text-slate-700 font-medium">Gangguan</span>
+                                <span class="text-[10px] text-slate-700 font-medium text-center leading-tight">Laporan</span>
                             </Link>
-                            <!-- Menu 5 -->
+                            
+                            <!-- Menu 5: Lainnya -->
                             <button @click="sidebarOpen = true" class="flex flex-col items-center gap-2 w-16">
                                 <div class="w-14 h-14 bg-slate-100 border border-slate-200 rounded-2xl shadow-sm flex items-center justify-center text-slate-500">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/></svg>
                                 </div>
-                                <span class="text-[10px] text-slate-700 font-medium">Lainnya</span>
+                                <span class="text-[10px] text-slate-700 font-medium text-center leading-tight">Lainnya</span>
                             </button>
                         </div>
                     </div>
