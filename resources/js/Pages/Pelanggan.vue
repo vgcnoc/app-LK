@@ -76,9 +76,9 @@ const availablePakets = computed(() => {
 
 // Summary Counts (Master Data only)
 const totalCount = computed(() => customerList.value.length);
-const aktifCount = computed(() => customerList.value.filter(c => (c.status_pelanggan || 'Aktif').toLowerCase() === 'aktif').length);
-const berhentiCount = computed(() => customerList.value.filter(c => ['berhenti', 'nonaktif', 'putus'].includes((c.status_pelanggan || '').toLowerCase())).length);
-const suspendCount = computed(() => customerList.value.filter(c => ['suspend', 'isolir'].includes((c.status_pelanggan || '').toLowerCase())).length);
+const aktifCount = computed(() => customerList.value.filter(c => (c.status_pelanggan || 'Aktif').toLowerCase().trim() === 'aktif').length);
+const berhentiCount = computed(() => customerList.value.filter(c => ['berhenti', 'nonaktif', 'putus', 'stop permanen'].includes((c.status_pelanggan || '').toLowerCase().trim())).length);
+const suspendCount = computed(() => customerList.value.filter(c => ['suspend', 'isolir', 'berhenti sementara'].includes((c.status_pelanggan || '').toLowerCase().trim())).length);
 
 const newCustomersPerArea = computed(() => {
     const currentMonth = new Date().getMonth();
@@ -94,6 +94,36 @@ const newCustomersPerArea = computed(() => {
 
     const counts = {};
     newCustomers.forEach(c => {
+        const area = c.area || 'Tanpa Area';
+        counts[area] = (counts[area] || 0) + 1;
+    });
+    
+    // Sort areas alphabetically
+    return Object.keys(counts).sort().map(area => ({
+        area,
+        count: counts[area]
+    }));
+});
+
+const stoppedCustomersPerArea = computed(() => {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    
+    const stoppedCustomers = customerList.value.filter(c => {
+        const status = (c.status_pelanggan || '').toLowerCase().trim();
+        if (!['berhenti', 'nonaktif', 'putus', 'stop permanen'].includes(status)) return false;
+
+        // Use stop_date if available, fallback to updated_at if missing but status is stopped
+        const targetDate = c.stop_date || c.updated_at;
+        if (!targetDate) return false;
+        
+        const d = new Date(targetDate);
+        if (isNaN(d.getTime())) return false;
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+    });
+
+    const counts = {};
+    stoppedCustomers.forEach(c => {
         const area = c.area || 'Tanpa Area';
         counts[area] = (counts[area] || 0) + 1;
     });
@@ -757,6 +787,34 @@ const submitDelete = () => {
                                 <div>
                                     <p class="text-2xl font-bold text-blue-700">{{ item.count }}</p>
                                     <p class="text-[10px] text-blue-500 font-medium">Pelanggan baru</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pelanggan Berhenti (Bulan Ini) Per Area -->
+                <div v-if="stoppedCustomersPerArea.length > 0" class="mt-6">
+                    <h3 class="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                        <svg class="h-4 w-4 text-rose-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                        </svg>
+                        Pelanggan Berhenti (Bulan Ini)
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+                        <div v-for="item in stoppedCustomersPerArea" :key="item.area" class="rounded-xl border border-rose-200/80 bg-gradient-to-br from-rose-50 to-white p-4 shadow-sm transition hover:border-rose-300 hover:shadow-md">
+                            <div class="flex flex-col gap-2">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide truncate pr-2" :title="item.area">{{ item.area }}</p>
+                                    <div class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-rose-100 text-rose-600">
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-bold text-rose-700">{{ item.count }}</p>
+                                    <p class="text-[10px] text-rose-500 font-medium">Pelanggan berhenti</p>
                                 </div>
                             </div>
                         </div>
