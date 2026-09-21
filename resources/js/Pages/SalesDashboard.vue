@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const props = defineProps({
     profile: {
@@ -32,6 +33,34 @@ const formatCurrency = (value) => {
         minimumFractionDigits: 0
     }).format(value || 0);
 };
+
+const copied = ref(false);
+
+const copyReferral = () => {
+    if (props.profile?.member_number) {
+        navigator.clipboard.writeText(props.profile.member_number)
+            .then(() => {
+                copied.value = true;
+                setTimeout(() => { copied.value = false; }, 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy text: ', err);
+                // Fallback for older browsers
+                try {
+                    const el = document.createElement('textarea');
+                    el.value = props.profile.member_number;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+                    copied.value = true;
+                    setTimeout(() => { copied.value = false; }, 2000);
+                } catch (fallbackErr) {
+                    alert('Gagal menyalin kode referral.');
+                }
+            });
+    }
+};
 </script>
 
 <template>
@@ -59,8 +88,9 @@ const formatCurrency = (value) => {
                     <div class="flex items-center justify-between sm:justify-start gap-2 sm:gap-3 bg-indigo-900 bg-opacity-30 px-3 sm:px-4 py-2 rounded-xl border border-indigo-300 border-opacity-20 overflow-hidden">
                         <span class="text-indigo-100 text-xs sm:text-sm whitespace-nowrap">Kode Referral:</span>
                         <span class="font-mono font-bold text-sm sm:text-lg tracking-wide text-white truncate">{{ profile?.member_number || '-' }}</span>
-                        <button class="p-1 sm:p-1.5 hover:bg-indigo-900 hover:bg-opacity-50 rounded-lg transition-colors text-indigo-100 hover:text-white flex-shrink-0" title="Salin" @click="navigator.clipboard.writeText(profile?.member_number)">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                        <button class="p-1 sm:p-1.5 hover:bg-indigo-900 hover:bg-opacity-50 rounded-lg transition-colors text-indigo-100 hover:text-white flex-shrink-0" :title="copied ? 'Tersalin!' : 'Salin'" @click="copyReferral">
+                            <svg v-if="!copied" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                            <svg v-else class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                         </button>
                     </div>
                 </div>
