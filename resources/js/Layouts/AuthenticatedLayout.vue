@@ -354,10 +354,10 @@ const can = (perm) => permissions.value.includes(perm);
                     </div>
                     <h4 class="text-sm font-bold text-white mb-1">Butuh bantuan?</h4>
                     <p class="text-xs text-slate-400 mb-3">Hubungi tim support kami</p>
-                    <button class="w-full py-2.5 bg-[#432386] hover:bg-[#5a31b5] text-white text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <a href="https://wa.me/6281234567890?text=Halo%20Tim%20Support,%20saya%20butuh%20bantuan" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-[#432386] hover:bg-[#5a31b5] text-white text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
                         <span>Hubungi Support</span>
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                    </button>
+                    </a>
                 </div>
             </div>
         </aside>
