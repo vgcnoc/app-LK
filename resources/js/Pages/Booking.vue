@@ -244,6 +244,9 @@ const createForm = useForm({
     name: '',
     area: '',
     alamat: '',
+    kecamatan: '',
+    desa_kelurahan: '',
+    rt_rw: '',
     paket: '',
     register_date: new Date().toISOString().split('T')[0],
     status_pelanggan: 'Aktif',
@@ -288,6 +291,9 @@ const editForm = useForm({
     name: '',
     area: '',
     alamat: '',
+    kecamatan: '',
+    desa_kelurahan: '',
+    rt_rw: '',
     paket: '',
     register_date: '',
     status_pelanggan: 'Aktif',
@@ -359,6 +365,9 @@ const openEditModal = (customer) => {
     editForm.name = customer.name || '';
     editForm.area = customer.area || '';
     editForm.alamat = customer.alamat || '';
+    editForm.kecamatan = customer.kecamatan || '';
+    editForm.desa_kelurahan = customer.desa_kelurahan || '';
+    editForm.rt_rw = customer.rt_rw || '';
     editForm.paket = customer.paket || '';
     editForm.register_date = customer.register_date ? customer.register_date.split('T')[0] : '';
     editForm.status_pelanggan = customer.status_pelanggan || 'Aktif';
@@ -716,8 +725,12 @@ const submitDelete = () => {
 
                                     <!-- Alamat -->
                                     <td class="py-4 px-3 text-xs text-slate-600">
-                                        <div class="max-w-xs truncate" :title="customer.alamat">
-                                            {{ customer.alamat || '-' }}
+                                        <div class="max-w-xs truncate" :title="customer.alamat + (customer.rt_rw ? ', RT/RW ' + customer.rt_rw : '') + (customer.desa_kelurahan ? ', ' + customer.desa_kelurahan : '') + (customer.kecamatan ? ', Kec. ' + customer.kecamatan : '')">
+                                            <span v-if="customer.alamat">{{ customer.alamat }}</span>
+                                            <span v-if="customer.rt_rw">, RT/RW {{ customer.rt_rw }}</span>
+                                            <span v-if="customer.desa_kelurahan">, {{ customer.desa_kelurahan }}</span>
+                                            <span v-if="customer.kecamatan">, Kec. {{ customer.kecamatan }}</span>
+                                            <span v-if="!customer.alamat && !customer.rt_rw && !customer.desa_kelurahan && !customer.kecamatan">-</span>
                                         </div>
                                     </td>
 
@@ -976,16 +989,58 @@ const submitDelete = () => {
                                 </div>
                             </div>
 
-                            <!-- Alamat -->
+                            <!-- Kecamatan -->
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    Alamat Lengkap
+                                    Kecamatan
+                                </label>
+                                <input
+                                    type="text"
+                                    v-model="createForm.kecamatan"
+                                    placeholder="Contoh: Sukasari"
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                />
+                                <p v-if="createForm.errors.kecamatan" class="mt-1 text-xs text-rose-600">{{ createForm.errors.kecamatan }}</p>
+                            </div>
+
+                            <!-- Desa / Kelurahan -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Desa / Kelurahan
+                                </label>
+                                <input
+                                    type="text"
+                                    v-model="createForm.desa_kelurahan"
+                                    placeholder="Contoh: Sukamaju"
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                />
+                                <p v-if="createForm.errors.desa_kelurahan" class="mt-1 text-xs text-rose-600">{{ createForm.errors.desa_kelurahan }}</p>
+                            </div>
+
+                            <!-- RT / RW -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    RT / RW
+                                </label>
+                                <input
+                                    type="text"
+                                    v-model="createForm.rt_rw"
+                                    placeholder="Contoh: 02/04"
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                />
+                                <p v-if="createForm.errors.rt_rw" class="mt-1 text-xs text-rose-600">{{ createForm.errors.rt_rw }}</p>
+                            </div>
+
+                            <!-- Alamat Detail -->
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Detail Jalan / Nomor Rumah
                                 </label>
                                 <textarea
                                     v-model="createForm.alamat"
                                     rows="2"
-                                    placeholder="Jl. Melati No. 12, RT 02/RW 04..."
-                                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    placeholder="Jl. Melati No. 12..."
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                 ></textarea>
                                 <p v-if="createForm.errors.alamat" class="mt-1 text-xs text-rose-600">{{ createForm.errors.alamat }}</p>
                             </div>
@@ -1240,16 +1295,58 @@ const submitDelete = () => {
                                 </div>
                             </div>
 
-                            <!-- Alamat -->
+                            <!-- Kecamatan -->
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    Alamat Lengkap
+                                    Kecamatan
+                                </label>
+                                <input
+                                    type="text"
+                                    v-model="editForm.kecamatan"
+                                    placeholder="Contoh: Sukasari"
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                />
+                                <p v-if="editForm.errors.kecamatan" class="mt-1 text-xs text-rose-600">{{ editForm.errors.kecamatan }}</p>
+                            </div>
+
+                            <!-- Desa / Kelurahan -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Desa / Kelurahan
+                                </label>
+                                <input
+                                    type="text"
+                                    v-model="editForm.desa_kelurahan"
+                                    placeholder="Contoh: Sukamaju"
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                />
+                                <p v-if="editForm.errors.desa_kelurahan" class="mt-1 text-xs text-rose-600">{{ editForm.errors.desa_kelurahan }}</p>
+                            </div>
+
+                            <!-- RT / RW -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    RT / RW
+                                </label>
+                                <input
+                                    type="text"
+                                    v-model="editForm.rt_rw"
+                                    placeholder="Contoh: 02/04"
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                />
+                                <p v-if="editForm.errors.rt_rw" class="mt-1 text-xs text-rose-600">{{ editForm.errors.rt_rw }}</p>
+                            </div>
+
+                            <!-- Alamat Detail -->
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Detail Jalan / Nomor Rumah
                                 </label>
                                 <textarea
                                     v-model="editForm.alamat"
                                     rows="2"
-                                    placeholder="Jl. Melati No. 12, RT 02/RW 04..."
-                                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    placeholder="Jl. Melati No. 12..."
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                                 ></textarea>
                                 <p v-if="editForm.errors.alamat" class="mt-1 text-xs text-rose-600">{{ editForm.errors.alamat }}</p>
                             </div>
