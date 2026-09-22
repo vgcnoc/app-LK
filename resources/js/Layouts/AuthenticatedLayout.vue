@@ -249,6 +249,24 @@ const can = (perm) => permissions.value.includes(perm);
                     <span>Laporan</span>
                 </Link>
 
+                <!-- Analisa Ekspansi -->
+                <Link
+                    v-if="can('akses_laporan') || can('akses_booking')"
+                    :href="route('analisa.ekspansi')"
+                    :class="[
+                        route().current('analisa.ekspansi')
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
+                    ]"
+                >
+                    <svg class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                    </svg>
+                    <span>Analisa Ekspansi</span>
+                </Link>
+
                 <!-- Master Data -->
                 <Link
                     v-if="can('akses_master_data')"

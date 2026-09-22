@@ -954,6 +954,48 @@ Route::middleware(['auth'])->group(function () {
         ]);
     })->name('pelanggan.pantauan');
 
+    // ANALISA EKSPANSI
+    Route::get('/analisa-ekspansi', function () {
+        // 1. Chart Data by Kecamatan
+        $byKecamatan = Customer::where('status_pelanggan', 'Batal')
+            ->whereNotNull('kecamatan')
+            ->selectRaw('kecamatan as label, count(*) as total')
+            ->groupBy('kecamatan')
+            ->orderByDesc('total')
+            ->get();
+
+        // 2. Chart Data by Alasan (Keterangan Status)
+        $byAlasan = Customer::where('status_pelanggan', 'Batal')
+            ->whereNotNull('keterangan_status')
+            ->selectRaw('keterangan_status as label, count(*) as total')
+            ->groupBy('keterangan_status')
+            ->orderByDesc('total')
+            ->get();
+
+        // 3. Raw Data for Table
+        $batalList = Customer::where('status_pelanggan', 'Batal')
+            ->with('sales')
+            ->orderBy('updated_at', 'desc')
+            ->get()
+            ->map(function ($c) {
+                return [
+                    'id' => $c->id,
+                    'name' => $c->name,
+                    'kecamatan' => $c->kecamatan ?? '-',
+                    'desa_kelurahan' => $c->desa_kelurahan ?? '-',
+                    'keterangan_status' => $c->keterangan_status ?? 'Tanpa Keterangan',
+                    'sales_name' => $c->sales ? $c->sales->name : 'Tanpa Sales',
+                    'tanggal' => $c->updated_at->format('d/m/Y')
+                ];
+            });
+
+        return Inertia::render('AnalisaEkspansi', [
+            'chartKecamatan' => $byKecamatan,
+            'chartAlasan' => $byAlasan,
+            'batalList' => $batalList
+        ]);
+    })->name('analisa.ekspansi');
+
     // BOOKING PELANGGAN
     Route::get('/booking', function () {
         $user = auth()->user();
