@@ -55,7 +55,6 @@ const months = [
 
 let barChartInstance = null;
 let doughnutChartInstance = null;
-import Chart from 'chart.js/auto';
 
 const barChartCanvas = ref(null);
 const doughnutChartCanvas = ref(null);
