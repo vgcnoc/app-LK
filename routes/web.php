@@ -594,6 +594,29 @@ Route::middleware(['auth'])->group(function () {
         return back()->with('success', 'Area dihapus.');
     })->name('areas.destroy');
 
+    Route::get('/backup/restore/{file}', function ($file) {
+        $path = storage_path('app/backups/' . $file);
+        if (!file_exists($path)) {
+            abort(404);
+        }
+        return response()->download($path);
+    })->name('backup.restore');
+
+    // Notifications API
+    Route::get('/api/notifications', function (Request $request) {
+        return response()->json([
+            'notifications' => $request->user()->unreadNotifications
+        ]);
+    })->name('api.notifications.index');
+
+    Route::post('/api/notifications/{id}/read', function (Request $request, $id) {
+        $notification = $request->user()->notifications()->where('id', $id)->first();
+        if ($notification) {
+            $notification->markAsRead();
+        }
+        return response()->json(['success' => true]);
+    })->name('api.notifications.read');
+
     // BILLING DATA (Pindah dari /pelanggan sebelumnya)
     Route::get('/billing', function () {
         \App\Models\Customer::syncBilling();
@@ -998,13 +1021,14 @@ Route::middleware(['auth'])->group(function () {
             abort(403);
         }
 
-        if ($customer->status_pelanggan !== 'Booking') {
-            return back()->with('error', 'Hanya pelanggan dengan status Booking yang dapat diaktivasi.');
+        if ($customer->status_pelanggan !== 'Booking' && $customer->status_pelanggan !== 'Proses') {
+            return back()->with('error', 'Hanya pelanggan dengan status Booking atau Proses yang dapat diaktivasi.');
         }
 
         $customer->update([
             'status_pelanggan' => 'Aktif',
-            'register_date' => now()->toDateString()
+            'register_date' => now()->format('Y-m-d'),
+            'keterangan_status' => null,
         ]);
 
         // Generate Booking Commission if sales_id is present
@@ -1020,10 +1044,41 @@ Route::middleware(['auth'])->group(function () {
                     'description' => 'Komisi Booking Pelanggan: ' . $customer->name,
                 ]);
             }
+            
+            // Notify Sales
+            $salesUser = \App\Models\Sales::find($customer->sales_id)?->user;
+            if ($salesUser) {
+                $salesUser->notify(new \App\Notifications\BookingStatusNotification($customer->name, 'Aktif'));
+            }
         }
 
         return back()->with('success', 'Booking berhasil diaktivasi menjadi Pelanggan Aktif.');
     })->name('booking.activate');
+
+    Route::post('/booking/{customer}/status', function (Request $request, Customer $customer) {
+        if (!$request->user()->hasRole('admin') && !$request->user()->can('setujui_booking')) {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'status' => 'required|in:Proses,Batal',
+            'keterangan' => 'nullable|string|max:255',
+        ]);
+
+        $customer->update([
+            'status_pelanggan' => $data['status'],
+            'keterangan_status' => $data['keterangan'] ?? null,
+        ]);
+
+        if ($customer->sales_id) {
+            $salesUser = \App\Models\Sales::find($customer->sales_id)?->user;
+            if ($salesUser) {
+                $salesUser->notify(new \App\Notifications\BookingStatusNotification($customer->name, $data['status'], $data['keterangan']));
+            }
+        }
+
+        return back()->with('success', 'Status booking berhasil diubah.');
+    })->name('booking.status');
 
     Route::delete('/booking/{customer}', function (Request $request, Customer $customer) {
         if (!$request->user()->can('hapus_pelanggan')) abort(403);

@@ -405,6 +405,39 @@ const activateBooking = (customer) => {
     }
 };
 
+const statusForm = useForm({ status: '', keterangan: '' });
+const showRejectModal = ref(false);
+const activeCustomerForReject = ref(null);
+
+const processBooking = (customer) => {
+    if (confirm(`Apakah Anda yakin ingin memproses booking untuk ${customer.name}?`)) {
+        statusForm.status = 'Proses';
+        statusForm.keterangan = '';
+        statusForm.post(route('booking.status', customer.id), { preserveScroll: true });
+    }
+};
+
+const openRejectModal = (customer) => {
+    activeCustomerForReject.value = customer;
+    statusForm.status = 'Batal';
+    statusForm.keterangan = '';
+    showRejectModal.value = true;
+};
+
+const closeRejectModal = () => {
+    showRejectModal.value = false;
+    activeCustomerForReject.value = null;
+    statusForm.reset();
+};
+
+const submitReject = () => {
+    if (!activeCustomerForReject.value) return;
+    statusForm.post(route('booking.status', activeCustomerForReject.value.id), {
+        preserveScroll: true,
+        onSuccess: () => closeRejectModal(),
+    });
+};
+
 // =================== DELETE MODAL ===================
 const showDeleteModal = ref(false);
 const customerToDelete = ref(null);
@@ -716,9 +749,22 @@ const submitDelete = () => {
                                     <!-- Aksi -->
                                     <td class="py-4 pl-3 pr-4 text-center sm:pr-6 whitespace-nowrap">
                                         <div class="flex items-center justify-center gap-1.5">
-                                            <!-- Activate Button -->
+                                            <!-- Process Button -->
                                             <button
                                                 v-if="can_activate && customer.status_pelanggan === 'Booking'"
+                                                type="button"
+                                                @click="processBooking(customer)"
+                                                class="rounded-lg p-1.5 text-blue-500 transition hover:bg-blue-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                title="Proses Booking"
+                                            >
+                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                                </svg>
+                                            </button>
+
+                                            <!-- Activate Button -->
+                                            <button
+                                                v-if="can_activate && (customer.status_pelanggan === 'Booking' || customer.status_pelanggan === 'Proses')"
                                                 type="button"
                                                 @click="activateBooking(customer)"
                                                 class="rounded-lg p-1.5 text-emerald-500 transition hover:bg-emerald-50 hover:text-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500"
@@ -726,6 +772,19 @@ const submitDelete = () => {
                                             >
                                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            </button>
+
+                                            <!-- Reject Button -->
+                                            <button
+                                                v-if="can_activate && (customer.status_pelanggan === 'Booking' || customer.status_pelanggan === 'Proses')"
+                                                type="button"
+                                                @click="openRejectModal(customer)"
+                                                class="rounded-lg p-1.5 text-amber-500 transition hover:bg-amber-50 hover:text-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                                                title="Tolak/Batal Booking"
+                                            >
+                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                                 </svg>
                                             </button>
 
@@ -1399,6 +1458,59 @@ const submitDelete = () => {
                             <span>{{ deleteForm.processing ? 'Menghapus...' : 'Hapus Pelanggan' }}</span>
                         </button>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= REJECT MODAL ================= -->
+        <div v-if="showRejectModal" class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click="closeRejectModal"></div>
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div class="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 border border-slate-100">
+                    <form @submit.prevent="submitReject">
+                        <div class="p-6 space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-base font-bold text-slate-800">Tolak Booking</h3>
+                                    <p class="text-xs text-slate-500">Berikan alasan pembatalan/penolakan untuk {{ activeCustomerForReject?.name }}.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <label for="keterangan" class="block text-xs font-bold text-slate-700 mb-1">Alasan Penolakan</label>
+                                <textarea
+                                    id="keterangan"
+                                    v-model="statusForm.keterangan"
+                                    required
+                                    rows="3"
+                                    class="block w-full rounded-xl border border-slate-300 py-2.5 px-3.5 text-sm font-medium text-slate-800 shadow-sm focus:border-amber-500 focus:ring-amber-500 transition-colors"
+                                    placeholder="Contoh: ODP penuh, alamat di luar jangkauan..."
+                                ></textarea>
+                                <p v-if="statusForm.errors.keterangan" class="mt-1.5 text-xs font-medium text-rose-500">{{ statusForm.errors.keterangan }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-end gap-3 border-t border-slate-100 bg-slate-50/75 px-3 py-3 sm:px-6 sm:py-4">
+                            <button
+                                type="button"
+                                @click="closeRejectModal"
+                                class="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs sm:text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none"
+                            >
+                                Tutup
+                            </button>
+                            <button
+                                type="submit"
+                                class="rounded-xl border border-transparent bg-amber-600 px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 disabled:opacity-50"
+                                :disabled="statusForm.processing"
+                            >
+                                {{ statusForm.processing ? 'Menyimpan...' : 'Tolak & Beritahu Sales' }}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

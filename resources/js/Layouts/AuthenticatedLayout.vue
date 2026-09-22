@@ -419,11 +419,40 @@ const can = (perm) => permissions.value.includes(perm);
                     </div>
 
                     <div class="flex items-center gap-5">
-                        <!-- Notification Bell -->
-                        <button class="relative p-2 text-slate-500 hover:text-slate-700 transition-colors focus:outline-none">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-                            <span class="absolute top-1.5 right-1.5 block h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white"></span>
-                        </button>
+                        <!-- Notification Dropdown -->
+                        <div class="relative">
+                            <button @click="showNotifications = !showNotifications" class="relative p-2 text-slate-500 hover:text-slate-700 transition-colors focus:outline-none">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                                <span v-if="notifications.length > 0" class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white border-2 border-white">{{ notifications.length > 9 ? '9+' : notifications.length }}</span>
+                            </button>
+                            
+                            <!-- Dropdown List -->
+                            <div v-if="showNotifications" class="absolute right-0 mt-2 w-80 rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50 overflow-hidden">
+                                <div class="px-4 py-3 border-b border-slate-100 bg-slate-50">
+                                    <h3 class="text-sm font-semibold text-slate-700">Notifikasi</h3>
+                                </div>
+                                <div class="max-h-80 overflow-y-auto">
+                                    <template v-if="notifications.length > 0">
+                                        <div v-for="notif in notifications" :key="notif.id" @click="markAsRead(notif.id)" class="px-4 py-3 border-b border-slate-50 hover:bg-slate-50 cursor-pointer transition-colors">
+                                            <div class="flex items-start">
+                                                <div class="flex-shrink-0 mt-1">
+                                                    <div class="h-2 w-2 rounded-full bg-rose-500"></div>
+                                                </div>
+                                                <div class="ml-3 w-0 flex-1">
+                                                    <p class="text-sm font-medium text-slate-800">{{ notif.data.title }}</p>
+                                                    <p class="mt-1 text-xs text-slate-500">{{ notif.data.message }}</p>
+                                                    <p class="mt-1 text-[10px] text-slate-400">{{ new Date(notif.created_at).toLocaleString() }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <div v-else class="px-4 py-6 text-center text-sm text-slate-500">
+                                        Tidak ada notifikasi baru.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="showNotifications" @click="showNotifications = false" class="fixed inset-0 z-40"></div>
 
                         <div class="h-8 w-px bg-slate-200"></div>
 
