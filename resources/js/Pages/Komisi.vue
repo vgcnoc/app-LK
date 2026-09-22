@@ -14,6 +14,7 @@ const props = defineProps({
 
 const search = ref('');
 const statusFilter = ref('');
+const showRules = ref(false);
 
 const formatCurrency = (value) => {
     if (!value) return '0';
@@ -147,6 +148,59 @@ const getTypeText = (type) => {
                 <div v-if="$page.props.flash?.error" class="bg-red-50 border border-red-200 text-red-800 rounded-2xl p-4 flex items-center shadow-sm">
                     <svg class="w-5 h-5 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                     {{ $page.props.flash.error }}
+                </div>
+
+                <!-- Aturan & Ketentuan Komisi (Accordion) -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <button @click="showRules = !showRules" class="w-full px-6 py-4 flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition-colors focus:outline-none">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-indigo-100 text-indigo-600 rounded-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <span class="font-bold text-slate-800 text-sm sm:text-base">Panduan & Ketentuan Komisi</span>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 transition-transform duration-300" :class="showRules ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    
+                    <div v-show="showRules" class="p-6 border-t border-slate-200 text-sm text-slate-700 space-y-6">
+                        
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                1. Skema Komisi Multi-Tier
+                            </h4>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li><strong>Direct Sales:</strong> Sales yang melakukan penjualan langsung (Closing) berhak mendapatkan komisi awal sebesar <strong>Rp 35.000</strong> (dibayarkan satu kali), serta komisi berkelanjutan sebesar <strong>Rp 5.000/bulan</strong> selama pelanggan tersebut masih aktif berlangganan.</li>
+                                <li><strong>Upline 1 (Sponsor Langsung):</strong> Mendapatkan komisi pasif sebesar <strong>Rp 2.000/bulan</strong> dari setiap pelanggan aktif yang berhasil di-closing oleh downline level 1.</li>
+                                <li><strong>Upline 2 (Sponsor dari Sponsor):</strong> Mendapatkan komisi pasif sebesar <strong>Rp 1.000/bulan</strong> dari setiap pelanggan aktif yang berhasil di-closing oleh downline level 2.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                                2. Syarat Pencairan & Pembayaran
+                            </h4>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Status komisi akan otomatis tercatat sebagai <strong>Pending</strong> saat pelanggan baru berstatus <strong>Aktif</strong> (selesai pasang).</li>
+                                <li>Komisi hanya dapat <strong>Dicairkan (Dibayar)</strong> oleh pihak Admin/Finance setelah divalidasi bahwa pelanggan yang bersangkutan <strong>telah melakukan pembayaran tagihan bulanannya</strong>.</li>
+                                <li>Admin/Finance diwajibkan untuk mengunggah <strong>Bukti Transfer/Pencairan</strong> sebagai bukti sah perubahan status komisi menjadi dibayar.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+                            <h4 class="font-bold text-red-800 text-base mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                3. Ketentuan Pembatalan & Penalti (Refund)
+                            </h4>
+                            <ul class="list-disc pl-5 space-y-2 text-red-700">
+                                <li>Jika pelanggan gagal melakukan pemasangan (status Batal), komisi tidak akan dihitung atau diberikan.</li>
+                                <li>Apabila ditemukan indikasi kecurangan, Admin memiliki hak penuh untuk membatalkan komisi secara sepihak.</li>
+                                <li><strong>PENTING:</strong> Jika pelanggan memutuskan untuk berhenti berlangganan (cabut) dalam kurun waktu <strong>di bawah 3 bulan</strong>, maka seluruh dana komisi yang telah dibayarkan terkait pelanggan tersebut (Rp 35.000, Rp 5.000, Rp 2.000, maupun Rp 1.000) wajib dikembalikan. Sistem akan memotong (retur) dari hasil pencairan komisi penjualan Anda berikutnya.</li>
+                            </ul>
+                        </div>
+
+                    </div>
                 </div>
 
                 <!-- Summary Cards -->
