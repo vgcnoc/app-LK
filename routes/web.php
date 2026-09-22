@@ -956,6 +956,11 @@ Route::middleware(['auth'])->group(function () {
 
     // ANALISA EKSPANSI
     Route::get('/analisa-ekspansi', function () {
+        $user = auth()->user();
+        if (!$user->can('akses_laporan') && !$user->can('akses_booking')) {
+            abort(403);
+        }
+
         // 1. Chart Data by Kecamatan
         $byKecamatan = Customer::where('status_pelanggan', 'Batal')
             ->whereNotNull('kecamatan')
