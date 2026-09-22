@@ -1124,7 +1124,7 @@ Route::middleware(['auth'])->group(function () {
                     'type' => 'booking',
                     'amount' => $bookingCommission,
                     'status' => 'hold',
-                    'description' => 'Komisi Booking Pelanggan: ' . $customer->name,
+                    'description' => 'Komisi Pasang (Pending Bayar): ' . $customer->name,
                 ]);
             }
             
