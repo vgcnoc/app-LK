@@ -1,6 +1,37 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
+import axios from 'axios';
+
+const notifications = ref([]);
+const showNotifications = ref(false);
+let notifInterval;
+
+const fetchNotifications = async () => {
+    try {
+        const response = await axios.get(route('api.notifications.index'));
+        notifications.value = response.data.notifications;
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
+};
+
+const markAsRead = async (id) => {
+    try {
+        await axios.post(route('api.notifications.read', id));
+        fetchNotifications();
+    } catch (error) {
+        console.error('Error marking as read:', error);
+    }
+};
+
+onMounted(() => {
+    fetchNotifications();
+    notifInterval = setInterval(fetchNotifications, 30000);
+});
+onUnmounted(() => {
+    clearInterval(notifInterval);
+});
 
 const sidebarOpen = ref(false);
 
