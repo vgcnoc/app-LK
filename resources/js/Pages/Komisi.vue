@@ -64,6 +64,29 @@ const closePayModal = () => {
     payForm.clearErrors();
 };
 
+const proofModal = ref(false);
+const proofUrl = ref('');
+
+const openProofModal = (url) => {
+    proofUrl.value = url;
+    proofModal.value = true;
+};
+
+const closeProofModal = () => {
+    proofModal.value = false;
+    proofUrl.value = '';
+};
+
+const isImage = (url) => {
+    if (!url) return false;
+    return url.match(/\.(jpeg|jpg|gif|png|webp)$/i) != null;
+};
+
+const isPdf = (url) => {
+    if (!url) return false;
+    return url.match(/\.(pdf)$/i) != null;
+};
+
 const cancelPay = (commission) => {
     if (confirm('Yakin ingin membatalkan pembayaran komisi ini? Transaksi pengeluaran di laporan keuangan akan dihapus.')) {
         router.post(`/komisi/${commission.id}/cancel-pay`, {}, {
@@ -135,7 +158,7 @@ const getTypeText = (type) => {
                     </div>
                     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col relative overflow-hidden group">
                         <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-50 rounded-full group-hover:scale-110 transition-transform duration-500"></div>
-                        <div class="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2 relative z-10">Total Sudah Dibayar</div>
+                        <div class="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2 relative z-10">Total Komisi Dicairkan</div>
                         <div class="text-3xl font-black text-emerald-600 relative z-10">Rp {{ formatCurrency(totalPaid) }}</div>
                     </div>
                 </div>
@@ -216,9 +239,10 @@ const getTypeText = (type) => {
                                             Tandai Dibayar
                                         </button>
                                         <div v-else-if="c.status === 'paid'" class="flex flex-col items-end gap-1">
-                                            <a v-if="c.proof_of_payment" :href="'/storage/' + c.proof_of_payment" target="_blank" class="text-xs text-blue-500 hover:underline">
+                                            <button v-if="c.proof_of_payment" @click="openProofModal('/storage/' + c.proof_of_payment)" class="text-xs bg-emerald-50 text-emerald-600 hover:bg-emerald-100 font-semibold px-3 py-1.5 rounded-lg transition-colors border border-emerald-200 inline-flex items-center gap-1.5 w-full justify-center">
+                                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                                                 Lihat Bukti
-                                            </a>
+                                            </button>
                                             <button v-if="can_pay" @click="cancelPay(c)" class="text-[10px] text-red-500 hover:text-red-700 underline mt-1">
                                                 Batal Bayar
                                             </button>
@@ -236,9 +260,9 @@ const getTypeText = (type) => {
 </div>
                 </div>
 
-                <div v-if="can_pay" class="text-xs text-slate-500 bg-slate-50 p-4 rounded-xl border border-slate-200 mt-6 flex items-start gap-3">
-                    <svg class="w-5 h-5 text-slate-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    <p><strong class="text-slate-700">Info:</strong> Tombol "Tandai Dibayar" hanya mengubah status komisi di halaman ini. Proses transfer dana dan pencatatan kas keluar di "Buku Kas" harus Anda lakukan secara manual bila diperlukan.</p>
+                <div v-if="can_pay" class="text-xs text-slate-500 bg-emerald-50 p-4 rounded-xl border border-emerald-200 mt-6 flex items-start gap-3">
+                    <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <p><strong class="text-emerald-700">Info:</strong> Tombol "Tandai Dibayar" akan mengunggah bukti pencairan (TF) dan secara otomatis mencatat pengeluaran kas tersebut di <strong>Buku Kas / Keuangan</strong>.</p>
                 </div>
             </div>
         </div>
@@ -281,6 +305,39 @@ const getTypeText = (type) => {
                     </PrimaryButton>
                 </div>
             </form>
+        </div>
+    </Modal>
+
+    <!-- Modal Lihat Bukti -->
+    <Modal :show="proofModal" @close="closeProofModal" maxWidth="xl">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-medium text-slate-900">
+                    Bukti Pencairan Komisi
+                </h2>
+                <button @click="closeProofModal" class="text-slate-400 hover:text-slate-500">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="bg-slate-50 rounded-xl p-2 border border-slate-200 flex justify-center items-center min-h-[300px]">
+                <img v-if="isImage(proofUrl)" :src="proofUrl" alt="Bukti Transfer" class="max-w-full max-h-[60vh] object-contain rounded-lg shadow-sm" />
+                <iframe v-else-if="isPdf(proofUrl)" :src="proofUrl" class="w-full h-[60vh] rounded-lg"></iframe>
+                <div v-else class="text-center text-slate-500 py-10">
+                    <svg class="mx-auto h-12 w-12 text-slate-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <p>Format file tidak didukung untuk pratinjau.</p>
+                    <a :href="proofUrl" target="_blank" class="text-indigo-600 hover:underline mt-2 inline-block">Buka di tab baru</a>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <a :href="proofUrl" target="_blank" class="px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                    Buka Penuh
+                </a>
+            </div>
         </div>
     </Modal>
 </template>
