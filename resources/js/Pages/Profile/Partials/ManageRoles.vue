@@ -64,9 +64,9 @@ const permissionGroups = computed(() => [
         permissions: props.allPermissions.filter(p => p.includes('affiliate') || p.includes('akun_sales')),
     },
     {
-        label: 'Laporan',
+        label: 'Laporan & Analisa',
         icon: '📊',
-        permissions: props.allPermissions.filter(p => p.includes('laporan')),
+        permissions: props.allPermissions.filter(p => p.includes('laporan') || p.includes('analisa_ekspansi')),
     },
     {
         label: 'Master Data',
@@ -125,9 +125,10 @@ const permissionLabels = {
     'hapus_affiliate': 'Hapus Data Sales/Affiliate',
     'kelola_akun_sales': 'Kelola Akun Login Sales (Buat/Hapus Akun)',
 
-    // Laporan
+    // Laporan & Analisa
     'akses_laporan': 'Lihat Laporan Keuangan',
     'ekspor_laporan': 'Ekspor Laporan (Excel/PDF)',
+    'akses_analisa_ekspansi': 'Lihat Analisa Ekspansi Jaringan',
     
     // Master Data
     'akses_master_data': 'Lihat Master Data',

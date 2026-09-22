@@ -957,7 +957,7 @@ Route::middleware(['auth'])->group(function () {
     // ANALISA EKSPANSI
     Route::get('/analisa-ekspansi', function (Request $request) {
         $user = auth()->user();
-        if (!$user->can('akses_laporan') && !$user->can('akses_booking')) {
+        if (!$user->can('akses_analisa_ekspansi')) {
             abort(403);
         }
 

@@ -251,7 +251,7 @@ const can = (perm) => permissions.value.includes(perm);
 
                 <!-- Analisa Ekspansi -->
                 <Link
-                    v-if="can('akses_laporan') || can('akses_booking')"
+                    v-if="can('akses_analisa_ekspansi')"
                     :href="route('analisa.ekspansi')"
                     :class="[
                         route().current('analisa.ekspansi')
