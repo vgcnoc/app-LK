@@ -1,14 +1,61 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import { Head } from '@inertiajs/vue3';
+import { ref, onMounted, computed, watch } from 'vue';
+import { Head, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Chart from 'chart.js/auto';
 
 const props = defineProps({
     chartKecamatan: Array,
     chartAlasan: Array,
-    batalList: Array
+    batalList: Array,
+    filters: Object,
+    options: Object
 });
+
+const filterForm = ref({
+    month: props.filters?.month || '',
+    year: props.filters?.year || new Date().getFullYear().toString(),
+    kecamatan: props.filters?.kecamatan || '',
+    alasan: props.filters?.alasan || '',
+    sales_id: props.filters?.sales_id || ''
+});
+
+const applyFilters = () => {
+    router.get(route('analisa.ekspansi'), filterForm.value, {
+        preserveState: true,
+        preserveScroll: true
+    });
+};
+
+const resetFilters = () => {
+    filterForm.value = {
+        month: '',
+        year: new Date().getFullYear().toString(),
+        kecamatan: '',
+        alasan: '',
+        sales_id: ''
+    };
+    applyFilters();
+};
+
+const months = [
+    { value: '01', label: 'Januari' },
+    { value: '02', label: 'Februari' },
+    { value: '03', label: 'Maret' },
+    { value: '04', label: 'April' },
+    { value: '05', label: 'Mei' },
+    { value: '06', label: 'Juni' },
+    { value: '07', label: 'Juli' },
+    { value: '08', label: 'Agustus' },
+    { value: '09', label: 'September' },
+    { value: '10', label: 'Oktober' },
+    { value: '11', label: 'November' },
+    { value: '12', label: 'Desember' }
+];
+
+let barChartInstance = null;
+let doughnutChartInstance = null;
+import Chart from 'chart.js/auto';
 
 const barChartCanvas = ref(null);
 const doughnutChartCanvas = ref(null);
@@ -27,9 +74,12 @@ const topAlasan = computed(() => {
     return props.chartAlasan[0].label;
 });
 
-onMounted(() => {
+const initCharts = () => {
+    if (barChartInstance) barChartInstance.destroy();
+    if (doughnutChartInstance) doughnutChartInstance.destroy();
+
     if (props.chartKecamatan.length > 0 && barChartCanvas.value) {
-        new Chart(barChartCanvas.value, {
+        barChartInstance = new Chart(barChartCanvas.value, {
             type: 'bar',
             data: {
                 labels: props.chartKecamatan.map(d => d.label || 'Tanpa Kecamatan'),
@@ -56,31 +106,48 @@ onMounted(() => {
     }
 
     if (props.chartAlasan.length > 0 && doughnutChartCanvas.value) {
-        new Chart(doughnutChartCanvas.value, {
+        doughnutChartInstance = new Chart(doughnutChartCanvas.value, {
             type: 'doughnut',
             data: {
-                labels: props.chartAlasan.map(d => d.label || 'Lainnya'),
+                labels: props.chartAlasan.map(d => d.label || 'Tanpa Keterangan'),
                 datasets: [{
                     data: props.chartAlasan.map(d => d.total),
                     backgroundColor: [
-                        '#ef4444', '#f97316', '#f59e0b', '#84cc16', 
-                        '#10b981', '#06b6d4', '#3b82f6', '#8b5cf6'
+                        '#6366f1', // indigo
+                        '#f59e0b', // amber
+                        '#ec4899', // pink
+                        '#10b981', // emerald
+                        '#8b5cf6', // violet
+                        '#0ea5e9'  // sky
                     ],
                     borderWidth: 2,
-                    borderColor: '#ffffff'
+                    hoverOffset: 4
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '65%',
                 plugins: {
-                    legend: { position: 'right', labels: { boxWidth: 12, usePointStyle: true, font: { size: 11 } } }
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            usePointStyle: true,
+                            boxWidth: 8
+                        }
+                    }
                 }
             }
         });
     }
+};
+
+onMounted(() => {
+    initCharts();
 });
+
+watch(() => [props.chartKecamatan, props.chartAlasan], () => {
+    initCharts();
+}, { deep: true });
 </script>
 
 <template>
@@ -88,21 +155,73 @@ onMounted(() => {
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
                     <h2 class="text-xl font-bold leading-tight text-slate-800">
-                        Analisa Ekspansi Jaringan
+                        Dasbor Analisa Ekspansi Jaringan
                     </h2>
                     <p class="mt-1 text-sm text-slate-500">
-                        Pemetaan data kegagalan pemasangan (Batal) untuk analisa prioritas penarikan ODP baru.
+                        Pemetaan data Booking Batal untuk perencanaan penarikan jalur kabel (ODP) baru.
                     </p>
                 </div>
             </div>
         </template>
 
         <div class="py-6">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
                 
+                <!-- Filter Bar -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm ring-1 ring-slate-100 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                            Filter Analisa
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <button @click="resetFilters" class="text-xs text-slate-500 hover:text-slate-700 underline px-2 py-1">Reset Filter</button>
+                            <button @click="applyFilters" class="text-xs font-semibold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-4 py-2 rounded-lg transition-colors border border-indigo-200 shadow-sm">Terapkan Filter</button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">Bulan</label>
+                            <select v-model="filterForm.month" class="w-full text-sm border-slate-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Semua Bulan</option>
+                                <option v-for="m in months" :key="m.value" :value="m.value">{{ m.label }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">Tahun</label>
+                            <select v-model="filterForm.year" class="w-full text-sm border-slate-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Semua Tahun</option>
+                                <option v-for="y in options.years" :key="y" :value="y">{{ y }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">Kecamatan</label>
+                            <select v-model="filterForm.kecamatan" class="w-full text-sm border-slate-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Semua Kecamatan</option>
+                                <option v-for="k in options.kecamatan" :key="k" :value="k">{{ k }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">Alasan Penolakan</label>
+                            <select v-model="filterForm.alasan" class="w-full text-sm border-slate-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Semua Alasan</option>
+                                <option v-for="a in options.alasan" :key="a" :value="a">{{ a }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">Sales</label>
+                            <select v-model="filterForm.sales_id" class="w-full text-sm border-slate-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Semua Sales</option>
+                                <option v-for="s in options.sales" :key="s.id" :value="s.id">{{ s.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Summary Cards -->
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-6">
                     <!-- Card 1 -->

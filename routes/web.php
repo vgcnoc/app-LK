@@ -955,14 +955,32 @@ Route::middleware(['auth'])->group(function () {
     })->name('pelanggan.pantauan');
 
     // ANALISA EKSPANSI
-    Route::get('/analisa-ekspansi', function () {
+    Route::get('/analisa-ekspansi', function (Request $request) {
         $user = auth()->user();
         if (!$user->can('akses_laporan') && !$user->can('akses_booking')) {
             abort(403);
         }
 
+        $query = Customer::where('status_pelanggan', 'Batal');
+
+        if ($request->filled('month')) {
+            $query->whereMonth('updated_at', $request->month);
+        }
+        if ($request->filled('year')) {
+            $query->whereYear('updated_at', $request->year);
+        }
+        if ($request->filled('kecamatan')) {
+            $query->where('kecamatan', $request->kecamatan);
+        }
+        if ($request->filled('alasan')) {
+            $query->where('keterangan_status', $request->alasan);
+        }
+        if ($request->filled('sales_id')) {
+            $query->where('sales_id', $request->sales_id);
+        }
+
         // 1. Chart Data by Kecamatan
-        $byKecamatan = Customer::where('status_pelanggan', 'Batal')
+        $byKecamatan = (clone $query)
             ->whereNotNull('kecamatan')
             ->selectRaw('kecamatan as label, count(*) as total')
             ->groupBy('kecamatan')
@@ -970,7 +988,7 @@ Route::middleware(['auth'])->group(function () {
             ->get();
 
         // 2. Chart Data by Alasan (Keterangan Status)
-        $byAlasan = Customer::where('status_pelanggan', 'Batal')
+        $byAlasan = (clone $query)
             ->whereNotNull('keterangan_status')
             ->selectRaw('keterangan_status as label, count(*) as total')
             ->groupBy('keterangan_status')
@@ -978,7 +996,7 @@ Route::middleware(['auth'])->group(function () {
             ->get();
 
         // 3. Raw Data for Table
-        $batalList = Customer::where('status_pelanggan', 'Batal')
+        $batalList = (clone $query)
             ->with('sales')
             ->orderBy('updated_at', 'desc')
             ->get()
@@ -994,10 +1012,25 @@ Route::middleware(['auth'])->group(function () {
                 ];
             });
 
+        // 4. Dropdown Options
+        $kecamatanOptions = Customer::where('status_pelanggan', 'Batal')->whereNotNull('kecamatan')->distinct()->pluck('kecamatan');
+        $alasanOptions = Customer::where('status_pelanggan', 'Batal')->whereNotNull('keterangan_status')->distinct()->pluck('keterangan_status');
+        $salesOptions = \App\Models\Sales::orderBy('name')->get(['id', 'name']);
+        
+        $currentYear = (int)date('Y');
+        $yearOptions = range($currentYear - 2, $currentYear + 1);
+
         return Inertia::render('AnalisaEkspansi', [
             'chartKecamatan' => $byKecamatan,
             'chartAlasan' => $byAlasan,
-            'batalList' => $batalList
+            'batalList' => $batalList,
+            'filters' => $request->only(['month', 'year', 'kecamatan', 'alasan', 'sales_id']),
+            'options' => [
+                'kecamatan' => $kecamatanOptions,
+                'alasan' => $alasanOptions,
+                'sales' => $salesOptions,
+                'years' => $yearOptions
+            ]
         ]);
     })->name('analisa.ekspansi');
 
