@@ -158,7 +158,20 @@ Route::middleware(['auth'])->group(function () {
             if ($request->filled('area')) {
                 $incomeQuery->where('area', $request->area);
             }
-            $totalIncome = $incomeQuery->sum('base_amount');
+            $totalIncomeBilling = $incomeQuery->sum('base_amount');
+
+            $manualIncomeQuery = Transaction::where('type', 'income')
+                ->where(function($q) {
+                    $q->where('payment_status', 'paid')
+                      ->orWhereNull('payment_status');
+                })
+                ->where('description', 'not like', 'Pembayaran dari %');
+            if ($request->filled('area')) {
+                $manualIncomeQuery->where('area', $request->area);
+            }
+            $totalManualIncome = $manualIncomeQuery->sum('amount');
+            
+            $totalIncome = $totalIncomeBilling + $totalManualIncome;
         } else {
             $totalIncome = (clone $query)->where('type', 'income')
                 ->where(function($q) {
