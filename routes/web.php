@@ -365,6 +365,16 @@ Route::middleware(['auth'])->group(function () {
             ->groupBy('area')
             ->get();
 
+        $customerCounts = \App\Models\Customer::selectRaw('area, count(id) as count')
+            ->where('status_pelanggan', '!=', 'Booking')
+            ->groupBy('area')
+            ->pluck('count', 'area');
+
+        $areaSummaries = $areaSummaries->map(function ($item) use ($customerCounts) {
+            $item->customer_count = $customerCounts[$item->area_name] ?? 0;
+            return $item;
+        });
+
         $expenseCategories = \App\Models\ExpenseCategory::all();
         $companyExpenseTypes = \App\Models\CompanyExpenseType::all();
         $materials = \App\Models\Material::all();

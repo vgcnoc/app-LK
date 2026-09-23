@@ -465,7 +465,7 @@ const deleteTransaction = (id) => {
                                     index % 4 === 2 ? 'bg-purple-50 text-purple-600' : 
                                     'bg-orange-50 text-orange-600'
                                 ]">
-                                    {{ Math.floor(Math.random() * 2000) + 10 }} Pelanggan
+                                    {{ area.customer_count || 0 }} Pelanggan
                                 </div>
                             </div>
                             
