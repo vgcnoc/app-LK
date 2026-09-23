@@ -81,6 +81,30 @@ const deleteSelected = () => {
 // Helper to check if customer is active
 const isAktif = (c) => !c.status_pelanggan || String(c.status_pelanggan).toLowerCase() === 'aktif';
 
+const getCustomerDueDate = (c) => {
+    const globalDueDate = props.settings.global_due_date ? parseInt(props.settings.global_due_date) : null;
+    if (!globalDueDate) return null;
+    
+    const globalDueTime = props.settings.global_due_time || '23:59';
+    const [hours, minutes] = globalDueTime.split(':').map(Number);
+
+    let startMonth;
+    if (c.last_paid_date) {
+        startMonth = new Date(c.last_paid_date);
+        startMonth.setMonth(startMonth.getMonth() + 1);
+    } else {
+        startMonth = c.register_date ? new Date(c.register_date) : new Date(c.created_at);
+        if (c.prorata_amount !== null && c.prorata_amount !== undefined) {
+            startMonth.setMonth(startMonth.getMonth() + 1);
+        }
+    }
+    
+    let dueDate = new Date(startMonth);
+    dueDate.setDate(globalDueDate);
+    dueDate.setHours(hours, minutes, 0, 0);
+    return dueDate;
+};
+
 const isOverdue = (c) => {
     if (String(c.status).toLowerCase() === 'paid' || !isAktif(c)) return false;
     if (String(c.status).toLowerCase() === 'prorata') return false;
@@ -95,12 +119,7 @@ const isOverdue = (c) => {
         return false; // Active promise date overrides overdue status
     }
 
-    if (String(c.status).toLowerCase() === 'nunggak') return true;
-    
-    // Check global due_date
     const globalDueDate = props.settings.global_due_date ? parseInt(props.settings.global_due_date) : null;
-    const globalDueTime = props.settings.global_due_time || '23:59';
-
     if (globalDueDate) {
         // If customer registered this month, and the register date is after the global due date,
         // they shouldn't be marked as overdue for the current month.
@@ -110,23 +129,12 @@ const isOverdue = (c) => {
                 return false; 
             }
         }
-
-        // If today's date > globalDueDate, it is definitely overdue
-        if (todayDate.getDate() > globalDueDate) {
-            return true;
-        }
         
-        // If today's date === globalDueDate, check the time
-        if (todayDate.getDate() === globalDueDate) {
-            const [hours, minutes] = globalDueTime.split(':').map(Number);
-            const dueDateTime = new Date();
-            dueDateTime.setHours(hours, minutes, 0, 0);
-            if (todayDate > dueDateTime) {
-                return true;
-            }
-        }
+        const dueDate = getCustomerDueDate(c);
+        if (dueDate && todayDate > dueDate) return true;
     }
     
+    if (String(c.status).toLowerCase() === 'nunggak') return true;
     return false;
 };
 
@@ -146,29 +154,24 @@ const getLamaNunggak = (c) => {
         }
     }
     
-    const globalDueDate = props.settings.global_due_date ? parseInt(props.settings.global_due_date) : null;
-    const globalDueTime = props.settings.global_due_time || '23:59';
-
-    if (globalDueDate) {
-        let dueDate = new Date();
-        dueDate.setDate(globalDueDate);
+    const dueDate = getCustomerDueDate(c);
+    if (dueDate) {
+        let months = (todayDate.getFullYear() - dueDate.getFullYear()) * 12;
+        months -= dueDate.getMonth();
+        months += todayDate.getMonth();
         
-        const [hours, minutes] = globalDueTime.split(':').map(Number);
-        dueDate.setHours(hours, minutes, 0, 0);
-        
-        if (dueDate > todayDate) {
-            dueDate.setMonth(dueDate.getMonth() - 1);
+        let days = todayDate.getDate() - dueDate.getDate();
+        if (days < 0) {
+            months -= 1;
+            const prevMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+            days += prevMonth.getDate();
         }
         
-        const diffTime = Math.abs(todayDate - dueDate);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
-        if (diffDays >= 30) {
-            const months = Math.floor(diffDays / 30);
-            const days = diffDays % 30;
+        if (months > 0) {
             return `${months} Bln${days > 0 ? ` ${days} Hari` : ''}`;
+        } else {
+            return `${days} Hari`;
         }
-        return `${diffDays} Hari`;
     }
     
     return null;
