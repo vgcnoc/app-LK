@@ -69,7 +69,7 @@ const availablePakets = computed(() => {
             set.add(c.paket.trim());
         }
     });
-    return Array.from(set).sort();
+    return Array.from(set).filter(paket => paket.toLowerCase().includes('internet hebat')).sort();
 });
 
 
