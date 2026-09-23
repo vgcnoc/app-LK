@@ -140,12 +140,32 @@ Route::middleware(['auth'])->group(function () {
 
         // Global summaries
         // For calculations without kategori filter (but we need to separate income and expense)
-        // Note: For income totals, we must only include "paid" transactions.
-        $totalIncome = (clone $query)->where('type', 'income')
-            ->where(function($q) {
-                $q->where('payment_status', 'paid')
-                  ->orWhereNull('payment_status');
-            })->sum('amount');
+        // Note: For income totals, if no date filter is applied, we match the Billing "Nominal Lunas" logic exactly.
+        $isLedgerQuery = $request->filled('start_date') || $request->filled('end_date');
+
+        if (!$isLedgerQuery) {
+            $incomeQuery = Customer::where('status', 'paid')
+                ->where(function($q) {
+                    $q->where('status_pelanggan', 'Aktif')
+                      ->orWhereNull('status_pelanggan')
+                      ->orWhere('status_pelanggan', '');
+                })
+                ->where(function($query) {
+                    $excludedAreas = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3'];
+                    $query->whereNotIn('area', $excludedAreas)
+                          ->orWhereNull('area');
+                });
+            if ($request->filled('area')) {
+                $incomeQuery->where('area', $request->area);
+            }
+            $totalIncome = $incomeQuery->sum('base_amount');
+        } else {
+            $totalIncome = (clone $query)->where('type', 'income')
+                ->where(function($q) {
+                    $q->where('payment_status', 'paid')
+                      ->orWhereNull('payment_status');
+                })->sum('amount');
+        }
         $totalExpense = (clone $query)->where('type', 'expense')->sum('amount');
         $balance = $totalIncome - $totalExpense;
 
