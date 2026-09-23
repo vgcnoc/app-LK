@@ -462,6 +462,19 @@ const applyFilters = () => {
     appliedStartDateFilter.value = startDateFilter.value;
     appliedEndDateFilter.value = endDateFilter.value;
     currentPage.value = 1;
+
+    // Sinkronisasi otomatis tab dengan filter status agar tidak ada konflik
+    if (statusFilter.value === 'Jatuh Tempo') {
+        activeTab.value = 'jatuh_tempo';
+    } else if (statusFilter.value === 'Janji Bayar') {
+        activeTab.value = 'janji_bayar';
+    } else if (statusFilter.value === 'Bayar Sebagian') {
+        activeTab.value = 'piutang';
+    } else if (statusFilter.value === 'Prorata') {
+        activeTab.value = 'prorata';
+    } else if (statusFilter.value === 'Lunas' || statusFilter.value === 'Belum Lunas' || statusFilter.value === 'all') {
+        activeTab.value = 'semua';
+    }
 };
 
 const uniqueAreas = computed(() => {
@@ -500,17 +513,19 @@ const filteredCustomers = computed(() => {
         const isPiutang = !isLunas && isAktif(customer);
         const hasJanjiBayar = !!customer.promise_date && !isLunas;
         const isSebagian = checkSebagian(customer);
+        const isJatuhTempo = isOverdue(customer);
 
         const matchesStatus =
             appliedStatusFilter.value === 'all' ||
             (appliedStatusFilter.value === 'Lunas' && isLunas) ||
             (appliedStatusFilter.value === 'Belum Lunas' && !isLunas && !isProrata) ||
-            (appliedStatusFilter.value === 'Prorata' && isProrata);
+            (appliedStatusFilter.value === 'Prorata' && isProrata) ||
+            (appliedStatusFilter.value === 'Jatuh Tempo' && isJatuhTempo) ||
+            (appliedStatusFilter.value === 'Janji Bayar' && hasJanjiBayar) ||
+            (appliedStatusFilter.value === 'Bayar Sebagian' && isSebagian);
 
         const matchesArea =
             appliedAreaFilter.value === 'all' || customer.area === appliedAreaFilter.value;
-            
-        const isJatuhTempo = isOverdue(customer);
 
         const matchesTab = 
             (activeTab.value === 'semua' && !hasJanjiBayar && !isSebagian && !isJatuhTempo && !isProrata) ||
@@ -1322,6 +1337,9 @@ const deleteCustomer = (customer) => {
                                     <option value="all">Semua Status</option>
                                     <option value="Lunas">Lunas</option>
                                     <option value="Belum Lunas">Belum Lunas</option>
+                                    <option value="Jatuh Tempo">Jatuh Tempo</option>
+                                    <option value="Janji Bayar">Janji Bayar</option>
+                                    <option value="Bayar Sebagian">Bayar Sebagian</option>
                                     <option value="Prorata">Prorata</option>
                                 </select>
 
