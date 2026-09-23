@@ -563,7 +563,10 @@ const totalLunas = computed(() =>
     props.customers.filter((c) => String(c.status).toLowerCase() === 'paid').length
 );
 const totalBelumLunas = computed(() =>
-    props.customers.filter((c) => String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length
+    props.customers.filter((c) => String(c.status).toLowerCase() !== 'paid' && String(c.status).toLowerCase() !== 'prorata' && isAktif(c)).length
+);
+const totalProrata = computed(() =>
+    props.customers.filter((c) => String(c.status).toLowerCase() === 'prorata' && isAktif(c)).length
 );
 const totalNominalLunas = computed(() => {
     return props.customers.reduce((sum, c) => {
@@ -916,7 +919,7 @@ const deleteCustomer = (customer) => {
         <div class="py-8">
             <div class="mx-auto max-w-full space-y-6">
                 <!-- 1. STATS CARDS -->
-                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5 print:hidden">
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 print:hidden">
                     <!-- Total Pelanggan -->
                     <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
                         <div class="flex items-center justify-between gap-3">
@@ -962,6 +965,28 @@ const deleteCustomer = (customer) => {
                     </div>
 
                     <!-- Belum Lunas -->
+                    <!-- Prorata -->
+                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 truncate">
+                                    Prorata
+                                </p>
+                                <p class="mt-1 sm:mt-2 text-xl sm:text-3xl font-bold tracking-tight text-cyan-600 truncate">
+                                    {{ totalProrata }}
+                                </p>
+                                <p class="mt-1 text-[10px] sm:text-xs text-slate-400 truncate">
+                                    Pendaftar baru
+                                </p>
+                            </div>
+                            <div class="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 ring-1 ring-cyan-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Belum Lunas -->
                     <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
                         <div class="flex items-center justify-between gap-3">
