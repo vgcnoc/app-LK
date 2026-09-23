@@ -171,7 +171,18 @@ Route::middleware(['auth'])->group(function () {
             }
             $totalManualIncome = $manualIncomeQuery->sum('amount');
             
-            $totalIncome = $totalIncomeBilling + $totalManualIncome;
+            $partialPaymentsQuery = Transaction::where('type', 'income')
+                ->whereBetween('date', [\Carbon\Carbon::now()->startOfMonth()->toDateString(), \Carbon\Carbon::now()->endOfMonth()->toDateString()])
+                ->whereHas('customer', function($q) {
+                    $q->where('is_partial_payment', 1)
+                      ->where('status', '!=', 'paid');
+                });
+            if ($request->filled('area')) {
+                $partialPaymentsQuery->where('area', $request->area);
+            }
+            $totalPartialIncome = $partialPaymentsQuery->sum('amount');
+
+            $totalIncome = $totalIncomeBilling + $totalManualIncome + $totalPartialIncome;
         } else {
             $totalIncome = (clone $query)->where('type', 'income')
                 ->where(function($q) {
@@ -701,6 +712,13 @@ Route::middleware(['auth'])->group(function () {
         $paymentMethods = PaymentMethod::orderBy('name')->get();
         $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
 
+        $partialPaymentsTotal = \App\Models\Transaction::where('type', 'income')
+            ->whereBetween('date', [\Carbon\Carbon::now()->startOfMonth()->toDateString(), \Carbon\Carbon::now()->endOfMonth()->toDateString()])
+            ->whereHas('customer', function($q) {
+                $q->where('is_partial_payment', 1)
+                  ->where('status', '!=', 'paid');
+            })->sum('amount');
+
         return Inertia::render('Billing', [
             'customers' => $customers,
             'paymentMethods' => $paymentMethods,
@@ -708,6 +726,7 @@ Route::middleware(['auth'])->group(function () {
             'upgradeHistories' => \App\Models\UpgradeHistory::with('customer')->orderBy('created_at', 'desc')->get(),
             'settings' => $settings,
             'areas' => \App\Models\Area::orderBy('name')->pluck('name'),
+            'partialPaymentsTotal' => $partialPaymentsTotal,
         ]);
     })->name('billing.index');
 

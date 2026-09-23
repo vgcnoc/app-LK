@@ -28,6 +28,10 @@ const props = defineProps({
     areas: {
         type: Array,
         default: () => [],
+    },
+    partialPaymentsTotal: {
+        type: Number,
+        default: 0,
     }
 });
 
@@ -587,12 +591,13 @@ const totalProrata = computed(() =>
     props.customers.filter((c) => String(c.status).toLowerCase() === 'prorata' && isAktif(c)).length
 );
 const totalNominalLunas = computed(() => {
-    return props.customers.reduce((sum, c) => {
+    const baseTotal = props.customers.reduce((sum, c) => {
         if (String(c.status).toLowerCase() === 'paid') {
             return sum + (Number(c.base_amount) || 0);
         }
         return sum;
     }, 0);
+    return baseTotal + (Number(props.partialPaymentsTotal) || 0);
 });
 const percentLunas = computed(() => {
     if (totalCustomers.value === 0) return 0;
