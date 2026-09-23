@@ -53,6 +53,7 @@ const settingsForm = useForm({
     commission_upline_2_monthly: props.settings.commission_upline_2_monthly || '',
     commission_payout_date: props.settings.commission_payout_date || '13',
     global_installation_fee: props.settings.global_installation_fee || '',
+    support_wa_number: props.settings.support_wa_number || '',
 });
 
 const submitSettings = () => {
@@ -409,6 +410,15 @@ const saveEditArea = (area) => {
                                             type="number" 
                                             v-model="settingsForm.global_installation_fee" 
                                             placeholder="Contoh: 150000 (Kosongkan jika gratis)"
+                                            class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Nomor WA Support</label>
+                                        <input 
+                                            type="text" 
+                                            v-model="settingsForm.support_wa_number" 
+                                            placeholder="Contoh: 6281234567890"
                                             class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-rose-500 focus:ring-rose-500 shadow-sm"
                                         />
                                     </div>

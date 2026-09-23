@@ -85,7 +85,7 @@ const can = (perm) => permissions.value.includes(perm);
             </div>
 
             <!-- Navigation Links -->
-            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+            <nav class="flex-1 flex flex-col px-4 py-4 space-y-2 overflow-y-auto">
                 <!-- Dashboard -->
                 <Link
                     v-if="can('akses_dashboard')"
@@ -390,25 +390,24 @@ const can = (perm) => permissions.value.includes(perm);
                     </svg>
                     <span>Keluar</span>
                 </Link>
-            </nav>
-
-            <!-- Butuh Bantuan -->
-            <div class="px-4 pb-6 pt-4 mt-auto">
-                <div class="bg-[#1c0d38] p-4 rounded-2xl flex flex-col items-start shadow-inner border border-white/5">
-                    <div class="p-2 bg-[#432386] rounded-xl mb-3">
-                        <!-- Headset icon -->
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-                        </svg>
+                <!-- Butuh Bantuan -->
+                <div class="mt-auto pt-8 pb-4 lg:pb-0">
+                    <div class="bg-[#1c0d38] p-4 rounded-2xl flex flex-col items-start shadow-inner border border-white/5">
+                        <div class="p-2 bg-[#432386] rounded-xl mb-3">
+                            <!-- Headset icon -->
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                            </svg>
+                        </div>
+                        <h4 class="text-sm font-bold text-white mb-1">Butuh bantuan?</h4>
+                        <p class="text-xs text-slate-400 mb-3">Hubungi tim support kami</p>
+                        <a :href="`https://wa.me/${$page.props.support_wa_number}?text=Halo%20Tim%20Support,%20saya%20butuh%20bantuan`" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-[#432386] hover:bg-[#5a31b5] text-white text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <span>Hubungi Support</span>
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                        </a>
                     </div>
-                    <h4 class="text-sm font-bold text-white mb-1">Butuh bantuan?</h4>
-                    <p class="text-xs text-slate-400 mb-3">Hubungi tim support kami</p>
-                    <a href="https://wa.me/6281234567890?text=Halo%20Tim%20Support,%20saya%20butuh%20bantuan" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-[#432386] hover:bg-[#5a31b5] text-white text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
-                        <span>Hubungi Support</span>
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                    </a>
                 </div>
-            </div>
+            </nav>
         </aside>
 
         <!-- Content Wrapper -->

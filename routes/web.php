@@ -476,6 +476,7 @@ Route::middleware(['auth'])->group(function () {
             'commission_upline_2_monthly' => 'nullable|numeric|min:0',
             'commission_payout_date' => 'nullable|integer|min:1|max:31',
             'global_installation_fee' => 'nullable|numeric|min:0',
+            'support_wa_number' => 'nullable|string|max:50',
         ]);
 
         if ($request->hasFile('app_logo')) {
