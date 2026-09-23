@@ -108,7 +108,7 @@ Route::middleware(['auth'])->group(function () {
                 })->count();
             }
             $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
-            $internetPackages = \App\Models\InternetPackage::orderBy('price', 'asc')->get();
+            $internetPackages = \App\Models\InternetPackage::where('name', 'like', '%Hebat%')->orderBy('price', 'asc')->get();
             return Inertia::render('SalesDashboard', [
                 'profile' => $mySalesProfile,
                 'globalInstallationFee' => $settings['global_installation_fee'] ?? null,
