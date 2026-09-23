@@ -198,7 +198,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Belum Lunas stats
         $unpaidQuery = Customer::where(function($q) {
-                $q->where('status', '!=', 'paid')
+                $q->whereNotIn('status', ['paid', 'prorata'])
                   ->orWhereNull('status');
             })
             ->where(function($q) {
