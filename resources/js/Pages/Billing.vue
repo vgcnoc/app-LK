@@ -516,7 +516,7 @@ const filteredCustomers = computed(() => {
             (activeTab.value === 'semua' && !hasJanjiBayar && !isSebagian && !isJatuhTempo && !isProrata) ||
             (activeTab.value === 'piutang' && isSebagian && isPiutang && !hasJanjiBayar) ||
             (activeTab.value === 'janji_bayar' && isPiutang && hasJanjiBayar) ||
-            (activeTab.value === 'jatuh_tempo' && isJatuhTempo) ||
+            (activeTab.value === 'jatuh_tempo' && isJatuhTempo && !hasJanjiBayar) ||
             (activeTab.value === 'prorata' && isProrata);
 
         let matchesDate = true;
@@ -1212,7 +1212,7 @@ const deleteCustomer = (customer) => {
                                ]"
                             >
                                 📋 Daftar Tagihan
-                                <span class="ml-1.5 rounded-md bg-slate-200/80 px-1.5 py-0.5 text-[10px] font-bold text-slate-600">{{ props.customers.filter(c => !c.promise_date && !checkSebagian(c) && !isOverdue(c)).length }}</span>
+                                <span class="ml-1.5 rounded-md bg-slate-200/80 px-1.5 py-0.5 text-[10px] font-bold text-slate-600">{{ props.customers.filter(c => !c.promise_date && !checkSebagian(c) && !isOverdue(c) && String(c.status).toLowerCase() !== 'prorata').length }}</span>
                             </button>
                             <button
                                 @click="activeTab = 'jatuh_tempo'"
@@ -1224,7 +1224,7 @@ const deleteCustomer = (customer) => {
                                ]"
                             >
                                 ⏳ Tagihan Jatuh Tempo
-                                <span class="ml-1.5 rounded-md bg-rose-100 px-1.5 py-0.5 text-[10px] font-bold text-rose-700">{{ props.customers.filter(c => isOverdue(c)).length }}</span>
+                                <span class="ml-1.5 rounded-md bg-rose-100 px-1.5 py-0.5 text-[10px] font-bold text-rose-700">{{ props.customers.filter(c => isOverdue(c) && !c.promise_date).length }}</span>
                             </button>
                             <button
                                 @click="activeTab = 'piutang'"
