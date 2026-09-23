@@ -23,6 +23,10 @@ const props = defineProps({
     globalInstallationFee: {
         type: [Number, String],
         default: 0
+    },
+    internetPackages: {
+        type: Array,
+        default: () => []
     }
 });
 
@@ -180,19 +184,39 @@ const copyReferral = () => {
             </div>
         </div>
 
-        <div class="mt-6 bg-blue-50 border border-blue-100 rounded-2xl p-4 flex items-center justify-between shadow-sm">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-                <div>
-                    <h4 class="text-xs sm:text-sm font-medium text-slate-700">Informasi Biaya Pemasangan Saat Ini</h4>
-                    <p class="text-xs text-slate-500">Biaya pasang global yang berlaku untuk pelanggan baru.</p>
+        <!-- Pricing List Section -->
+        <div class="mt-8">
+            <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                Daftar Harga Paket Layanan Internet Hebat
+            </h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div v-for="(pkg, index) in internetPackages" :key="pkg.id" class="relative bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 to-purple-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                    <div class="p-6">
+                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" /></svg>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-800 mb-1 line-clamp-2">{{ pkg.name }}</h4>
+                        <div class="mt-4 flex items-end gap-1">
+                            <span class="text-2xl font-black text-indigo-600">{{ formatCurrency(pkg.price) }}</span>
+                            <span class="text-sm text-slate-500 font-medium mb-1">/bln</span>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 text-sm text-slate-600 flex justify-between items-center">
+                        <span class="font-medium text-slate-700">Pemasangan:</span>
+                        <span class="font-bold text-emerald-600">{{ globalInstallationFee > 0 ? formatCurrency(globalInstallationFee) : 'Gratis!' }}</span>
+                    </div>
                 </div>
             </div>
-            <div class="text-lg font-bold text-blue-700">
-                {{ globalInstallationFee > 0 ? formatCurrency(globalInstallationFee) : 'Gratis' }}
+
+            <!-- Empty State if no packages -->
+            <div v-if="!internetPackages || internetPackages.length === 0" class="text-center py-10 bg-slate-50 rounded-3xl border border-slate-200 border-dashed">
+                <svg class="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                <p class="text-slate-500 text-sm">Belum ada paket internet yang tersedia saat ini.</p>
             </div>
         </div>
+
     </AuthenticatedLayout>
 </template>
