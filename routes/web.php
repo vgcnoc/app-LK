@@ -749,7 +749,8 @@ Route::middleware(['auth'])->group(function () {
                 'description' => $desc,
                 'amount' => $paymentAmount,
                 'area' => $customer->area,
-                'payment_method' => $paymentMethod
+                'payment_method' => $paymentMethod,
+                'customer_id' => $customer->id
             ]);
 
             $remaining = $totalTagihan - $paymentAmount - $diskon;

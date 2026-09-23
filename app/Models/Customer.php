@@ -40,16 +40,19 @@ class Customer extends Model
 
         $currentMonth = \Carbon\Carbon::now()->startOfMonth();
 
-        // Optimize: preload all related transactions to prevent N+1 queries
-        $descriptions = $customers->pluck('name')->map(function($name) {
-            return 'Pembayaran dari ' . $name;
-        })->toArray();
-        
+        // Get all transactions linked to customers
+        $customerIds = $customers->pluck('id')->toArray();
         $allTransactions = \App\Models\Transaction::where('type', 'income')
-            ->whereIn('description', $descriptions)
-            ->select('description', 'date', 'amount')
+            ->whereIn('customer_id', $customerIds)
+            ->select('customer_id', 'description', 'date', 'amount')
             ->get()
-            ->groupBy('description');
+            ->groupBy('customer_id');
+
+        // Fallback for old transactions without customer_id
+        $oldTransactions = \App\Models\Transaction::where('type', 'income')
+            ->whereNull('customer_id')
+            ->select('description', 'date', 'amount')
+            ->get();
 
         foreach ($customers as $c) {
             // Jika status pelanggan = Gratis
@@ -71,22 +74,16 @@ class Customer extends Model
                 
                 if ($c->prorata_amount !== null) {
                     // Prorata: billing starts NEXT month after registration
-                    // In registration month: show status 'prorata' with prorata_amount (info only, not billable yet)
-                    // Next month: diff=1 → prorata amount becomes billable
-                    // Month after: diff=2 → prorata + 1x base_amount, etc.
-                    
                     if ($registerMonth->eq($currentMonth)) {
-                        // Registration month: show prorata status & amount, but not yet billable
                         if ($c->status !== 'prorata' || $c->amount != $c->prorata_amount || $c->is_partial_payment != 0) {
                             $c->update(['status' => 'prorata', 'amount' => $c->prorata_amount, 'is_partial_payment' => 0]);
                         }
-                        continue; // Skip rest of billing logic
+                        continue; 
                     }
                     
                     $diff = $registerMonth->diffInMonths($currentMonth, false);
                     $startOfUnpaidPeriod = $registerMonth->copy()->addMonth();
                 } else {
-                    // No prorata: owe for every month since registration inclusive
                     $diff = $registerMonth->diffInMonths($currentMonth, false) + 1;
                     $startOfUnpaidPeriod = $registerMonth;
                 }
@@ -101,10 +98,25 @@ class Customer extends Model
                 $descKey = 'Pembayaran dari ' . $c->name;
                 $totalPaid = 0;
                 
-                if (isset($allTransactions[$descKey])) {
-                    foreach ($allTransactions[$descKey] as $t) {
+                // Calculate from new transactions
+                if (isset($allTransactions[$c->id])) {
+                    foreach ($allTransactions[$c->id] as $t) {
                         if (\Carbon\Carbon::parse($t->date)->gte($startOfUnpaidPeriod)) {
                             $totalPaid += $t->amount;
+                            // Extract diskon
+                            if (preg_match('/\(Diskon:\s*Rp\s*([\d\.]+)\)/', $t->description, $matches)) {
+                                $totalPaid += floatval(str_replace('.', '', $matches[1]));
+                            }
+                        }
+                    }
+                }
+
+                // Calculate from old transactions
+                foreach ($oldTransactions as $t) {
+                    if (str_starts_with($t->description, $descKey) && \Carbon\Carbon::parse($t->date)->gte($startOfUnpaidPeriod)) {
+                        $totalPaid += $t->amount;
+                        if (preg_match('/\(Diskon:\s*Rp\s*([\d\.]+)\)/', $t->description, $matches)) {
+                            $totalPaid += floatval(str_replace('.', '', $matches[1]));
                         }
                     }
                 }

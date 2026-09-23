@@ -1856,17 +1856,17 @@ const deleteCustomer = (customer) => {
                                 />
                             </div>
                             <!-- Sisa Piutang Info -->
-                            <div v-if="activeCustomer && lunasForm.payment_amount > 0 && lunasForm.payment_amount < activeCustomer.amount" class="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2">
+                            <div v-if="activeCustomer && lunasForm.payment_amount > 0 && (activeCustomer.amount - lunasForm.payment_amount - (lunasForm.has_diskon ? (lunasForm.diskon || 0) : 0)) > 0" class="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2">
                                 <div class="flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                                     </svg>
                                     <p class="text-xs font-semibold text-amber-800">
-                                        Bayar sebagian — Sisa piutang: <span class="text-amber-900">{{ formatRupiah(activeCustomer.amount - lunasForm.payment_amount) }}</span>
+                                        Bayar sebagian — Sisa piutang: <span class="text-amber-900">{{ formatRupiah(activeCustomer.amount - lunasForm.payment_amount - (lunasForm.has_diskon ? (lunasForm.diskon || 0) : 0)) }}</span>
                                     </p>
                                 </div>
                             </div>
-                            <div v-else-if="activeCustomer && lunasForm.payment_amount >= activeCustomer.amount" class="mt-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2">
+                            <div v-else-if="activeCustomer && lunasForm.payment_amount > 0 && (activeCustomer.amount - lunasForm.payment_amount - (lunasForm.has_diskon ? (lunasForm.diskon || 0) : 0)) <= 0" class="mt-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2">
                                 <div class="flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
