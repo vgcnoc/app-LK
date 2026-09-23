@@ -109,7 +109,7 @@
                                 </div>
                                 <div>
                                     <h5 class="text-indigo-700 font-bold text-sm">Informasi</h5>
-                                    <p class="text-xs text-slate-500">Maksimal 2 downline per member sesuai ketentuan program affiliate.</p>
+                                    <p class="text-xs text-slate-500">Sistem Komisi Multi-Tier: Mendukung komisi pasif hingga 2 Level (Upline 1 & Upline 2). Setiap Sales/Upline bebas memiliki Downline sebanyak-banyaknya tanpa batas.</p>
                                 </div>
                             </div>
                         </div>
