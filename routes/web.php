@@ -366,7 +366,10 @@ Route::middleware(['auth'])->group(function () {
             ->get();
 
         $customerCounts = \App\Models\Customer::selectRaw('area, count(id) as count')
-            ->where('status_pelanggan', '!=', 'Booking')
+            ->where(function($q) {
+                $q->whereNull('status_pelanggan')
+                  ->orWhereIn('status_pelanggan', ['Aktif', '']);
+            })
             ->groupBy('area')
             ->pluck('count', 'area');
 
@@ -390,7 +393,10 @@ Route::middleware(['auth'])->group(function () {
             'paymentMethods' => $paymentMethods,
             'incomeCategories' => $incomeCategories,
             'areas' => \App\Models\Area::orderBy('name')->pluck('name'),
-            'customers' => \App\Models\Customer::where('status_pelanggan', '!=', 'Booking')->orderBy('name')->get(['id', 'name', 'area', 'created_at']),
+            'customers' => \App\Models\Customer::where(function($q) {
+                $q->whereNull('status_pelanggan')
+                  ->orWhere('status_pelanggan', '!=', 'Booking');
+            })->orderBy('name')->get(['id', 'name', 'area', 'created_at']),
         ]);
     })->name('transaksi');
 
