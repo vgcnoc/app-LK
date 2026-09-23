@@ -48,6 +48,7 @@ const customerList = computed(() => {
 const searchQuery = ref('');
 const selectedArea = ref('');
 const selectedStatus = ref('');
+const showGuide = ref(false);
 const sortBy = ref('name');
 const sortDirection = ref('asc');
 
@@ -506,6 +507,65 @@ const submitDelete = () => {
             <div class="mx-auto max-w-full space-y-6">
 
 
+
+                <!-- Panduan & Tata Cara Booking (Accordion) -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <button @click="showGuide = !showGuide" class="w-full px-6 py-4 flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition-colors focus:outline-none">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-indigo-100 text-indigo-600 rounded-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <span class="font-bold text-slate-800 text-sm sm:text-base">Panduan & Tata Cara Booking</span>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 transition-transform duration-300" :class="showGuide ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    
+                    <div v-show="showGuide" class="p-6 border-t border-slate-200 text-sm text-slate-700 space-y-6">
+                        
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                                1. Alur Status Booking
+                            </h4>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li><strong>Booking (Baru Masuk):</strong> Data pendaftaran awal dari Sales. Sedang menunggu antrean teknisi untuk dicek atau dipasang.</li>
+                                <li><strong class="text-amber-600">Proses:</strong> Teknisi sedang melakukan penarikan kabel / instalasi ke lokasi pelanggan.</li>
+                                <li><strong class="text-emerald-600">Aktif (Selesai Pasang):</strong> Pemasangan sukses. Sistem otomatis mengubah status menjadi Pelanggan Aktif, mencetak tagihan pertama, dan menghitung Komisi Sales (Pending).</li>
+                                <li><strong class="text-red-600">Batal:</strong> Pemasangan gagal (misal: jarak terlalu jauh, kendala lapangan). Admin wajib menyertakan <em>Alasan Batal</em>.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                2. Panduan Mengisi Form Tambah Booking
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                    <strong class="text-slate-800 block mb-1">Nama & WhatsApp</strong>
+                                    <p class="text-xs text-slate-600">Pastikan nomor WA valid dan aktif agar teknisi mudah membagikan jadwal pasang.</p>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                    <strong class="text-slate-800 block mb-1">Titik Koordinat</strong>
+                                    <p class="text-xs text-slate-600">Wajib diisi (berupa URL Google Maps / angka Latitude Longitude) supaya teknisi tidak nyasar.</p>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                    <strong class="text-slate-800 block mb-1">Alamat Detail</strong>
+                                    <p class="text-xs text-slate-600">Pisahkan Kecamatan, Desa/Kelurahan, dan RT/RW di kolom masing-masing untuk akurasi peta jaringan.</p>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                    <strong class="text-slate-800 block mb-1">Paket & Biaya Pasang</strong>
+                                    <p class="text-xs text-slate-600">Harga akan terisi otomatis. Anda dapat mengubah nominalnya manual jika ada diskon khusus.</p>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 md:col-span-2">
+                                    <strong class="text-slate-800 block mb-1">Foto KTP</strong>
+                                    <p class="text-xs text-slate-600">Wajib dilampirkan (format JPG/PNG) untuk kelengkapan validasi data pelanggan perusahaan.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
                 <!-- Search and Filter Bar -->
                 <div class="rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm">
