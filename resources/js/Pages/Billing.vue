@@ -539,6 +539,15 @@ const filteredCustomers = computed(() => {
 });
 
 const totalTagihan = computed(() => {
+    return props.customers.reduce((sum, c) => {
+        const status = String(c.status).toLowerCase();
+        if (isAktif(c) && status !== 'paid' && status !== 'prorata') {
+            return sum + (Number(c.amount) || 0);
+        }
+        return sum;
+    }, 0);
+});
+const totalTagihanFiltered = computed(() => {
     return filteredCustomers.value.reduce((sum, c) => {
         const status = String(c.status).toLowerCase();
         if (isAktif(c) && status !== 'paid' && status !== 'prorata') {
@@ -547,17 +556,16 @@ const totalTagihan = computed(() => {
         return sum;
     }, 0);
 });
-const totalTagihanFiltered = totalTagihan;
 
-const totalCustomers = computed(() => filteredCustomers.value.length);
+const totalCustomers = computed(() => props.customers.length);
 const totalLunas = computed(() =>
-    filteredCustomers.value.filter((c) => String(c.status).toLowerCase() === 'paid').length
+    props.customers.filter((c) => String(c.status).toLowerCase() === 'paid').length
 );
 const totalBelumLunas = computed(() =>
-    filteredCustomers.value.filter((c) => String(c.status).toLowerCase() !== 'paid' && String(c.status).toLowerCase() !== 'prorata' && isAktif(c)).length
+    props.customers.filter((c) => String(c.status).toLowerCase() !== 'paid' && String(c.status).toLowerCase() !== 'prorata' && isAktif(c)).length
 );
 const totalNominalLunas = computed(() => {
-    return filteredCustomers.value.reduce((sum, c) => {
+    return props.customers.reduce((sum, c) => {
         if (String(c.status).toLowerCase() === 'paid') {
             return sum + (Number(c.base_amount) || 0);
         }
