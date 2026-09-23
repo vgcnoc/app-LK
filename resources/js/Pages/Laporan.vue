@@ -1,6 +1,7 @@
 <script setup>
 import { Head, useForm, Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
     filters: {
@@ -67,6 +68,7 @@ const form = useForm({
 });
 
 const handleFilter = () => {
+    currentPage.value = 1;
     form.get(route('laporan'), {
         preserveState: true,
         preserveScroll: true,
@@ -74,6 +76,7 @@ const handleFilter = () => {
 };
 
 const handleReset = () => {
+    currentPage.value = 1;
     form.start_date = '';
     form.end_date = '';
     form.area = '';
@@ -85,6 +88,34 @@ const handleReset = () => {
         preserveState: true,
         preserveScroll: true,
     });
+};
+
+const currentPage = ref(1);
+const itemsPerPage = 25;
+
+const paginatedTransactions = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return props.transactions.slice(start, end);
+});
+
+const paginatedUnpaidList = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return props.unpaid_list.slice(start, end);
+});
+
+const totalPages = computed(() => {
+    const data = form.kategori === 'belum_lunas' ? props.unpaid_list : props.transactions;
+    return Math.ceil(data.length / itemsPerPage) || 1;
+});
+
+const nextPage = () => {
+    if (currentPage.value < totalPages.value) currentPage.value++;
+};
+
+const prevPage = () => {
+    if (currentPage.value > 1) currentPage.value--;
 };
 
 const printReport = () => {
@@ -531,7 +562,7 @@ watch(() => form.company_expense_type_id, () => {
                         </thead>
                         <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
                             <tr
-                                v-for="(item, index) in unpaid_list"
+                                v-for="(item, index) in paginatedUnpaidList"
                                 :key="item.id || index"
                                 class="even:bg-slate-50/50 hover:bg-slate-100/60 transition-colors duration-150"
                             >
@@ -599,7 +630,7 @@ watch(() => form.company_expense_type_id, () => {
                         </thead>
                         <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
                             <tr
-                                v-for="(item, index) in transactions"
+                                v-for="(item, index) in paginatedTransactions"
                                 :key="item.id || index"
                                 class="even:bg-slate-50/50 hover:bg-slate-100/60 transition-colors duration-150"
                             >
@@ -699,8 +730,34 @@ watch(() => form.company_expense_type_id, () => {
                             </tr>
                         </tfoot>
                     </table>
-</div>
                 </div>
+
+                <!-- Pagination Controls -->
+                <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between rounded-b-3xl">
+                    <div class="text-sm text-slate-500">
+                        Menampilkan halaman <span class="font-bold text-slate-700">{{ currentPage }}</span> dari <span class="font-bold text-slate-700">{{ totalPages }}</span>
+                        <span class="ml-2">
+                            (Total {{ form.kategori === 'belum_lunas' ? unpaid_list.length : transactions.length }} data)
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button 
+                            @click="prevPage" 
+                            :disabled="currentPage === 1"
+                            class="px-3 py-1.5 border border-slate-300 rounded-lg text-sm font-medium text-slate-600 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                            Sebelumnya
+                        </button>
+                        <button 
+                            @click="nextPage" 
+                            :disabled="currentPage === totalPages"
+                            class="px-3 py-1.5 border border-slate-300 rounded-lg text-sm font-medium text-slate-600 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                            Selanjutnya
+                        </button>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
     </AuthenticatedLayout>
