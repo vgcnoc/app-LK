@@ -498,7 +498,7 @@ const filteredCustomers = computed(() => {
         const isLunas = String(customer.status).toLowerCase() === 'paid';
         const isProrata = String(customer.status).toLowerCase() === 'prorata';
         const isPiutang = !isLunas && isAktif(customer);
-        const hasJanjiBayar = !!customer.promise_date;
+        const hasJanjiBayar = !!customer.promise_date && !isLunas;
         const isSebagian = checkSebagian(customer);
 
         const matchesStatus =
