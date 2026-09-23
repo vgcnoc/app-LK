@@ -197,11 +197,19 @@ Route::middleware(['auth'])->group(function () {
         $paymentMethods = PaymentMethod::orderBy('name')->get();
 
         // Belum Lunas stats
-        $unpaidQuery = Customer::whereIn('status', ['pending', 'nunggak'])
+        $unpaidQuery = Customer::where(function($q) {
+                $q->where('status', '!=', 'paid')
+                  ->orWhereNull('status');
+            })
             ->where(function($q) {
                 $q->where('status_pelanggan', 'Aktif')
                   ->orWhereNull('status_pelanggan')
                   ->orWhere('status_pelanggan', '');
+            })
+            ->where(function($q) {
+                $excludedAreas = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3'];
+                $q->whereNotIn('area', $excludedAreas)
+                  ->orWhereNull('area');
             });
         $unpaidCount = $unpaidQuery->count();
         $unpaidTotal = $unpaidQuery->sum('amount');
@@ -261,6 +269,11 @@ Route::middleware(['auth'])->group(function () {
                 $q->where('status_pelanggan', 'Aktif')
                   ->orWhereNull('status_pelanggan')
                   ->orWhere('status_pelanggan', '');
+            })
+            ->where(function($q) {
+                $excludedAreas = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3'];
+                $q->whereNotIn('area', $excludedAreas)
+                  ->orWhereNull('area');
             });
             
         if ($request->filled('area')) {
