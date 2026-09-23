@@ -184,6 +184,7 @@ const getTypeText = (type) => {
                             <ul class="list-disc pl-5 space-y-2">
                                 <li>Status komisi akan otomatis tercatat sebagai <strong>Pending</strong> saat pelanggan baru berstatus <strong>Aktif</strong> (selesai pasang).</li>
                                 <li>Komisi hanya dapat <strong>Dicairkan (Dibayar)</strong> oleh pihak Admin/Finance setelah divalidasi bahwa pelanggan yang bersangkutan <strong>telah melakukan pembayaran tagihan bulanannya</strong>.</li>
+                                <li>Jadwal pencairan komisi secara rutin dilakukan setiap <strong>tanggal {{ $page.props.settings?.commission_payout_date || 13 }}</strong> setiap bulannya.</li>
                                 <li>Admin/Finance diwajibkan untuk mengunggah <strong>Bukti Transfer/Pencairan</strong> sebagai bukti sah perubahan status komisi menjadi dibayar.</li>
                             </ul>
                         </div>
