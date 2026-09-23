@@ -400,7 +400,7 @@ watch(
                 </div>
 
                 <!-- 1. Top 4 Cards -->
-                <div class="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+                <div v-if="can('lihat_nominal_dashboard')" class="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
                     <!-- Income Card -->
                     <div class="relative overflow-hidden rounded-2xl bg-emerald-50 sm:bg-gradient-to-br sm:from-emerald-100 sm:to-emerald-50 p-4 sm:p-6 border border-emerald-100 min-w-0">
                         <div class="relative z-10 flex flex-col h-full">
@@ -497,7 +497,7 @@ watch(
                 <!-- 2. Charts Section -->
                 <div class="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 gap-6">
                     <!-- Bar Chart -->
-                    <div class="xl:col-span-2 lg:col-span-2 bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm min-w-0">
+                    <div v-if="can('lihat_nominal_dashboard')" class="xl:col-span-2 lg:col-span-2 bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm min-w-0">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 mb-6">
                             <div class="flex items-center gap-3">
                                 <div class="bg-indigo-50 text-indigo-500 p-2 rounded-lg">
@@ -805,7 +805,7 @@ watch(
                                         <p class="text-xs sm:text-sm font-semibold text-slate-800 truncate">
                                             {{ t.type === 'income' ? 'Pembayaran diterima' : 'Pengeluaran dicatat' }}
                                         </p>
-                                        <p class="text-xs text-slate-500 truncate">{{ t.description }} - {{ formatRupiah(t.amount) }}</p>
+                                        <p class="text-xs text-slate-500 truncate">{{ t.description }} - {{ can('lihat_nominal_dashboard') ? formatRupiah(t.amount) : 'Rp ***' }}</p>
                                     </div>
                                     <div class="text-[10px] font-medium text-slate-400 whitespace-nowrap">
                                         {{ formatDate(t.date) }}
@@ -834,7 +834,7 @@ watch(
                         </div>
                     </div>
                     <div class="text-base sm:text-lg font-bold text-blue-700 shrink-0">
-                        {{ globalInstallationFee > 0 ? formatRupiah(globalInstallationFee) : 'Gratis' }}
+                        {{ can('lihat_nominal_dashboard') ? (globalInstallationFee > 0 ? formatRupiah(globalInstallationFee) : 'Gratis') : '***' }}
                     </div>
                 </div>
 

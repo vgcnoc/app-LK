@@ -16,6 +16,7 @@ class RolePermissionSeeder extends Seeder
         $permissions = [
             // Dashboard
             'akses_dashboard',
+            'lihat_nominal_dashboard', // NEW
             // Transaksi / Buku Kas
             'akses_transaksi',
             'tambah_transaksi',
@@ -26,6 +27,7 @@ class RolePermissionSeeder extends Seeder
             'tambah_pelanggan',
             'edit_pelanggan',
             'hapus_pelanggan',
+            'akses_pelanggan_pantauan', // NEW
             // Pelanggan Non-Aktif
             'akses_data_nonaktif',
             // Booking Pelanggan
@@ -50,9 +52,11 @@ class RolePermissionSeeder extends Seeder
             'edit_affiliate',
             'hapus_affiliate',
             'kelola_akun_sales',
+            'akses_komisi', // NEW
             // Laporan
             'akses_laporan',
             'ekspor_laporan',
+            'akses_analisa_ekspansi', // NEW
             // Master Data
             'akses_master_data',
             'tambah_master_data',
@@ -62,6 +66,7 @@ class RolePermissionSeeder extends Seeder
             'manajemen_pengguna',
             'manajemen_role',
             'pengaturan_aplikasi', // App logo, etc
+            'akses_integrasi', // NEW
         ];
 
         foreach ($permissions as $permission) {
@@ -74,7 +79,8 @@ class RolePermissionSeeder extends Seeder
             'staff',
             'sales',
             'finance',
-            'manajer'
+            'manajer',
+            'admin_cs' // NEW
         ];
 
         foreach ($roles as $roleName) {
@@ -111,6 +117,7 @@ class RolePermissionSeeder extends Seeder
         $financeRole = \Spatie\Permission\Models\Role::findByName('finance');
         $financeRole->syncPermissions([
             'akses_dashboard',
+            'lihat_nominal_dashboard', // NEW
             'akses_transaksi',
             'tambah_transaksi',
             'edit_transaksi',
@@ -125,14 +132,28 @@ class RolePermissionSeeder extends Seeder
         $manajerRole = \Spatie\Permission\Models\Role::findByName('manajer');
         $manajerRole->syncPermissions([
             'akses_dashboard',
+            'lihat_nominal_dashboard', // NEW
             'akses_transaksi',
             'akses_data_pelanggan',
             'akses_data_nonaktif',
+            'akses_pelanggan_pantauan', // NEW
             'akses_billing',
             'akses_voucher_saldo',
             'akses_affiliate',
+            'akses_komisi', // NEW
             'akses_laporan',
             'ekspor_laporan',
+            'akses_analisa_ekspansi', // NEW
+        ]);
+
+        // Assign default permissions to admin_cs
+        $adminCsRole = \Spatie\Permission\Models\Role::findByName('admin_cs');
+        $adminCsRole->syncPermissions([
+            'akses_dashboard',
+            'akses_voucher_saldo',
+            'akses_billing',
+            'akses_data_pelanggan',
+            'akses_booking',
         ]);
 
         // For existing users with 'admin' role string, assign them the Spatie 'admin' role
