@@ -81,20 +81,21 @@ const deleteSelected = () => {
 // Helper to check if customer is active
 const isAktif = (c) => !c.status_pelanggan || String(c.status_pelanggan).toLowerCase() === 'aktif';
 
-// Helper to check if customer is overdue
 const isOverdue = (c) => {
     if (String(c.status).toLowerCase() === 'paid' || !isAktif(c)) return false;
     if (String(c.status).toLowerCase() === 'prorata') return false;
-    if (String(c.status).toLowerCase() === 'nunggak') return true;
     
     const todayDate = new Date();
     
-    // Check Promise Date
+    // Check Promise Date first before nunggak
     if (c.promise_date) {
         const pd = new Date(c.promise_date);
         pd.setHours(23, 59, 59, 999);
         if (todayDate > pd) return true;
+        return false; // Active promise date overrides overdue status
     }
+
+    if (String(c.status).toLowerCase() === 'nunggak') return true;
     
     // Check global due_date
     const globalDueDate = props.settings.global_due_date ? parseInt(props.settings.global_due_date) : null;
