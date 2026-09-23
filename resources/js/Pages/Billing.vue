@@ -513,10 +513,11 @@ const filteredCustomers = computed(() => {
         const isJatuhTempo = isOverdue(customer);
 
         const matchesTab = 
-            (activeTab.value === 'semua' && !hasJanjiBayar && !isSebagian && !isJatuhTempo) ||
+            (activeTab.value === 'semua' && !hasJanjiBayar && !isSebagian && !isJatuhTempo && !isProrata) ||
             (activeTab.value === 'piutang' && isSebagian && isPiutang && !hasJanjiBayar) ||
             (activeTab.value === 'janji_bayar' && isPiutang && hasJanjiBayar) ||
-            (activeTab.value === 'jatuh_tempo' && isJatuhTempo);
+            (activeTab.value === 'jatuh_tempo' && isJatuhTempo) ||
+            (activeTab.value === 'prorata' && isProrata);
 
         let matchesDate = true;
         if (appliedStartDateFilter.value || appliedEndDateFilter.value) {
@@ -1223,6 +1224,18 @@ const deleteCustomer = (customer) => {
                             >
                                 📅 Janji Bayar
                                 <span class="ml-1.5 rounded-md bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold text-indigo-700">{{ props.customers.filter(c => !!c.promise_date && String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length }}</span>
+                            </button>
+                            <button
+                                @click="activeTab = 'prorata'"
+                                :class="[
+                                    'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
+                                    activeTab === 'prorata'
+                                        ? 'bg-white text-cyan-700 shadow-sm ring-1 ring-cyan-200/60'
+                                        : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
+                                ]"
+                            >
+                                🆕 Pelanggan Prorata
+                                <span class="ml-1.5 rounded-md bg-cyan-100 px-1.5 py-0.5 text-[10px] font-bold text-cyan-700">{{ props.customers.filter(c => String(c.status).toLowerCase() === 'prorata').length }}</span>
                             </button>
                             <button
                                 @click="activeTab = 'riwayat_upgrade'"
