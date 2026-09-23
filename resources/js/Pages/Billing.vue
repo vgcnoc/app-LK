@@ -542,7 +542,7 @@ const filteredCustomers = computed(() => {
 const totalTagihan = computed(() => {
     return props.customers.reduce((sum, c) => {
         const status = String(c.status).toLowerCase();
-        if (isAktif(c) && status !== 'paid') {
+        if (isAktif(c) && status !== 'paid' && status !== 'prorata') {
             return sum + (Number(c.amount) || 0);
         }
         return sum;
@@ -551,7 +551,7 @@ const totalTagihan = computed(() => {
 const totalTagihanFiltered = computed(() => {
     return filteredCustomers.value.reduce((sum, c) => {
         const status = String(c.status).toLowerCase();
-        if (isAktif(c) && status !== 'paid') {
+        if (isAktif(c) && status !== 'paid' && status !== 'prorata') {
             return sum + (Number(c.amount) || 0);
         }
         return sum;
