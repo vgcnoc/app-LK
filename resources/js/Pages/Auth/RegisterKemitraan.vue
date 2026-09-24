@@ -13,8 +13,6 @@ const form = useForm({
     name: '',
     email: '',
     phone: '',
-    upline_code: '',
-    bank_account: '',
     password: '',
     password_confirmation: '',
 });
@@ -130,21 +128,7 @@ const submit = () => {
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Upline Code -->
-                        <div>
-                            <label for="upline_code" class="block text-xs font-bold text-slate-700 mb-1.5">Kode Referral *</label>
-                            <input id="upline_code" type="text" v-model="form.upline_code" required class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="Contoh: SL-xxx-001" />
-                            <p v-if="form.errors.upline_code" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.upline_code }}</p>
-                        </div>
-                        
-                        <!-- Bank Account -->
-                        <div>
-                            <label for="bank_account" class="block text-xs font-bold text-slate-700 mb-1.5">Nomor Rekening *</label>
-                            <input id="bank_account" type="text" v-model="form.bank_account" required class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white" placeholder="Cth: BCA 123456789 a/n Budi" />
-                            <p v-if="form.errors.bank_account" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.bank_account }}</p>
-                        </div>
-                    </div>
+
 
                     <!-- Password -->
                     <div>
