@@ -243,8 +243,9 @@ Route::middleware(['auth'])->group(function () {
             ->groupBy('area')
             ->pluck('total', 'area');
 
-        // 5. Customer counts per area (aktif only, non-gratis)
-        $customerCountsPerArea = Customer::where(function($q) {
+        // 5. Customer counts per area (paid only, non-gratis, excl jatuh tempo/bayar sebagian/janji bayar)
+        $customerCountsPerArea = Customer::where('status', 'paid')
+            ->where(function($q) {
                 $q->where('status_pelanggan', 'Aktif')
                   ->orWhereNull('status_pelanggan')
                   ->orWhere('status_pelanggan', '');
@@ -535,7 +536,8 @@ Route::middleware(['auth'])->group(function () {
             ->groupBy('area')
             ->pluck('total', 'area');
 
-        $customerCounts = Customer::where(function($q) {
+        $customerCounts = Customer::where('status', 'paid')
+            ->where(function($q) {
                 $q->where('status_pelanggan', 'Aktif')
                   ->orWhereNull('status_pelanggan')
                   ->orWhere('status_pelanggan', '');
