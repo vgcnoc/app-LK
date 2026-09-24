@@ -61,27 +61,7 @@ const submit = () => {
                 <p class="text-indigo-100 text-base leading-relaxed mb-10 max-w-md">
                     Program Kemitraan Viruzs memberikan Anda kesempatan untuk tumbuh bersama kami.
                 </p>
-                
-                <div class="space-y-6">
-                    <div class="flex items-start gap-4 group">
-                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0 border border-purple-400/30 group-hover:bg-purple-500/40 transition-colors shadow-lg shadow-purple-900/50">
-                            <svg class="w-6 h-6 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-white text-base">Harga Khusus Reseller</h4>
-                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Dapatkan harga bandwidth khusus dan maksimalkan margin keuntungan bisnis Anda</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4 group">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center flex-shrink-0 border border-emerald-400/30 group-hover:bg-emerald-500/40 transition-colors shadow-lg shadow-emerald-900/50">
-                            <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-white text-base">Dukungan Infrastruktur</h4>
-                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Berbisnis tanpa perlu investasi infrastruktur besar, didukung penuh oleh tim teknis kami</p>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             
             <!-- Background Elements -->
