@@ -54,14 +54,14 @@ const recentActivities = [
 </script>
 
 <template>
-    <Head title="Dashboard Kemitraan" />
+    <Head title="Dashboard Kemitraan 🤝
 
     <KemitraanLayout>
         <template #header>
             <div class="hidden sm:flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div class="flex-1 min-w-0">
                     <h2 class="text-xl sm:text-3xl font-bold text-slate-800 tracking-tight break-words">
-                        Dashboard Kemitraan ðŸ¤
+                        Dashboard Kemitraan 🤝
                     </h2>
                     <p class="text-xs sm:text-sm text-slate-500 mt-1 break-words">
                         Pantau performa mitra dan komisi Anda dalam satu dashboard.
@@ -84,7 +84,7 @@ const recentActivities = [
                     <div class="relative z-10 w-2/3">
                         <p class="text-xs sm:text-sm text-slate-600 mb-1">Selamat datang,</p>
                         <h2 class="text-xl font-bold text-slate-900 leading-tight">
-                            {{ $page.props.auth.user.name }} ðŸ‘‹
+                            {{ $page.props.auth.user.name }} 👋
                         </h2>
                         <p class="text-xs text-slate-500 mt-2">Pantau kemitraan Anda dalam satu dashboard.</p>
                     </div>

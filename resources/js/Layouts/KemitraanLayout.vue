@@ -1,4 +1,4 @@
-﻿<script setup>
+<script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
@@ -88,7 +88,6 @@ const can = (perm) => permissions.value.includes(perm);
             <nav class="flex-1 flex flex-col px-4 py-4 space-y-2 overflow-y-auto">
                 <!-- Dashboard -->
                 <Link
-                    v-if="can('akses_dashboard')"
                     :href="route('kemitraan.index')"
                     :class="[
                         route().current('kemitraan.index')
