@@ -469,10 +469,10 @@ const printInvoice = () => {
                         <!-- Header -->
                         <!-- Header -->
                         <div class="mb-8 relative mt-2">
-                            <!-- Dashed Box -->
-                            <div class="w-full border border-dashed border-slate-400 p-3 sm:p-4 flex flex-col sm:flex-row items-center justify-between bg-white relative z-10 mx-auto">
+                            <!-- Header Content -->
+                            <div class="w-full p-3 sm:p-4 flex flex-col sm:flex-row items-center justify-between bg-white relative z-10 mx-auto">
                                 <!-- Logo -->
-                                <div class="w-full sm:w-[40%] flex items-center justify-center sm:justify-start border-b sm:border-b-0 sm:border-r border-dashed border-slate-400 pb-3 sm:pb-0 sm:pr-4">
+                                <div class="w-full sm:w-[40%] flex items-center justify-center sm:justify-start pb-3 sm:pb-0 sm:pr-4">
                                     <template v-if="$page.props.app_logo">
                                         <!-- Logo is filtered to match the purple brand color (#4c1d95) so white logos don't disappear -->
                                         <img :src="$page.props.app_logo" class="max-h-12 sm:max-h-16 object-contain w-full" style="filter: brightness(0) saturate(100%) invert(14%) sepia(87%) saturate(2975%) hue-rotate(258deg) brightness(93%) contrast(107%);" alt="Logo" />
