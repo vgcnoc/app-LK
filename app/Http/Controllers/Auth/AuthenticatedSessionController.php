@@ -33,6 +33,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $user = $request->user();
+
+        // Redirect kemitraan users to kemitraan dashboard
+        if ($user->role === 'kemitraan') {
+            return redirect()->intended(route('kemitraan.index', absolute: false));
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

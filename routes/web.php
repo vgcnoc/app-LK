@@ -113,6 +113,40 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render('Kemitraan/Dashboard');
     })->name('kemitraan.index');
 
+    Route::get('/kemitraan/booking', function () {
+        return Inertia::render('Kemitraan/Booking', [
+            'bookings' => [],
+        ]);
+    })->name('kemitraan.booking');
+
+    Route::post('/kemitraan/booking', function (Request $request) {
+        // Placeholder: store booking logic here
+        return redirect()->route('kemitraan.booking');
+    })->name('kemitraan.booking.store');
+
+    Route::get('/kemitraan/bast', function () {
+        return Inertia::render('Kemitraan/Bast', [
+            'bastList' => [],
+        ]);
+    })->name('kemitraan.bast');
+
+    Route::get('/kemitraan/data-saya', function () {
+        return Inertia::render('Kemitraan/DataSaya', [
+            'profile' => [],
+        ]);
+    })->name('kemitraan.datasaya');
+
+    Route::put('/kemitraan/data-saya', function (Request $request) {
+        // Placeholder: update profile logic here
+        return redirect()->route('kemitraan.datasaya');
+    })->name('kemitraan.datasaya.update');
+
+    Route::get('/kemitraan/invoice', function () {
+        return Inertia::render('Kemitraan/Invoice', [
+            'invoices' => [],
+        ]);
+    })->name('kemitraan.invoice');
+
     // DASHBOARD
     Route::get('/dashboard', function (Request $request) {
         $user = auth()->user();
