@@ -193,17 +193,91 @@ Route::middleware(['auth'])->group(function () {
         $totalExpense = (clone $query)->where('type', 'expense')->sum('amount');
         $balance = $totalIncome - $totalExpense;
 
-        // Area summaries
-        $areaSummaries = (clone $query)->select('area', 
-            DB::raw("SUM(CASE WHEN type = 'income' AND (payment_status = 'paid' OR payment_status IS NULL) THEN amount ELSE 0 END) as total_income"),
-            DB::raw("SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) as total_expense")
-        )->groupBy('area')->get()->map(function($item) {
+        // Area summaries (synced with Billing logic)
+        $excludedAreasSummary = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3'];
+        
+        // 1. Billing income per area (paid customers, aktif, non-gratis)
+        $billingPerArea = Customer::where('status', 'paid')
+            ->where(function($q) {
+                $q->where('status_pelanggan', 'Aktif')
+                  ->orWhereNull('status_pelanggan')
+                  ->orWhere('status_pelanggan', '');
+            })
+            ->whereNotIn('area', $excludedAreasSummary)
+            ->whereNotNull('area')
+            ->selectRaw('area, SUM(base_amount) as total')
+            ->groupBy('area')
+            ->pluck('total', 'area');
+
+        // 2. Manual income per area (non "Pembayaran dari" transactions)
+        $manualPerArea = Transaction::where('type', 'income')
+            ->where(function($q) {
+                $q->where('payment_status', 'paid')
+                  ->orWhereNull('payment_status');
+            })
+            ->where('description', 'not like', 'Pembayaran dari %')
+            ->whereNotNull('area')
+            ->whereNotIn('area', $excludedAreasSummary)
+            ->selectRaw('area, SUM(amount) as total')
+            ->groupBy('area')
+            ->pluck('total', 'area');
+
+        // 3. Partial payments per area (this month)
+        $partialPerArea = Transaction::where('type', 'income')
+            ->whereBetween('date', [\Carbon\Carbon::now()->startOfMonth()->toDateString(), \Carbon\Carbon::now()->endOfMonth()->toDateString()])
+            ->whereHas('customer', function($q) {
+                $q->where('is_partial_payment', 1)
+                  ->where('status', '!=', 'paid');
+            })
+            ->whereNotNull('area')
+            ->whereNotIn('area', $excludedAreasSummary)
+            ->selectRaw('area, SUM(amount) as total')
+            ->groupBy('area')
+            ->pluck('total', 'area');
+
+        // 4. Expense per area
+        $expensePerArea = Transaction::where('type', 'expense')
+            ->whereNotNull('area')
+            ->whereNotIn('area', $excludedAreasSummary)
+            ->selectRaw('area, SUM(amount) as total')
+            ->groupBy('area')
+            ->pluck('total', 'area');
+
+        // 5. Customer counts per area (aktif only, non-gratis)
+        $customerCountsPerArea = Customer::where(function($q) {
+                $q->where('status_pelanggan', 'Aktif')
+                  ->orWhereNull('status_pelanggan')
+                  ->orWhere('status_pelanggan', '');
+            })
+            ->whereNotIn('area', $excludedAreasSummary)
+            ->whereNotNull('area')
+            ->selectRaw('area, count(id) as count')
+            ->groupBy('area')
+            ->pluck('count', 'area');
+
+        // Combine all areas
+        $allAreas = collect()
+            ->merge($billingPerArea->keys())
+            ->merge($manualPerArea->keys())
+            ->merge($partialPerArea->keys())
+            ->merge($expensePerArea->keys())
+            ->merge($customerCountsPerArea->keys())
+            ->unique()->filter();
+
+        if ($request->filled('area')) {
+            $allAreas = $allAreas->filter(fn($a) => $a === $request->area);
+        }
+
+        $areaSummaries = $allAreas->map(function($area) use ($billingPerArea, $manualPerArea, $partialPerArea, $expensePerArea, $customerCountsPerArea) {
+            $income = ($billingPerArea[$area] ?? 0) + ($manualPerArea[$area] ?? 0) + ($partialPerArea[$area] ?? 0);
+            $expense = $expensePerArea[$area] ?? 0;
             return [
-                'area_name' => $item->area ?: 'Tanpa Area',
-                'total_income' => (float)$item->total_income,
-                'total_expense' => (float)$item->total_expense,
+                'area_name' => $area,
+                'total_income' => (float)$income,
+                'total_expense' => (float)$expense,
+                'customer_count' => $customerCountsPerArea[$area] ?? 0,
             ];
-        });
+        })->values();
 
         // Chart data (last 7 days)
         $chartLabels = [];
@@ -411,29 +485,86 @@ Route::middleware(['auth'])->group(function () {
 
         $transactions = $transactionsQuery->get();
 
-        $areaSummaries = \App\Models\Transaction::selectRaw('
-                area as area_name,
-                SUM(CASE WHEN type = "income" AND (payment_status = "paid" OR payment_status IS NULL) THEN amount ELSE 0 END) as total_income,
-                SUM(CASE WHEN type = "expense" THEN amount ELSE 0 END) as total_expense
-            ')
-            ->when(!$isAdmin && $userArea, function ($q) use ($userArea) {
-                return $q->where('area', $userArea);
-            })
-            ->groupBy('area')
-            ->get();
+        // Area summaries (synced with Billing logic)
+        $excludedAreasTrans = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3'];
 
-        $customerCounts = \App\Models\Customer::selectRaw('area, count(id) as count')
+        $billingPerAreaT = Customer::where('status', 'paid')
             ->where(function($q) {
-                $q->whereNull('status_pelanggan')
-                  ->orWhereIn('status_pelanggan', ['Aktif', '']);
+                $q->where('status_pelanggan', 'Aktif')
+                  ->orWhereNull('status_pelanggan')
+                  ->orWhere('status_pelanggan', '');
             })
+            ->whereNotIn('area', $excludedAreasTrans)
+            ->whereNotNull('area')
+            ->when(!$isAdmin && $userArea, fn($q) => $q->where('area', $userArea))
+            ->selectRaw('area, SUM(base_amount) as total')
+            ->groupBy('area')
+            ->pluck('total', 'area');
+
+        $manualPerAreaT = Transaction::where('type', 'income')
+            ->where(function($q) {
+                $q->where('payment_status', 'paid')
+                  ->orWhereNull('payment_status');
+            })
+            ->where('description', 'not like', 'Pembayaran dari %')
+            ->whereNotNull('area')
+            ->whereNotIn('area', $excludedAreasTrans)
+            ->when(!$isAdmin && $userArea, fn($q) => $q->where('area', $userArea))
+            ->selectRaw('area, SUM(amount) as total')
+            ->groupBy('area')
+            ->pluck('total', 'area');
+
+        $partialPerAreaT = Transaction::where('type', 'income')
+            ->whereBetween('date', [\Carbon\Carbon::now()->startOfMonth()->toDateString(), \Carbon\Carbon::now()->endOfMonth()->toDateString()])
+            ->whereHas('customer', function($q) {
+                $q->where('is_partial_payment', 1)
+                  ->where('status', '!=', 'paid');
+            })
+            ->whereNotNull('area')
+            ->whereNotIn('area', $excludedAreasTrans)
+            ->when(!$isAdmin && $userArea, fn($q) => $q->where('area', $userArea))
+            ->selectRaw('area, SUM(amount) as total')
+            ->groupBy('area')
+            ->pluck('total', 'area');
+
+        $expensePerAreaT = Transaction::where('type', 'expense')
+            ->whereNotNull('area')
+            ->whereNotIn('area', $excludedAreasTrans)
+            ->when(!$isAdmin && $userArea, fn($q) => $q->where('area', $userArea))
+            ->selectRaw('area, SUM(amount) as total')
+            ->groupBy('area')
+            ->pluck('total', 'area');
+
+        $customerCounts = Customer::where(function($q) {
+                $q->where('status_pelanggan', 'Aktif')
+                  ->orWhereNull('status_pelanggan')
+                  ->orWhere('status_pelanggan', '');
+            })
+            ->whereNotIn('area', $excludedAreasTrans)
+            ->whereNotNull('area')
+            ->when(!$isAdmin && $userArea, fn($q) => $q->where('area', $userArea))
+            ->selectRaw('area, count(id) as count')
             ->groupBy('area')
             ->pluck('count', 'area');
 
-        $areaSummaries = $areaSummaries->map(function ($item) use ($customerCounts) {
-            $item->customer_count = $customerCounts[$item->area_name] ?? 0;
-            return $item;
-        });
+        $allAreasT = collect()
+            ->merge($billingPerAreaT->keys())
+            ->merge($manualPerAreaT->keys())
+            ->merge($partialPerAreaT->keys())
+            ->merge($expensePerAreaT->keys())
+            ->merge($customerCounts->keys())
+            ->unique()->filter();
+
+        $areaSummaries = $allAreasT->map(function($area) use ($billingPerAreaT, $manualPerAreaT, $partialPerAreaT, $expensePerAreaT, $customerCounts) {
+            $income = ($billingPerAreaT[$area] ?? 0) + ($manualPerAreaT[$area] ?? 0) + ($partialPerAreaT[$area] ?? 0);
+            $expense = $expensePerAreaT[$area] ?? 0;
+            return (object)[
+                'area_name' => $area,
+                'total_income' => (float)$income,
+                'total_expense' => (float)$expense,
+                'customer_count' => $customerCounts[$area] ?? 0,
+            ];
+        })->values();
 
         $expenseCategories = \App\Models\ExpenseCategory::all();
         $companyExpenseTypes = \App\Models\CompanyExpenseType::all();
