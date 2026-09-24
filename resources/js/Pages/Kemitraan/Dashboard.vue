@@ -39,17 +39,13 @@ const summary = {
 };
 
 const recentMitras = [
-    { id: 1, name: 'Budi Santoso', area: 'Cigadog', date: '24 Sep 2026', status: 'Aktif' },
-    { id: 2, name: 'Siti Aminah', area: 'Sirnajaya', date: '23 Sep 2026', status: 'Baru' },
-    { id: 3, name: 'Agus Pratama', area: 'Bojong Malang', date: '21 Sep 2026', status: 'Aktif' },
-    { id: 4, name: 'Dewi Lestari', area: 'Pasapen', date: '20 Sep 2026', status: 'Aktif' },
+    { id: 1, name: '(Contoh) Mitra 1', area: 'Area A', date: '24 Sep 2026', status: 'Aktif' },
+    { id: 2, name: '(Contoh) Mitra 2', area: 'Area B', date: '23 Sep 2026', status: 'Baru' },
 ];
 
 const recentActivities = [
-    { id: 1, title: 'Komisi dicairkan', desc: 'Pencairan komisi ke Budi Santoso - Rp 500.000', date: '24 Sep 2026' },
-    { id: 2, title: 'Mitra Baru Bergabung', desc: 'Siti Aminah mendaftar sebagai mitra area Sirnajaya', date: '23 Sep 2026' },
-    { id: 3, title: 'Komisi diterima', desc: 'Pembayaran dari pelanggan via Agus Pratama - Rp 50.000', date: '22 Sep 2026' },
-    { id: 4, title: 'Komisi dicairkan', desc: 'Pencairan komisi ke Dewi Lestari - Rp 200.000', date: '21 Sep 2026' },
+    { id: 1, title: 'Komisi dicairkan', desc: 'Pencairan komisi ke (Contoh) Mitra 1 - Rp 500.000', date: '24 Sep 2026' },
+    { id: 2, title: 'Mitra Baru Bergabung', desc: '(Contoh) Mitra 2 mendaftar sebagai mitra area Area B', date: '23 Sep 2026' },
 ];
 </script>
 
