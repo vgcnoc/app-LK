@@ -34,7 +34,8 @@ const isEditing = ref(false);
 const form = useForm({
     id: null,
     user_id: '',
-    nomor_invoice: '',
+    kategori: 'Bandwidth',
+    tipe_pembayaran: '1 Kali',
     tanggal_tagihan: '',
     jatuh_tempo: '',
     nominal: '',
@@ -53,7 +54,8 @@ const openEditModal = (inv) => {
     isEditing.value = true;
     form.id = inv.id;
     form.user_id = inv.user_id;
-    form.nomor_invoice = inv.nomor_invoice;
+    form.kategori = inv.kategori || 'Bandwidth';
+    form.tipe_pembayaran = inv.tipe_pembayaran || '1 Kali';
     form.tanggal_tagihan = inv.tanggal_tagihan;
     form.jatuh_tempo = inv.jatuh_tempo;
     form.nominal = inv.nominal;
@@ -129,6 +131,10 @@ const submitForm = () => {
                                         <td v-if="isAdmin" class="py-4 px-6 font-medium text-slate-800">{{ inv.mitra_name }}</td>
                                         <td class="py-4 px-6 font-medium text-slate-800">
                                             {{ inv.judul }}
+                                            <div class="flex gap-2 mt-1">
+                                                <span v-if="inv.kategori" class="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-50 text-indigo-700">{{ inv.kategori }}</span>
+                                                <span v-if="inv.tipe_pembayaran" class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700">{{ inv.tipe_pembayaran }}</span>
+                                            </div>
                                             <div class="text-xs text-slate-400 font-normal mt-0.5 max-w-xs truncate">{{ inv.keterangan }}</div>
                                         </td>
                                         <td class="py-4 px-6 font-semibold text-slate-800">{{ formatRupiah(inv.nominal) }}</td>
@@ -181,17 +187,31 @@ const submitForm = () => {
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700">Nomor Invoice</label>
-                                    <input type="text" v-model="form.nomor_invoice" required class="mt-1 block w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <label class="block text-sm font-medium text-slate-700">Kategori Tagihan</label>
+                                    <select v-model="form.kategori" required class="mt-1 block w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        <option value="Registrasi">Registrasi</option>
+                                        <option value="Bandwidth & Metro">Bandwidth & Metro</option>
+                                        <option value="Bandwidth">Bandwidth</option>
+                                        <option value="PPN">PPN</option>
+                                        <option value="BHP+USO">BHP+USO</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
                                 </div>
-                                <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700">Tipe Pembayaran</label>
+                                    <select v-model="form.tipe_pembayaran" required class="mt-1 block w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        <option value="1 Kali">1 Kali</option>
+                                        <option value="Bulanan">Bulanan</option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4" v-if="form.kategori !== 'Registrasi'">
                                     <div>
                                         <label class="block text-sm font-medium text-slate-700">Tgl Tagihan</label>
-                                        <input type="date" v-model="form.tanggal_tagihan" required class="mt-1 block w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        <input type="date" v-model="form.tanggal_tagihan" class="mt-1 block w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-slate-700">Jatuh Tempo</label>
-                                        <input type="date" v-model="form.jatuh_tempo" required class="mt-1 block w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        <input type="date" v-model="form.jatuh_tempo" class="mt-1 block w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                     </div>
                                 </div>
                                 <div>

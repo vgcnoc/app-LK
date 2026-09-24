@@ -325,9 +325,10 @@ Route::middleware(['auth'])->group(function () {
         
         $data = $request->validate([
             'user_id' => 'required|exists:users,id',
-            'nomor_invoice' => 'required|string',
-            'tanggal_tagihan' => 'required|date',
-            'jatuh_tempo' => 'required|date',
+            'kategori' => 'nullable|string',
+            'tipe_pembayaran' => 'required|string',
+            'tanggal_tagihan' => 'nullable|date',
+            'jatuh_tempo' => 'nullable|date',
             'nominal' => 'required|numeric',
             'judul' => 'required|string',
             'keterangan' => 'nullable|string',
@@ -337,6 +338,20 @@ Route::middleware(['auth'])->group(function () {
         if ($request->id) {
             DB::table('kemitraan_invoices')->where('id', $request->id)->update($data);
         } else {
+            // Generate nomor_invoice automatically
+            $datePrefix = date('Ymd');
+            $lastInvoice = DB::table('kemitraan_invoices')
+                ->where('nomor_invoice', 'like', 'INV-' . $datePrefix . '-%')
+                ->orderBy('nomor_invoice', 'desc')
+                ->first();
+                
+            $sequence = 1;
+            if ($lastInvoice) {
+                $lastSequence = (int) substr($lastInvoice->nomor_invoice, -3);
+                $sequence = $lastSequence + 1;
+            }
+            $data['nomor_invoice'] = 'INV-' . $datePrefix . '-' . str_pad($sequence, 3, '0', STR_PAD_LEFT);
+            
             $data['created_at'] = now();
             $data['updated_at'] = now();
             DB::table('kemitraan_invoices')->insert($data);
