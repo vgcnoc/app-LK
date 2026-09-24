@@ -25,7 +25,9 @@ const filteredCustomers = computed(() => {
         const q = searchQuery.value.toLowerCase();
         base = base.filter(c => 
             (c.name || '').toLowerCase().includes(q) || 
-            (c.area || '').toLowerCase().includes(q)
+            (c.area || '').toLowerCase().includes(q) ||
+            (c.alamat || '').toLowerCase().includes(q) ||
+            (c.status_pelanggan || '').toLowerCase().includes(q)
         );
     }
     
@@ -69,9 +71,11 @@ const formatDate = (dateString) => {
 };
 
 const getBulanMenunggak = (c) => {
-    if (!c.base_amount || !c.amount || c.amount <= 0) return 0;
+    const base = Number(c.base_amount) || 0;
+    const amount = Number(c.amount) || 0;
+    if (base <= 0 || amount <= 0) return 0;
     // Calculate how many months they owe by dividing total debt by base monthly fee
-    const months = Math.ceil(c.amount / c.base_amount);
+    const months = Math.ceil(amount / base);
     return months;
 };
 
@@ -237,15 +241,15 @@ const exportExcel = async () => {
                         </div>
 
                         <!-- Pagination Controls -->
-                        <div v-if="totalPages > 1" class="flex justify-between items-center mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <div v-if="totalPages > 0" class="flex justify-between items-center mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
                             <span class="text-xs sm:text-sm text-gray-700">
-                                Menampilkan <span class="font-semibold">{{ ((currentPage - 1) * itemsPerPage) + 1 }}</span> 
+                                Menampilkan <span class="font-semibold">{{ filteredCustomers.length === 0 ? 0 : ((currentPage - 1) * itemsPerPage) + 1 }}</span> 
                                 sampai <span class="font-semibold">{{ Math.min(currentPage * itemsPerPage, filteredCustomers.length) }}</span> 
                                 dari <span class="font-semibold">{{ filteredCustomers.length }}</span> data
                             </span>
                             <div class="flex gap-2">
-                                <button @click="currentPage--" :disabled="currentPage === 1" class="px-4 py-2 border rounded shadow-sm text-xs sm:text-sm font-medium" :class="currentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'">Sebelumnya</button>
-                                <button @click="currentPage++" :disabled="currentPage === totalPages" class="px-4 py-2 border rounded shadow-sm text-xs sm:text-sm font-medium" :class="currentPage === totalPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'">Selanjutnya</button>
+                                <button @click="currentPage--" :disabled="currentPage <= 1" class="px-4 py-2 border rounded shadow-sm text-xs sm:text-sm font-medium" :class="currentPage <= 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'">Sebelumnya</button>
+                                <button @click="currentPage++" :disabled="currentPage >= Math.max(1, totalPages)" class="px-4 py-2 border rounded shadow-sm text-xs sm:text-sm font-medium" :class="currentPage >= Math.max(1, totalPages) ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'">Selanjutnya</button>
                             </div>
                         </div>
 
