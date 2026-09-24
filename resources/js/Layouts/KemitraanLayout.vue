@@ -91,6 +91,7 @@ const isAdmin = computed(() => userRole.value !== 'kemitraan');
             <nav class="flex-1 flex flex-col px-4 py-4 space-y-2 overflow-y-auto">
                 <!-- Data Saya (paling atas untuk mitra) -->
                 <Link
+                    v-if="!isAdmin"
                     :href="route('kemitraan.datasaya')"
                     :class="[
                         route().current('kemitraan.datasaya*')

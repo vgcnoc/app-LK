@@ -135,7 +135,11 @@ Route::middleware(['auth'])->group(function () {
     
     // KEMITRAAN DASHBOARD
     Route::get('/kemitraan', function () {
-        return Inertia::render('Kemitraan/Dashboard');
+        $user = auth()->user();
+        if ($user->role !== 'kemitraan') {
+            return redirect()->route('kemitraan.invoice');
+        }
+        return redirect()->route('kemitraan.datasaya');
     })->name('kemitraan.index');
 
     Route::get('/kemitraan/booking', function () {
