@@ -142,13 +142,14 @@ const printInvoice = () => {
         left: 0 !important;
         top: 0 !important;
         width: 100% !important;
+        min-height: 100vh !important;
         margin: 0 !important;
         padding: 0 !important;
         background: white !important;
     }
     
-    /* Remove any transforms or hidden overflow on parents that could clip the invoice */
-    .fixed, .absolute, .transform, .overflow-hidden {
+    /* Specifically allow modal wrappers to expand for printing, without breaking inner absolutes */
+    .print-static {
         position: static !important;
         transform: none !important;
         overflow: visible !important;
@@ -440,11 +441,11 @@ const printInvoice = () => {
         </div>
 
         <!-- Detail Modal -->
-        <div v-if="showDetailModal" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div v-if="showDetailModal" class="fixed inset-0 z-50 overflow-y-auto print-static" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 print-static">
                 <div class="fixed inset-0 bg-slate-900 bg-opacity-75 transition-opacity no-print" @click="showDetailModal = false"></div>
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen no-print" aria-hidden="true">&#8203;</span>
-                <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl w-full">
+                <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl w-full print-static">
                     
                     <!-- Action Bar (Hidden on Print) -->
                     <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center no-print">
@@ -465,18 +466,18 @@ const printInvoice = () => {
                     </div>
 
                     <!-- Printable Content -->
-                    <div id="printable-invoice" class="bg-white p-8 sm:p-12" v-if="currentInvoiceForDetail">
-                        <!-- Header -->
-                        <!-- Header -->
-                        <div class="mb-8 relative mt-2">
-                            <!-- Header Content -->
-                            <div class="w-full p-3 sm:p-4 flex flex-col sm:flex-row items-center justify-between bg-white relative z-10 mx-auto">
-                                <!-- Logo -->
-                                <div class="w-full sm:w-[40%] flex items-center justify-center sm:justify-start pb-3 sm:pb-0 sm:pr-4">
-                                    <template v-if="$page.props.app_logo">
-                                        <!-- Logo is filtered to match the purple brand color (#4c1d95) so white logos don't disappear -->
-                                        <img :src="$page.props.app_logo" class="max-h-12 sm:max-h-16 object-contain w-full" style="filter: brightness(0) saturate(100%) invert(14%) sepia(87%) saturate(2975%) hue-rotate(258deg) brightness(93%) contrast(107%);" alt="Logo" />
-                                    </template>
+                    <div id="printable-invoice" class="bg-white p-8 sm:p-12 min-h-screen flex flex-col" style="-webkit-print-color-adjust: exact; print-color-adjust: exact;" v-if="currentInvoiceForDetail">
+                        <div class="flex-grow">
+                            <!-- Header -->
+                            <div class="mb-8 relative mt-2">
+                                <!-- Header Content -->
+                                <div class="w-full p-3 sm:p-4 flex flex-col sm:flex-row items-center justify-between bg-white relative z-10 mx-auto">
+                                    <!-- Logo -->
+                                    <div class="w-full sm:w-[40%] flex items-center justify-center sm:justify-start pb-3 sm:pb-0 sm:pr-4">
+                                        <template v-if="$page.props.app_logo">
+                                            <!-- Logo is filtered to match the purple brand color (#4c1d95) so white logos don't disappear -->
+                                            <img :src="$page.props.app_logo" class="max-h-8 sm:max-h-12 object-contain w-auto" style="filter: brightness(0) saturate(100%) invert(14%) sepia(87%) saturate(2975%) hue-rotate(258deg) brightness(93%) contrast(107%);" alt="Logo" />
+                                        </template>
                                     <template v-else>
                                         <div class="text-2xl sm:text-3xl font-extrabold text-[#4c1d95] tracking-widest uppercase w-full text-center">VIRUZS</div>
                                     </template>
@@ -593,9 +594,11 @@ const printInvoice = () => {
                                 </div>
                             </div>
                         </div>
+                        
+                        </div> <!-- End flex-grow wrapper -->
 
                         <!-- Footer Banner -->
-                        <div class="mt-16 w-full flex items-stretch h-16 sm:h-20 bg-white border-y border-slate-200 relative overflow-hidden">
+                        <div class="mt-8 shrink-0 w-full flex items-stretch h-16 sm:h-20 bg-white border-y border-slate-200 relative overflow-hidden">
                             <!-- Purple left section -->
                             <div class="bg-[#4c1d95] flex flex-col justify-center text-white px-2 sm:px-6 relative z-10 w-48 sm:w-[280px] flex-shrink-0" style="clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);">
                                 <div class="flex items-center gap-2 sm:gap-3 w-40 sm:w-56">
