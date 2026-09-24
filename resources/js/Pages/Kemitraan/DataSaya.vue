@@ -13,21 +13,53 @@ const props = defineProps({
 const editing = ref(false);
 
 const form = useForm({
+    _method: 'post',
     name: user.value.name || '',
     email: user.value.email || '',
-    phone: props.profile.phone || '',
-    company_name: props.profile.company_name || '',
-    address: props.profile.address || '',
-    area: props.profile.area || '',
+    
+    // Data Mitra
+    nik: props.profile.nik || '',
+    no_wa: props.profile.no_wa || '',
+    alamat: props.profile.alamat || '',
+    kota: props.profile.kota || '',
+    provinsi: props.profile.provinsi || '',
+
+    // Data Usaha
+    nama_usaha: props.profile.nama_usaha || '',
+    jenis_usaha: props.profile.jenis_usaha || '',
+    nib: props.profile.nib || '',
+    npwp: props.profile.npwp || '',
+
+    // Area Kemitraan
+    area_dikelola: props.profile.area_dikelola || '',
+    kecamatan: props.profile.kecamatan || '',
+    pin_maps: props.profile.pin_maps || '',
+    estimasi_pelanggan: props.profile.estimasi_pelanggan || '',
+
+    // Data Teknis
+    pic_teknisi: props.profile.pic_teknisi || '',
+    wa_teknisi: props.profile.wa_teknisi || '',
+    jumlah_teknisi: props.profile.jumlah_teknisi || '',
+    pengalaman_infrastruktur: props.profile.pengalaman_infrastruktur || '',
+
+    // File uploads
+    file_ktp: null,
+    file_nib: null,
+    file_npwp: null,
+    file_lokasi: null,
 });
 
 const submit = () => {
-    form.put(route('kemitraan.datasaya.update'), {
+    form.post(route('kemitraan.datasaya.update'), {
         preserveScroll: true,
         onSuccess: () => {
             editing.value = false;
         },
     });
+};
+
+const handleFileUpload = (e, field) => {
+    form[field] = e.target.files[0];
 };
 
 const formattedTodayDate = computed(() => {
@@ -63,120 +95,6 @@ const formattedTodayDate = computed(() => {
         <div class="py-4 sm:py-8 bg-slate-50 min-h-screen">
             <div class="max-w-full mx-auto space-y-6">
 
-                <!-- Profile Card -->
-                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                    <!-- Header Banner -->
-                    <div class="h-32 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 relative">
-                        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDJ2LTJoMzR6bTAtMzBWMkgydjJoMzR6TTE4IDE3djJIMnYtMmgxNnptMC0xNXYySDB2LTJoMTh6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30"></div>
-                    </div>
-
-                    <div class="px-6 pb-6 -mt-12 relative">
-                        <!-- Avatar -->
-                        <div class="flex items-end gap-4 mb-6">
-                            <div class="w-24 h-24 rounded-2xl bg-white shadow-lg border-4 border-white flex items-center justify-center text-3xl font-black text-indigo-600">
-                                {{ (user.name || 'U').substring(0, 2).toUpperCase() }}
-                            </div>
-                            <div class="pb-1">
-                                <h3 class="text-xl font-bold text-slate-800">{{ user.name }}</h3>
-                                <p class="text-sm text-slate-500">Mitra Reseller</p>
-                            </div>
-                        </div>
-
-                        <!-- Profile Info / Edit Form -->
-                        <div v-if="!editing" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Nama Lengkap</label>
-                                    <p class="text-sm font-medium text-slate-800 mt-1">{{ user.name || '-' }}</p>
-                                </div>
-                                <div>
-                                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Email</label>
-                                    <p class="text-sm font-medium text-slate-800 mt-1">{{ user.email || '-' }}</p>
-                                </div>
-                                <div>
-                                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">No. Telepon</label>
-                                    <p class="text-sm font-medium text-slate-800 mt-1">{{ profile.phone || '-' }}</p>
-                                </div>
-                            </div>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Nama Usaha</label>
-                                    <p class="text-sm font-medium text-slate-800 mt-1">{{ profile.company_name || '-' }}</p>
-                                </div>
-                                <div>
-                                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Area</label>
-                                    <p class="text-sm font-medium text-slate-800 mt-1">{{ profile.area || '-' }}</p>
-                                </div>
-                                <div>
-                                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Alamat</label>
-                                    <p class="text-sm font-medium text-slate-800 mt-1">{{ profile.address || '-' }}</p>
-                                </div>
-                            </div>
-
-                            <div class="md:col-span-2 pt-2">
-                                <button @click="editing = true"
-                                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-all">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    Edit Profil
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Edit Form -->
-                        <form v-else @submit.prevent="submit" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Lengkap</label>
-                                <input v-model="form.name" type="text" required
-                                    class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 transition-all" />
-                                <p v-if="form.errors.name" class="text-xs text-red-500 mt-1">{{ form.errors.name }}</p>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
-                                <input v-model="form.email" type="email" required
-                                    class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 transition-all" />
-                                <p v-if="form.errors.email" class="text-xs text-red-500 mt-1">{{ form.errors.email }}</p>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-1.5">No. Telepon</label>
-                                <input v-model="form.phone" type="text"
-                                    class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 transition-all"
-                                    placeholder="08xxxxxxxxxx" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Usaha</label>
-                                <input v-model="form.company_name" type="text"
-                                    class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 transition-all"
-                                    placeholder="Nama usaha / toko" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Area</label>
-                                <input v-model="form.area" type="text"
-                                    class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 transition-all"
-                                    placeholder="Area operasional" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Alamat</label>
-                                <input v-model="form.address" type="text"
-                                    class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 transition-all"
-                                    placeholder="Alamat lengkap" />
-                            </div>
-                            <div class="md:col-span-2 flex justify-end gap-3 pt-2">
-                                <button type="button" @click="editing = false"
-                                    class="px-5 py-2.5 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
-                                    Batal
-                                </button>
-                                <button type="submit" :disabled="form.processing"
-                                    class="px-6 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm transition-all disabled:opacity-50">
-                                    <span v-if="form.processing">Menyimpan...</span>
-                                    <span v-else>Simpan Perubahan</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
                 <!-- Quick Info Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
@@ -211,6 +129,258 @@ const formattedTodayDate = computed(() => {
                             <h4 class="font-semibold text-slate-800">Tipe Kemitraan</h4>
                         </div>
                         <p class="text-sm text-slate-600">Reseller ISP</p>
+                    </div>
+                </div>
+
+                <!-- Profile Card -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+                        <h3 class="font-bold text-slate-800 text-lg">Detail Data Mitra</h3>
+                        <button v-if="!editing" @click="editing = true"
+                            class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Edit Profil
+                        </button>
+                    </div>
+
+                    <div class="p-6">
+                        <!-- View Mode -->
+                        <div v-if="!editing" class="space-y-8">
+                            <!-- Section: Data Mitra -->
+                            <div>
+                                <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Data Mitra</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Nama Lengkap / Nama Usaha</label><p class="text-sm font-medium text-slate-800">{{ user.name || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">NIK</label><p class="text-sm font-medium text-slate-800">{{ profile.nik || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">No. WhatsApp</label><p class="text-sm font-medium text-slate-800">{{ profile.no_wa || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Email</label><p class="text-sm font-medium text-slate-800">{{ user.email || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Kota/Kabupaten</label><p class="text-sm font-medium text-slate-800">{{ profile.kota || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Provinsi</label><p class="text-sm font-medium text-slate-800">{{ profile.provinsi || '-' }}</p></div>
+                                    <div class="md:col-span-3"><label class="text-xs font-medium text-slate-400 block mb-1">Alamat Lengkap</label><p class="text-sm font-medium text-slate-800">{{ profile.alamat || '-' }}</p></div>
+                                </div>
+                            </div>
+
+                            <!-- Section: Data Usaha -->
+                            <div>
+                                <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Data Usaha</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Nama Usaha</label><p class="text-sm font-medium text-slate-800">{{ profile.nama_usaha || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Jenis Usaha</label><p class="text-sm font-medium text-slate-800">{{ profile.jenis_usaha || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">NIB (Jika ada)</label><p class="text-sm font-medium text-slate-800">{{ profile.nib || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">NPWP (Jika ada)</label><p class="text-sm font-medium text-slate-800">{{ profile.npwp || '-' }}</p></div>
+                                </div>
+                            </div>
+
+                            <!-- Section: Area Kemitraan -->
+                            <div>
+                                <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Area Kemitraan</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Area/Wilayah yang dikelola</label><p class="text-sm font-medium text-slate-800">{{ profile.area_dikelola || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Kecamatan/Kelurahan</label><p class="text-sm font-medium text-slate-800">{{ profile.kecamatan || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Lokasi/Pin Maps</label>
+                                        <p class="text-sm font-medium text-slate-800">
+                                            <a v-if="profile.pin_maps" :href="profile.pin_maps" target="_blank" class="text-indigo-600 hover:underline">Buka Maps</a>
+                                            <span v-else>-</span>
+                                        </p>
+                                    </div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Perkiraan Jumlah Calon Pelanggan</label><p class="text-sm font-medium text-slate-800">{{ profile.estimasi_pelanggan || '-' }}</p></div>
+                                </div>
+                            </div>
+
+                            <!-- Section: Data Teknis -->
+                            <div>
+                                <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Data Teknis</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Nama PIC Teknisi</label><p class="text-sm font-medium text-slate-800">{{ profile.pic_teknisi || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">No. WhatsApp Teknisi</label><p class="text-sm font-medium text-slate-800">{{ profile.wa_teknisi || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Jumlah Teknisi</label><p class="text-sm font-medium text-slate-800">{{ profile.jumlah_teknisi || '-' }}</p></div>
+                                    <div class="md:col-span-3"><label class="text-xs font-medium text-slate-400 block mb-1">Pengalaman/Infrastruktur yang dimiliki</label><p class="text-sm font-medium text-slate-800">{{ profile.pengalaman_infrastruktur || '-' }}</p></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Section: Dokumen -->
+                            <div>
+                                <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Dokumen Pendukung</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="border rounded-xl p-4 bg-slate-50 flex flex-col items-center justify-center text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
+                                        </svg>
+                                        <span class="text-sm font-medium text-slate-700 mb-1">KTP</span>
+                                        <a v-if="profile.file_ktp" :href="`/storage/${profile.file_ktp}`" target="_blank" class="text-xs text-indigo-600 font-semibold hover:underline">Lihat File</a>
+                                        <span v-else class="text-xs text-slate-400">Belum diunggah</span>
+                                    </div>
+                                    <div class="border rounded-xl p-4 bg-slate-50 flex flex-col items-center justify-center text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        <span class="text-sm font-medium text-slate-700 mb-1">NIB</span>
+                                        <a v-if="profile.file_nib" :href="`/storage/${profile.file_nib}`" target="_blank" class="text-xs text-indigo-600 font-semibold hover:underline">Lihat File</a>
+                                        <span v-else class="text-xs text-slate-400">Belum diunggah</span>
+                                    </div>
+                                    <div class="border rounded-xl p-4 bg-slate-50 flex flex-col items-center justify-center text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                        <span class="text-sm font-medium text-slate-700 mb-1">NPWP</span>
+                                        <a v-if="profile.file_npwp" :href="`/storage/${profile.file_npwp}`" target="_blank" class="text-xs text-indigo-600 font-semibold hover:underline">Lihat File</a>
+                                        <span v-else class="text-xs text-slate-400">Belum diunggah</span>
+                                    </div>
+                                    <div class="border rounded-xl p-4 bg-slate-50 flex flex-col items-center justify-center text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        <span class="text-sm font-medium text-slate-700 mb-1">Foto Lokasi/Usaha</span>
+                                        <a v-if="profile.file_lokasi" :href="`/storage/${profile.file_lokasi}`" target="_blank" class="text-xs text-indigo-600 font-semibold hover:underline">Lihat File</a>
+                                        <span v-else class="text-xs text-slate-400">Belum diunggah</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Edit Mode -->
+                        <form v-else @submit.prevent="submit" class="space-y-8">
+                            <!-- Section: Data Mitra -->
+                            <div>
+                                <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Data Mitra</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Lengkap / Nama Usaha</label>
+                                        <input v-model="form.name" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">NIK</label>
+                                        <input v-model="form.nik" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">No. WhatsApp</label>
+                                        <input v-model="form.no_wa" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                                        <input v-model="form.email" type="email" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Alamat Lengkap</label>
+                                        <textarea v-model="form.alamat" rows="2" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Kota/Kabupaten</label>
+                                        <input v-model="form.kota" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Provinsi</label>
+                                        <input v-model="form.provinsi" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section: Data Usaha -->
+                            <div>
+                                <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Data Usaha</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Usaha</label>
+                                        <input v-model="form.nama_usaha" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Jenis Usaha</label>
+                                        <input v-model="form.jenis_usaha" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">NIB (Jika ada)</label>
+                                        <input v-model="form.nib" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">NPWP (Jika ada)</label>
+                                        <input v-model="form.npwp" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section: Area Kemitraan -->
+                            <div>
+                                <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Area Kemitraan</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Area/Wilayah yang dikelola</label>
+                                        <input v-model="form.area_dikelola" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Kecamatan/Kelurahan</label>
+                                        <input v-model="form.kecamatan" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Lokasi/Pin Maps (URL)</label>
+                                        <input v-model="form.pin_maps" type="url" placeholder="https://goo.gl/maps/..." class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Perkiraan Jumlah Calon Pelanggan</label>
+                                        <input v-model="form.estimasi_pelanggan" type="number" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section: Data Teknis -->
+                            <div>
+                                <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Data Teknis</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama PIC Teknisi</label>
+                                        <input v-model="form.pic_teknisi" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">No. WhatsApp Teknisi</label>
+                                        <input v-model="form.wa_teknisi" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Jumlah Teknisi</label>
+                                        <input v-model="form.jumlah_teknisi" type="number" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                    </div>
+                                    <div class="md:col-span-3">
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Pengalaman/Infrastruktur yang dimiliki</label>
+                                        <textarea v-model="form.pengalaman_infrastruktur" rows="2" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section: Dokumen -->
+                            <div>
+                                <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Upload Dokumen Pendukung (Abaikan jika tidak ingin mengubah)</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">KTP</label>
+                                        <input type="file" @change="e => handleFileUpload(e, 'file_ktp')" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">NIB (Opsional)</label>
+                                        <input type="file" @change="e => handleFileUpload(e, 'file_nib')" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">NPWP (Opsional)</label>
+                                        <input type="file" @change="e => handleFileUpload(e, 'file_npwp')" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Foto Lokasi/Usaha</label>
+                                        <input type="file" @change="e => handleFileUpload(e, 'file_lokasi')" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end gap-3 pt-4 border-t border-slate-200">
+                                <button type="button" @click="editing = false"
+                                    class="px-5 py-2.5 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
+                                    Batal
+                                </button>
+                                <button type="submit" :disabled="form.processing"
+                                    class="px-6 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm transition-all disabled:opacity-50">
+                                    <span v-if="form.processing">Menyimpan...</span>
+                                    <span v-else>Simpan Perubahan</span>
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 

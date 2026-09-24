@@ -11,6 +11,9 @@ conn.on('ready', () => {
     echo "Merapikan git (reset) dan menarik perubahan terbaru..."
     git pull origin main
     
+    echo "Menjalankan migrasi database..."
+    php artisan migrate --force
+    
     echo "Membangun aset..."
     npm run build
     

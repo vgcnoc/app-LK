@@ -151,14 +151,39 @@ Route::middleware(['auth'])->group(function () {
     })->name('kemitraan.bast');
 
     Route::get('/kemitraan/data-saya', function () {
+        $user = auth()->user();
+        $profile = DB::table('kemitraan_profiles')->where('user_id', $user->id)->first();
+        if (!$profile) {
+            $profile = (object)[]; // pass empty object
+        }
         return Inertia::render('Kemitraan/DataSaya', [
-            'profile' => [],
+            'profile' => $profile,
         ]);
     })->name('kemitraan.datasaya');
 
-    Route::put('/kemitraan/data-saya', function (Request $request) {
-        // Placeholder: update profile logic here
-        return redirect()->route('kemitraan.datasaya');
+    Route::post('/kemitraan/data-saya', function (Request $request) {
+        $user = auth()->user();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        // Handle file uploads if any
+        $data = $request->except(['name', 'email', 'file_ktp', 'file_nib', 'file_npwp', 'file_lokasi', '_method']);
+        
+        $files = ['file_ktp', 'file_nib', 'file_npwp', 'file_lokasi'];
+        foreach ($files as $fileKey) {
+            if ($request->hasFile($fileKey)) {
+                $path = $request->file($fileKey)->store('kemitraan/dokumen', 'public');
+                $data[$fileKey] = $path;
+            }
+        }
+
+        DB::table('kemitraan_profiles')->updateOrInsert(
+            ['user_id' => $user->id],
+            $data
+        );
+
+        return redirect()->back();
     })->name('kemitraan.datasaya.update');
 
     Route::get('/kemitraan/invoice', function () {
