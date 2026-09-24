@@ -458,23 +458,24 @@ const printInvoice = () => {
                     <div id="printable-invoice" class="bg-white p-8 sm:p-12" v-if="currentInvoiceForDetail">
                         <!-- Header -->
                         <!-- Header -->
-                        <div class="mb-10 relative mt-4">
+                        <div class="mb-8 relative mt-2">
                             <!-- Dashed Box -->
-                            <div class="w-full border border-dashed border-slate-400 p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between bg-white relative z-10 mx-auto">
+                            <div class="w-full border border-dashed border-slate-400 p-3 sm:p-4 flex flex-col sm:flex-row items-center justify-between bg-white relative z-10 mx-auto">
                                 <!-- Logo -->
-                                <div class="w-full sm:w-[45%] flex items-center justify-center sm:justify-start border-b sm:border-b-0 sm:border-r border-dashed border-slate-400 pb-4 sm:pb-0 sm:pr-6">
+                                <div class="w-full sm:w-[40%] flex items-center justify-center sm:justify-start border-b sm:border-b-0 sm:border-r border-dashed border-slate-400 pb-3 sm:pb-0 sm:pr-4">
                                     <template v-if="$page.props.app_logo">
-                                        <img :src="$page.props.app_logo" class="max-h-20 object-contain w-full" alt="Logo" />
+                                        <!-- Logo is filtered to match the purple brand color (#4c1d95) so white logos don't disappear -->
+                                        <img :src="$page.props.app_logo" class="max-h-12 sm:max-h-16 object-contain w-full" style="filter: brightness(0) saturate(100%) invert(14%) sepia(87%) saturate(2975%) hue-rotate(258deg) brightness(93%) contrast(107%);" alt="Logo" />
                                     </template>
                                     <template v-else>
-                                        <div class="text-3xl sm:text-4xl font-extrabold text-[#4c1d95] tracking-widest uppercase w-full text-center">VIRUZS</div>
+                                        <div class="text-2xl sm:text-3xl font-extrabold text-[#4c1d95] tracking-widest uppercase w-full text-center">VIRUZS</div>
                                     </template>
                                 </div>
                                 
                                 <!-- Company Info -->
-                                <div class="w-full sm:w-[55%] pt-4 sm:pt-0 sm:pl-6 flex flex-col justify-center">
-                                    <h2 class="text-xl sm:text-2xl font-extrabold text-[#4c1d95] uppercase tracking-wide mb-3">PT VIRUZS GLOBAL CONNECTION</h2>
-                                    <div class="space-y-1.5 text-sm text-slate-800 font-medium">
+                                <div class="w-full sm:w-[60%] pt-3 sm:pt-0 sm:pl-4 flex flex-col justify-center">
+                                    <h2 class="text-lg sm:text-xl font-extrabold text-[#4c1d95] uppercase tracking-wide mb-2">PT VIRUZS GLOBAL CONNECTION</h2>
+                                    <div class="space-y-1 text-xs text-slate-800 font-medium">
                                         <div class="flex items-start gap-2">
                                             <span class="mt-1 text-[8px] text-slate-600">⚫</span>
                                             <span class="leading-relaxed">Jl Cilandak RT 002 RW 002,Desa<br>Sirnajaya,Kec Warungkiara Kab Sukabumi Jawa Barat 43362</span>
