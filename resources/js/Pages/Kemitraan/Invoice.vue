@@ -457,35 +457,36 @@ const printInvoice = () => {
                     <!-- Printable Content -->
                     <div id="printable-invoice" class="bg-white p-8 sm:p-12" v-if="currentInvoiceForDetail">
                         <!-- Header -->
-                        <div class="mb-10">
-                            <div class="flex flex-col sm:flex-row border border-dashed border-slate-300 p-2 sm:p-4 bg-white">
+                        <!-- Header -->
+                        <div class="mb-8">
+                            <div class="flex flex-col sm:flex-row border border-dashed border-slate-300 p-2 bg-white">
                                 <!-- Logo -->
-                                <div class="w-full sm:w-2/5 flex items-center justify-center p-4 border-b sm:border-b-0 sm:border-r border-dashed border-slate-300">
+                                <div class="w-full sm:w-1/3 flex items-center justify-center p-2 border-b sm:border-b-0 sm:border-r border-dashed border-slate-300">
                                     <template v-if="$page.props.app_logo">
-                                        <img :src="$page.props.app_logo" class="h-20 sm:h-24 object-contain" alt="Logo" />
+                                        <img :src="$page.props.app_logo" class="h-14 sm:h-16 object-contain" alt="Logo" />
                                     </template>
                                     <template v-else>
-                                        <div class="text-3xl sm:text-4xl font-extrabold text-[#4c1d95] tracking-widest uppercase">VIRUZS</div>
+                                        <div class="text-2xl sm:text-3xl font-extrabold text-[#4c1d95] tracking-widest uppercase">VIRUZS</div>
                                     </template>
                                 </div>
                                 <!-- Company Info -->
-                                <div class="w-full sm:w-3/5 p-4 sm:pl-8 flex flex-col justify-center">
-                                    <h2 class="text-xl sm:text-2xl font-extrabold text-[#4c1d95] uppercase tracking-wide mb-3">PT VIRUZS GLOBAL CONNECTION</h2>
-                                    <div class="space-y-1.5 text-xs sm:text-sm text-slate-800">
-                                        <div class="flex items-start gap-2">
-                                            <span class="mt-0.5 text-[8px] sm:text-[10px]">⚫</span>
+                                <div class="w-full sm:w-2/3 p-2 sm:pl-6 flex flex-col justify-center">
+                                    <h2 class="text-lg sm:text-xl font-extrabold text-[#4c1d95] uppercase tracking-wide mb-2">PT VIRUZS GLOBAL CONNECTION</h2>
+                                    <div class="space-y-1 text-xs text-slate-800">
+                                        <div class="flex items-start gap-1.5">
+                                            <span class="mt-0.5 text-[7px]">⚫</span>
                                             <span class="leading-tight">Jl Cilandak RT 002 RW 002,Desa<br>Sirnajaya,Kec Warungkiara Kab Sukabumi Jawa Barat 43362</span>
                                         </div>
-                                        <div class="flex items-center gap-2">
-                                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
+                                        <div class="flex items-center gap-1.5">
+                                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
                                             <span>+62 889 7639 7034</span>
                                         </div>
-                                        <div class="flex items-center gap-2">
-                                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                                        <div class="flex items-center gap-1.5">
+                                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
                                             <span>info@viruzs.co.id , info@viruzs.net</span>
                                         </div>
-                                        <div class="flex items-center gap-2">
-                                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"></path></svg>
+                                        <div class="flex items-center gap-1.5">
+                                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"></path></svg>
                                             <span>www.viruzs.co.id</span>
                                         </div>
                                     </div>
@@ -578,6 +579,70 @@ const printInvoice = () => {
                                     <span class="text-lg font-bold text-rose-600">{{ formatRupiah(currentInvoiceForDetail.nominal - (currentInvoiceForDetail.terbayar || 0)) }}</span>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Footer Banner -->
+                        <div class="mt-16 w-full flex items-stretch h-16 sm:h-20 bg-white border-y border-slate-200 relative overflow-hidden">
+                            <!-- Purple left section -->
+                            <div class="bg-[#4c1d95] flex flex-col justify-center text-white px-2 sm:px-6 relative z-10 w-48 sm:w-[280px] flex-shrink-0" style="clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);">
+                                <div class="flex items-center gap-2 sm:gap-3 w-40 sm:w-56">
+                                    <div class="w-8 h-8 sm:w-10 sm:h-10 border-2 border-white rounded-lg flex items-center justify-center shrink-0 p-1">
+                                        <svg class="w-full h-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-[8px] sm:text-xs leading-tight">Growing Connections,</p>
+                                        <p class="font-medium text-[8px] sm:text-xs leading-tight">Shaping The Future</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Right section with features -->
+                            <div class="flex-grow flex items-center justify-around px-2 sm:px-8 relative -ml-8 sm:-ml-12 bg-slate-50">
+                                <!-- Slanted decorative borders -->
+                                <div class="absolute left-0 top-0 bottom-0 w-32 overflow-hidden hidden sm:block">
+                                    <div class="absolute left-8 bottom-0 w-12 h-3 bg-[#4c1d95]" style="transform: skewX(-45deg)"></div>
+                                    <div class="absolute left-[88px] bottom-0 w-12 h-3 bg-[#f97316]" style="transform: skewX(-45deg)"></div>
+                                </div>
+                                
+                                <div class="flex items-center gap-1.5 sm:gap-2 z-10 ml-8 sm:ml-20">
+                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-[#4c1d95]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                                    </svg>
+                                    <div class="text-[7px] sm:text-[10px] font-bold text-[#4c1d95] leading-tight">Internet<br>Dedicated</div>
+                                </div>
+                                
+                                <div class="h-6 sm:h-8 w-px bg-slate-300"></div>
+                                
+                                <div class="flex items-center gap-1.5 sm:gap-2 z-10">
+                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-[#4c1d95]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                                    </svg>
+                                    <div class="text-[7px] sm:text-[10px] font-bold text-[#4c1d95] leading-tight">Internet<br>Broadband</div>
+                                </div>
+                                
+                                <div class="h-6 sm:h-8 w-px bg-slate-300"></div>
+
+                                <div class="flex items-center gap-1.5 sm:gap-2 z-10">
+                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-[#4c1d95]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    <div class="text-[7px] sm:text-[10px] font-bold text-[#4c1d95] leading-tight">Reliable<br>Connection</div>
+                                </div>
+                                
+                                <div class="h-6 sm:h-8 w-px bg-slate-300"></div>
+                                
+                                <div class="flex items-center gap-1.5 sm:gap-2 z-10 pr-2">
+                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-[#4c1d95]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                                    </svg>
+                                    <div class="text-[7px] sm:text-[10px] font-bold text-[#4c1d95] leading-tight">24/7<br>Support</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Bottom thin purple line -->
+                            <div class="absolute bottom-0 left-0 right-0 h-1 bg-[#4c1d95] z-20"></div>
                         </div>
                     </div>
                 </div>
