@@ -308,12 +308,25 @@ Route::middleware(['auth'])->group(function () {
                 ->orderBy('id', 'desc')
                 ->get();
             $mitras = DB::table('users')->where('role', 'kemitraan')->get(['id', 'name']);
+            $payments = DB::table('kemitraan_payments')
+                ->join('kemitraan_invoices', 'kemitraan_payments.invoice_id', '=', 'kemitraan_invoices.id')
+                ->join('users', 'kemitraan_invoices.user_id', '=', 'users.id')
+                ->select('kemitraan_payments.*', 'kemitraan_invoices.nomor_invoice', 'kemitraan_invoices.judul', 'users.name as mitra_name')
+                ->orderBy('kemitraan_payments.tanggal_bayar', 'desc')
+                ->get();
         } else {
             $invoices = DB::table('kemitraan_invoices')->where('user_id', $user->id)->orderBy('id', 'desc')->get();
             $mitras = [];
+            $payments = DB::table('kemitraan_payments')
+                ->join('kemitraan_invoices', 'kemitraan_payments.invoice_id', '=', 'kemitraan_invoices.id')
+                ->where('kemitraan_invoices.user_id', $user->id)
+                ->select('kemitraan_payments.*', 'kemitraan_invoices.nomor_invoice', 'kemitraan_invoices.judul')
+                ->orderBy('kemitraan_payments.tanggal_bayar', 'desc')
+                ->get();
         }
         return Inertia::render('Kemitraan/Invoice', [
             'invoices' => $invoices,
+            'payments' => $payments,
             'mitras' => $mitras,
             'isAdmin' => $user->role !== 'kemitraan'
         ]);
@@ -358,6 +371,46 @@ Route::middleware(['auth'])->group(function () {
         }
         return redirect()->back()->with('success', 'Invoice berhasil disimpan.');
     })->name('kemitraan.invoice.store');
+
+    Route::post('/kemitraan/invoice/pay', function (Request $request) {
+        $user = auth()->user();
+        if ($user->role === 'kemitraan') abort(403);
+        
+        $data = $request->validate([
+            'invoice_id' => 'required|exists:kemitraan_invoices,id',
+            'nominal_bayar' => 'required|numeric|min:1',
+            'tanggal_bayar' => 'required|date',
+            'metode_pembayaran' => 'nullable|string',
+            'keterangan' => 'nullable|string',
+        ]);
+        
+        DB::beginTransaction();
+        try {
+            DB::table('kemitraan_payments')->insert(array_merge($data, [
+                'created_at' => now(),
+                'updated_at' => now()
+            ]));
+            
+            $invoice = DB::table('kemitraan_invoices')->where('id', $data['invoice_id'])->first();
+            $newTerbayar = $invoice->terbayar + $data['nominal_bayar'];
+            
+            $status = $invoice->status;
+            if ($newTerbayar >= $invoice->nominal) {
+                $status = 'Lunas';
+            }
+            
+            DB::table('kemitraan_invoices')->where('id', $data['invoice_id'])->update([
+                'terbayar' => $newTerbayar,
+                'status' => $status
+            ]);
+            
+            DB::commit();
+            return redirect()->back()->with('success', 'Pembayaran berhasil disimpan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Gagal menyimpan pembayaran.']);
+        }
+    })->name('kemitraan.invoice.pay');
 
     // DASHBOARD
     Route::get('/dashboard', function (Request $request) {
