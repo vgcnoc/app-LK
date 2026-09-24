@@ -466,12 +466,23 @@ const printInvoice = () => {
                     </div>
 
                     <!-- Printable Content -->
-                    <div id="printable-invoice" class="bg-white p-8 sm:p-12 min-h-screen flex flex-col" style="-webkit-print-color-adjust: exact; print-color-adjust: exact;" v-if="currentInvoiceForDetail">
-                        <div class="flex-grow">
+                    <div id="printable-invoice" class="bg-white p-8 sm:p-12 min-h-screen flex flex-col relative overflow-hidden" style="-webkit-print-color-adjust: exact; print-color-adjust: exact;" v-if="currentInvoiceForDetail">
+                        
+                        <!-- Watermark -->
+                        <div class="absolute inset-0 z-0 flex items-center justify-center opacity-[0.04] pointer-events-none select-none">
+                            <template v-if="$page.props.app_logo">
+                                <img :src="$page.props.app_logo" class="w-[70%] max-w-2xl object-contain grayscale" style="transform: rotate(-15deg);" alt="Watermark" />
+                            </template>
+                            <template v-else>
+                                <div class="text-[120px] sm:text-[160px] font-extrabold text-[#4c1d95] uppercase rotate-[-30deg] tracking-widest whitespace-nowrap">VIRUZS</div>
+                            </template>
+                        </div>
+
+                        <div class="flex-grow relative z-10">
                             <!-- Header -->
                             <div class="mb-8 relative mt-2">
                                 <!-- Header Content -->
-                                <div class="w-full p-3 sm:p-4 flex flex-col sm:flex-row items-center justify-between bg-white relative z-10 mx-auto">
+                                <div class="w-full p-3 sm:p-4 flex flex-col sm:flex-row items-center justify-between bg-transparent relative z-10 mx-auto">
                                     <!-- Logo -->
                                     <div class="w-full sm:w-[40%] flex items-center justify-center sm:justify-start pb-3 sm:pb-0 sm:pr-4">
                                         <template v-if="$page.props.app_logo">
@@ -598,7 +609,7 @@ const printInvoice = () => {
                         </div> <!-- End flex-grow wrapper -->
 
                         <!-- Footer Banner -->
-                        <div class="mt-8 shrink-0 w-full flex items-stretch h-16 sm:h-20 bg-white border-y border-slate-200 relative overflow-hidden">
+                        <div class="mt-8 shrink-0 w-full flex items-stretch h-16 sm:h-20 bg-white border-y border-slate-200 relative overflow-hidden z-10 shadow-sm">
                             <!-- Purple left section -->
                             <div class="bg-[#4c1d95] flex flex-col justify-center text-white px-2 sm:px-6 relative z-10 w-48 sm:w-[280px] flex-shrink-0" style="clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);">
                                 <div class="flex items-center gap-2 sm:gap-3 w-40 sm:w-56">
