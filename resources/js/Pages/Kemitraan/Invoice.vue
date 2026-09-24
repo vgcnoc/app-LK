@@ -106,6 +106,14 @@ const submitPayment = () => {
         }
     });
 };
+
+const showDetailModal = ref(false);
+const currentInvoiceForDetail = ref(null);
+
+const openDetailModal = (inv) => {
+    currentInvoiceForDetail.value = inv;
+    showDetailModal.value = true;
+};
 </script>
 
 <template>
@@ -162,7 +170,7 @@ const submitPayment = () => {
                                     <th class="py-4 px-6 font-semibold">Tgl Tagihan</th>
                                     <th class="py-4 px-6 font-semibold">Jatuh Tempo</th>
                                     <th class="py-4 px-6 font-semibold text-right">Status</th>
-                                    <th v-if="isAdmin" class="py-4 px-6 font-semibold text-center">Aksi</th>
+                                    <th class="py-4 px-6 font-semibold text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
@@ -190,13 +198,18 @@ const submitPayment = () => {
                                                 {{ inv.status }}
                                             </span>
                                         </td>
-                                        <td v-if="isAdmin" class="py-4 px-6 text-center space-x-2">
-                                            <button @click="openPaymentModal(inv)" v-if="inv.status !== 'Lunas'" class="px-3 py-1.5 text-xs font-medium text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors">
-                                                Bayar
+                                        <td class="py-4 px-6 text-center space-x-2">
+                                            <button @click="openDetailModal(inv)" class="px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                                                Detail
                                             </button>
-                                            <button @click="openEditModal(inv)" class="px-3 py-1.5 text-xs font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors">
-                                                Edit
-                                            </button>
+                                            <template v-if="isAdmin">
+                                                <button @click="openPaymentModal(inv)" v-if="inv.status !== 'Lunas'" class="px-3 py-1.5 text-xs font-medium text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors">
+                                                    Bayar
+                                                </button>
+                                                <button @click="openEditModal(inv)" class="px-3 py-1.5 text-xs font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors">
+                                                    Edit
+                                                </button>
+                                            </template>
                                         </td>
                                     </tr>
                                 </template>
@@ -382,6 +395,107 @@ const submitPayment = () => {
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Modal -->
+        <div v-if="showDetailModal" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-slate-900 bg-opacity-75 transition-opacity" @click="showDetailModal = false"></div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl w-full">
+                    <div class="bg-white px-6 pt-6 pb-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold text-slate-900">Detail Invoice</h3>
+                            <button @click="showDetailModal = false" class="text-slate-400 hover:text-slate-600 focus:outline-none">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div v-if="currentInvoiceForDetail" class="space-y-6">
+                            
+                            <!-- Header Info -->
+                            <div class="flex flex-col sm:flex-row justify-between gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <div>
+                                    <div class="text-sm text-slate-500 font-medium">No. Invoice</div>
+                                    <div class="font-mono text-indigo-700 font-bold text-lg mt-0.5">{{ currentInvoiceForDetail.nomor_invoice }}</div>
+                                </div>
+                                <div class="sm:text-right">
+                                    <div class="text-sm text-slate-500 font-medium">Status</div>
+                                    <div class="mt-0.5 inline-block">
+                                        <span :class="[statusColor(currentInvoiceForDetail.status), 'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide']">
+                                            {{ currentInvoiceForDetail.status }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Detail Content -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-4">
+                                    <h4 class="font-semibold text-slate-800 border-b pb-2">Informasi Tagihan</h4>
+                                    
+                                    <div class="grid grid-cols-3 text-sm">
+                                        <div class="text-slate-500 col-span-1">Judul</div>
+                                        <div class="text-slate-800 font-medium col-span-2">{{ currentInvoiceForDetail.judul }}</div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-3 text-sm">
+                                        <div class="text-slate-500 col-span-1">Kategori</div>
+                                        <div class="text-slate-800 font-medium col-span-2">{{ currentInvoiceForDetail.kategori || '-' }}</div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-3 text-sm">
+                                        <div class="text-slate-500 col-span-1">Tipe Bayar</div>
+                                        <div class="text-slate-800 font-medium col-span-2">{{ currentInvoiceForDetail.tipe_pembayaran || '-' }}</div>
+                                    </div>
+
+                                    <div class="grid grid-cols-3 text-sm">
+                                        <div class="text-slate-500 col-span-1">Tgl Tagihan</div>
+                                        <div class="text-slate-800 font-medium col-span-2">{{ currentInvoiceForDetail.tanggal_tagihan || '-' }}</div>
+                                    </div>
+
+                                    <div class="grid grid-cols-3 text-sm">
+                                        <div class="text-slate-500 col-span-1">Jatuh Tempo</div>
+                                        <div class="text-rose-600 font-medium col-span-2">{{ currentInvoiceForDetail.jatuh_tempo || '-' }}</div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 text-sm pt-2">
+                                        <div class="text-slate-500 mb-1">Keterangan:</div>
+                                        <div class="text-slate-700 bg-slate-50 p-2 rounded-lg border border-slate-100 min-h-[60px]">{{ currentInvoiceForDetail.keterangan || '-' }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <h4 class="font-semibold text-slate-800 border-b pb-2">Rincian Pembayaran</h4>
+                                    
+                                    <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 space-y-3">
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-slate-600">Total Tagihan</span>
+                                            <span class="font-bold text-slate-800 text-base">{{ formatRupiah(currentInvoiceForDetail.nominal) }}</span>
+                                        </div>
+                                        
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-slate-600">Total Terbayar</span>
+                                            <span class="font-bold text-emerald-600">{{ formatRupiah(currentInvoiceForDetail.terbayar || 0) }}</span>
+                                        </div>
+                                        
+                                        <div class="pt-3 border-t border-indigo-200/60 flex justify-between items-center">
+                                            <span class="font-semibold text-slate-700">Sisa Tagihan</span>
+                                            <span class="font-bold text-rose-600 text-lg">{{ formatRupiah(currentInvoiceForDetail.nominal - (currentInvoiceForDetail.terbayar || 0)) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 px-4 py-4 sm:px-6 sm:flex sm:flex-row-reverse rounded-b-2xl border-t border-slate-200">
+                        <button type="button" @click="showDetailModal = false" class="w-full inline-flex justify-center rounded-xl border border-slate-300 shadow-sm px-6 py-2.5 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm">
+                            Tutup
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
