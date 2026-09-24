@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('customers', function (Blueprint $table) {
-            $table->string('keterangan_status')->nullable()->after('status_pelanggan');
-        });
+        if (!Schema::hasColumn('customers', 'keterangan_status')) {
+            Schema::table('customers', function (Blueprint $table) {
+                $table->string('keterangan_status')->nullable()->after('status_pelanggan');
+            });
+        }
     }
 
     /**
