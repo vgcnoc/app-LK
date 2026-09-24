@@ -114,6 +114,18 @@ Route::middleware('guest')->group(function () {
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        // Buat profil kemitraan default agar bandwidth yang dipilih tersimpan
+        DB::table('kemitraan_profiles')->insert([
+            'user_id' => $user->id,
+            'status_akun' => 'Pending',
+            'tipe_kemitraan' => 'Reseller ISP',
+            'metro' => 'Belum ada metro',
+            'bandwidth' => $request->paket,
+            'no_wa' => $request->phone,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         
         return redirect()->route('login')->with('status', 'Pendaftaran kemitraan berhasil! Silakan masuk dengan email dan kata sandi Anda.');
     });
