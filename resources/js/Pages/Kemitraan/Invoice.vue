@@ -121,27 +121,37 @@ const printInvoice = () => {
 
 <style>
 @media print {
+    /* Hide everything in the body by default */
     body * {
         visibility: hidden !important;
     }
+    
+    /* Hide specific non-print elements */
     .no-print, .no-print * {
         display: none !important;
     }
+    
+    /* Show only the printable invoice and its contents */
     #printable-invoice, #printable-invoice * {
         visibility: visible !important;
     }
+    
+    /* Reset layout for printing so it flows naturally */
     #printable-invoice {
-        position: fixed !important;
+        position: absolute !important;
         left: 0 !important;
         top: 0 !important;
         width: 100% !important;
-        height: 100vh !important;
         margin: 0 !important;
-        padding: 40px !important;
+        padding: 0 !important;
         background: white !important;
-        box-shadow: none !important;
-        border: none !important;
-        z-index: 9999 !important;
+    }
+    
+    /* Remove any transforms or hidden overflow on parents that could clip the invoice */
+    .fixed, .absolute, .transform, .overflow-hidden {
+        position: static !important;
+        transform: none !important;
+        overflow: visible !important;
     }
 }
 </style>
