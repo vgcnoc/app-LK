@@ -114,7 +114,37 @@ const openDetailModal = (inv) => {
     currentInvoiceForDetail.value = inv;
     showDetailModal.value = true;
 };
+const printInvoice = () => {
+    window.print();
+};
 </script>
+
+<style>
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+    .no-print, .no-print * {
+        display: none !important;
+    }
+    #printable-invoice, #printable-invoice * {
+        visibility: visible !important;
+    }
+    #printable-invoice {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 40px !important;
+        background: white !important;
+        box-shadow: none !important;
+        border: none !important;
+        z-index: 9999 !important;
+    }
+}
+</style>
 
 <template>
     <Head title="Invoice - Kemitraan" />
@@ -402,99 +432,122 @@ const openDetailModal = (inv) => {
         <!-- Detail Modal -->
         <div v-if="showDetailModal" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 bg-slate-900 bg-opacity-75 transition-opacity" @click="showDetailModal = false"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl w-full">
-                    <div class="bg-white px-6 pt-6 pb-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold text-slate-900">Detail Invoice</h3>
-                            <button @click="showDetailModal = false" class="text-slate-400 hover:text-slate-600 focus:outline-none">
-                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="fixed inset-0 bg-slate-900 bg-opacity-75 transition-opacity no-print" @click="showDetailModal = false"></div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen no-print" aria-hidden="true">&#8203;</span>
+                <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl w-full">
+                    
+                    <!-- Action Bar (Hidden on Print) -->
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center no-print">
+                        <h3 class="text-lg font-bold text-slate-800">Detail Invoice</h3>
+                        <div class="flex gap-2">
+                            <button @click="printInvoice" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                </svg>
+                                Print / Download
+                            </button>
+                            <button @click="showDetailModal = false" class="text-slate-400 hover:text-slate-600 p-2 rounded-lg bg-white border border-slate-200 shadow-sm transition-colors">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                 </svg>
                             </button>
                         </div>
-                        <div v-if="currentInvoiceForDetail" class="space-y-6">
-                            
-                            <!-- Header Info -->
-                            <div class="flex flex-col sm:flex-row justify-between gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <div>
-                                    <div class="text-sm text-slate-500 font-medium">No. Invoice</div>
-                                    <div class="font-mono text-indigo-700 font-bold text-lg mt-0.5">{{ currentInvoiceForDetail.nomor_invoice }}</div>
-                                </div>
-                                <div class="sm:text-right">
-                                    <div class="text-sm text-slate-500 font-medium">Status</div>
-                                    <div class="mt-0.5 inline-block">
-                                        <span :class="[statusColor(currentInvoiceForDetail.status), 'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide']">
-                                            {{ currentInvoiceForDetail.status }}
-                                        </span>
-                                    </div>
-                                </div>
+                    </div>
+
+                    <!-- Printable Content -->
+                    <div id="printable-invoice" class="bg-white p-8 sm:p-12" v-if="currentInvoiceForDetail">
+                        <!-- Header -->
+                        <div class="flex flex-col sm:flex-row justify-between items-start mb-12 border-b pb-8">
+                            <!-- Logo -->
+                            <div class="mb-6 sm:mb-0">
+                                <template v-if="$page.props.app_logo">
+                                    <img :src="$page.props.app_logo" class="h-16 object-contain" alt="Logo" />
+                                </template>
+                                <template v-else>
+                                    <div class="w-12 h-12 bg-[#24134a] rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">V</div>
+                                </template>
                             </div>
+                            <!-- Company Info -->
+                            <div class="sm:text-right">
+                                <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 tracking-wider mb-2">INVOICE</h2>
+                                <p class="text-sm text-slate-600 font-medium">PT Viruzs Global Connection</p>
+                                <p class="text-sm text-slate-500">support@viruzs.my.id</p>
+                            </div>
+                        </div>
 
-                            <!-- Detail Content -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="space-y-4">
-                                    <h4 class="font-semibold text-slate-800 border-b pb-2">Informasi Tagihan</h4>
-                                    
-                                    <div class="grid grid-cols-3 text-sm">
-                                        <div class="text-slate-500 col-span-1">Judul</div>
-                                        <div class="text-slate-800 font-medium col-span-2">{{ currentInvoiceForDetail.judul }}</div>
-                                    </div>
-                                    
-                                    <div class="grid grid-cols-3 text-sm">
-                                        <div class="text-slate-500 col-span-1">Kategori</div>
-                                        <div class="text-slate-800 font-medium col-span-2">{{ currentInvoiceForDetail.kategori || '-' }}</div>
-                                    </div>
-                                    
-                                    <div class="grid grid-cols-3 text-sm">
-                                        <div class="text-slate-500 col-span-1">Tipe Bayar</div>
-                                        <div class="text-slate-800 font-medium col-span-2">{{ currentInvoiceForDetail.tipe_pembayaran || '-' }}</div>
-                                    </div>
-
-                                    <div class="grid grid-cols-3 text-sm">
-                                        <div class="text-slate-500 col-span-1">Tgl Tagihan</div>
-                                        <div class="text-slate-800 font-medium col-span-2">{{ currentInvoiceForDetail.tanggal_tagihan || '-' }}</div>
-                                    </div>
-
-                                    <div class="grid grid-cols-3 text-sm">
-                                        <div class="text-slate-500 col-span-1">Jatuh Tempo</div>
-                                        <div class="text-rose-600 font-medium col-span-2">{{ currentInvoiceForDetail.jatuh_tempo || '-' }}</div>
-                                    </div>
-                                    
-                                    <div class="grid grid-cols-1 text-sm pt-2">
-                                        <div class="text-slate-500 mb-1">Keterangan:</div>
-                                        <div class="text-slate-700 bg-slate-50 p-2 rounded-lg border border-slate-100 min-h-[60px]">{{ currentInvoiceForDetail.keterangan || '-' }}</div>
-                                    </div>
+                        <!-- Billed To & Meta -->
+                        <div class="flex flex-col sm:flex-row justify-between gap-8 mb-12">
+                            <!-- Client Info -->
+                            <div>
+                                <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2">Ditagihkan Kepada:</p>
+                                <p class="text-lg font-bold text-slate-800">{{ currentInvoiceForDetail.mitra_name || 'Mitra' }}</p>
+                            </div>
+                            <!-- Invoice Meta -->
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-start sm:justify-end gap-4">
+                                    <span class="text-slate-500 w-24">No. Invoice:</span>
+                                    <span class="font-bold text-slate-800 w-32 sm:text-right">{{ currentInvoiceForDetail.nomor_invoice }}</span>
                                 </div>
-
-                                <div class="space-y-4">
-                                    <h4 class="font-semibold text-slate-800 border-b pb-2">Rincian Pembayaran</h4>
-                                    
-                                    <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 space-y-3">
-                                        <div class="flex justify-between items-center text-sm">
-                                            <span class="text-slate-600">Total Tagihan</span>
-                                            <span class="font-bold text-slate-800 text-base">{{ formatRupiah(currentInvoiceForDetail.nominal) }}</span>
-                                        </div>
-                                        
-                                        <div class="flex justify-between items-center text-sm">
-                                            <span class="text-slate-600">Total Terbayar</span>
-                                            <span class="font-bold text-emerald-600">{{ formatRupiah(currentInvoiceForDetail.terbayar || 0) }}</span>
-                                        </div>
-                                        
-                                        <div class="pt-3 border-t border-indigo-200/60 flex justify-between items-center">
-                                            <span class="font-semibold text-slate-700">Sisa Tagihan</span>
-                                            <span class="font-bold text-rose-600 text-lg">{{ formatRupiah(currentInvoiceForDetail.nominal - (currentInvoiceForDetail.terbayar || 0)) }}</span>
-                                        </div>
-                                    </div>
+                                <div class="flex justify-start sm:justify-end gap-4">
+                                    <span class="text-slate-500 w-24">Tgl Tagihan:</span>
+                                    <span class="font-bold text-slate-800 w-32 sm:text-right">{{ currentInvoiceForDetail.tanggal_tagihan || '-' }}</span>
+                                </div>
+                                <div class="flex justify-start sm:justify-end gap-4">
+                                    <span class="text-slate-500 w-24">Jatuh Tempo:</span>
+                                    <span class="font-bold text-slate-800 w-32 sm:text-right">{{ currentInvoiceForDetail.jatuh_tempo || '-' }}</span>
+                                </div>
+                                <div class="flex justify-start sm:justify-end gap-4">
+                                    <span class="text-slate-500 w-24">Status:</span>
+                                    <span class="font-bold text-slate-800 w-32 sm:text-right uppercase">{{ currentInvoiceForDetail.status }}</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="bg-slate-50 px-4 py-4 sm:px-6 sm:flex sm:flex-row-reverse rounded-b-2xl border-t border-slate-200">
-                        <button type="button" @click="showDetailModal = false" class="w-full inline-flex justify-center rounded-xl border border-slate-300 shadow-sm px-6 py-2.5 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm">
-                            Tutup
-                        </button>
+
+                        <!-- Table -->
+                        <div class="mb-12">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100/70 border-y border-slate-200">
+                                        <th class="py-3 px-4 text-xs font-bold text-slate-600 uppercase tracking-wider">Deskripsi</th>
+                                        <th class="py-3 px-4 text-xs font-bold text-slate-600 uppercase tracking-wider text-center hidden sm:table-cell">Kategori</th>
+                                        <th class="py-3 px-4 text-xs font-bold text-slate-600 uppercase tracking-wider text-right">Jumlah</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-slate-100">
+                                        <td class="py-4 px-4">
+                                            <div class="font-bold text-slate-800">{{ currentInvoiceForDetail.judul }}</div>
+                                            <div class="text-sm text-slate-500 mt-1 max-w-sm">{{ currentInvoiceForDetail.keterangan || '-' }}</div>
+                                        </td>
+                                        <td class="py-4 px-4 text-center text-sm text-slate-700 hidden sm:table-cell">
+                                            {{ currentInvoiceForDetail.kategori || '-' }}<br>
+                                            <span class="text-xs text-slate-400">{{ currentInvoiceForDetail.tipe_pembayaran || '-' }}</span>
+                                        </td>
+                                        <td class="py-4 px-4 text-right font-bold text-slate-800">
+                                            {{ formatRupiah(currentInvoiceForDetail.nominal) }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Totals -->
+                        <div class="flex justify-end">
+                            <div class="w-full sm:w-1/2 md:w-1/3 space-y-3">
+                                <div class="flex justify-between items-center text-sm px-4">
+                                    <span class="text-slate-600 font-medium">Total Tagihan</span>
+                                    <span class="font-bold text-slate-800">{{ formatRupiah(currentInvoiceForDetail.nominal) }}</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm px-4">
+                                    <span class="text-slate-600 font-medium">Sudah Dibayar</span>
+                                    <span class="font-bold text-emerald-600">{{ formatRupiah(currentInvoiceForDetail.terbayar || 0) }}</span>
+                                </div>
+                                <div class="border-t-2 border-slate-800 pt-3 flex justify-between items-center px-4">
+                                    <span class="text-sm font-bold text-slate-800">SISA TAGIHAN</span>
+                                    <span class="text-lg font-bold text-rose-600">{{ formatRupiah(currentInvoiceForDetail.nominal - (currentInvoiceForDetail.terbayar || 0)) }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
