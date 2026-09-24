@@ -5,6 +5,7 @@ import KemitraanLayout from '@/Layouts/KemitraanLayout.vue';
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user || {});
+const isAdmin = computed(() => user.value.role !== 'kemitraan');
 
 const props = defineProps({
     profile: { type: Object, default: () => ({}) },
@@ -16,6 +17,10 @@ const form = useForm({
     _method: 'post',
     name: user.value.name || '',
     email: user.value.email || '',
+    
+    // Admin Only Edit Fields
+    status_akun: props.profile.status_akun || 'Aktif',
+    tipe_kemitraan: props.profile.tipe_kemitraan || 'Reseller ISP',
     
     // Data Mitra
     nik: props.profile.nik || '',
@@ -106,7 +111,14 @@ const formattedTodayDate = computed(() => {
                             </div>
                             <h4 class="font-semibold text-slate-800">Status Akun</h4>
                         </div>
-                        <span class="px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">Aktif</span>
+                        <span v-if="!editing || !isAdmin" class="px-3 py-1.5 rounded-full text-xs font-semibold" :class="profile.status_akun === 'Nonaktif' ? 'bg-red-100 text-red-700' : 'bg-emerald-100 text-emerald-700'">{{ profile.status_akun || 'Aktif' }}</span>
+                        <div v-else>
+                            <select v-model="form.status_akun" class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="Aktif">Aktif</option>
+                                <option value="Nonaktif">Nonaktif</option>
+                                <option value="Pending">Pending</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
                         <div class="flex items-center gap-3 mb-3">
@@ -128,7 +140,10 @@ const formattedTodayDate = computed(() => {
                             </div>
                             <h4 class="font-semibold text-slate-800">Tipe Kemitraan</h4>
                         </div>
-                        <p class="text-sm text-slate-600">Reseller ISP</p>
+                        <p v-if="!editing || !isAdmin" class="text-sm text-slate-600">{{ profile.tipe_kemitraan || 'Reseller ISP' }}</p>
+                        <div v-else>
+                            <input v-model="form.tipe_kemitraan" type="text" class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" />
+                        </div>
                     </div>
                 </div>
 
