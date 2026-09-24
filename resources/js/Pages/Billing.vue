@@ -535,6 +535,7 @@ const filteredCustomers = computed(() => {
             appliedAreaFilter.value === 'all' || customer.area === appliedAreaFilter.value;
 
         const matchesTab = 
+            appliedStatusFilter.value !== 'all' ||
             (activeTab.value === 'semua' && !hasJanjiBayar && !isSebagian && !isJatuhTempo && !isProrata) ||
             (activeTab.value === 'piutang' && isSebagian && isPiutang && !hasJanjiBayar) ||
             (activeTab.value === 'janji_bayar' && isPiutang && hasJanjiBayar) ||
