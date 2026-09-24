@@ -32,21 +32,15 @@ const formattedTodayDate = computed(() => {
 
 // Dummy Data
 const summary = {
-    total_mitra: 145,
-    mitra_baru: 12,
-    total_komisi: 12500000,
-    komisi_cair: 10000000
+    total_mitra: 0,
+    mitra_baru: 0,
+    total_komisi: 0,
+    komisi_cair: 0
 };
 
-const recentMitras = [
-    { id: 1, name: '(Contoh) Mitra 1', area: 'Area A', date: '24 Sep 2026', status: 'Aktif' },
-    { id: 2, name: '(Contoh) Mitra 2', area: 'Area B', date: '23 Sep 2026', status: 'Baru' },
-];
+const recentMitras = [];
 
-const recentActivities = [
-    { id: 1, title: 'Komisi dicairkan', desc: 'Pencairan komisi ke (Contoh) Mitra 1 - Rp 500.000', date: '24 Sep 2026' },
-    { id: 2, title: 'Mitra Baru Bergabung', desc: '(Contoh) Mitra 2 mendaftar sebagai mitra area Area B', date: '23 Sep 2026' },
-];
+const recentActivities = [];
 </script>
 
 <template>
@@ -215,24 +209,31 @@ const recentActivities = [
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-100">
-                                        <tr v-for="mitra in recentMitras" :key="mitra.id" class="hover:bg-slate-50 transition-colors">
-                                            <td class="py-3 px-4">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs">
-                                                        {{ mitra.name.substring(0,2).toUpperCase() }}
+                                        <template v-if="recentMitras.length > 0">
+                                            <tr v-for="mitra in recentMitras" :key="mitra.id" class="hover:bg-slate-50 transition-colors">
+                                                <td class="py-3 px-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs">
+                                                            {{ mitra.name.substring(0,2).toUpperCase() }}
+                                                        </div>
+                                                        <span class="font-medium text-slate-800">{{ mitra.name }}</span>
                                                     </div>
-                                                    <span class="font-medium text-slate-800">{{ mitra.name }}</span>
-                                                </div>
-                                            </td>
-                                            <td class="py-3 px-4">{{ mitra.area }}</td>
-                                            <td class="py-3 px-4">{{ mitra.date }}</td>
-                                            <td class="py-3 px-4 text-right">
-                                                <span :class="[
-                                                    mitra.status === 'Aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700',
-                                                    'px-2.5 py-1 rounded-full text-xs font-semibold'
-                                                ]">
-                                                    {{ mitra.status }}
-                                                </span>
+                                                </td>
+                                                <td class="py-3 px-4">{{ mitra.area }}</td>
+                                                <td class="py-3 px-4">{{ mitra.date }}</td>
+                                                <td class="py-3 px-4 text-right">
+                                                    <span :class="[
+                                                        mitra.status === 'Aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700',
+                                                        'px-2.5 py-1 rounded-full text-xs font-semibold'
+                                                    ]">
+                                                        {{ mitra.status }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                        <tr v-else>
+                                            <td colspan="4" class="py-12 text-center text-slate-500 text-sm">
+                                                Belum ada data mitra
                                             </td>
                                         </tr>
                                     </tbody>
@@ -255,20 +256,25 @@ const recentActivities = [
                         </div>
 
                         <div class="space-y-4">
-                            <div v-for="act in recentActivities" :key="act.id" class="flex gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-                                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                                    <svg v-if="act.title.includes('diterima') || act.title.includes('dicairkan')" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                                    </svg>
-                                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                    </svg>
+                            <template v-if="recentActivities.length > 0">
+                                <div v-for="act in recentActivities" :key="act.id" class="flex gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                                        <svg v-if="act.title.includes('diterima') || act.title.includes('dicairkan')" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                        </svg>
+                                        <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-slate-800">{{ act.title }}</h4>
+                                        <p class="text-xs text-slate-500 mt-1">{{ act.desc }}</p>
+                                        <p class="text-[10px] text-slate-400 mt-2">{{ act.date }}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h4 class="text-sm font-semibold text-slate-800">{{ act.title }}</h4>
-                                    <p class="text-xs text-slate-500 mt-1">{{ act.desc }}</p>
-                                    <p class="text-[10px] text-slate-400 mt-2">{{ act.date }}</p>
-                                </div>
+                            </template>
+                            <div v-else class="py-12 text-center text-slate-500 text-sm">
+                                Belum ada aktivitas
                             </div>
                         </div>
                     </div>
