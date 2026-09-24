@@ -181,10 +181,51 @@ Route::middleware(['auth'])->group(function () {
     })->name('kemitraan.booking.datasaya');
 
     Route::get('/kemitraan/bast', function () {
+        $user = auth()->user();
+        if ($user->role !== 'kemitraan') {
+            $bastList = DB::table('kemitraan_basts')
+                ->join('users', 'kemitraan_basts.user_id', '=', 'users.id')
+                ->select('kemitraan_basts.*', 'users.name as mitra_name')
+                ->orderBy('id', 'desc')
+                ->get();
+            $mitras = DB::table('users')->where('role', 'kemitraan')->get(['id', 'name']);
+        } else {
+            $bastList = DB::table('kemitraan_basts')->where('user_id', $user->id)->orderBy('id', 'desc')->get();
+            $mitras = [];
+        }
+
         return Inertia::render('Kemitraan/Bast', [
-            'bastList' => [],
+            'bastList' => $bastList,
+            'mitras' => $mitras,
+            'isAdmin' => $user->role !== 'kemitraan'
         ]);
     })->name('kemitraan.bast');
+
+    Route::post('/kemitraan/bast', function (Request $request) {
+        $user = auth()->user();
+        if ($user->role === 'kemitraan') abort(403);
+        
+        $data = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'tanggal' => 'required|date',
+            'judul' => 'required|string',
+            'keterangan' => 'nullable|string',
+            'status' => 'required|string'
+        ]);
+        
+        if ($request->hasFile('file_bast')) {
+            $data['file_bast'] = $request->file('file_bast')->store('kemitraan/bast', 'public');
+        }
+
+        if ($request->id) {
+            DB::table('kemitraan_basts')->where('id', $request->id)->update($data);
+        } else {
+            $data['created_at'] = now();
+            $data['updated_at'] = now();
+            DB::table('kemitraan_basts')->insert($data);
+        }
+        return redirect()->back()->with('success', 'BAST berhasil disimpan.');
+    })->name('kemitraan.bast.store');
 
     Route::get('/kemitraan/data-saya', function () {
         $user = auth()->user();
@@ -259,10 +300,49 @@ Route::middleware(['auth'])->group(function () {
     })->name('kemitraan.datasaya.update');
 
     Route::get('/kemitraan/invoice', function () {
+        $user = auth()->user();
+        if ($user->role !== 'kemitraan') {
+            $invoices = DB::table('kemitraan_invoices')
+                ->join('users', 'kemitraan_invoices.user_id', '=', 'users.id')
+                ->select('kemitraan_invoices.*', 'users.name as mitra_name')
+                ->orderBy('id', 'desc')
+                ->get();
+            $mitras = DB::table('users')->where('role', 'kemitraan')->get(['id', 'name']);
+        } else {
+            $invoices = DB::table('kemitraan_invoices')->where('user_id', $user->id)->orderBy('id', 'desc')->get();
+            $mitras = [];
+        }
         return Inertia::render('Kemitraan/Invoice', [
-            'invoices' => [],
+            'invoices' => $invoices,
+            'mitras' => $mitras,
+            'isAdmin' => $user->role !== 'kemitraan'
         ]);
     })->name('kemitraan.invoice');
+
+    Route::post('/kemitraan/invoice', function (Request $request) {
+        $user = auth()->user();
+        if ($user->role === 'kemitraan') abort(403);
+        
+        $data = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'nomor_invoice' => 'required|string',
+            'tanggal_tagihan' => 'required|date',
+            'jatuh_tempo' => 'required|date',
+            'nominal' => 'required|numeric',
+            'judul' => 'required|string',
+            'keterangan' => 'nullable|string',
+            'status' => 'required|string'
+        ]);
+        
+        if ($request->id) {
+            DB::table('kemitraan_invoices')->where('id', $request->id)->update($data);
+        } else {
+            $data['created_at'] = now();
+            $data['updated_at'] = now();
+            DB::table('kemitraan_invoices')->insert($data);
+        }
+        return redirect()->back()->with('success', 'Invoice berhasil disimpan.');
+    })->name('kemitraan.invoice.store');
 
     // DASHBOARD
     Route::get('/dashboard', function (Request $request) {
