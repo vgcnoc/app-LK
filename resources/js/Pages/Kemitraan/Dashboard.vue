@@ -1,7 +1,7 @@
-<script setup>
+﻿<script setup>
 import { ref, computed } from 'vue';
 import { Head, usePage } from '@inertiajs/vue3';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import KemitraanLayout from '@/Layouts/KemitraanLayout.vue';
 
 const props = defineProps({
     profile: {
@@ -56,12 +56,12 @@ const recentActivities = [
 <template>
     <Head title="Dashboard Kemitraan" />
 
-    <AuthenticatedLayout>
+    <KemitraanLayout>
         <template #header>
             <div class="hidden sm:flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div class="flex-1 min-w-0">
                     <h2 class="text-xl sm:text-3xl font-bold text-slate-800 tracking-tight break-words">
-                        Dashboard Kemitraan 🤝
+                        Dashboard Kemitraan ðŸ¤
                     </h2>
                     <p class="text-xs sm:text-sm text-slate-500 mt-1 break-words">
                         Pantau performa mitra dan komisi Anda dalam satu dashboard.
@@ -84,7 +84,7 @@ const recentActivities = [
                     <div class="relative z-10 w-2/3">
                         <p class="text-xs sm:text-sm text-slate-600 mb-1">Selamat datang,</p>
                         <h2 class="text-xl font-bold text-slate-900 leading-tight">
-                            {{ $page.props.auth.user.name }} 👋
+                            {{ $page.props.auth.user.name }} ðŸ‘‹
                         </h2>
                         <p class="text-xs text-slate-500 mt-2">Pantau kemitraan Anda dalam satu dashboard.</p>
                     </div>
@@ -280,5 +280,5 @@ const recentActivities = [
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </KemitraanLayout>
 </template>
