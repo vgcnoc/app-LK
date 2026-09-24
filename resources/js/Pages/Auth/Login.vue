@@ -304,10 +304,14 @@ const submit = () => {
                 </div>
 
                 <!-- Registration Link -->
-                <div class="mt-8 text-center">
+                <div class="mt-8 text-center space-y-2">
                     <p class="text-xs sm:text-sm text-slate-500 font-medium">
                         Ingin bergabung sebagai Mitra/Sales? 
                         <Link :href="route('register.affiliate')" class="font-bold text-purple-600 hover:text-purple-800 transition-colors underline-offset-2 hover:underline">Daftar Disini</Link>
+                    </p>
+                    <p class="text-xs sm:text-sm text-slate-500 font-medium">
+                        Atau bergabung sebagai Partner Kemitraan? 
+                        <Link :href="route('register.kemitraan')" class="font-bold text-purple-600 hover:text-purple-800 transition-colors underline-offset-2 hover:underline">Daftar Kemitraan</Link>
                     </p>
                 </div>
             </div>

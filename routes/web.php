@@ -77,11 +77,40 @@ Route::middleware('guest')->group(function () {
         ]);
 
         return redirect()->route('login')->with('status', 'Pendaftaran berhasil! Silakan masuk dengan email dan kata sandi Anda.');
+    Route::get('/register-kemitraan', function () {
+        $areas = \App\Models\Area::pluck('name');
+        return Inertia::render('Auth/RegisterKemitraan', [
+            'areas' => $areas,
+        ]);
+    })->name('register.kemitraan');
+
+    Route::post('/register-kemitraan', function (Request $request) {
+        // Basic placeholder for kemitraan registration
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+        
+        $user = \App\Models\User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+            'role' => 'kemitraan',
+        ]);
+        // Note: we can assign role 'kemitraan' if we have it in permissions, or fallback.
+        
+        return redirect()->route('login')->with('status', 'Pendaftaran kemitraan berhasil! Silakan masuk dengan email dan kata sandi Anda.');
     });
 });
 
 Route::middleware(['auth'])->group(function () {
     
+    // KEMITRAAN DASHBOARD
+    Route::get('/kemitraan', function () {
+        return Inertia::render('Kemitraan/Dashboard');
+    })->name('kemitraan.index');
+
     // DASHBOARD
     Route::get('/dashboard', function (Request $request) {
         $user = auth()->user();

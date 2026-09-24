@@ -320,6 +320,22 @@ const can = (perm) => permissions.value.includes(perm);
                     <span>Diagram Affiliate</span>
                 </Link>
 
+                <!-- Kemitraan -->
+                <Link
+                    :href="route('kemitraan.index')"
+                    :class="[
+                        route().current('kemitraan*')
+                            ? 'bg-[#432386] text-white font-semibold shadow-md'
+                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
+                    ]"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <span>Kemitraan</span>
+                </Link>
+
                 <!-- Data Komisi -->
                 <Link
                     v-if="can('akses_affiliate')"
