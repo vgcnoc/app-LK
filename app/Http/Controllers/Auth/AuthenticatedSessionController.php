@@ -35,9 +35,9 @@ class AuthenticatedSessionController extends Controller
 
         $user = $request->user();
 
-        // Redirect kemitraan users to kemitraan dashboard
+        // Redirect kemitraan users to Data Saya page
         if ($user->role === 'kemitraan') {
-            return redirect()->intended(route('kemitraan.index', absolute: false));
+            return redirect()->intended(route('kemitraan.datasaya', absolute: false));
         }
 
         return redirect()->intended(route('dashboard', absolute: false));

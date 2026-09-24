@@ -13,6 +13,8 @@ const form = useForm({
     name: '',
     email: '',
     phone: '',
+    alamat: '',
+    paket: '',
     password: '',
     password_confirmation: '',
 });
@@ -128,7 +130,26 @@ const submit = () => {
                         </div>
                     </div>
 
+                    <!-- Alamat Pemasangan -->
+                    <div>
+                        <label for="alamat" class="block text-xs font-bold text-slate-700 mb-1.5">Alamat Pemasangan *</label>
+                        <textarea id="alamat" v-model="form.alamat" rows="2" required class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white resize-none" placeholder="Alamat lengkap lokasi pemasangan"></textarea>
+                        <p v-if="form.errors.alamat" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.alamat }}</p>
+                    </div>
 
+                    <!-- Paket Internet -->
+                    <div>
+                        <label for="paket" class="block text-xs font-bold text-slate-700 mb-1.5">Paket Internet *</label>
+                        <select id="paket" v-model="form.paket" required class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white">
+                            <option value="">Pilih paket internet</option>
+                            <option value="10 Mbps">10 Mbps</option>
+                            <option value="20 Mbps">20 Mbps</option>
+                            <option value="30 Mbps">30 Mbps</option>
+                            <option value="50 Mbps">50 Mbps</option>
+                            <option value="100 Mbps">100 Mbps</option>
+                        </select>
+                        <p v-if="form.errors.paket" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.paket }}</p>
+                    </div>
 
                     <!-- Password -->
                     <div>

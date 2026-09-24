@@ -87,10 +87,12 @@ Route::middleware('guest')->group(function () {
     })->name('register.kemitraan');
 
     Route::post('/register-kemitraan', function (Request $request) {
-        // Basic placeholder for kemitraan registration
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'nullable|string|max:255',
+            'alamat' => 'required|string|max:1000',
+            'paket' => 'required|string|max:255',
             'password' => 'required|string|min:8|confirmed',
         ]);
         
@@ -100,7 +102,18 @@ Route::middleware('guest')->group(function () {
             'password' => \Illuminate\Support\Facades\Hash::make($request->password),
             'role' => 'kemitraan',
         ]);
-        // Note: we can assign role 'kemitraan' if we have it in permissions, or fallback.
+
+        // Otomatis buat booking kemitraan dari data pendaftaran
+        DB::table('kemitraan_bookings')->insert([
+            'user_id' => $user->id,
+            'nama_pelanggan' => $request->name,
+            'no_hp' => $request->phone,
+            'alamat' => $request->alamat,
+            'paket' => $request->paket,
+            'status' => 'Pending',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         
         return redirect()->route('login')->with('status', 'Pendaftaran kemitraan berhasil! Silakan masuk dengan email dan kata sandi Anda.');
     });
@@ -114,8 +127,15 @@ Route::middleware(['auth'])->group(function () {
     })->name('kemitraan.index');
 
     Route::get('/kemitraan/booking', function () {
+        $bookings = DB::table('kemitraan_bookings')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($b) {
+                $b->tanggal = \Carbon\Carbon::parse($b->created_at)->format('d M Y');
+                return $b;
+            });
         return Inertia::render('Kemitraan/Booking', [
-            'bookings' => [],
+            'bookings' => $bookings,
         ]);
     })->name('kemitraan.booking');
 

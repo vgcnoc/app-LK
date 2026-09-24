@@ -37,6 +37,9 @@ const sidebarOpen = ref(false);
 
 const permissions = computed(() => usePage().props.auth?.permissions || []);
 const can = (perm) => permissions.value.includes(perm);
+
+const userRole = computed(() => usePage().props.auth?.user?.role || '');
+const isAdmin = computed(() => userRole.value !== 'kemitraan');
 </script>
 
 <template>
@@ -86,37 +89,20 @@ const can = (perm) => permissions.value.includes(perm);
 
             <!-- Navigation Links -->
             <nav class="flex-1 flex flex-col px-4 py-4 space-y-2 overflow-y-auto">
-                <!-- Dashboard -->
+                <!-- Data Saya (paling atas untuk mitra) -->
                 <Link
-                    :href="route('kemitraan.index')"
+                    :href="route('kemitraan.datasaya')"
                     :class="[
-                        route().current('kemitraan.index')
-                            ? 'bg-[#432386] text-white font-semibold shadow-md'
-                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
-                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
-                    ]"
-                >
-                    <!-- Dashboard Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    <span>Dashboard</span>
-                </Link>
-
-                <!-- Booking -->
-                <Link
-                    :href="route('kemitraan.booking')"
-                    :class="[
-                        route().current('kemitraan.booking*')
+                        route().current('kemitraan.datasaya*')
                             ? 'bg-[#432386] text-white font-semibold shadow-md'
                             : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
                         'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
                     ]"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <span>Booking</span>
+                    <span>Data Saya</span>
                 </Link>
 
                 <!-- BAST -->
@@ -151,26 +137,52 @@ const can = (perm) => permissions.value.includes(perm);
                     <span>Invoice</span>
                 </Link>
 
+                <!-- === Menu khusus Admin (ISP) === -->
+                <template v-if="isAdmin">
+                    <!-- Divider -->
+                    <div class="my-3 px-3">
+                        <div class="border-t border-slate-700/60"></div>
+                    </div>
+
+                    <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">Admin ISP</p>
+
+                    <!-- Dashboard -->
+                    <Link
+                        :href="route('kemitraan.index')"
+                        :class="[
+                            route().current('kemitraan.index')
+                                ? 'bg-[#432386] text-white font-semibold shadow-md'
+                                : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                            'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
+                        ]"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span>Dashboard</span>
+                    </Link>
+
+                    <!-- Booking (Admin Only) -->
+                    <Link
+                        :href="route('kemitraan.booking')"
+                        :class="[
+                            route().current('kemitraan.booking*')
+                                ? 'bg-[#432386] text-white font-semibold shadow-md'
+                                : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
+                            'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
+                        ]"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span>Booking Mitra</span>
+                    </Link>
+                </template>
+
                 <!-- Divider -->
                 <div class="my-3 px-3">
                     <div class="border-t border-slate-700/60"></div>
                 </div>
-
-                <!-- Data Saya -->
-                <Link
-                    :href="route('kemitraan.datasaya')"
-                    :class="[
-                        route().current('kemitraan.datasaya*')
-                            ? 'bg-[#432386] text-white font-semibold shadow-md'
-                            : 'text-slate-300 lg:hover:text-white lg:hover:bg-white/5',
-                        'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150'
-                    ]"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    <span>Data Saya</span>
-                </Link>
 
                 <!-- Pengaturan -->
                 <Link
