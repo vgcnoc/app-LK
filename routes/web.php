@@ -174,6 +174,8 @@ Route::middleware(['auth'])->group(function () {
         if ($user->role === 'kemitraan') {
             unset($data['status_akun']);
             unset($data['tipe_kemitraan']);
+            unset($data['metro']);
+            unset($data['bandwidth']);
         }
 
         $files = ['file_ktp', 'file_nib', 'file_npwp', 'file_lokasi'];

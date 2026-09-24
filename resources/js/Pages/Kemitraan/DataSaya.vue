@@ -19,8 +19,10 @@ const form = useForm({
     email: user.value.email || '',
     
     // Admin Only Edit Fields
-    status_akun: props.profile.status_akun || 'Aktif',
+    status_akun: props.profile.status_akun || 'Pending',
     tipe_kemitraan: props.profile.tipe_kemitraan || 'Reseller ISP',
+    metro: props.profile.metro || 'Belum ada metro',
+    bandwidth: props.profile.bandwidth || '100 Mbps',
     
     // Data Mitra
     nik: props.profile.nik || '',
@@ -101,7 +103,7 @@ const formattedTodayDate = computed(() => {
             <div class="max-w-full mx-auto space-y-6">
 
                 <!-- Quick Info Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
                         <div class="flex items-center gap-3 mb-3">
                             <div class="bg-emerald-50 text-emerald-600 p-2 rounded-xl">
@@ -111,12 +113,19 @@ const formattedTodayDate = computed(() => {
                             </div>
                             <h4 class="font-semibold text-slate-800">Status Akun</h4>
                         </div>
-                        <span v-if="!editing || !isAdmin" class="px-3 py-1.5 rounded-full text-xs font-semibold" :class="profile.status_akun === 'Nonaktif' ? 'bg-red-100 text-red-700' : 'bg-emerald-100 text-emerald-700'">{{ profile.status_akun || 'Aktif' }}</span>
+                        <span v-if="!editing || !isAdmin" class="px-3 py-1.5 rounded-full text-xs font-semibold" 
+                            :class="{
+                                'bg-emerald-100 text-emerald-700': profile.status_akun === 'Aktif',
+                                'bg-red-100 text-red-700': profile.status_akun === 'Nonaktif',
+                                'bg-amber-100 text-amber-700': profile.status_akun === 'Pending' || !profile.status_akun,
+                                'bg-blue-100 text-blue-700': profile.status_akun === 'Survey Metro'
+                            }">{{ profile.status_akun || 'Pending' }}</span>
                         <div v-else>
                             <select v-model="form.status_akun" class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="Pending">Pending</option>
+                                <option value="Survey Metro">Survey Metro</option>
                                 <option value="Aktif">Aktif</option>
                                 <option value="Nonaktif">Nonaktif</option>
-                                <option value="Pending">Pending</option>
                             </select>
                         </div>
                     </div>
@@ -143,6 +152,57 @@ const formattedTodayDate = computed(() => {
                         <p v-if="!editing || !isAdmin" class="text-sm text-slate-600">{{ profile.tipe_kemitraan || 'Reseller ISP' }}</p>
                         <div v-else>
                             <input v-model="form.tipe_kemitraan" type="text" class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" />
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="bg-orange-50 text-orange-600 p-2 rounded-xl">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <h4 class="font-semibold text-slate-800">Metro</h4>
+                        </div>
+                        <p v-if="!editing || !isAdmin" class="text-sm font-semibold text-slate-700">{{ profile.metro || 'Belum ada metro' }}</p>
+                        <div v-else>
+                            <select v-model="form.metro" class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="Belum ada metro">Belum ada metro</option>
+                                <option value="Indosat">Indosat</option>
+                                <option value="Iforte">Iforte</option>
+                                <option value="Fiberstar">Fiberstar</option>
+                                <option value="Asnet">Asnet</option>
+                                <option value="Lintas Arta">Lintas Arta</option>
+                                <option value="MAP">MAP</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bandwidth Card -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 md:col-span-1">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="bg-blue-50 text-blue-600 p-2 rounded-xl">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                                </svg>
+                            </div>
+                            <h4 class="font-semibold text-slate-800">Bandwidth</h4>
+                        </div>
+                        <p v-if="!editing || !isAdmin" class="text-sm font-semibold text-slate-700">{{ profile.bandwidth || '100 Mbps' }}</p>
+                        <div v-else>
+                            <select v-model="form.bandwidth" class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="100 Mbps">100 Mbps</option>
+                                <option value="200 Mbps">200 Mbps</option>
+                                <option value="300 Mbps">300 Mbps</option>
+                                <option value="500 Mbps">500 Mbps</option>
+                                <option value="1 Gbps">1 Gbps</option>
+                                <option value="1,5 Gbps">1,5 Gbps</option>
+                                <option value="2 Gbps">2 Gbps</option>
+                                <option value="3 Gbps">3 Gbps</option>
+                                <option value="4 Gbps">4 Gbps</option>
+                                <option value="5 Gbps">5 Gbps</option>
+                            </select>
                         </div>
                     </div>
                 </div>
