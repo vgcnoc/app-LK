@@ -1,4 +1,4 @@
-﻿<script setup>
+<script setup>
 import { ref, computed } from 'vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import KemitraanLayout from '@/Layouts/KemitraanLayout.vue';
@@ -54,7 +54,7 @@ const recentActivities = [
 </script>
 
 <template>
-    <Head title="Dashboard Kemitraan 🤝
+    <Head title="Dashboard Kemitraan 🤝" />
 
     <KemitraanLayout>
         <template #header>
