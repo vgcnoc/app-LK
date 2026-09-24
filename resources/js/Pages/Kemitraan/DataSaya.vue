@@ -9,14 +9,18 @@ const isAdmin = computed(() => user.value.role !== 'kemitraan');
 
 const props = defineProps({
     profile: { type: Object, default: () => ({}) },
+    targetUser: { type: Object, default: () => ({}) },
+    isAdminViewingMitra: { type: Boolean, default: false },
 });
 
 const editing = ref(false);
 
+const displayUser = computed(() => props.targetUser?.id ? props.targetUser : user.value);
+
 const form = useForm({
     _method: 'post',
-    name: user.value.name || '',
-    email: user.value.email || '',
+    name: displayUser.value.name || '',
+    email: displayUser.value.email || '',
     
     // Admin Only Edit Fields
     status_akun: props.profile.status_akun || 'Pending',
@@ -57,7 +61,11 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('kemitraan.datasaya.update'), {
+    const routeUrl = props.isAdminViewingMitra 
+        ? route('kemitraan.datasaya', { id: props.targetUser.id }) 
+        : route('kemitraan.datasaya');
+
+    form.post(routeUrl, {
         preserveScroll: true,
         onSuccess: () => {
             editing.value = false;
@@ -138,7 +146,7 @@ const formattedTodayDate = computed(() => {
                             </div>
                             <h4 class="font-semibold text-slate-800">Terdaftar Sejak</h4>
                         </div>
-                        <p class="text-sm text-slate-600">{{ user.created_at ? new Date(user.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) : '-' }}</p>
+                        <p class="text-sm text-slate-600">{{ displayUser.created_at ? new Date(displayUser.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) : '-' }}</p>
                     </div>
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
                         <div class="flex items-center gap-3 mb-3">
@@ -227,10 +235,10 @@ const formattedTodayDate = computed(() => {
                             <div>
                                 <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Data Mitra</h4>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Nama Lengkap / Nama Usaha</label><p class="text-sm font-medium text-slate-800">{{ user.name || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Nama Lengkap / Nama Usaha</label><p class="text-sm font-medium text-slate-800">{{ displayUser.name || '-' }}</p></div>
                                     <div><label class="text-xs font-medium text-slate-400 block mb-1">NIK</label><p class="text-sm font-medium text-slate-800">{{ profile.nik || '-' }}</p></div>
                                     <div><label class="text-xs font-medium text-slate-400 block mb-1">No. WhatsApp</label><p class="text-sm font-medium text-slate-800">{{ profile.no_wa || '-' }}</p></div>
-                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Email</label><p class="text-sm font-medium text-slate-800">{{ user.email || '-' }}</p></div>
+                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Email</label><p class="text-sm font-medium text-slate-800">{{ displayUser.email || '-' }}</p></div>
                                     <div><label class="text-xs font-medium text-slate-400 block mb-1">Kota/Kabupaten</label><p class="text-sm font-medium text-slate-800">{{ profile.kota || '-' }}</p></div>
                                     <div><label class="text-xs font-medium text-slate-400 block mb-1">Provinsi</label><p class="text-sm font-medium text-slate-800">{{ profile.provinsi || '-' }}</p></div>
                                     <div class="md:col-span-3"><label class="text-xs font-medium text-slate-400 block mb-1">Alamat Lengkap</label><p class="text-sm font-medium text-slate-800">{{ profile.alamat || '-' }}</p></div>

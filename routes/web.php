@@ -143,6 +143,30 @@ Route::middleware(['auth'])->group(function () {
         // Placeholder: store booking logic here
         return redirect()->route('kemitraan.booking');
     })->name('kemitraan.booking.store');
+    
+    // Add route to view a specific booking's Data Saya
+    Route::get('/kemitraan/booking/{id}/datasaya', function ($id) {
+        $currentUser = auth()->user();
+        if ($currentUser->role === 'kemitraan') abort(403); // only admin can access this
+
+        $targetUser = \App\Models\User::where('role', 'kemitraan')->findOrFail($id);
+        
+        $profile = DB::table('kemitraan_profiles')->where('user_id', $targetUser->id)->first();
+        if (!$profile) {
+            $profile = (object)[];
+        }
+
+        return Inertia::render('Kemitraan/DataSaya', [
+            'profile' => $profile,
+            'targetUser' => [
+                'id' => $targetUser->id,
+                'name' => $targetUser->name,
+                'email' => $targetUser->email,
+                'created_at' => $targetUser->created_at,
+            ],
+            'isAdminViewingMitra' => true,
+        ]);
+    })->name('kemitraan.booking.datasaya');
 
     Route::get('/kemitraan/bast', function () {
         return Inertia::render('Kemitraan/Bast', [
@@ -152,20 +176,35 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/kemitraan/data-saya', function () {
         $user = auth()->user();
+        
         $profile = DB::table('kemitraan_profiles')->where('user_id', $user->id)->first();
         if (!$profile) {
             $profile = (object)[]; // pass empty object
         }
         return Inertia::render('Kemitraan/DataSaya', [
             'profile' => $profile,
+            'targetUser' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'created_at' => $user->created_at,
+            ],
+            'isAdminViewingMitra' => false,
         ]);
     })->name('kemitraan.datasaya');
 
-    Route::post('/kemitraan/data-saya', function (Request $request) {
-        $user = auth()->user();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->save();
+    Route::post('/kemitraan/data-saya/{id?}', function (Request $request, $id = null) {
+        $currentUser = auth()->user();
+        
+        if ($id && $currentUser->role !== 'kemitraan') {
+            $targetUser = \App\Models\User::findOrFail($id);
+        } else {
+            $targetUser = $currentUser;
+        }
+
+        $targetUser->name = $request->name;
+        $targetUser->email = $request->email;
+        $targetUser->save();
 
         // Handle file uploads if any
         $data = $request->except(['name', 'email', 'file_ktp', 'file_nib', 'file_npwp', 'file_lokasi', '_method']);
@@ -187,7 +226,7 @@ Route::middleware(['auth'])->group(function () {
         }
 
         DB::table('kemitraan_profiles')->updateOrInsert(
-            ['user_id' => $user->id],
+            ['user_id' => $targetUser->id],
             $data
         );
 
