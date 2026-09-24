@@ -62,8 +62,8 @@ const form = useForm({
 
 const submit = () => {
     const routeUrl = props.isAdminViewingMitra 
-        ? route('kemitraan.datasaya', { id: props.targetUser.id }) 
-        : route('kemitraan.datasaya');
+        ? route('kemitraan.datasaya.update', { id: props.targetUser.id }) 
+        : route('kemitraan.datasaya.update');
 
     form.post(routeUrl, {
         preserveScroll: true,
