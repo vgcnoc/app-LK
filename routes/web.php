@@ -206,43 +206,56 @@ Route::middleware(['auth'])->group(function () {
     })->name('kemitraan.datasaya');
 
     Route::post('/kemitraan/data-saya/{id?}', function (Request $request, $id = null) {
-        $currentUser = auth()->user();
-        
-        if ($id && $currentUser->role !== 'kemitraan') {
-            $targetUser = \App\Models\User::findOrFail($id);
-        } else {
-            $targetUser = $currentUser;
-        }
-
-        $targetUser->name = $request->name;
-        $targetUser->email = $request->email;
-        $targetUser->save();
-
-        // Handle file uploads if any
-        $data = $request->except(['name', 'email', 'file_ktp', 'file_nib', 'file_npwp', 'file_lokasi', '_method']);
-        
-        // Prevent non-admins from changing their status or tipe
-        if ($currentUser->role === 'kemitraan') {
-            unset($data['status_akun']);
-            unset($data['tipe_kemitraan']);
-            unset($data['metro']);
-            unset($data['bandwidth']);
-        }
-
-        $files = ['file_ktp', 'file_nib', 'file_npwp', 'file_lokasi'];
-        foreach ($files as $fileKey) {
-            if ($request->hasFile($fileKey)) {
-                $path = $request->file($fileKey)->store('kemitraan/dokumen', 'public');
-                $data[$fileKey] = $path;
+        try {
+            $currentUser = auth()->user();
+            
+            if ($id && $currentUser->role !== 'kemitraan') {
+                $targetUser = \App\Models\User::findOrFail($id);
+            } else {
+                $targetUser = $currentUser;
             }
+
+            $targetUser->name = $request->name;
+            $targetUser->email = $request->email;
+            $targetUser->save();
+
+            // Handle file uploads if any
+            $data = $request->except(['name', 'email', 'file_ktp', 'file_nib', 'file_npwp', 'file_lokasi', '_method']);
+            
+            // Prevent non-admins from changing their status or tipe
+            if ($currentUser->role === 'kemitraan') {
+                unset($data['status_akun']);
+                unset($data['tipe_kemitraan']);
+                unset($data['metro']);
+                unset($data['bandwidth']);
+            }
+
+            $files = ['file_ktp', 'file_nib', 'file_npwp', 'file_lokasi'];
+            foreach ($files as $fileKey) {
+                if ($request->hasFile($fileKey)) {
+                    $path = $request->file($fileKey)->store('kemitraan/dokumen', 'public');
+                    $data[$fileKey] = $path;
+                }
+            }
+
+            // Convert empty strings to null for integer fields just in case
+            if (isset($data['estimasi_pelanggan']) && $data['estimasi_pelanggan'] === '') {
+                $data['estimasi_pelanggan'] = null;
+            }
+            if (isset($data['jumlah_teknisi']) && $data['jumlah_teknisi'] === '') {
+                $data['jumlah_teknisi'] = null;
+            }
+
+            DB::table('kemitraan_profiles')->updateOrInsert(
+                ['user_id' => $targetUser->id],
+                $data
+            );
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            \Log::error('DataSaya Update Error: ' . $e->getMessage() . ' - ' . $e->getTraceAsString());
+            throw $e;
         }
-
-        DB::table('kemitraan_profiles')->updateOrInsert(
-            ['user_id' => $targetUser->id],
-            $data
-        );
-
-        return redirect()->back();
     })->name('kemitraan.datasaya.update');
 
     Route::get('/kemitraan/invoice', function () {
