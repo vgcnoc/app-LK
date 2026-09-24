@@ -222,7 +222,7 @@ Route::middleware(['auth'])->group(function () {
         $data = $request->except(['name', 'email', 'file_ktp', 'file_nib', 'file_npwp', 'file_lokasi', '_method']);
         
         // Prevent non-admins from changing their status or tipe
-        if ($user->role === 'kemitraan') {
+        if ($currentUser->role === 'kemitraan') {
             unset($data['status_akun']);
             unset($data['tipe_kemitraan']);
             unset($data['metro']);
