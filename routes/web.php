@@ -77,6 +77,8 @@ Route::middleware('guest')->group(function () {
         ]);
 
         return redirect()->route('login')->with('status', 'Pendaftaran berhasil! Silakan masuk dengan email dan kata sandi Anda.');
+    });
+
     Route::get('/register-kemitraan', function () {
         $areas = \App\Models\Area::pluck('name');
         return Inertia::render('Auth/RegisterKemitraan', [
