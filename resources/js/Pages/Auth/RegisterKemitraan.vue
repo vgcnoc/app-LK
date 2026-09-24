@@ -47,7 +47,7 @@ const submit = () => {
                     <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-[#321d8b] font-bold text-2xl shadow-lg">V</div>
                     <div>
                         <h1 class="text-xl font-bold tracking-tight leading-tight">VIRUZS</h1>
-                        <p class="text-[10px] tracking-widest text-indigo-200 uppercase">Affiliate Program</p>
+                        <p class="text-[10px] tracking-widest text-indigo-200 uppercase">Reseller ISP Program</p>
                     </div>
                 </div>
             </div>
@@ -68,8 +68,8 @@ const submit = () => {
                             <svg class="w-6 h-6 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                         <div>
-                            <h4 class="font-semibold text-white text-base">Komisi Berjenjang</h4>
-                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Dapatkan komisi dari penjualan langsung dan downline Anda</p>
+                            <h4 class="font-semibold text-white text-base">Harga Khusus Reseller</h4>
+                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Dapatkan harga bandwidth khusus dan maksimalkan margin keuntungan bisnis Anda</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4 group">
@@ -77,8 +77,8 @@ const submit = () => {
                             <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                         </div>
                         <div>
-                            <h4 class="font-semibold text-white text-base">Penghasilan Pasif</h4>
-                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Komisi bulanan berulang selama pelanggan aktif berlangganan</p>
+                            <h4 class="font-semibold text-white text-base">Dukungan Infrastruktur</h4>
+                            <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Berbisnis tanpa perlu investasi infrastruktur besar, didukung penuh oleh tim teknis kami</p>
                         </div>
                     </div>
                 </div>
@@ -137,16 +137,21 @@ const submit = () => {
                         <p v-if="form.errors.alamat" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.alamat }}</p>
                     </div>
 
-                    <!-- Paket Internet -->
+                    <!-- Bandwidth -->
                     <div>
-                        <label for="paket" class="block text-xs font-bold text-slate-700 mb-1.5">Paket Internet *</label>
+                        <label for="paket" class="block text-xs font-bold text-slate-700 mb-1.5">Bandwidth *</label>
                         <select id="paket" v-model="form.paket" required class="block w-full py-3 px-4 sm:text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-sm font-medium text-slate-800 transition-colors bg-white hover:bg-slate-50 focus:bg-white">
-                            <option value="">Pilih paket internet</option>
-                            <option value="10 Mbps">10 Mbps</option>
-                            <option value="20 Mbps">20 Mbps</option>
-                            <option value="30 Mbps">30 Mbps</option>
-                            <option value="50 Mbps">50 Mbps</option>
+                            <option value="">Pilih kapasitas bandwidth</option>
                             <option value="100 Mbps">100 Mbps</option>
+                            <option value="200 Mbps">200 Mbps</option>
+                            <option value="300 Mbps">300 Mbps</option>
+                            <option value="500 Mbps">500 Mbps</option>
+                            <option value="1 Gbps">1 Gbps</option>
+                            <option value="1,5 Gbps">1,5 Gbps</option>
+                            <option value="2 Gbps">2 Gbps</option>
+                            <option value="3 Gbps">3 Gbps</option>
+                            <option value="4 Gbps">4 Gbps</option>
+                            <option value="5 Gbps">5 Gbps</option>
                         </select>
                         <p v-if="form.errors.paket" class="mt-1.5 text-xs font-medium text-rose-500">{{ form.errors.paket }}</p>
                     </div>
