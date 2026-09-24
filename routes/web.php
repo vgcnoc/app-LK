@@ -319,12 +319,18 @@ Route::middleware(['auth'])->group(function () {
                 ->orderBy('kemitraan_payments.tanggal_bayar', 'desc')
                 ->get();
         } else {
-            $invoices = DB::table('kemitraan_invoices')->where('user_id', $user->id)->orderBy('id', 'desc')->get();
+            $invoices = DB::table('kemitraan_invoices')
+                ->join('users', 'kemitraan_invoices.user_id', '=', 'users.id')
+                ->where('kemitraan_invoices.user_id', $user->id)
+                ->select('kemitraan_invoices.*', 'users.name as mitra_name')
+                ->orderBy('kemitraan_invoices.id', 'desc')
+                ->get();
             $mitras = [];
             $payments = DB::table('kemitraan_payments')
                 ->join('kemitraan_invoices', 'kemitraan_payments.invoice_id', '=', 'kemitraan_invoices.id')
+                ->join('users', 'kemitraan_invoices.user_id', '=', 'users.id')
                 ->where('kemitraan_invoices.user_id', $user->id)
-                ->select('kemitraan_payments.*', 'kemitraan_invoices.nomor_invoice', 'kemitraan_invoices.judul')
+                ->select('kemitraan_payments.*', 'kemitraan_invoices.nomor_invoice', 'kemitraan_invoices.judul', 'users.name as mitra_name')
                 ->orderBy('kemitraan_payments.tanggal_bayar', 'desc')
                 ->get();
         }
