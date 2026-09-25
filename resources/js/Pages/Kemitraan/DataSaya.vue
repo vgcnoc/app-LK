@@ -773,14 +773,23 @@ const getStatusDate = (stepName) => {
                     <div class="text-[120px] font-extrabold uppercase rotate-[-30deg] tracking-widest whitespace-nowrap">VIRUZS</div>
                 </div>
 
-                <div class="relative z-10 flex flex-col min-h-screen">
-                    <!-- Kop Surat (Letterhead) -->
-                    <div class="w-full overflow-hidden flex-shrink-0">
-                        <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1]">
-                    </div>
-
-                    <!-- Content Area -->
-                    <div class="px-8 py-4 sm:px-12 sm:py-6 print:px-12 print:py-6 flex-grow">
+                <div class="relative z-10 w-full min-h-screen">
+                    <table class="w-full">
+                        <thead class="table-header-group">
+                            <tr>
+                                <td>
+                                    <!-- Kop Surat (Letterhead) -->
+                                    <div class="w-full overflow-hidden flex-shrink-0 h-24 sm:h-32 relative">
+                                        <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] absolute top-0">
+                                    </div>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody class="table-row-group">
+                            <tr>
+                                <td>
+                                    <!-- Content Area -->
+                                    <div class="px-8 py-4 sm:px-12 sm:py-6 print:px-12 print:py-6 flex-grow">
                         <div class="text-center mb-6 font-bold flex flex-col items-center">
                             <p class="text-xl underline mb-1">PROFIL KEMITRAAN</p>
                             <p class="text-sm font-normal">Tanggal Cetak: {{ formattedTodayDate }}</p>
@@ -871,18 +880,27 @@ const getStatusDate = (stepName) => {
                             Demikian profil kemitraan ini dicetak sebagai dokumen resmi yang sah sesuai dengan data yang terdaftar pada sistem kami.
                         </p>
 
-                        <div class="flex justify-end mt-12 pr-12">
+                        <div class="flex justify-end mt-12 pr-12 pb-8">
                             <div class="text-center">
                                 <p class="mb-20">Mengetahui,<br>Penanggung Jawab Kemitraan</p>
                                 <p class="font-bold underline">{{ profile.nama_pic || displayUser.name }}</p>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Footer Kop Surat -->
-                    <div class="w-full mt-auto overflow-hidden flex-shrink-0">
-                        <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom">
-                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="table-footer-group">
+                            <tr>
+                                <td>
+                                    <!-- Footer Kop Surat -->
+                                    <div class="w-full overflow-hidden flex-shrink-0 h-20 sm:h-24 relative mt-4">
+                                        <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom absolute bottom-0">
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>

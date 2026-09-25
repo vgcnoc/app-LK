@@ -368,7 +368,7 @@ const isAdmin = computed(() => userRole.value !== 'kemitraan');
             </main>
 
             <!-- Mobile Bottom Navigation -->
-            <nav class="lg:hidden fixed bottom-0 w-full bg-white border-t border-slate-200 flex justify-around items-center pb-safe z-40 h-16 shadow-[0_-2px_10px_rgba(0,0,0,0.02)]">
+            <nav class="lg:hidden print:hidden fixed bottom-0 w-full bg-white border-t border-slate-200 flex justify-around items-center pb-safe z-40 h-16 shadow-[0_-2px_10px_rgba(0,0,0,0.02)]">
                 <Link :href="route('kemitraan.index')" :class="[route().current('kemitraan.index') ? 'text-blue-600' : 'text-slate-500', 'flex flex-col items-center justify-center w-full h-full space-y-1']">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     <span class="text-[10px] font-medium">Dashboard</span>
