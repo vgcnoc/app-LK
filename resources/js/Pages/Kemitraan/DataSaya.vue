@@ -170,7 +170,7 @@ const printPage = () => {
         </template>
 
         <div class="py-4 sm:py-8 bg-slate-50 min-h-screen">
-            <div class="max-w-full mx-auto space-y-6">
+            <div class="max-w-full mx-auto space-y-6 print:hidden">
 
                 <!-- Quick Info Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -672,6 +672,126 @@ const printPage = () => {
                     </div>
                 </div>
 
+            </div>
+
+            <!-- Printable Area (Only visible on print) -->
+            <div class="hidden print:flex flex-col bg-white w-full h-auto min-h-screen" style="font-family: 'Times New Roman', Times, serif; color: black; line-height: 1.5; font-size: 14px;">
+                <!-- Watermark for Print -->
+                <div class="hidden print:flex absolute inset-0 z-0 items-center justify-center opacity-[0.05] pointer-events-none select-none overflow-hidden">
+                    <div class="text-[120px] font-extrabold uppercase rotate-[-30deg] tracking-widest whitespace-nowrap">VIRUZS</div>
+                </div>
+
+                <div class="relative z-10 flex flex-col min-h-screen">
+                    <!-- Kop Surat (Letterhead) -->
+                    <div class="w-full overflow-hidden flex-shrink-0">
+                        <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1]">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div class="px-8 py-4 sm:px-12 sm:py-6 print:px-12 print:py-6 flex-grow">
+                        <div class="text-center mb-6 font-bold flex flex-col items-center">
+                            <p class="text-xl underline mb-1">PROFIL KEMITRAAN</p>
+                            <p class="text-sm font-normal">Tanggal Cetak: {{ formattedTodayDate }}</p>
+                        </div>
+                        
+                        <p class="mb-4 text-justify leading-relaxed">
+                            Berikut adalah data lengkap profil kemitraan yang terdaftar pada sistem kami:
+                        </p>
+
+                        <table class="w-full text-sm mb-6 border-collapse">
+                            <tbody>
+                                <tr>
+                                    <td class="py-2 w-48 font-bold align-top">Nama Kemitraan</td>
+                                    <td class="py-2 w-4 align-top">:</td>
+                                    <td class="py-2 align-top">{{ displayUser.name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-bold align-top">Email</td>
+                                    <td class="py-2 align-top">:</td>
+                                    <td class="py-2 align-top">{{ displayUser.email }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-bold align-top">Tipe Kemitraan</td>
+                                    <td class="py-2 align-top">:</td>
+                                    <td class="py-2 align-top">{{ profile.tipe_kemitraan }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-bold align-top">Metro / Backbone</td>
+                                    <td class="py-2 align-top">:</td>
+                                    <td class="py-2 align-top">{{ profile.metro }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-bold align-top">Bandwidth</td>
+                                    <td class="py-2 align-top">:</td>
+                                    <td class="py-2 align-top">{{ profile.bandwidth }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-bold align-top">Nama Penanggung Jawab</td>
+                                    <td class="py-2 align-top">:</td>
+                                    <td class="py-2 align-top">{{ profile.nama_pic }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-bold align-top">No WhatsApp</td>
+                                    <td class="py-2 align-top">:</td>
+                                    <td class="py-2 align-top">{{ profile.wa_pic }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-bold align-top">Alamat Kemitraan</td>
+                                    <td class="py-2 align-top">:</td>
+                                    <td class="py-2 align-top">{{ profile.alamat }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-bold align-top">Titik Koordinat</td>
+                                    <td class="py-2 align-top">:</td>
+                                    <td class="py-2 align-top">{{ profile.titik_koordinat }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-bold align-top">Rekening Pembayaran</td>
+                                    <td class="py-2 align-top">:</td>
+                                    <td class="py-2 align-top">{{ profile.rekening }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div v-if="form.tim_teknisi && form.tim_teknisi.length > 0" class="mb-6">
+                            <p class="font-bold mb-2">Tim Teknisi:</p>
+                            <table class="w-full text-sm border-collapse border border-slate-800">
+                                <thead>
+                                    <tr>
+                                        <th class="border border-slate-800 py-1 px-2 bg-slate-100 w-12 text-center">No</th>
+                                        <th class="border border-slate-800 py-1 px-2 bg-slate-100 text-left">Nama Teknisi</th>
+                                        <th class="border border-slate-800 py-1 px-2 bg-slate-100 text-left">No WhatsApp</th>
+                                        <th class="border border-slate-800 py-1 px-2 bg-slate-100 text-center">Seragam</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(teknisi, index) in form.tim_teknisi" :key="index">
+                                        <td class="border border-slate-800 py-1 px-2 text-center">{{ index + 1 }}</td>
+                                        <td class="border border-slate-800 py-1 px-2">{{ teknisi.nama }}</td>
+                                        <td class="border border-slate-800 py-1 px-2">{{ teknisi.wa }}</td>
+                                        <td class="border border-slate-800 py-1 px-2 text-center">{{ teknisi.seragam || '-' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p class="text-justify leading-relaxed mt-8">
+                            Demikian profil kemitraan ini dicetak sebagai dokumen resmi yang sah sesuai dengan data yang terdaftar pada sistem kami.
+                        </p>
+
+                        <div class="flex justify-end mt-12 pr-12">
+                            <div class="text-center">
+                                <p class="mb-20">Mengetahui,<br>Penanggung Jawab Kemitraan</p>
+                                <p class="font-bold underline">{{ profile.nama_pic || displayUser.name }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Kop Surat -->
+                    <div class="w-full mt-auto overflow-hidden flex-shrink-0">
+                        <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom">
+                    </div>
+                </div>
             </div>
         </div>
     </KemitraanLayout>
