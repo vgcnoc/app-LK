@@ -780,46 +780,11 @@ const getStatusDate = (stepName) => {
                     </div>
 
                     <table class="w-full border-collapse">
-                        <thead class="print:table-header-group">
-                            <tr>
                                 <td class="p-0 border-none">
-                                    <!-- Kop Surat (Letterhead) HTML Version -->
-                                    <div class="w-full bg-white pt-8 px-12">
-                                        <div class="flex items-center justify-between pb-4">
-                                            <div class="w-[220px]">
-                                                <img :src="$page.props.app_logo || '/storage/logos/Cl75bRUsccCcsigWCG0W734eu5Az2aIXta9ROWCI.png'" class="w-full h-auto object-contain" />
-                                            </div>
-                                            <div class="text-right" style="font-family: Arial, sans-serif;">
-                                                <h1 class="text-[20px] font-extrabold text-[#432386] mb-2">PT VIRUZS GLOBAL CONNECTION</h1>
-                                                <div class="flex flex-col items-end text-[13px] leading-[1.4] space-y-0.5 text-black">
-                                                    <div class="flex items-start gap-2 justify-end">
-                                                        <span>●</span>
-                                                        <span class="text-left text-[12.5px]">Jl.Cilandak,RT 002 RW 002,Desa<br>Sirnajaya,Kec.Warungkiara,Kab.Sukabumi,Jawa Barat 43362</span>
-                                                    </div>
-                                                    <div class="flex items-center gap-2 justify-end font-semibold">
-                                                        <span>☎</span>
-                                                        <span>+62 889 7639 7034</span>
-                                                    </div>
-                                                    <div class="flex items-center gap-2 justify-end">
-                                                        <span>✉</span>
-                                                        <span class="text-blue-700 underline">info@viruzs.co.id</span> , <span class="text-blue-700 underline">info@viruzs.net</span>
-                                                    </div>
-                                                    <div class="flex items-center gap-2 justify-end">
-                                                        <span>◉</span>
-                                                        <span>www.viruzs.co.id</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Line Divider -->
-                                        <div class="flex items-center w-full mb-2">
-                                            <div class="h-3.5 w-[28%] bg-[#432386]" style="clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%)"></div>
-                                            <div class="h-3.5 w-14 bg-[#ff6600] mx-1" style="clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%)"></div>
-                                            <div class="h-[1.5px] flex-1 bg-[#432386] relative ml-1">
-                                                <div class="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full border-[1.5px] border-[#432386] bg-white"></div>
-                                            </div>
-                                        </div>
+                                    <!-- Kop Surat (Letterhead) -->
+                                    <div class="w-full text-center">
+                                        <!-- Using the exact image without scaling to prevent blurriness -->
+                                        <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="max-w-full h-auto mx-auto print:max-w-full">
                                     </div>
                                 </td>
                             </tr>
