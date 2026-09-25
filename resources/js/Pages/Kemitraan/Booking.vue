@@ -63,6 +63,17 @@ const openBastModal = (item) => {
         if (isPop && draftBastData.value.pihak2_jabatan === 'DIREKTUR') {
             draftBastData.value.pihak2_jabatan = 'KOORDINATOR POP';
         }
+        
+        // Ensure dates are correct based on current status, overriding old saved defaults
+        if (item.status_akun !== 'Aktif') {
+            draftBastData.value.layanan_tanggal_instalasi = '';
+            draftBastData.value.layanan_tanggal_aktivasi = '';
+            draftBastData.value.layanan_tanggal_aktif = '';
+        } else {
+            if (!draftBastData.value.layanan_tanggal_instalasi) draftBastData.value.layanan_tanggal_instalasi = ymdDate;
+            if (!draftBastData.value.layanan_tanggal_aktivasi) draftBastData.value.layanan_tanggal_aktivasi = ymdDate;
+            if (!draftBastData.value.layanan_tanggal_aktif) draftBastData.value.layanan_tanggal_aktif = ymdDate;
+        }
     } else {
         draftBastData.value = {
             nomor: autoNomor,
