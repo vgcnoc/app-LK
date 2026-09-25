@@ -158,7 +158,10 @@ const currentStepIndex = computed(() => {
 });
 
 const getStatusDate = (stepName) => {
-    const dateStr = statusHistory.value[stepName];
+    let dateStr = statusHistory.value[stepName];
+    if (!dateStr && stepName === 'Pending') {
+        dateStr = props.profile.created_at;
+    }
     if (!dateStr) return null;
     return new Intl.DateTimeFormat('id-ID', {
         year: 'numeric', month: 'short', day: 'numeric'
