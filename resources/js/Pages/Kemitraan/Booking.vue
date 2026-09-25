@@ -54,6 +54,13 @@ const openBastModal = (item) => {
 
     if (item.bast && item.bast.data) {
         draftBastData.value = { ...item.bast.data, nomor: item.bast.nomor };
+        // Fix for previously saved data
+        if (!draftBastData.value.sebutan_pihak2) {
+            draftBastData.value.sebutan_pihak2 = isPop ? 'POP' : 'PELANGGAN/RESELLER';
+        }
+        if (isPop && draftBastData.value.pihak2_jabatan === 'DIREKTUR') {
+            draftBastData.value.pihak2_jabatan = 'KOORDINATOR POP';
+        }
     } else {
         draftBastData.value = {
             nomor: '00002/BAST/VGC/VII/2025',
