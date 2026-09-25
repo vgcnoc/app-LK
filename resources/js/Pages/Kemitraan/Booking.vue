@@ -67,7 +67,7 @@ const openBastModal = (item) => {
         draftBastData.value = {
             nomor: autoNomor,
             hari_tanggal: formattedTodayDate.value,
-            lokasi: 'Jl Perintis Kemerdekaan No. 12 A Desa Sukamulya Kecamatan Cikembar Sukabumi Jawa Barat 43157',
+            lokasi: 'Jl Cilandak RT 02 RW 02 Desa Sirnajaya kec. Warungkiara Kab. Sukabumi Jawa Barat 43362',
             pihak1_nama: 'DERI GANTINAYASA',
             pihak1_jabatan: 'DIREKTUR',
             pihak1_perusahaan: 'PT VIRUZS GLOBAL CONNECTION',
@@ -280,14 +280,30 @@ const deleteBooking = (id) => {
                         <div class="text-[120px] font-extrabold uppercase rotate-[-30deg] tracking-widest whitespace-nowrap">VIRUZS</div>
                     </div>
 
-                    <div class="relative z-10">
-                        <!-- Kop Surat (Letterhead) -->
-                        <div class="w-full overflow-hidden">
-                            <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1]">
+                    <div class="relative z-10 w-full bg-white">
+                        <!-- Fixed Footer for Print (Sticks to absolute bottom of every printed page) -->
+                        <div class="hidden print:block fixed bottom-0 left-0 right-0 w-full overflow-hidden z-[100]">
+                            <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom">
                         </div>
 
-                        <!-- Content Area -->
-                        <div class="px-8 py-4 sm:px-12 sm:py-6 print:px-12 print:py-6">
+                        <table class="w-full border-collapse">
+                            <!-- Header Kop Surat (Repeats on top of every page) -->
+                            <thead class="print:table-header-group">
+                                <tr>
+                                    <td class="p-0 border-none">
+                                        <div class="w-full overflow-hidden">
+                                            <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1]">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </thead>
+                            
+                            <!-- Main Content Area -->
+                            <tbody>
+                                <tr>
+                                    <td class="p-0 border-none">
+                                        <!-- Content Area -->
+                                        <div class="px-8 py-4 sm:px-12 sm:py-6 print:px-12 print:py-6 bg-white">
                             <div class="text-center mb-6 font-bold flex flex-col items-center">
                                 <p class="text-lg">BERITA ACARA SERAH TERIMA</p>
                                 <input type="text" v-model="draftBastData.nomor" class="text-sm font-bold border-0 bg-transparent p-0 focus:ring-0 text-center w-full max-w-xs">
@@ -461,11 +477,21 @@ const deleteBooking = (id) => {
                             *Disclaimer : Apabila selama 5 hari kerja BAST tidak di tandatangani maka kami anggap setuju.
                         </p>
                         </div> <!-- End Content Area -->
+                                    </td>
+                                </tr>
+                            </tbody>
 
-                        <!-- Footer Kop Surat -->
-                        <div class="w-full mt-2 overflow-hidden">
-                            <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom">
-                        </div>
+                            <!-- Footer Kop Surat (Reserves space on every page) -->
+                            <tfoot class="print:table-footer-group">
+                                <tr>
+                                    <td class="p-0 border-none">
+                                        <div class="w-full mt-2 overflow-hidden print:invisible">
+                                            <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>
