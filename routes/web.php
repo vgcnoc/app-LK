@@ -57,7 +57,7 @@ Route::middleware('guest')->group(function () {
         // Create User
         $user = \App\Models\User::create([
             'name' => $request->name,
-            'email' => $request->email,
+            'email' => strtolower(trim($request->email)),
             'password' => \Illuminate\Support\Facades\Hash::make($request->password),
             'role' => 'sales',
         ]);
@@ -69,7 +69,7 @@ Route::middleware('guest')->group(function () {
             'name' => $request->name,
             'member_number' => $member_number,
             'phone' => $request->phone,
-            'email' => $request->email,
+            'email' => strtolower(trim($request->email)),
             'bank_account' => $request->bank_account,
             'status' => 'Aktif',
             'parent_id' => $parent_id,
@@ -98,7 +98,7 @@ Route::middleware('guest')->group(function () {
         
         $user = \App\Models\User::create([
             'name' => $request->name,
-            'email' => $request->email,
+            'email' => strtolower(trim($request->email)),
             'password' => \Illuminate\Support\Facades\Hash::make($request->password),
             'role' => 'kemitraan',
         ]);
