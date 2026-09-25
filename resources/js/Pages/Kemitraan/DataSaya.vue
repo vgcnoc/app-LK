@@ -225,7 +225,7 @@ const getStatusDate = (stepName) => {
                     <div v-else class="relative mt-8">
                         <!-- Connecting Line -->
                         <div class="hidden md:block absolute top-[24px] left-[5%] w-[90%] h-1 bg-slate-200 -translate-y-1/2 rounded-full overflow-hidden">
-                            <div class="absolute inset-0 bg-orange-400 animate-pulse"></div>
+                            <div class="absolute inset-0 unprocessed-line opacity-80"></div>
                             <div class="relative h-full bg-indigo-600 transition-all duration-700 ease-in-out z-10"
                                 :style="{ width: (currentStepIndex / (statusSteps.length - 1)) * 100 + '%' }">
                             </div>
@@ -881,3 +881,26 @@ const getStatusDate = (stepName) => {
         </div>
     </KemitraanLayout>
 </template>
+
+<style scoped>
+.unprocessed-line {
+    background-image: repeating-linear-gradient(
+        -45deg,
+        #f97316 0,
+        #f97316 10px,
+        #ffedd5 10px,
+        #ffedd5 20px
+    );
+    background-size: 28px 100%;
+    animation: move-dashed 1s linear infinite;
+}
+
+@keyframes move-dashed {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 28px 0;
+    }
+}
+</style>
