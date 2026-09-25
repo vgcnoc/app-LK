@@ -135,6 +135,36 @@ const formattedTodayDate = computed(() => {
 const printPage = () => {
     window.print();
 };
+
+const statusHistory = computed(() => {
+    try {
+        return props.profile.status_history ? JSON.parse(props.profile.status_history) : {};
+    } catch(e) {
+        return {};
+    }
+});
+
+const statusSteps = [
+    'Pending',
+    'Pembayaran Registrasi',
+    'Survey',
+    'Metro',
+    'Instalasi',
+    'Aktivasi',
+    'Aktif'
+];
+
+const currentStepIndex = computed(() => {
+    return statusSteps.indexOf(props.profile.status_akun || 'Pending');
+});
+
+const getStatusDate = (stepName) => {
+    const dateStr = statusHistory.value[stepName];
+    if (!dateStr) return null;
+    return new Intl.DateTimeFormat('id-ID', {
+        year: 'numeric', month: 'short', day: 'numeric'
+    }).format(new Date(dateStr));
+};
 </script>
 
 <template>
@@ -186,68 +216,33 @@ const printPage = () => {
                         </div>
                     </div>
 
-                    <div v-else class="relative">
+                    <div v-else class="relative mt-8">
                         <!-- Connecting Line -->
-                        <div class="hidden md:block absolute top-[24px] left-[10%] w-[80%] h-1 bg-slate-200 -translate-y-1/2 rounded-full overflow-hidden">
+                        <div class="hidden md:block absolute top-[24px] left-[5%] w-[90%] h-1 bg-slate-200 -translate-y-1/2 rounded-full overflow-hidden">
                             <div class="h-full bg-indigo-600 transition-all duration-700 ease-in-out"
-                                :style="{ 
-                                    width: profile.status_akun === 'Pending' ? '0%' : 
-                                           profile.status_akun === 'Survey Metro' ? '50%' : 
-                                           profile.status_akun === 'Aktif' ? '100%' : '0%' 
-                                }">
+                                :style="{ width: (currentStepIndex / (statusSteps.length - 1)) * 100 + '%' }">
                             </div>
                         </div>
 
                         <!-- Steps -->
                         <div class="relative z-10 flex flex-col md:flex-row justify-between gap-6 md:gap-0">
                             
-                            <!-- Step 1: Pending -->
-                            <div class="flex md:flex-col items-center md:items-center gap-4 md:gap-2 flex-1 md:text-center">
+                            <!-- Dynamic Steps -->
+                            <div v-for="(step, index) in statusSteps" :key="index" class="flex md:flex-col items-center md:items-center gap-4 md:gap-2 flex-1 md:text-center">
                                 <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg border-4 shadow-sm transition-all duration-500 z-10 bg-white"
-                                    :class="profile.status_akun === 'Pending' ? 'border-indigo-600 text-indigo-600 shadow-indigo-200 scale-110' : 'bg-indigo-600 border-indigo-600 text-white'">
-                                    <svg v-if="profile.status_akun !== 'Pending' && profile.status_akun" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span v-else>1</span>
-                                </div>
-                                <div class="md:mt-2">
-                                    <p class="font-bold text-slate-800">Pending</p>
-                                    <p class="text-xs text-slate-500 w-full md:w-32 mx-auto mt-1">Pendaftaran diterima, menunggu pengecekan</p>
-                                </div>
-                            </div>
-
-                            <!-- Step 2: Survey Metro -->
-                            <div class="flex md:flex-col items-center md:items-center gap-4 md:gap-2 flex-1 md:text-center">
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg border-4 shadow-sm transition-all duration-500 z-10 bg-white"
-                                    :class="profile.status_akun === 'Aktif' ? 'bg-indigo-600 border-indigo-600 text-white' : 
-                                            profile.status_akun === 'Survey Metro' ? 'border-indigo-600 text-indigo-600 shadow-indigo-200 scale-110' : 
+                                    :class="currentStepIndex > index ? 'bg-emerald-500 border-emerald-500 text-white shadow-emerald-200' : 
+                                            currentStepIndex === index ? 'border-indigo-600 text-indigo-600 shadow-indigo-200 scale-110' : 
                                             'bg-white border-slate-200 text-slate-400'">
-                                    <svg v-if="profile.status_akun === 'Aktif'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <svg v-if="currentStepIndex > index" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span v-else>2</span>
+                                    <span v-else>{{ index + 1 }}</span>
                                 </div>
-                                <div class="md:mt-2">
-                                    <p class="font-bold" :class="profile.status_akun === 'Pending' ? 'text-slate-400' : 'text-slate-800'">Survey Metro</p>
-                                    <p class="text-xs w-full md:w-32 mx-auto mt-1" :class="profile.status_akun === 'Pending' ? 'text-slate-400' : 'text-slate-500'">Proses pengecekan jaringan / metro</p>
-                                </div>
-                            </div>
-
-                            <!-- Step 3: Aktif -->
-                            <div class="flex md:flex-col items-center md:items-center gap-4 md:gap-2 flex-1 md:text-center">
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg border-4 shadow-sm transition-all duration-500 z-10 bg-white"
-                                    :class="profile.status_akun === 'Aktif' ? 'bg-emerald-500 border-emerald-500 text-white shadow-emerald-200 scale-110' : 'bg-white border-slate-200 text-slate-400'">
-                                    <svg v-if="profile.status_akun === 'Aktif'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span v-else>3</span>
-                                </div>
-                                <div class="md:mt-2">
-                                    <p class="font-bold" :class="profile.status_akun === 'Aktif' ? 'text-emerald-600' : 'text-slate-400'">Aktif</p>
-                                    <p class="text-xs w-full md:w-32 mx-auto mt-1" :class="profile.status_akun === 'Aktif' ? 'text-emerald-600' : 'text-slate-400'">Akun kemitraan telah aktif dan siap</p>
+                                <div class="md:mt-2 text-left md:text-center">
+                                    <p class="font-bold text-sm leading-tight" :class="currentStepIndex >= index ? 'text-slate-800' : 'text-slate-400'">{{ step }}</p>
+                                    <p v-if="getStatusDate(step)" class="text-[10px] text-slate-500 mt-1 font-medium bg-slate-100 px-2 py-0.5 rounded-full inline-block">{{ getStatusDate(step) }}</p>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -268,14 +263,18 @@ const printPage = () => {
                                 'bg-emerald-100 text-emerald-700': profile.status_akun === 'Aktif',
                                 'bg-red-100 text-red-700': profile.status_akun === 'Nonaktif',
                                 'bg-amber-100 text-amber-700': profile.status_akun === 'Pending' || !profile.status_akun,
-                                'bg-blue-100 text-blue-700': profile.status_akun === 'Survey Metro'
+                                'bg-blue-100 text-blue-700': !['Aktif', 'Nonaktif', 'Pending'].includes(profile.status_akun)
                             }">{{ profile.status_akun || 'Pending' }}</span>
                         <div v-else>
                             <select v-model="form.status_akun" @change="submit" class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 font-semibold text-slate-700">
                                 <option value="Pending">Pending</option>
-                                <option value="Survey Metro">Survey Metro</option>
+                                <option value="Pembayaran Registrasi">Pembayaran Registrasi</option>
+                                <option value="Survey">Survey</option>
+                                <option value="Metro">Metro</option>
+                                <option value="Instalasi">Instalasi</option>
+                                <option value="Aktivasi">Aktivasi</option>
                                 <option value="Aktif">Aktif</option>
-                                <option value="Nonaktif">Nonaktif</option>
+                                <option value="Nonaktif">Non-aktif</option>
                             </select>
                         </div>
                     </div>

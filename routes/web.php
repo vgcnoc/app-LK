@@ -119,6 +119,7 @@ Route::middleware('guest')->group(function () {
         DB::table('kemitraan_profiles')->insert([
             'user_id' => $user->id,
             'status_akun' => 'Pending',
+            'status_history' => json_encode(['Pending' => date('Y-m-d H:i:s')]),
             'tipe_kemitraan' => 'Reseller ISP',
             'metro' => 'Belum ada metro',
             'bandwidth' => $request->paket,
@@ -355,6 +356,15 @@ Route::middleware(['auth'])->group(function () {
             }
             if (isset($data['jumlah_teknisi']) && $data['jumlah_teknisi'] === '') {
                 $data['jumlah_teknisi'] = null;
+            }
+
+            if (isset($data['status_akun'])) {
+                $existingProfile = DB::table('kemitraan_profiles')->where('user_id', $targetUser->id)->first();
+                if ($existingProfile && $existingProfile->status_akun !== $data['status_akun']) {
+                    $history = $existingProfile->status_history ? json_decode($existingProfile->status_history, true) : [];
+                    $history[$data['status_akun']] = date('Y-m-d H:i:s');
+                    $data['status_history'] = json_encode($history);
+                }
             }
 
             DB::table('kemitraan_profiles')->updateOrInsert(
