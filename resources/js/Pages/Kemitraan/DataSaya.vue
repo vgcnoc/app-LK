@@ -225,7 +225,8 @@ const getStatusDate = (stepName) => {
                     <div v-else class="relative mt-8">
                         <!-- Connecting Line -->
                         <div class="hidden md:block absolute top-[24px] left-[5%] w-[90%] h-1 bg-slate-200 -translate-y-1/2 rounded-full overflow-hidden">
-                            <div class="h-full bg-indigo-600 transition-all duration-700 ease-in-out"
+                            <div class="absolute inset-0 bg-orange-400 animate-pulse"></div>
+                            <div class="relative h-full bg-indigo-600 transition-all duration-700 ease-in-out z-10"
                                 :style="{ width: (currentStepIndex / (statusSteps.length - 1)) * 100 + '%' }">
                             </div>
                         </div>
