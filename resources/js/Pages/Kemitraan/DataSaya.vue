@@ -190,7 +190,7 @@ const getStatusDate = (stepName) => {
                 <!-- Printable Header Title (only visible on print) -->
                 <div class="hidden print:block mb-4 text-center w-full border-b pb-4">
                     <h2 class="text-2xl font-bold text-slate-800 uppercase tracking-widest">
-                        Profil Kemitraan
+                        Data Booking / Kemitraan
                     </h2>
                     <p class="text-sm text-slate-500 mt-1">
                         Dicetak pada: {{ formattedTodayDate }}
@@ -202,6 +202,13 @@ const getStatusDate = (stepName) => {
                     </svg>
                     <span class="text-xs sm:text-sm font-medium text-slate-700">{{ formattedTodayDate }}</span>
                 </div>
+                
+                <button @click="printPage" class="print:hidden flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl shadow-sm transition-colors text-sm font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Cetak Formulir
+                </button>
             </div>
         </template>
 
@@ -240,7 +247,7 @@ const getStatusDate = (stepName) => {
                                     :class="currentStepIndex > index ? 'bg-emerald-500 border-emerald-500 text-white shadow-emerald-200' : 
                                             currentStepIndex === index ? 'bg-indigo-600 border-indigo-600 text-white shadow-indigo-200 scale-110' : 
                                             'bg-white border-slate-200 text-slate-400'">
-                                    <svg v-if="currentStepIndex >= index" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <svg v-if="currentStepIndex > index" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                                     </svg>
                                     <span v-else>{{ index + 1 }}</span>
@@ -886,21 +893,22 @@ const getStatusDate = (stepName) => {
 .unprocessed-line {
     background-image: repeating-linear-gradient(
         -45deg,
-        #f97316 0,
-        #f97316 10px,
-        #ffedd5 10px,
-        #ffedd5 20px
+        #ff6600 0,
+        #ff6600 10px,
+        transparent 10px,
+        transparent 20px
     );
     background-size: 28px 100%;
-    animation: move-dashed 1s linear infinite;
+    animation: move-dashed 1s linear infinite, blink-line 1.5s ease-in-out infinite;
 }
 
 @keyframes move-dashed {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 28px 0;
-    }
+    0% { background-position: 0 0; }
+    100% { background-position: 28px 0; }
+}
+
+@keyframes blink-line {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
 }
 </style>
