@@ -281,53 +281,9 @@ const deleteBooking = (id) => {
                     </div>
 
                     <div class="relative z-10">
-                        <!-- Kop Surat HTML -->
-                        <div class="w-full relative pb-4 mb-6 print:mb-8" style="font-family: Arial, sans-serif;">
-                            <div class="flex justify-between items-start">
-                                <!-- Logo Text -->
-                                <div class="flex items-center pt-2">
-                                    <div class="flex flex-col text-[#311b5e]">
-                                        <div class="flex items-center gap-2">
-                                            <div class="text-[3rem] font-black italic tracking-tighter leading-none" style="font-family: Impact, sans-serif;">VIRUZS</div>
-                                        </div>
-                                        <div class="text-[0.65rem] font-bold tracking-[0.1em] text-center mt-1 uppercase">Viruzs Global Connection</div>
-                                    </div>
-                                </div>
-                                <!-- Company Info -->
-                                <div class="text-sm text-slate-800 text-left">
-                                    <h2 class="font-bold text-xl text-[#311b5e] mb-2 tracking-wide uppercase">PT VIRUZS GLOBAL CONNECTION</h2>
-                                    <table class="text-xs">
-                                        <tbody>
-                                            <tr>
-                                                <td class="align-top pr-2 text-black">●</td>
-                                                <td class="pb-1 leading-tight">Jl.Cilandak,RT 002 RW 002,Desa<br>Sirnajaya,Kec.Warungkiara,Kab.Sukabumi,Jawa Barat 43362</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-top pr-2 text-black">☎</td>
-                                                <td class="pb-1">+62 889 7639 7034</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-top pr-2 text-black">✉</td>
-                                                <td class="pb-1"><a href="mailto:info@viruzs.co.id" class="text-blue-600 underline">info@viruzs.co.id</a> , <a href="mailto:info@viruzs.net" class="text-blue-600 underline">info@viruzs.net</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-top pr-2 text-black">◉</td>
-                                                <td class="pb-1">www.viruzs.co.id</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            
-                            <!-- Ornamen Garis -->
-                            <div class="absolute bottom-0 left-0 w-full flex items-center">
-                                <div class="h-[6px] bg-[#311b5e] w-[25%]"></div>
-                                <div class="h-[6px] bg-[#311b5e] w-4 skew-x-[-45deg] -ml-2"></div>
-                                <div class="h-[6px] bg-orange-500 w-12 skew-x-[-45deg] ml-1"></div>
-                                <div class="h-[2px] bg-[#311b5e] flex-1 ml-2 relative">
-                                    <div class="absolute right-0 -top-[4px] w-2.5 h-2.5 rounded-full border-2 border-[#311b5e] bg-white"></div>
-                                </div>
-                            </div>
+                        <!-- Kop Surat (Letterhead) -->
+                        <div class="w-full overflow-hidden">
+                            <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1]">
                         </div>
 
                         <!-- Content Area -->
@@ -507,65 +463,8 @@ const deleteBooking = (id) => {
                         </div> <!-- End Content Area -->
 
                         <!-- Footer Kop Surat -->
-                        <div class="w-full mt-4 relative">
-                            <!-- Garis Atas Footer -->
-                            <div class="w-full flex items-center justify-end h-1 mb-0 relative">
-                                <div class="h-[3px] bg-orange-500 w-1/3 absolute right-[15%] bottom-0"></div>
-                            </div>
-                            
-                            <!-- Footer Konten -->
-                            <div class="bg-white flex justify-between items-stretch border-t-2 border-[#311b5e]">
-                                <!-- Kiri (Ungu) -->
-                                <div class="bg-[#311b5e] text-white p-3 pr-10 relative flex items-center gap-3" style="clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%); width: 45%;">
-                                    <div class="w-10 h-10 border-2 border-white rounded-lg flex items-center justify-center p-1 bg-transparent">
-                                        <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold text-sm leading-tight">Growing Connections,</p>
-                                        <p class="text-xs text-indigo-200">Shaping The Future</p>
-                                    </div>
-                                </div>
-                                <!-- Kanan (Putih + Ikon) -->
-                                <div class="flex-1 flex justify-around items-center px-2 py-2">
-                                    <!-- Ikon 1 -->
-                                    <div class="flex items-center gap-1.5">
-                                        <div class="text-[#311b5e]">
-                                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm2 2h8v2H8V8zm0 4h5v2H8v-2z" /></svg>
-                                        </div>
-                                        <div class="text-[9px] font-bold leading-tight text-slate-800">Internet<br>Dedicated</div>
-                                    </div>
-                                    <!-- Ikon 2 -->
-                                    <div class="flex items-center gap-1.5">
-                                        <div class="text-[#311b5e]">
-                                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 2a7 7 0 110 14 7 7 0 010-14zm0 3a4 4 0 100 8 4 4 0 000-8zm0 2a2 2 0 110 4 2 2 0 010-4z"/></svg>
-                                        </div>
-                                        <div class="text-[9px] font-bold leading-tight text-slate-800">Internet<br>Broadband</div>
-                                    </div>
-                                    <!-- Ikon 3 -->
-                                    <div class="flex items-center gap-1.5">
-                                        <div class="text-[#311b5e]">
-                                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                                        </div>
-                                        <div class="text-[9px] font-bold leading-tight text-slate-800">Reliable<br>Connection</div>
-                                    </div>
-                                    <!-- Ikon 4 -->
-                                    <div class="flex items-center gap-1.5">
-                                        <div class="text-[#311b5e]">
-                                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728M5.636 5.636a9 9 0 000 12.728M12 14v4m0-4a2 2 0 100-4 2 2 0 000 4z" /></svg>
-                                        </div>
-                                        <div class="text-[9px] font-bold leading-tight text-slate-800">24/7<br>Support</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Ornamen Garis Bawah (kecil di kiri) -->
-                            <div class="absolute -bottom-0 left-0 w-full flex items-center">
-                                <div class="h-[3px] bg-[#311b5e] w-[25%]"></div>
-                                <div class="h-[3px] bg-[#311b5e] w-4 skew-x-[-45deg] -ml-1"></div>
-                                <div class="h-[3px] bg-orange-500 w-8 skew-x-[-45deg] ml-1"></div>
-                            </div>
+                        <div class="w-full mt-2 overflow-hidden">
+                            <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom">
                         </div>
                     </div>
                 </div>
