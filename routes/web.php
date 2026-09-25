@@ -445,6 +445,9 @@ Route::middleware(['auth'])->group(function () {
     // DASHBOARD
     Route::get('/dashboard', function (Request $request) {
         $user = auth()->user();
+        if ($user && $user->role === 'kemitraan') {
+            return redirect()->route('kemitraan.index');
+        }
         if ($user && $user->hasRole('sales')) {
             $mySalesProfile = \App\Models\Sales::where('user_id', $user->id)->first();
             $totalDownlines = 0;
