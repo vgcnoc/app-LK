@@ -47,6 +47,11 @@ const openBastModal = (item) => {
         ymdDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     }
 
+    let isPop = false;
+    if (item.paket && item.paket.toUpperCase().includes('POP')) {
+        isPop = true;
+    }
+
     if (item.bast && item.bast.data) {
         draftBastData.value = { ...item.bast.data, nomor: item.bast.nomor };
     } else {
@@ -59,9 +64,10 @@ const openBastModal = (item) => {
             pihak1_perusahaan: 'PT VIRUZS GLOBAL CONNECTION',
             pihak1_alamat: 'Kp Cilandak RT 002 RW 002 Sirnajaya, Warungkiara, Sukabumi, Jawa Barat, Indonesia.',
             pihak2_nama: item.nama_pelanggan || '',
-            pihak2_jabatan: 'DIREKTUR',
+            pihak2_jabatan: isPop ? 'MITRA POP' : 'DIREKTUR',
             pihak2_perusahaan: item.nama_pelanggan || '',
             pihak2_alamat: item.alamat || '',
+            sebutan_pihak2: isPop ? 'POP' : 'PELANGGAN/RESELLER',
             layanan_atas_nama: item.nama_pelanggan || '',
             layanan_jenis_pekerjaan: 'Instalasi & Aktivasi',
             layanan_jenis: item.paket ? (item.paket.includes('~') ? item.paket.split('~')[0].trim() : item.paket) : 'Internet Dedicated',
@@ -363,7 +369,9 @@ const deleteBooking = (id) => {
                                 </tr>
                             </tbody>
                         </table>
-                        <p class="mb-6 font-bold">Selanjutnya disebut PELANGGAN/RESELLER</p>
+                        <p class="mb-6 font-bold flex items-center">
+                            Selanjutnya disebut <input type="text" v-model="draftBastData.sebutan_pihak2" class="ml-1 border-0 bg-transparent p-0 focus:ring-0 text-sm font-bold uppercase w-48">
+                        </p>
 
                         <p class="mb-2">Menyatakan bahwa sebagai berikut :</p>
 
