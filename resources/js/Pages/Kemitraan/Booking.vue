@@ -277,21 +277,8 @@ const deleteBooking = (id) => {
 
                     <div class="relative z-10">
                         <!-- Kop Surat (Letterhead) -->
-                        <div class="flex items-center justify-between border-b-4 border-black pb-4 mb-8">
-                            <div class="flex-shrink-0 w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center border-2 border-indigo-600 overflow-hidden print:border-black">
-                                <span class="text-3xl font-black text-indigo-700 tracking-tighter italic print:text-black">VGC</span>
-                            </div>
-                            <div class="flex-1 text-center px-4">
-                                <h1 class="text-2xl font-black uppercase text-indigo-900 tracking-wide print:text-black mb-1">PT VIRUZS GLOBAL CONNECTION</h1>
-                                <p class="text-sm font-bold text-slate-800 print:text-black">Layanan Internet & Jaringan Telekomunikasi</p>
-                                <p class="text-xs text-slate-600 mt-1 print:text-black">
-                                    Jl Perintis Kemerdekaan No. 12 A Desa Sukamulya Kecamatan Cikembar<br>
-                                    Sukabumi, Jawa Barat 43157
-                                </p>
-                                <p class="text-xs text-slate-600 print:text-black">
-                                    Email: info@viruzs.my.id | Telp: (0266) 123456
-                                </p>
-                            </div>
+                        <div class="mb-4">
+                            <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="w-full h-auto object-contain">
                         </div>
 
                         <div class="text-center mb-6 font-bold flex flex-col items-center">
@@ -481,9 +468,14 @@ const deleteBooking = (id) => {
                             </div>
                         </div>
 
-                        <p class="text-xs font-bold">
+                        <p class="text-xs font-bold mb-4">
                             *Disclaimer : Apabila selama 5 hari kerja BAST tidak di tandatangani maka kami anggap setuju.
                         </p>
+
+                        <!-- Footer Kop Surat -->
+                        <div class="mt-4">
+                            <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain">
+                        </div>
                     </div>
                 </div>
             </div>
