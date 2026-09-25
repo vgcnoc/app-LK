@@ -132,6 +132,14 @@ const formattedTodayDate = computed(() => {
     }).format(new Date());
 });
 
+const nomorSurat = computed(() => {
+    const date = displayUser.value.created_at ? new Date(displayUser.value.created_at) : new Date();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const id = displayUser.value.id ? displayUser.value.id.toString().padStart(4, '0') : '0000';
+    return `REG/VGC/${year}/${month}/${id}`;
+});
+
 const printPage = () => {
     window.print();
 };
@@ -798,6 +806,7 @@ const getStatusDate = (stepName) => {
                         <div class="text-center mb-6 font-bold flex flex-col items-center">
                             <p class="text-xl underline mb-1 uppercase tracking-wide">Formulir PENDAFTARAN</p>
                             <p class="text-sm font-normal">Tanggal Cetak: {{ formattedTodayDate }}</p>
+                            <p class="text-sm font-bold mt-1">Nomor: {{ nomorSurat }}</p>
                         </div>
                         
                         <p class="mb-4 text-justify leading-relaxed">
