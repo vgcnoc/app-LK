@@ -25,9 +25,34 @@ const formattedTodayDate = computed(() => {
 
 const showBastModal = ref(false);
 const selectedBooking = ref(null);
+const draftBastData = ref({});
 
 const openBastModal = (item) => {
     selectedBooking.value = item;
+    draftBastData.value = {
+        nomor: '00002/BAST/VGC/VII/2025',
+        hari_tanggal: formattedTodayDate.value,
+        lokasi: 'Jl Perintis Kemerdekaan No. 12 A Desa Sukamulya Kecamatan Cikembar Sukabumi Jawa Barat 43157',
+        pihak1_nama: 'DERI GANTINAYASA',
+        pihak1_jabatan: 'DIREKTUR',
+        pihak1_perusahaan: 'PT VIRUZS GLOBAL CONNECTION',
+        pihak1_alamat: 'Kp Cilandak RT 002 RW 002 Sirnajaya, Warungkiara, Sukabumi, Jawa Barat, Indonesia.',
+        pihak2_nama: item.nama_pelanggan || '',
+        pihak2_jabatan: 'DIREKTUR',
+        pihak2_perusahaan: item.nama_pelanggan || '',
+        pihak2_alamat: item.alamat || '',
+        layanan_atas_nama: item.nama_pelanggan || '',
+        layanan_jenis_pekerjaan: 'Instalasi & Aktivasi',
+        layanan_jenis: 'Internet Dedicated',
+        layanan_kapasitas: 'Internet Dedicated ~ 50 Mbps',
+        layanan_lokasi_asal: '-',
+        layanan_lokasi_tujuan: item.alamat || '',
+        layanan_tanggal_booking: item.tanggal || '',
+        layanan_tanggal_instalasi: item.tanggal || '',
+        layanan_tanggal_aktivasi: item.tanggal || '',
+        layanan_tanggal_aktif: item.tanggal || '',
+        penandatangan_nama_pihak2: item.nama_pelanggan || '..............................'
+    };
     showBastModal.value = true;
 };
 
@@ -195,13 +220,13 @@ const deleteBooking = (id) => {
                     </div>
 
                     <div class="relative z-10">
-                        <div class="text-center mb-6 font-bold">
+                        <div class="text-center mb-6 font-bold flex flex-col items-center">
                             <p class="text-lg">BERITA ACARA SERAH TERIMA</p>
-                            <p class="text-sm">00002/BAST/VGC/VII/2025</p>
+                            <input type="text" v-model="draftBastData.nomor" class="text-sm font-bold border-0 bg-transparent p-0 focus:ring-0 text-center w-full max-w-xs">
                         </div>
                         
-                        <p class="mb-6 text-justify">
-                            Pada hari ini : {{ formattedTodayDate }}, Bertempat di: Jl Perintis Kemerdekaan No. 12 A Desa Sukamulya Kecamatan Cikembar Sukabumi Jawa Barat 43157, telah diterbitkan Berita acara Serah Terima antara :
+                        <p class="mb-6 text-justify leading-relaxed">
+                            Pada hari ini : <input type="text" v-model="draftBastData.hari_tanggal" class="border-b border-dashed border-slate-300 bg-transparent p-0 focus:border-indigo-500 focus:ring-0 text-sm font-medium w-64">, Bertempat di: <textarea v-model="draftBastData.lokasi" rows="1" class="border-b border-dashed border-slate-300 bg-transparent p-0 focus:border-indigo-500 focus:ring-0 text-sm font-medium w-full resize-none inline-block align-bottom"></textarea>telah diterbitkan Berita acara Serah Terima antara :
                         </p>
 
                         <p class="mb-2">Kami yang bertandatangan di bawah ini :</p>
@@ -211,19 +236,31 @@ const deleteBooking = (id) => {
                             <tbody>
                                 <tr>
                                     <td class="border border-black px-2 py-1 w-1/4">Nama</td>
-                                    <td class="border border-black px-2 py-1">: DERI GANTINAYASA</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.pihak1_nama" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Jabatan</td>
-                                    <td class="border border-black px-2 py-1">: DIREKTUR</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.pihak1_jabatan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Perusahaan</td>
-                                    <td class="border border-black px-2 py-1">: PT VIRUZS GLOBAL CONNECTION</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.pihak1_perusahaan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Alamat</td>
-                                    <td class="border border-black px-2 py-1">: Kp Cilandak RT 002 RW 002 Sirnajaya, Warungkiara, Sukabumi, Jawa Barat, Indonesia.</td>
+                                    <td class="border border-black px-2 py-1 flex items-start">
+                                        <span class="mr-1 mt-0.5">:</span>
+                                        <textarea v-model="draftBastData.pihak1_alamat" rows="2" class="border-0 bg-transparent p-0 focus:ring-0 text-sm w-full resize-none"></textarea>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -234,19 +271,31 @@ const deleteBooking = (id) => {
                             <tbody>
                                 <tr>
                                     <td class="border border-black px-2 py-1 w-1/4">Nama</td>
-                                    <td class="border border-black px-2 py-1 uppercase">: {{ selectedBooking?.nama_pelanggan || '-' }}</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.pihak2_nama" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1 font-bold">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Jabatan</td>
-                                    <td class="border border-black px-2 py-1">: DIREKTUR</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.pihak2_jabatan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Perusahaan</td>
-                                    <td class="border border-black px-2 py-1 uppercase">: {{ selectedBooking?.nama_pelanggan || '-' }}</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.pihak2_perusahaan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1 font-bold">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Alamat</td>
-                                    <td class="border border-black px-2 py-1 uppercase">: {{ selectedBooking?.alamat || '-' }}</td>
+                                    <td class="border border-black px-2 py-1 flex items-start">
+                                        <span class="mr-1 mt-0.5">:</span>
+                                        <textarea v-model="draftBastData.pihak2_alamat" rows="2" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase w-full resize-none font-bold"></textarea>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -259,39 +308,73 @@ const deleteBooking = (id) => {
                             <tbody>
                                 <tr>
                                     <td class="border border-black px-2 py-1 w-1/3">Atas Nama Perusahaan</td>
-                                    <td class="border border-black px-2 py-1 uppercase">: {{ selectedBooking?.nama_pelanggan || '-' }}</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.layanan_atas_nama" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1 font-bold">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Jenis Pekerjaan</td>
-                                    <td class="border border-black px-2 py-1">: Instalasi & Aktivasi</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.layanan_jenis_pekerjaan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Jenis Layanan</td>
-                                    <td class="border border-black px-2 py-1">: Internet Dedicated</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.layanan_jenis" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Kapasitas</td>
-                                    <td class="border border-black px-2 py-1">: Internet Dedicated ~ 50 Mbps</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.layanan_kapasitas" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Lokasi Asal</td>
-                                    <td class="border border-black px-2 py-1">: -</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.layanan_lokasi_asal" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Lokasi Tujuan</td>
-                                    <td class="border border-black px-2 py-1 uppercase">: {{ selectedBooking?.alamat || '-' }}</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.layanan_lokasi_tujuan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1 font-bold">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-black px-2 py-1">Tanggal Booking</td>
+                                    <td class="border border-black px-2 py-1 flex items-center bg-yellow-50/50 print:bg-transparent">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.layanan_tanggal_booking" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Tanggal Instalasi</td>
-                                    <td class="border border-black px-2 py-1">: {{ selectedBooking?.tanggal || '-' }}</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.layanan_tanggal_instalasi" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Tanggal Aktivasi</td>
-                                    <td class="border border-black px-2 py-1">: {{ selectedBooking?.tanggal || '-' }}</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.layanan_tanggal_aktivasi" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Tanggal Aktif Berlangganan</td>
-                                    <td class="border border-black px-2 py-1">: {{ selectedBooking?.tanggal || '-' }}</td>
+                                    <td class="border border-black px-2 py-1 flex items-center">
+                                        <span class="mr-1">:</span>
+                                        <input type="text" v-model="draftBastData.layanan_tanggal_aktif" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -307,15 +390,15 @@ const deleteBooking = (id) => {
                         <div class="flex justify-between w-full mb-8 text-center text-sm">
                             <div class="w-1/2">
                                 <p class="mb-24">Hormat Kami,</p>
-                                <p class="underline font-bold">Deri Gantinayasa</p>
-                                <p>Direktur</p>
-                                <p>PT Viruzs Global Connection</p>
+                                <p class="underline font-bold"><input type="text" v-model="draftBastData.pihak1_nama" class="border-0 bg-transparent text-center p-0 focus:ring-0 font-bold w-full"></p>
+                                <p><input type="text" v-model="draftBastData.pihak1_jabatan" class="border-0 bg-transparent text-center p-0 focus:ring-0 w-full"></p>
+                                <p><input type="text" v-model="draftBastData.pihak1_perusahaan" class="border-0 bg-transparent text-center p-0 focus:ring-0 w-full"></p>
                             </div>
                             <div class="w-1/2">
                                 <p class="mb-24">Menyetujui</p>
-                                <p class="underline font-bold uppercase">{{ selectedBooking?.nama_pelanggan || '..............................' }}</p>
-                                <p>Direktur</p>
-                                <p class="uppercase">{{ selectedBooking?.nama_pelanggan || '..............................' }}</p>
+                                <p class="underline font-bold uppercase"><input type="text" v-model="draftBastData.penandatangan_nama_pihak2" class="border-0 bg-transparent text-center p-0 focus:ring-0 font-bold uppercase w-full"></p>
+                                <p><input type="text" v-model="draftBastData.pihak2_jabatan" class="border-0 bg-transparent text-center p-0 focus:ring-0 w-full"></p>
+                                <p class="uppercase"><input type="text" v-model="draftBastData.pihak2_perusahaan" class="border-0 bg-transparent text-center p-0 focus:ring-0 uppercase w-full"></p>
                             </div>
                         </div>
 
