@@ -47,31 +47,55 @@ const openBastModal = (item) => {
         ymdDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     }
 
-    draftBastData.value = {
-        nomor: '00002/BAST/VGC/VII/2025',
-        hari_tanggal: formattedTodayDate.value,
-        lokasi: 'Jl Perintis Kemerdekaan No. 12 A Desa Sukamulya Kecamatan Cikembar Sukabumi Jawa Barat 43157',
-        pihak1_nama: 'DERI GANTINAYASA',
-        pihak1_jabatan: 'DIREKTUR',
-        pihak1_perusahaan: 'PT VIRUZS GLOBAL CONNECTION',
-        pihak1_alamat: 'Kp Cilandak RT 002 RW 002 Sirnajaya, Warungkiara, Sukabumi, Jawa Barat, Indonesia.',
-        pihak2_nama: item.nama_pelanggan || '',
-        pihak2_jabatan: 'DIREKTUR',
-        pihak2_perusahaan: item.nama_pelanggan || '',
-        pihak2_alamat: item.alamat || '',
-        layanan_atas_nama: item.nama_pelanggan || '',
-        layanan_jenis_pekerjaan: 'Instalasi & Aktivasi',
-        layanan_jenis: item.paket ? (item.paket.includes('~') ? item.paket.split('~')[0].trim() : item.paket) : 'Internet Dedicated',
-        layanan_kapasitas: item.paket || 'Internet Dedicated ~ 50 Mbps',
-        layanan_lokasi_asal: '-',
-        layanan_lokasi_tujuan: item.alamat || '',
-        layanan_tanggal_booking: item.tanggal || '',
-        layanan_tanggal_instalasi: ymdDate,
-        layanan_tanggal_aktivasi: ymdDate,
-        layanan_tanggal_aktif: ymdDate,
-        penandatangan_nama_pihak2: item.nama_pelanggan || '..............................'
-    };
+    if (item.bast && item.bast.data) {
+        draftBastData.value = { ...item.bast.data, nomor: item.bast.nomor };
+    } else {
+        draftBastData.value = {
+            nomor: '00002/BAST/VGC/VII/2025',
+            hari_tanggal: formattedTodayDate.value,
+            lokasi: 'Jl Perintis Kemerdekaan No. 12 A Desa Sukamulya Kecamatan Cikembar Sukabumi Jawa Barat 43157',
+            pihak1_nama: 'DERI GANTINAYASA',
+            pihak1_jabatan: 'DIREKTUR',
+            pihak1_perusahaan: 'PT VIRUZS GLOBAL CONNECTION',
+            pihak1_alamat: 'Kp Cilandak RT 002 RW 002 Sirnajaya, Warungkiara, Sukabumi, Jawa Barat, Indonesia.',
+            pihak2_nama: item.nama_pelanggan || '',
+            pihak2_jabatan: 'DIREKTUR',
+            pihak2_perusahaan: item.nama_pelanggan || '',
+            pihak2_alamat: item.alamat || '',
+            layanan_atas_nama: item.nama_pelanggan || '',
+            layanan_jenis_pekerjaan: 'Instalasi & Aktivasi',
+            layanan_jenis: item.paket ? (item.paket.includes('~') ? item.paket.split('~')[0].trim() : item.paket) : 'Internet Dedicated',
+            layanan_kapasitas: item.paket || 'Internet Dedicated ~ 50 Mbps',
+            layanan_lokasi_asal: '-',
+            layanan_lokasi_tujuan: item.alamat || '',
+            layanan_tanggal_booking: item.tanggal || '',
+            layanan_tanggal_instalasi: ymdDate,
+            layanan_tanggal_aktivasi: ymdDate,
+            layanan_tanggal_aktif: ymdDate,
+            penandatangan_nama_pihak2: item.nama_pelanggan || '..............................'
+        };
+    }
     showBastModal.value = true;
+};
+
+const isSaving = ref(false);
+const saveAndPrintBast = () => {
+    isSaving.value = true;
+    router.post(route('kemitraan.booking.bast.store', selectedBooking.value.id), {
+        data: draftBastData.value
+    }, {
+        preserveScroll: true,
+        onSuccess: () => {
+            isSaving.value = false;
+            setTimeout(() => {
+                window.print();
+            }, 300);
+        },
+        onError: () => {
+            isSaving.value = false;
+            alert('Gagal menyimpan BAST');
+        }
+    });
 };
 
 const printBast = () => {
@@ -216,11 +240,15 @@ const deleteBooking = (id) => {
                 <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center print:hidden">
                     <h3 class="text-lg font-bold text-slate-800">Draft BAST</h3>
                     <div class="flex gap-2">
-                        <button @click="printBast" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <button @click="saveAndPrintBast" :disabled="isSaving" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm disabled:opacity-50">
+                            <svg v-if="!isSaving" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                             </svg>
-                            Print
+                            <svg v-else class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            {{ isSaving ? 'Menyimpan...' : 'Simpan & Print' }}
                         </button>
                         <button @click="showBastModal = false" class="text-slate-400 hover:text-slate-600 p-2 rounded-lg bg-white border border-slate-200 shadow-sm transition-colors">
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -238,6 +266,24 @@ const deleteBooking = (id) => {
                     </div>
 
                     <div class="relative z-10">
+                        <!-- Kop Surat (Letterhead) -->
+                        <div class="flex items-center justify-between border-b-4 border-black pb-4 mb-8">
+                            <div class="flex-shrink-0 w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center border-2 border-indigo-600 overflow-hidden print:border-black">
+                                <span class="text-3xl font-black text-indigo-700 tracking-tighter italic print:text-black">VGC</span>
+                            </div>
+                            <div class="flex-1 text-center px-4">
+                                <h1 class="text-2xl font-black uppercase text-indigo-900 tracking-wide print:text-black mb-1">PT VIRUZS GLOBAL CONNECTION</h1>
+                                <p class="text-sm font-bold text-slate-800 print:text-black">Layanan Internet & Jaringan Telekomunikasi</p>
+                                <p class="text-xs text-slate-600 mt-1 print:text-black">
+                                    Jl Perintis Kemerdekaan No. 12 A Desa Sukamulya Kecamatan Cikembar<br>
+                                    Sukabumi, Jawa Barat 43157
+                                </p>
+                                <p class="text-xs text-slate-600 print:text-black">
+                                    Email: info@viruzs.my.id | Telp: (0266) 123456
+                                </p>
+                            </div>
+                        </div>
+
                         <div class="text-center mb-6 font-bold flex flex-col items-center">
                             <p class="text-lg">BERITA ACARA SERAH TERIMA</p>
                             <input type="text" v-model="draftBastData.nomor" class="text-sm font-bold border-0 bg-transparent p-0 focus:ring-0 text-center w-full max-w-xs">

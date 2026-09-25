@@ -148,6 +148,10 @@ Route::middleware(['auth'])->group(function () {
             ->get()
             ->map(function ($b) {
                 $b->tanggal = \Carbon\Carbon::parse($b->created_at)->format('d M Y');
+                $b->bast = DB::table('kemitraan_basts')->where('booking_id', $b->id)->first();
+                if ($b->bast) {
+                    $b->bast->data = json_decode($b->bast->data, true);
+                }
                 return $b;
             });
         return Inertia::render('Kemitraan/Booking', [
@@ -159,6 +163,26 @@ Route::middleware(['auth'])->group(function () {
         // Placeholder: store booking logic here
         return redirect()->route('kemitraan.booking');
     })->name('kemitraan.booking.store');
+
+    Route::post('/kemitraan/booking/{id}/bast', function (Request $request, $id) {
+        $booking = DB::table('kemitraan_bookings')->where('id', $id)->first();
+        if (!$booking) abort(404);
+
+        $data = $request->input('data');
+        $nomor = $data['nomor'] ?? null;
+
+        DB::table('kemitraan_basts')->updateOrInsert(
+            ['booking_id' => $id],
+            [
+                'nomor' => $nomor,
+                'data' => json_encode($data),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        return redirect()->back()->with('message', 'BAST berhasil disimpan.');
+    })->name('kemitraan.booking.bast.store');
 
     Route::delete('/kemitraan/booking/{id}', function ($id) {
         if (auth()->user()->role === 'kemitraan') abort(403);
