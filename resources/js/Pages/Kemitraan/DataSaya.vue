@@ -767,13 +767,13 @@ const getStatusDate = (stepName) => {
             </div>
 
             <!-- Printable Area (Only visible on print) -->
-            <div class="hidden print-only-area flex-col bg-white w-full h-auto min-h-screen" style="font-family: 'Times New Roman', Times, serif; color: black; line-height: 1.5; font-size: 14px;">
+            <div class="hidden print-only-area bg-white w-full h-auto" style="font-family: 'Times New Roman', Times, serif; color: black; line-height: 1.5; font-size: 14px;">
                 <!-- Watermark for Print -->
-                <div class="hidden print:flex absolute inset-0 z-0 items-center justify-center opacity-[0.05] pointer-events-none select-none overflow-hidden">
+                <div class="hidden print:flex fixed inset-0 z-0 items-center justify-center opacity-[0.05] pointer-events-none select-none overflow-hidden">
                     <div class="text-[120px] font-extrabold uppercase rotate-[-30deg] tracking-widest whitespace-nowrap">VIRUZS</div>
                 </div>
 
-                <div class="relative z-10 w-full bg-white min-h-screen">
+                <div class="relative z-10 w-full bg-white h-auto">
                     <!-- Fixed Footer for Print (Sticks to absolute bottom of every printed page) -->
                     <div class="hidden print:block fixed bottom-0 left-0 right-0 w-full overflow-hidden z-[100]">
                         <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom">
@@ -921,7 +921,7 @@ const getStatusDate = (stepName) => {
         height: auto !important;
     }
     .print-only-area {
-        display: flex !important;
+        display: block !important;
         width: 100% !important;
         height: auto !important;
         min-height: 0 !important;
