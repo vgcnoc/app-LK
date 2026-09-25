@@ -1114,6 +1114,8 @@ Route::middleware(['auth'])->group(function () {
             'commission_payout_date' => 'nullable|integer|min:1|max:31',
             'global_installation_fee' => 'nullable|numeric|min:0',
             'support_wa_number' => 'nullable|string|max:50',
+            'api_integration_url' => 'nullable|url|max:255',
+            'api_integration_token' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('app_logo')) {
@@ -1744,7 +1746,19 @@ Route::middleware(['auth'])->group(function () {
         $data['status_pelanggan'] = 'Booking';
         $data['amount'] = 0;
         $data['status'] = 'pending';
-        Customer::create($data);
+        $customer = Customer::create($data);
+
+        // API Integration
+        $apiUrl = \App\Models\Setting::where('key', 'api_integration_url')->value('value');
+        $apiToken = \App\Models\Setting::where('key', 'api_integration_token')->value('value');
+        if ($apiUrl && $apiToken) {
+            try {
+                \Illuminate\Support\Facades\Http::withToken($apiToken)
+                    ->post($apiUrl, $customer->toArray());
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('API Integration Error: ' . $e->getMessage());
+            }
+        }
 
         return back()->with('success', 'Data booking berhasil ditambahkan.');
     })->name('booking.store');

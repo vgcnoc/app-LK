@@ -54,6 +54,8 @@ const settingsForm = useForm({
     commission_payout_date: props.settings.commission_payout_date || '13',
     global_installation_fee: props.settings.global_installation_fee || '',
     support_wa_number: props.settings.support_wa_number || '',
+    api_integration_url: props.settings.api_integration_url || '',
+    api_integration_token: props.settings.api_integration_token || '',
 });
 
 const submitSettings = () => {
@@ -428,6 +430,60 @@ const saveEditArea = (area) => {
                                         type="submit" 
                                         :disabled="settingsForm.processing"
                                         class="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-colors disabled:opacity-50 flex items-center gap-2"
+                                    >
+                                        <svg v-if="settingsForm.processing" class="animate-spin -ml-1 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                        </svg>
+                                        Simpan Pengaturan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-hidden">
+                        <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-800">Pengaturan Integrasi API</h3>
+                                <p class="text-xs text-slate-500 mt-1">Integrasi dengan aplikasi lain (misal: mengirim data booking baru).</p>
+                            </div>
+                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-50 text-teal-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 bg-slate-50/50">
+                            <form @submit.prevent="submitSettings" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">API URL</label>
+                                        <input 
+                                            type="text" 
+                                            v-model="settingsForm.api_integration_url" 
+                                            placeholder="Contoh: https://app-lain.com/api/bookings"
+                                            class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:ring-teal-500 shadow-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">API Token</label>
+                                        <input 
+                                            type="text" 
+                                            v-model="settingsForm.api_integration_token" 
+                                            placeholder="Token untuk otentikasi API"
+                                            class="w-full rounded-xl border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:ring-teal-500 shadow-sm"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="flex justify-end">
+                                    <button 
+                                        type="submit" 
+                                        :disabled="settingsForm.processing"
+                                        class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-colors disabled:opacity-50 flex items-center gap-2"
                                     >
                                         <svg v-if="settingsForm.processing" class="animate-spin -ml-1 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
