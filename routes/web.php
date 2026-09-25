@@ -221,7 +221,7 @@ Route::middleware(['auth'])->group(function () {
             $bastList = DB::table('kemitraan_basts')
                 ->join('users', 'kemitraan_basts.user_id', '=', 'users.id')
                 ->select('kemitraan_basts.*', 'users.name as mitra_name')
-                ->orderBy('id', 'desc')
+                ->orderBy('kemitraan_basts.id', 'desc')
                 ->get();
             $mitras = DB::table('users')->where('role', 'kemitraan')->get(['id', 'name']);
         } else {
@@ -385,7 +385,7 @@ Route::middleware(['auth'])->group(function () {
             $invoices = DB::table('kemitraan_invoices')
                 ->join('users', 'kemitraan_invoices.user_id', '=', 'users.id')
                 ->select('kemitraan_invoices.*', 'users.name as mitra_name')
-                ->orderBy('id', 'desc')
+                ->orderBy('kemitraan_invoices.id', 'desc')
                 ->get();
             $mitras = DB::table('users')->where('role', 'kemitraan')->get(['id', 'name']);
             $payments = DB::table('kemitraan_payments')
