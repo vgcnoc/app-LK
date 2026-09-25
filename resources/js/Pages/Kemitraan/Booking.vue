@@ -249,8 +249,7 @@ const deleteBooking = (id) => {
             <div class="fixed inset-0 bg-slate-900 bg-opacity-75 transition-opacity print:hidden" @click="showBastModal = false"></div>
             
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen print:hidden" aria-hidden="true">&#8203;</span>
-            
-            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-4xl print:shadow-none print:w-full print:max-w-full print:rounded-none print:my-0">
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden print:overflow-visible shadow-xl transform transition-all print:transform-none sm:my-8 sm:align-middle w-full max-w-4xl print:shadow-none print:w-full print:max-w-full print:rounded-none print:my-0">
                 <!-- Header Actions (Hidden on print) -->
                 <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center print:hidden">
                     <h3 class="text-lg font-bold text-slate-800">Draft BAST</h3>
