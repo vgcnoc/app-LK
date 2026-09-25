@@ -773,23 +773,28 @@ const getStatusDate = (stepName) => {
                     <div class="text-[120px] font-extrabold uppercase rotate-[-30deg] tracking-widest whitespace-nowrap">VIRUZS</div>
                 </div>
 
-                <div class="relative z-10 w-full min-h-screen">
-                    <table class="w-full">
-                        <thead class="table-header-group">
+                <div class="relative z-10 w-full bg-white min-h-screen">
+                    <!-- Fixed Footer for Print (Sticks to absolute bottom of every printed page) -->
+                    <div class="hidden print:block fixed bottom-0 left-0 right-0 w-full overflow-hidden z-[100]">
+                        <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom">
+                    </div>
+
+                    <table class="w-full border-collapse">
+                        <thead class="print:table-header-group">
                             <tr>
-                                <td>
+                                <td class="p-0 border-none">
                                     <!-- Kop Surat (Letterhead) -->
-                                    <div class="w-full overflow-hidden flex-shrink-0 h-24 sm:h-32 relative">
-                                        <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] absolute top-0">
+                                    <div class="w-full overflow-hidden">
+                                        <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1]">
                                     </div>
                                 </td>
                             </tr>
                         </thead>
-                        <tbody class="table-row-group">
+                        <tbody>
                             <tr>
-                                <td>
+                                <td class="p-0 border-none">
                                     <!-- Content Area -->
-                                    <div class="px-8 py-4 sm:px-12 sm:py-6 print:px-12 print:py-6 flex-grow">
+                                    <div class="px-8 py-4 sm:px-12 sm:py-6 print:px-12 print:py-6 bg-white">
                         <div class="text-center mb-6 font-bold flex flex-col items-center">
                             <p class="text-xl underline mb-1">PROFIL KEMITRAAN</p>
                             <p class="text-sm font-normal">Tanggal Cetak: {{ formattedTodayDate }}</p>
@@ -890,12 +895,12 @@ const getStatusDate = (stepName) => {
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot class="table-footer-group">
+                        <tfoot class="print:table-footer-group">
                             <tr>
-                                <td>
-                                    <!-- Footer Kop Surat -->
-                                    <div class="w-full overflow-hidden flex-shrink-0 h-20 sm:h-24 relative mt-4">
-                                        <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom absolute bottom-0">
+                                <td class="p-0 border-none">
+                                    <!-- Footer Kop Surat (Reserves space on every page) -->
+                                    <div class="w-full mt-2 overflow-hidden print:invisible">
+                                        <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom">
                                     </div>
                                 </td>
                             </tr>
