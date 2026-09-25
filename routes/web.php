@@ -301,7 +301,7 @@ Route::middleware(['auth'])->group(function () {
             $targetUser->save();
 
             // Handle file uploads if any
-            $data = $request->except(['name', 'email', 'file_ktp', 'file_nib', 'file_npwp', 'file_lokasi', '_method']);
+            $data = $request->except(['name', 'email', 'file_ktp', 'file_nib', 'file_npwp', 'file_lokasi', 'foto', '_method']);
             
             // Prevent non-admins from changing their status or tipe
             if ($currentUser->role === 'kemitraan') {
@@ -311,7 +311,7 @@ Route::middleware(['auth'])->group(function () {
                 unset($data['bandwidth']);
             }
 
-            $files = ['file_ktp', 'file_nib', 'file_npwp', 'file_lokasi'];
+            $files = ['file_ktp', 'file_nib', 'file_npwp', 'file_lokasi', 'foto'];
             foreach ($files as $fileKey) {
                 if ($request->hasFile($fileKey)) {
                     $path = $request->file($fileKey)->store('kemitraan/dokumen', 'public');

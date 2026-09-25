@@ -39,18 +39,23 @@ const formatIndoDate = (dateStr) => {
 const openBastModal = (item) => {
     selectedBooking.value = item;
     
+    const today = new Date();
     let ymdDate = '';
     if (item.created_at) {
         ymdDate = item.created_at.split(' ')[0];
     } else {
-        const today = new Date();
         ymdDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     }
+
+    const romanMonths = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+    const currentMonth = romanMonths[today.getMonth()];
+    const currentYear = today.getFullYear();
+    const autoNomor = `${String(item.id).padStart(5, '0')}/BAST/VIRUZS/${currentMonth}/${currentYear}`;
 
     let isPop = true; // All Kemitraan bookings are considered POP
 
     if (item.bast && item.bast.data) {
-        draftBastData.value = { ...item.bast.data, nomor: item.bast.nomor };
+        draftBastData.value = { ...item.bast.data, nomor: item.bast.nomor || autoNomor };
         // Fix for previously saved data
         if (!draftBastData.value.sebutan_pihak2) {
             draftBastData.value.sebutan_pihak2 = isPop ? 'POP' : 'PELANGGAN/RESELLER';
@@ -60,7 +65,7 @@ const openBastModal = (item) => {
         }
     } else {
         draftBastData.value = {
-            nomor: '00002/BAST/VGC/VII/2025',
+            nomor: autoNomor,
             hari_tanggal: formattedTodayDate.value,
             lokasi: 'Jl Perintis Kemerdekaan No. 12 A Desa Sukamulya Kecamatan Cikembar Sukabumi Jawa Barat 43157',
             pihak1_nama: 'DERI GANTINAYASA',
@@ -269,7 +274,7 @@ const deleteBooking = (id) => {
                 </div>
 
                 <!-- Printable Area -->
-                <div class="p-8 sm:p-12 print:p-0 bg-white" style="font-family: 'Times New Roman', Times, serif; color: black; line-height: 1.5; font-size: 14px;">
+                <div class="bg-white w-full" style="font-family: 'Times New Roman', Times, serif; color: black; line-height: 1.5; font-size: 14px;">
                     <!-- Watermark for Print -->
                     <div class="hidden print:flex absolute inset-0 z-0 items-center justify-center opacity-[0.05] pointer-events-none select-none overflow-hidden">
                         <div class="text-[120px] font-extrabold uppercase rotate-[-30deg] tracking-widest whitespace-nowrap">VIRUZS</div>
@@ -277,14 +282,16 @@ const deleteBooking = (id) => {
 
                     <div class="relative z-10">
                         <!-- Kop Surat (Letterhead) -->
-                        <div class="mb-4">
-                            <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="w-full h-auto object-contain">
+                        <div class="w-full overflow-hidden">
+                            <img src="/images/kop-surat-atas.jpg" alt="Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1]">
                         </div>
 
-                        <div class="text-center mb-6 font-bold flex flex-col items-center">
-                            <p class="text-lg">BERITA ACARA SERAH TERIMA</p>
-                            <input type="text" v-model="draftBastData.nomor" class="text-sm font-bold border-0 bg-transparent p-0 focus:ring-0 text-center w-full max-w-xs">
-                        </div>
+                        <!-- Content Area -->
+                        <div class="px-8 py-4 sm:px-12 sm:py-6 print:px-12 print:py-6">
+                            <div class="text-center mb-6 font-bold flex flex-col items-center">
+                                <p class="text-lg">BERITA ACARA SERAH TERIMA</p>
+                                <input type="text" v-model="draftBastData.nomor" class="text-sm font-bold border-0 bg-transparent p-0 focus:ring-0 text-center w-full max-w-xs">
+                            </div>
                         
                         <p class="mb-6 text-justify leading-relaxed">
                             Pada hari ini : <input type="text" v-model="draftBastData.hari_tanggal" class="border-b border-dashed border-slate-300 bg-transparent p-0 focus:border-indigo-500 focus:ring-0 text-sm font-medium w-64">, Bertempat di: <textarea v-model="draftBastData.lokasi" rows="1" class="border-b border-dashed border-slate-300 bg-transparent p-0 focus:border-indigo-500 focus:ring-0 text-sm font-medium w-full resize-none inline-block align-bottom"></textarea>telah diterbitkan Berita acara Serah Terima antara :
@@ -293,153 +300,135 @@ const deleteBooking = (id) => {
                         <p class="mb-2">Kami yang bertandatangan di bawah ini :</p>
 
                         <!-- Pihak 1 -->
-                        <table class="w-full mb-2 border-collapse border border-black text-sm">
+                        <table class="w-full mb-4 border-collapse border border-slate-800 text-sm">
                             <tbody>
                                 <tr>
-                                    <td class="border border-black px-2 py-1 w-1/4">Nama</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.pihak1_nama" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1">
+                                    <td class="border border-slate-800 px-3 py-2 w-1/4 bg-slate-50 print:bg-transparent font-semibold">Nama</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.pihak1_nama" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase w-full">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Jabatan</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.pihak1_jabatan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1">
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Jabatan</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.pihak1_jabatan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase w-full">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Perusahaan</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.pihak1_perusahaan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1">
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Perusahaan</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.pihak1_perusahaan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase w-full">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Alamat</td>
-                                    <td class="border border-black px-2 py-1 flex items-start">
-                                        <span class="mr-1 mt-0.5">:</span>
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold align-top">Alamat</td>
+                                    <td class="border border-slate-800 px-3 py-2">
                                         <textarea v-model="draftBastData.pihak1_alamat" rows="2" class="border-0 bg-transparent p-0 focus:ring-0 text-sm w-full resize-none"></textarea>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <p class="mb-6 font-bold">Selanjutnya disebut Penyedia Jasa Internet</p>
+                        <p class="mb-6 font-bold text-slate-800 print:text-black">Selanjutnya disebut Penyedia Jasa Internet</p>
 
                         <!-- Pihak 2 -->
-                        <table class="w-full mb-2 border-collapse border border-black text-sm">
+                        <table class="w-full mb-4 border-collapse border border-slate-800 text-sm">
                             <tbody>
                                 <tr>
-                                    <td class="border border-black px-2 py-1 w-1/4">Nama</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.pihak2_nama" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1 font-bold">
+                                    <td class="border border-slate-800 px-3 py-2 w-1/4 bg-slate-50 print:bg-transparent font-semibold">Nama</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.pihak2_nama" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase w-full font-bold">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Jabatan</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.pihak2_jabatan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1">
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Jabatan</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.pihak2_jabatan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase w-full">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Perusahaan</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.pihak2_perusahaan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1 font-bold">
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Perusahaan</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.pihak2_perusahaan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase w-full font-bold">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Alamat</td>
-                                    <td class="border border-black px-2 py-1 flex items-start">
-                                        <span class="mr-1 mt-0.5">:</span>
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold align-top">Alamat</td>
+                                    <td class="border border-slate-800 px-3 py-2">
                                         <textarea v-model="draftBastData.pihak2_alamat" rows="2" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase w-full resize-none font-bold"></textarea>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <p class="mb-6 font-bold flex items-center">
+                        <p class="mb-6 font-bold text-slate-800 print:text-black flex items-center">
                             Selanjutnya disebut <input type="text" v-model="draftBastData.sebutan_pihak2" class="ml-1 border-0 bg-transparent p-0 focus:ring-0 text-sm font-bold uppercase w-48">
                         </p>
 
                         <p class="mb-2">Menyatakan bahwa sebagai berikut :</p>
 
                         <!-- Detail Layanan -->
-                        <table class="w-full mb-6 border-collapse border border-black text-sm">
+                        <table class="w-full mb-8 border-collapse border border-slate-800 text-sm">
                             <tbody>
                                 <tr>
-                                    <td class="border border-black px-2 py-1 w-1/3">Atas Nama Perusahaan</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.layanan_atas_nama" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1 font-bold">
+                                    <td class="border border-slate-800 px-3 py-2 w-1/3 bg-slate-50 print:bg-transparent font-semibold">Atas Nama Perusahaan</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.layanan_atas_nama" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase w-full font-bold">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Jenis Pekerjaan</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.layanan_jenis_pekerjaan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Jenis Pekerjaan</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.layanan_jenis_pekerjaan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm w-full">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Jenis Layanan</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.layanan_jenis" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Jenis Layanan</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.layanan_jenis" class="border-0 bg-transparent p-0 focus:ring-0 text-sm w-full">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Kapasitas</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.layanan_kapasitas" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Kapasitas</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.layanan_kapasitas" class="border-0 bg-transparent p-0 focus:ring-0 text-sm w-full">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Lokasi Asal</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.layanan_lokasi_asal" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Lokasi Asal</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.layanan_lokasi_asal" class="border-0 bg-transparent p-0 focus:ring-0 text-sm w-full">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Lokasi Tujuan</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.layanan_lokasi_tujuan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase flex-1 font-bold">
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Lokasi Tujuan</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="text" v-model="draftBastData.layanan_lokasi_tujuan" class="border-0 bg-transparent p-0 focus:ring-0 text-sm uppercase w-full font-bold">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Tanggal Booking</td>
-                                    <td class="border border-black px-2 py-1 flex items-center bg-yellow-50/50 print:bg-transparent">
-                                        <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.layanan_tanggal_booking" readonly class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1 cursor-default">
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Tanggal Booking</td>
+                                    <td class="border border-slate-800 px-3 py-2 bg-yellow-50/30 print:bg-transparent">
+                                        <input type="text" v-model="draftBastData.layanan_tanggal_booking" readonly class="border-0 bg-transparent p-0 focus:ring-0 text-sm w-full cursor-default text-slate-700 print:text-black">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Tanggal Instalasi</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="date" v-model="draftBastData.layanan_tanggal_instalasi" class="print:hidden border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1 cursor-pointer">
-                                        <span class="hidden print:inline flex-1 text-sm">{{ formatIndoDate(draftBastData.layanan_tanggal_instalasi) }}</span>
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Tanggal Instalasi</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="date" v-model="draftBastData.layanan_tanggal_instalasi" class="print:hidden border-0 bg-transparent p-0 focus:ring-0 text-sm w-full cursor-pointer">
+                                        <span class="hidden print:block text-sm">{{ formatIndoDate(draftBastData.layanan_tanggal_instalasi) }}</span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Tanggal Aktivasi</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="date" v-model="draftBastData.layanan_tanggal_aktivasi" class="print:hidden border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1 cursor-pointer">
-                                        <span class="hidden print:inline flex-1 text-sm">{{ formatIndoDate(draftBastData.layanan_tanggal_aktivasi) }}</span>
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Tanggal Aktivasi</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="date" v-model="draftBastData.layanan_tanggal_aktivasi" class="print:hidden border-0 bg-transparent p-0 focus:ring-0 text-sm w-full cursor-pointer">
+                                        <span class="hidden print:block text-sm">{{ formatIndoDate(draftBastData.layanan_tanggal_aktivasi) }}</span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-black px-2 py-1">Tanggal Aktif Berlangganan</td>
-                                    <td class="border border-black px-2 py-1 flex items-center">
-                                        <span class="mr-1">:</span>
-                                        <input type="date" v-model="draftBastData.layanan_tanggal_aktif" class="print:hidden border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1 cursor-pointer">
-                                        <span class="hidden print:inline flex-1 text-sm">{{ formatIndoDate(draftBastData.layanan_tanggal_aktif) }}</span>
+                                    <td class="border border-slate-800 px-3 py-2 bg-slate-50 print:bg-transparent font-semibold">Tanggal Aktif Berlangganan</td>
+                                    <td class="border border-slate-800 px-3 py-2">
+                                        <input type="date" v-model="draftBastData.layanan_tanggal_aktif" class="print:hidden border-0 bg-transparent p-0 focus:ring-0 text-sm w-full cursor-pointer">
+                                        <span class="hidden print:block text-sm">{{ formatIndoDate(draftBastData.layanan_tanggal_aktif) }}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -468,13 +457,14 @@ const deleteBooking = (id) => {
                             </div>
                         </div>
 
-                        <p class="text-xs font-bold mb-4">
+                        <p class="text-xs font-bold mb-0">
                             *Disclaimer : Apabila selama 5 hari kerja BAST tidak di tandatangani maka kami anggap setuju.
                         </p>
+                        </div> <!-- End Content Area -->
 
                         <!-- Footer Kop Surat -->
-                        <div class="mt-4">
-                            <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain">
+                        <div class="w-full mt-2 overflow-hidden">
+                            <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom">
                         </div>
                     </div>
                 </div>

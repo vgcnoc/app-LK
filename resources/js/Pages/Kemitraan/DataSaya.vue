@@ -58,6 +58,7 @@ const form = useForm({
     file_nib: null,
     file_npwp: null,
     file_lokasi: null,
+    foto: null,
 });
 
 const submit = () => {
@@ -211,6 +212,34 @@ const formattedTodayDate = computed(() => {
                                 <option value="4 Gbps">4 Gbps</option>
                                 <option value="5 Gbps">5 Gbps</option>
                             </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Header (Foto + Nama) -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+                    <div class="px-6 py-8 flex flex-col md:flex-row items-center gap-6">
+                        <div class="relative group">
+                            <img v-if="profile.foto" :src="'/storage/' + profile.foto" class="h-24 w-24 rounded-full object-cover border-4 border-indigo-50 shadow-sm">
+                            <div v-else class="h-24 w-24 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-3xl border-4 border-indigo-50 shadow-sm">
+                                {{ displayUser.name.charAt(0).toUpperCase() }}
+                            </div>
+                            <label v-if="editing" class="absolute bottom-0 right-0 bg-indigo-600 text-white p-1.5 rounded-full cursor-pointer hover:bg-indigo-700 shadow-md transition-colors" title="Upload Foto">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <input type="file" class="hidden" @change="e => handleFileUpload(e, 'foto')" accept="image/*">
+                            </label>
+                        </div>
+                        <div class="text-center md:text-left">
+                            <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2 justify-center md:justify-start">
+                                {{ displayUser.name }}
+                                <svg v-if="profile.status_akun === 'Aktif'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                            </h2>
+                            <p class="text-slate-500 font-medium">{{ profile.tipe_kemitraan }}</p>
                         </div>
                     </div>
                 </div>
