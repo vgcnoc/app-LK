@@ -90,6 +90,11 @@ const openBastModal = (item) => {
         if (draftBastData.value.pihak2_perusahaan === item.nama_pelanggan) {
             draftBastData.value.pihak2_perusahaan = item.nama_usaha || '';
         }
+
+        // If it was auto-filled with the old layanan_jenis bug (where it just copied the whole paket), replace it
+        if (item.paket && !item.paket.includes('~') && draftBastData.value.layanan_jenis === item.paket) {
+            draftBastData.value.layanan_jenis = 'Dedicated';
+        }
         
         // Ensure dates are correct based on current status, overriding old saved defaults if status hasn't reached there yet
         if (!defaultAktifDate && !['Aktif'].includes(item.status_akun)) {
@@ -125,8 +130,8 @@ const openBastModal = (item) => {
             sebutan_pihak2: isPop ? 'POP' : 'PELANGGAN/RESELLER',
             layanan_atas_nama: item.nama_pelanggan || '',
             layanan_jenis_pekerjaan: 'Instalasi & Aktivasi',
-            layanan_jenis: item.paket ? (item.paket.includes('~') ? item.paket.split('~')[0].trim() : item.paket) : 'Internet Dedicated',
-            layanan_kapasitas: item.paket || 'Internet Dedicated ~ 50 Mbps',
+            layanan_jenis: item.paket && item.paket.includes('~') ? item.paket.split('~')[0].trim() : 'Dedicated',
+            layanan_kapasitas: item.paket && item.paket.includes('~') ? item.paket.split('~')[1].trim() : (item.paket || '50 Mbps'),
             layanan_lokasi_asal: '-',
             layanan_lokasi_tujuan: item.alamat || '',
             layanan_tanggal_booking: item.tanggal || '',
