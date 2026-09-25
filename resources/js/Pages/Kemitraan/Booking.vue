@@ -54,6 +54,15 @@ const openBastModal = (item) => {
 
     let isPop = true; // All Kemitraan bookings are considered POP
 
+    let defaultAktifDate = '';
+    if (item.status_akun === 'Aktif') {
+        if (item.status_history && item.status_history['Aktif']) {
+            defaultAktifDate = item.status_history['Aktif'].split(' ')[0];
+        } else {
+            defaultAktifDate = ymdDate;
+        }
+    }
+
     if (item.bast && item.bast.data) {
         draftBastData.value = { ...item.bast.data, nomor: item.bast.nomor || autoNomor };
         // Fix for previously saved data
@@ -70,9 +79,9 @@ const openBastModal = (item) => {
             draftBastData.value.layanan_tanggal_aktivasi = '';
             draftBastData.value.layanan_tanggal_aktif = '';
         } else {
-            if (!draftBastData.value.layanan_tanggal_instalasi) draftBastData.value.layanan_tanggal_instalasi = ymdDate;
-            if (!draftBastData.value.layanan_tanggal_aktivasi) draftBastData.value.layanan_tanggal_aktivasi = ymdDate;
-            if (!draftBastData.value.layanan_tanggal_aktif) draftBastData.value.layanan_tanggal_aktif = ymdDate;
+            if (!draftBastData.value.layanan_tanggal_instalasi) draftBastData.value.layanan_tanggal_instalasi = defaultAktifDate;
+            if (!draftBastData.value.layanan_tanggal_aktivasi) draftBastData.value.layanan_tanggal_aktivasi = defaultAktifDate;
+            if (!draftBastData.value.layanan_tanggal_aktif) draftBastData.value.layanan_tanggal_aktif = defaultAktifDate;
         }
     } else {
         draftBastData.value = {
@@ -95,9 +104,9 @@ const openBastModal = (item) => {
             layanan_lokasi_asal: '-',
             layanan_lokasi_tujuan: item.alamat || '',
             layanan_tanggal_booking: item.tanggal || '',
-            layanan_tanggal_instalasi: item.status_akun === 'Aktif' ? ymdDate : '',
-            layanan_tanggal_aktivasi: item.status_akun === 'Aktif' ? ymdDate : '',
-            layanan_tanggal_aktif: item.status_akun === 'Aktif' ? ymdDate : '',
+            layanan_tanggal_instalasi: defaultAktifDate,
+            layanan_tanggal_aktivasi: defaultAktifDate,
+            layanan_tanggal_aktif: defaultAktifDate,
             penandatangan_nama_pihak2: item.nama_pelanggan || '..............................'
         };
     }
