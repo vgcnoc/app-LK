@@ -50,7 +50,6 @@ const form = useForm({
     // Data Teknis
     pic_teknisi: props.profile.pic_teknisi || '',
     wa_teknisi: props.profile.wa_teknisi || '',
-    jumlah_teknisi: props.profile.jumlah_teknisi || '',
     ukuran_seragam: props.profile.ukuran_seragam || '',
     pengalaman_infrastruktur: props.profile.pengalaman_infrastruktur || '',
     tim_teknisi: (() => {
@@ -353,15 +352,14 @@ const formattedTodayDate = computed(() => {
                             <!-- Section: Data Teknis -->
                             <div>
                                 <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Data Teknis</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div><label class="text-xs font-medium text-slate-400 block mb-1">Nama PIC Teknisi</label><p class="text-sm font-medium text-slate-800">{{ profile.pic_teknisi || '-' }}</p></div>
                                     <div><label class="text-xs font-medium text-slate-400 block mb-1">No. WhatsApp Teknisi</label><p class="text-sm font-medium text-slate-800">{{ profile.wa_teknisi || '-' }}</p></div>
-                                    <div><label class="text-xs font-medium text-slate-400 block mb-1">Jumlah Teknisi</label><p class="text-sm font-medium text-slate-800">{{ profile.jumlah_teknisi || '-' }}</p></div>
                                     <div><label class="text-xs font-medium text-slate-400 block mb-1">Ukuran Seragam</label><p class="text-sm font-medium text-slate-800">{{ profile.ukuran_seragam || '-' }}</p></div>
-                                    <div class="md:col-span-4"><label class="text-xs font-medium text-slate-400 block mb-1">Pengalaman/Infrastruktur yang dimiliki</label><p class="text-sm font-medium text-slate-800">{{ profile.pengalaman_infrastruktur || '-' }}</p></div>
+                                    <div class="md:col-span-3"><label class="text-xs font-medium text-slate-400 block mb-1">Pengalaman/Infrastruktur yang dimiliki</label><p class="text-sm font-medium text-slate-800">{{ profile.pengalaman_infrastruktur || '-' }}</p></div>
                                     
                                     <!-- Anggota Tim Teknisi List -->
-                                    <div v-if="form.tim_teknisi && form.tim_teknisi.length > 0" class="md:col-span-4 mt-2">
+                                    <div v-if="form.tim_teknisi && form.tim_teknisi.length > 0" class="md:col-span-3 mt-2">
                                         <h5 class="text-xs font-bold text-slate-500 uppercase mb-3">Anggota Tim Teknisi Lainnya</h5>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                                             <div v-for="(anggota, idx) in form.tim_teknisi" :key="idx" class="border border-slate-200 rounded-lg p-3 bg-slate-50 relative">
@@ -515,7 +513,7 @@ const formattedTodayDate = computed(() => {
                             <!-- Section: Data Teknis -->
                             <div>
                                 <h4 class="text-sm font-bold text-indigo-700 uppercase tracking-wider mb-4 pb-2 border-b border-indigo-100">Data Teknis</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                                     <div>
                                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama PIC Teknisi</label>
                                         <input v-model="form.pic_teknisi" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
@@ -523,10 +521,6 @@ const formattedTodayDate = computed(() => {
                                     <div>
                                         <label class="block text-sm font-medium text-slate-700 mb-1.5">No. WhatsApp Teknisi</label>
                                         <input v-model="form.wa_teknisi" type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Jumlah Teknisi</label>
-                                        <input v-model="form.jumlah_teknisi" type="number" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Ukuran Seragam</label>
@@ -537,13 +531,13 @@ const formattedTodayDate = computed(() => {
                                             <option value="XL">XL</option>
                                         </select>
                                     </div>
-                                    <div class="md:col-span-4">
+                                    <div class="md:col-span-3">
                                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Pengalaman/Infrastruktur yang dimiliki</label>
                                         <textarea v-model="form.pengalaman_infrastruktur" rows="2" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"></textarea>
                                     </div>
                                     
                                     <!-- Daftar Tim Teknisi Dynamic -->
-                                    <div class="md:col-span-4 mt-2">
+                                    <div class="md:col-span-3 mt-2">
                                         <div class="flex items-center justify-between mb-3 border-b pb-2">
                                             <h5 class="text-sm font-bold text-slate-700">Anggota Tim Teknisi Lainnya</h5>
                                             <button type="button" @click="addTimTeknisi" class="inline-flex items-center px-2.5 py-1.5 bg-indigo-50 border border-indigo-200 rounded-md text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition shadow-sm">
