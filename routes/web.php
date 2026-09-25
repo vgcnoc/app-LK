@@ -156,6 +156,7 @@ Route::middleware(['auth'])->group(function () {
                 $dataSaya = DB::table('kemitraan_profiles')->where('user_id', $b->user_id)->first();
                 $b->status_akun = $dataSaya ? $dataSaya->status_akun : 'Pending';
                 $b->status_history = $dataSaya && $dataSaya->status_history ? json_decode($dataSaya->status_history, true) : [];
+                $b->nama_usaha = $dataSaya ? $dataSaya->nama_usaha : '';
                 return $b;
             });
         return Inertia::render('Kemitraan/Booking', [

@@ -86,6 +86,11 @@ const openBastModal = (item) => {
             draftBastData.value.pihak2_jabatan = 'KOORDINATOR POP';
         }
         
+        // If it was auto-filled with nama_pelanggan from the old bug, replace it with nama_usaha or empty
+        if (draftBastData.value.pihak2_perusahaan === item.nama_pelanggan) {
+            draftBastData.value.pihak2_perusahaan = item.nama_usaha || '';
+        }
+        
         // Ensure dates are correct based on current status, overriding old saved defaults if status hasn't reached there yet
         if (!defaultAktifDate && !['Aktif'].includes(item.status_akun)) {
             draftBastData.value.layanan_tanggal_aktif = '';
@@ -115,7 +120,7 @@ const openBastModal = (item) => {
             pihak1_alamat: 'Kp Cilandak RT 002 RW 002 Sirnajaya, Warungkiara, Sukabumi, Jawa Barat, Indonesia.',
             pihak2_nama: item.nama_pelanggan || '',
             pihak2_jabatan: isPop ? 'KOORDINATOR POP' : 'DIREKTUR',
-            pihak2_perusahaan: item.nama_pelanggan || '',
+            pihak2_perusahaan: item.nama_usaha || '',
             pihak2_alamat: item.alamat || '',
             sebutan_pihak2: isPop ? 'POP' : 'PELANGGAN/RESELLER',
             layanan_atas_nama: item.nama_pelanggan || '',
