@@ -147,8 +147,7 @@ const statusHistory = computed(() => {
 const statusSteps = [
     'Pending',
     'Pembayaran Registrasi',
-    'Survey',
-    'Metro',
+    'Survey Metro',
     'Instalasi',
     'Aktivasi',
     'Aktif'
@@ -269,8 +268,7 @@ const getStatusDate = (stepName) => {
                             <select v-model="form.status_akun" @change="submit" class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 font-semibold text-slate-700">
                                 <option value="Pending">Pending</option>
                                 <option value="Pembayaran Registrasi">Pembayaran Registrasi</option>
-                                <option value="Survey">Survey</option>
-                                <option value="Metro">Metro</option>
+                                <option value="Survey Metro">Survey Metro</option>
                                 <option value="Instalasi">Instalasi</option>
                                 <option value="Aktivasi">Aktivasi</option>
                                 <option value="Aktif">Aktif</option>
