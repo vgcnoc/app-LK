@@ -235,7 +235,7 @@ const getStatusDate = (stepName) => {
                             
                             <!-- Dynamic Steps -->
                             <div v-for="(step, index) in statusSteps" :key="index" class="flex md:flex-col items-center md:items-center gap-4 md:gap-2 flex-1 md:text-center">
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg border-4 shadow-sm transition-all duration-500 z-10 bg-white"
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg border-4 shadow-sm transition-all duration-500 z-10"
                                     :class="currentStepIndex > index ? 'bg-emerald-500 border-emerald-500 text-white shadow-emerald-200' : 
                                             currentStepIndex === index ? 'bg-indigo-600 border-indigo-600 text-white shadow-indigo-200 scale-110' : 
                                             'bg-white border-slate-200 text-slate-400'">
