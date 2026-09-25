@@ -172,6 +172,86 @@ const printPage = () => {
         <div class="py-4 sm:py-8 bg-slate-50 min-h-screen">
             <div class="max-w-full mx-auto space-y-6 print:hidden">
 
+                <!-- Visual Progress Status -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 print:hidden">
+                    <h3 class="text-lg font-bold text-slate-800 mb-6">Status Pendaftaran Kemitraan</h3>
+                    
+                    <div v-if="profile.status_akun === 'Nonaktif'" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl flex items-start gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <div>
+                            <p class="font-bold">Akun Nonaktif</p>
+                            <p class="text-sm mt-1">Akun kemitraan Anda saat ini sedang dinonaktifkan. Silakan hubungi admin untuk informasi lebih lanjut.</p>
+                        </div>
+                    </div>
+
+                    <div v-else class="relative">
+                        <!-- Connecting Line -->
+                        <div class="hidden md:block absolute top-[24px] left-[10%] w-[80%] h-1 bg-slate-200 -translate-y-1/2 rounded-full overflow-hidden">
+                            <div class="h-full bg-indigo-600 transition-all duration-700 ease-in-out"
+                                :style="{ 
+                                    width: profile.status_akun === 'Pending' ? '0%' : 
+                                           profile.status_akun === 'Survey Metro' ? '50%' : 
+                                           profile.status_akun === 'Aktif' ? '100%' : '0%' 
+                                }">
+                            </div>
+                        </div>
+
+                        <!-- Steps -->
+                        <div class="relative z-10 flex flex-col md:flex-row justify-between gap-6 md:gap-0">
+                            
+                            <!-- Step 1: Pending -->
+                            <div class="flex md:flex-col items-center md:items-center gap-4 md:gap-2 flex-1 md:text-center">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg border-4 shadow-sm transition-all duration-500 z-10 bg-white"
+                                    :class="profile.status_akun === 'Pending' ? 'border-indigo-600 text-indigo-600 shadow-indigo-200 scale-110' : 'bg-indigo-600 border-indigo-600 text-white'">
+                                    <svg v-if="profile.status_akun !== 'Pending' && profile.status_akun" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span v-else>1</span>
+                                </div>
+                                <div class="md:mt-2">
+                                    <p class="font-bold text-slate-800">Pending</p>
+                                    <p class="text-xs text-slate-500 w-full md:w-32 mx-auto mt-1">Pendaftaran diterima, menunggu pengecekan</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Survey Metro -->
+                            <div class="flex md:flex-col items-center md:items-center gap-4 md:gap-2 flex-1 md:text-center">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg border-4 shadow-sm transition-all duration-500 z-10 bg-white"
+                                    :class="profile.status_akun === 'Aktif' ? 'bg-indigo-600 border-indigo-600 text-white' : 
+                                            profile.status_akun === 'Survey Metro' ? 'border-indigo-600 text-indigo-600 shadow-indigo-200 scale-110' : 
+                                            'bg-white border-slate-200 text-slate-400'">
+                                    <svg v-if="profile.status_akun === 'Aktif'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span v-else>2</span>
+                                </div>
+                                <div class="md:mt-2">
+                                    <p class="font-bold" :class="profile.status_akun === 'Pending' ? 'text-slate-400' : 'text-slate-800'">Survey Metro</p>
+                                    <p class="text-xs w-full md:w-32 mx-auto mt-1" :class="profile.status_akun === 'Pending' ? 'text-slate-400' : 'text-slate-500'">Proses pengecekan jaringan / metro</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Aktif -->
+                            <div class="flex md:flex-col items-center md:items-center gap-4 md:gap-2 flex-1 md:text-center">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg border-4 shadow-sm transition-all duration-500 z-10 bg-white"
+                                    :class="profile.status_akun === 'Aktif' ? 'bg-emerald-500 border-emerald-500 text-white shadow-emerald-200 scale-110' : 'bg-white border-slate-200 text-slate-400'">
+                                    <svg v-if="profile.status_akun === 'Aktif'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span v-else>3</span>
+                                </div>
+                                <div class="md:mt-2">
+                                    <p class="font-bold" :class="profile.status_akun === 'Aktif' ? 'text-emerald-600' : 'text-slate-400'">Aktif</p>
+                                    <p class="text-xs w-full md:w-32 mx-auto mt-1" :class="profile.status_akun === 'Aktif' ? 'text-emerald-600' : 'text-slate-400'">Akun kemitraan telah aktif dan siap</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Quick Info Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
