@@ -1472,7 +1472,7 @@ const submitDelete = () => {
                                     </label>
                                     <div class="relative">
                                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                            <span class="text-xs font-semibold text-slate-400">Rp</span>
+                                            <span class="text-xs font-semibold" :class="is_sales ? 'text-slate-400' : 'text-slate-400'">Rp</span>
                                         </div>
                                         <input
                                             v-model="editForm.base_amount"
@@ -1480,8 +1480,14 @@ const submitDelete = () => {
                                             min="0"
                                             step="1"
                                             required
+                                            :disabled="is_sales"
                                             placeholder="150000"
-                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                            :class="[
+                                                'w-full rounded-lg border py-2 pl-9 pr-3 text-xs sm:text-sm focus:outline-none focus:ring-2',
+                                                is_sales 
+                                                    ? 'border-slate-200 bg-slate-50 text-slate-500 cursor-not-allowed' 
+                                                    : 'border-slate-300 bg-white text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:ring-indigo-500/20'
+                                            ]"
                                         />
                                     </div>
                                     <p v-if="editForm.errors.base_amount" class="mt-1 text-xs text-rose-600">{{ editForm.errors.base_amount }}</p>
@@ -1507,15 +1513,21 @@ const submitDelete = () => {
                                     </label>
                                     <div class="relative">
                                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                            <span class="text-xs font-semibold text-slate-400">Rp</span>
+                                            <span class="text-xs font-semibold" :class="is_sales ? 'text-slate-400' : 'text-slate-400'">Rp</span>
                                         </div>
                                         <input
                                             v-model="editForm.installation_fee"
                                             type="number"
                                             min="0"
                                             step="1"
+                                            :disabled="is_sales"
                                             placeholder="0"
-                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                            :class="[
+                                                'w-full rounded-lg border py-2 pl-9 pr-3 text-xs sm:text-sm focus:outline-none focus:ring-2',
+                                                is_sales 
+                                                    ? 'border-slate-200 bg-slate-50 text-slate-500 cursor-not-allowed' 
+                                                    : 'border-slate-300 bg-white text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:ring-indigo-500/20'
+                                            ]"
                                         />
                                     </div>
                                     <p v-if="editForm.errors.installation_fee" class="mt-1 text-xs text-rose-600">{{ editForm.errors.installation_fee }}</p>
