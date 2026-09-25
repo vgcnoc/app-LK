@@ -159,6 +159,12 @@ Route::middleware(['auth'])->group(function () {
         // Placeholder: store booking logic here
         return redirect()->route('kemitraan.booking');
     })->name('kemitraan.booking.store');
+
+    Route::delete('/kemitraan/booking/{id}', function ($id) {
+        if (auth()->user()->role === 'kemitraan') abort(403);
+        DB::table('kemitraan_bookings')->where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Booking berhasil dihapus.');
+    })->name('kemitraan.booking.destroy');
     
     // Add route to view a specific booking's Data Saya
     Route::get('/kemitraan/booking/{id}/datasaya', function ($id) {
@@ -230,6 +236,12 @@ Route::middleware(['auth'])->group(function () {
         }
         return redirect()->back()->with('success', 'BAST berhasil disimpan.');
     })->name('kemitraan.bast.store');
+
+    Route::delete('/kemitraan/bast/{id}', function ($id) {
+        if (auth()->user()->role === 'kemitraan') abort(403);
+        DB::table('kemitraan_basts')->where('id', $id)->delete();
+        return redirect()->back()->with('success', 'BAST berhasil dihapus.');
+    })->name('kemitraan.bast.destroy');
 
     Route::get('/kemitraan/data-saya', function () {
         $user = auth()->user();
@@ -381,6 +393,14 @@ Route::middleware(['auth'])->group(function () {
         }
         return redirect()->back()->with('success', 'Invoice berhasil disimpan.');
     })->name('kemitraan.invoice.store');
+
+    Route::delete('/kemitraan/invoice/{id}', function ($id) {
+        if (auth()->user()->role === 'kemitraan') abort(403);
+        // Optionally delete payments related to this invoice first to prevent foreign key errors if there are constraints
+        DB::table('kemitraan_payments')->where('invoice_id', $id)->delete();
+        DB::table('kemitraan_invoices')->where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Invoice berhasil dihapus.');
+    })->name('kemitraan.invoice.destroy');
 
     Route::post('/kemitraan/invoice/pay', function (Request $request) {
         $user = auth()->user();

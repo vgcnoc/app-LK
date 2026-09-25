@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { Head, useForm, usePage, router } from '@inertiajs/vue3';
 import KemitraanLayout from '@/Layouts/KemitraanLayout.vue';
 
 const props = defineProps({
@@ -68,6 +68,14 @@ const handleFileUpload = (e) => {
     form.file_bast = e.target.files[0];
 };
 
+const deleteBast = (id) => {
+    if (confirm('Apakah Anda yakin ingin menghapus data BAST ini?')) {
+        router.delete(route('kemitraan.bast.destroy', id), {
+            preserveScroll: true
+        });
+    }
+};
+
 </script>
 
 <template>
@@ -133,6 +141,9 @@ const handleFileUpload = (e) => {
                                             </a>
                                             <button v-if="isAdmin" @click="openEditModal(bast)" class="px-3 py-1.5 text-xs font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors">
                                                 Edit
+                                            </button>
+                                            <button v-if="isAdmin" @click="deleteBast(bast.id)" class="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">
+                                                Hapus
                                             </button>
                                         </td>
                                     </tr>

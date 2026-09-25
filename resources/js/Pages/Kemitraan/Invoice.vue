@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { Head, useForm, usePage, router } from '@inertiajs/vue3';
 import KemitraanLayout from '@/Layouts/KemitraanLayout.vue';
 
 const props = defineProps({
@@ -116,6 +116,14 @@ const openDetailModal = (inv) => {
 };
 const printInvoice = () => {
     window.print();
+};
+
+const deleteInvoice = (id) => {
+    if (confirm('Apakah Anda yakin ingin menghapus tagihan/invoice ini? (Semua pembayaran terkait juga akan ikut terhapus)')) {
+        router.delete(route('kemitraan.invoice.destroy', id), {
+            preserveScroll: true
+        });
+    }
 };
 </script>
 
@@ -249,6 +257,9 @@ const printInvoice = () => {
                                                 </button>
                                                 <button @click="openEditModal(inv)" class="px-3 py-1.5 text-xs font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors">
                                                     Edit
+                                                </button>
+                                                <button @click="deleteInvoice(inv.id)" class="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">
+                                                    Hapus
                                                 </button>
                                             </template>
                                         </td>
