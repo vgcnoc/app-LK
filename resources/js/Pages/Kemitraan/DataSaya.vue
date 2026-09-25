@@ -842,12 +842,12 @@ const getStatusDate = (stepName) => {
                                 <tr>
                                     <td class="py-2 font-bold align-top">Nama Penanggung Jawab</td>
                                     <td class="py-2 align-top">:</td>
-                                    <td class="py-2 align-top">{{ profile.nama_pic || displayUser.name }}</td>
+                                    <td class="py-2 align-top">{{ profile.pic_teknisi || displayUser.name }}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 font-bold align-top">No WhatsApp</td>
                                     <td class="py-2 align-top">:</td>
-                                    <td class="py-2 align-top">{{ profile.wa_pic || displayUser.phone || '-' }}</td>
+                                    <td class="py-2 align-top">{{ profile.no_wa || '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 font-bold align-top">Alamat Kemitraan</td>
@@ -857,7 +857,7 @@ const getStatusDate = (stepName) => {
                                 <tr>
                                     <td class="py-2 font-bold align-top">Titik Koordinat</td>
                                     <td class="py-2 align-top">:</td>
-                                    <td class="py-2 align-top">{{ profile.titik_koordinat || '-' }}</td>
+                                    <td class="py-2 align-top">{{ profile.pin_maps || '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 font-bold align-top">Rekening Pembayaran</td>
