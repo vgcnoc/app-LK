@@ -776,10 +776,11 @@ const getStatusDate = (stepName) => {
                 <div class="relative z-10 w-full bg-white h-auto">
                     <!-- Fixed Footer for Print (Sticks to absolute bottom of every printed page) -->
                     <div class="hidden print:block fixed bottom-0 left-0 right-0 w-full overflow-hidden z-[100]">
-                        <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block transform scale-[1.08] print:scale-[1.1] origin-bottom">
+                        <img src="/images/kop-surat-bawah.jpg" alt="Footer Kop Surat" class="w-full h-auto object-contain block mx-auto print:max-w-full">
                     </div>
-
                     <table class="w-full border-collapse">
+                        <thead class="print:table-header-group">
+                            <tr>
                                 <td class="p-0 border-none">
                                     <!-- Kop Surat (Letterhead) -->
                                     <div class="w-full text-center">
