@@ -84,9 +84,9 @@ const openBastModal = (item) => {
             layanan_lokasi_asal: '-',
             layanan_lokasi_tujuan: item.alamat || '',
             layanan_tanggal_booking: item.tanggal || '',
-            layanan_tanggal_instalasi: ymdDate,
-            layanan_tanggal_aktivasi: ymdDate,
-            layanan_tanggal_aktif: ymdDate,
+            layanan_tanggal_instalasi: item.status_akun === 'Aktif' ? ymdDate : '',
+            layanan_tanggal_aktivasi: item.status_akun === 'Aktif' ? ymdDate : '',
+            layanan_tanggal_aktif: item.status_akun === 'Aktif' ? ymdDate : '',
             penandatangan_nama_pihak2: item.nama_pelanggan || '..............................'
         };
     }
