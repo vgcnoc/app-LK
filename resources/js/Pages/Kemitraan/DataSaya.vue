@@ -59,7 +59,37 @@ const form = useForm({
     file_npwp: null,
     file_lokasi: null,
     foto: null,
+    foto_tambahan: (() => {
+        if (!props.profile.foto_tambahan) return [];
+        try {
+            return typeof props.profile.foto_tambahan === 'string' 
+                ? JSON.parse(props.profile.foto_tambahan) 
+                : props.profile.foto_tambahan;
+        } catch(e) {
+            return [];
+        }
+    })(),
 });
+
+const handleFileUpload = (e, field) => {
+    form[field] = e.target.files[0];
+};
+
+const addFotoTambahan = () => {
+    form.foto_tambahan.push({
+        nama: '',
+        file: null,
+        path: null
+    });
+};
+
+const removeFotoTambahan = (index) => {
+    form.foto_tambahan.splice(index, 1);
+};
+
+const handleFotoTambahanUpload = (e, index) => {
+    form.foto_tambahan[index].file = e.target.files[0];
+};
 
 const submit = () => {
     const routeUrl = props.isAdminViewingMitra 
@@ -72,10 +102,6 @@ const submit = () => {
             editing.value = false;
         },
     });
-};
-
-const handleFileUpload = (e, field) => {
-    form[field] = e.target.files[0];
 };
 
 const formattedTodayDate = computed(() => {
@@ -349,6 +375,19 @@ const formattedTodayDate = computed(() => {
                                         <span v-else class="text-xs text-slate-400">Belum diunggah</span>
                                     </div>
                                 </div>
+                                <div v-if="form.foto_tambahan.length > 0" class="mt-4 border-t border-slate-100 pt-4">
+                                    <h5 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Foto/Dokumen Tambahan</h5>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                        <div v-for="(foto, index) in form.foto_tambahan" :key="index" class="border rounded-xl p-4 bg-slate-50 flex flex-col items-center justify-center text-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <span class="text-sm font-medium text-slate-700 mb-1">{{ foto.nama || 'Dokumen ' + (index+1) }}</span>
+                                            <a v-if="foto.path" :href="`/storage/${foto.path}`" target="_blank" class="text-xs text-indigo-600 font-semibold hover:underline">Lihat File</a>
+                                            <span v-else class="text-xs text-slate-400">Belum ada file</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -477,6 +516,37 @@ const formattedTodayDate = computed(() => {
                                     <div>
                                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Foto Lokasi/Usaha</label>
                                         <input type="file" @change="e => handleFileUpload(e, 'file_lokasi')" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                                    </div>
+                                </div>
+                                <div class="mt-6 border-t border-slate-100 pt-6">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h5 class="text-sm font-bold text-slate-700">Foto/Dokumen Tambahan</h5>
+                                        <button type="button" @click="addFotoTambahan" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 rounded-lg text-xs font-semibold transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                            Tambah Foto/Dokumen
+                                        </button>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div v-for="(foto, index) in form.foto_tambahan" :key="index" class="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <div class="flex-1 w-full">
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Nama Foto/Dokumen</label>
+                                                <input v-model="foto.nama" type="text" placeholder="Contoh: Foto Tiang, Bukti Lain, dll" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                            </div>
+                                            <div class="flex-1 w-full">
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Upload File <span v-if="foto.path" class="text-indigo-500">(Sudah ada)</span></label>
+                                                <input type="file" @change="e => handleFotoTambahanUpload(e, index)" class="w-full text-sm text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-white file:text-indigo-700 hover:file:bg-indigo-50 border border-slate-200 rounded-lg p-1" />
+                                            </div>
+                                            <button type="button" @click="removeFotoTambahan(index)" class="mt-4 sm:mt-0 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors self-end sm:self-auto" title="Hapus">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div v-if="form.foto_tambahan.length === 0" class="text-center py-6 text-slate-400 text-sm">
+                                            Belum ada foto/dokumen tambahan. Klik tombol "Tambah Foto/Dokumen" di atas.
+                                        </div>
                                     </div>
                                 </div>
                             </div>

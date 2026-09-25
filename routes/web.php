@@ -301,7 +301,7 @@ Route::middleware(['auth'])->group(function () {
             $targetUser->save();
 
             // Handle file uploads if any
-            $data = $request->except(['name', 'email', 'file_ktp', 'file_nib', 'file_npwp', 'file_lokasi', 'foto', '_method']);
+            $data = $request->except(['name', 'email', 'file_ktp', 'file_nib', 'file_npwp', 'file_lokasi', 'foto', 'foto_tambahan', '_method']);
             
             // Prevent non-admins from changing their status or tipe
             if ($currentUser->role === 'kemitraan') {
@@ -317,6 +317,32 @@ Route::middleware(['auth'])->group(function () {
                     $path = $request->file($fileKey)->store('kemitraan/dokumen', 'public');
                     $data[$fileKey] = $path;
                 }
+            }
+
+            // Handle multiple Foto Tambahan
+            if ($request->has('foto_tambahan')) {
+                $fotoTambahan = $request->foto_tambahan;
+                $processedFotoTambahan = [];
+                
+                if (is_array($fotoTambahan)) {
+                    foreach ($fotoTambahan as $index => $item) {
+                        $path = $item['path'] ?? null;
+                        
+                        // Check if a new file is uploaded
+                        $fileKey = "foto_tambahan.{$index}.file";
+                        if ($request->hasFile($fileKey)) {
+                            $path = $request->file($fileKey)->store('kemitraan/dokumen', 'public');
+                        }
+                        
+                        if ($path) {
+                            $processedFotoTambahan[] = [
+                                'nama' => $item['nama'] ?? 'Foto ' . ($index + 1),
+                                'path' => $path
+                            ];
+                        }
+                    }
+                }
+                $data['foto_tambahan'] = json_encode($processedFotoTambahan);
             }
 
             // Convert empty strings to null for integer fields just in case
