@@ -47,10 +47,7 @@ const openBastModal = (item) => {
         ymdDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     }
 
-    let isPop = false;
-    if (item.paket && item.paket.toUpperCase().includes('POP')) {
-        isPop = true;
-    }
+    let isPop = true; // All Kemitraan bookings are considered POP
 
     if (item.bast && item.bast.data) {
         draftBastData.value = { ...item.bast.data, nomor: item.bast.nomor };
