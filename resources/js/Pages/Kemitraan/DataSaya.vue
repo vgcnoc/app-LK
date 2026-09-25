@@ -53,6 +53,16 @@ const form = useForm({
     jumlah_teknisi: props.profile.jumlah_teknisi || '',
     ukuran_seragam: props.profile.ukuran_seragam || '',
     pengalaman_infrastruktur: props.profile.pengalaman_infrastruktur || '',
+    tim_teknisi: (() => {
+        if (!props.profile.tim_teknisi) return [];
+        try {
+            return typeof props.profile.tim_teknisi === 'string' 
+                ? JSON.parse(props.profile.tim_teknisi) 
+                : props.profile.tim_teknisi;
+        } catch(e) {
+            return [];
+        }
+    })(),
 
     // File uploads
     file_ktp: null,
@@ -71,6 +81,18 @@ const form = useForm({
         }
     })(),
 });
+
+const addTimTeknisi = () => {
+    form.tim_teknisi.push({
+        nama: '',
+        wa: '',
+        ukuran_seragam: ''
+    });
+};
+
+const removeTimTeknisi = (index) => {
+    form.tim_teknisi.splice(index, 1);
+};
 
 const handleFileUpload = (e, field) => {
     form[field] = e.target.files[0];
@@ -337,6 +359,20 @@ const formattedTodayDate = computed(() => {
                                     <div><label class="text-xs font-medium text-slate-400 block mb-1">Jumlah Teknisi</label><p class="text-sm font-medium text-slate-800">{{ profile.jumlah_teknisi || '-' }}</p></div>
                                     <div><label class="text-xs font-medium text-slate-400 block mb-1">Ukuran Seragam</label><p class="text-sm font-medium text-slate-800">{{ profile.ukuran_seragam || '-' }}</p></div>
                                     <div class="md:col-span-4"><label class="text-xs font-medium text-slate-400 block mb-1">Pengalaman/Infrastruktur yang dimiliki</label><p class="text-sm font-medium text-slate-800">{{ profile.pengalaman_infrastruktur || '-' }}</p></div>
+                                    
+                                    <!-- Anggota Tim Teknisi List -->
+                                    <div v-if="form.tim_teknisi && form.tim_teknisi.length > 0" class="md:col-span-4 mt-2">
+                                        <h5 class="text-xs font-bold text-slate-500 uppercase mb-3">Anggota Tim Teknisi Lainnya</h5>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                            <div v-for="(anggota, idx) in form.tim_teknisi" :key="idx" class="border border-slate-200 rounded-lg p-3 bg-slate-50 relative">
+                                                <div class="flex justify-between items-start mb-1">
+                                                    <span class="text-sm font-semibold text-slate-800">{{ anggota.nama || '-' }}</span>
+                                                    <span class="text-xs px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded font-medium">Size: {{ anggota.ukuran_seragam || '-' }}</span>
+                                                </div>
+                                                <p class="text-xs text-slate-500">WA: {{ anggota.wa || '-' }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -504,6 +540,49 @@ const formattedTodayDate = computed(() => {
                                     <div class="md:col-span-4">
                                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Pengalaman/Infrastruktur yang dimiliki</label>
                                         <textarea v-model="form.pengalaman_infrastruktur" rows="2" class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"></textarea>
+                                    </div>
+                                    
+                                    <!-- Daftar Tim Teknisi Dynamic -->
+                                    <div class="md:col-span-4 mt-2">
+                                        <div class="flex items-center justify-between mb-3 border-b pb-2">
+                                            <h5 class="text-sm font-bold text-slate-700">Anggota Tim Teknisi Lainnya</h5>
+                                            <button type="button" @click="addTimTeknisi" class="inline-flex items-center px-2.5 py-1.5 bg-indigo-50 border border-indigo-200 rounded-md text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition shadow-sm">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                                </svg>
+                                                Tambah Anggota
+                                            </button>
+                                        </div>
+                                        <div v-if="form.tim_teknisi.length === 0" class="text-center py-6 bg-slate-50 border border-dashed border-slate-300 rounded-lg">
+                                            <p class="text-sm text-slate-500">Belum ada data anggota tim tambahan.</p>
+                                        </div>
+                                        <div v-else class="space-y-4">
+                                            <div v-for="(anggota, idx) in form.tim_teknisi" :key="idx" class="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 border border-slate-200 rounded-lg bg-slate-50 relative group">
+                                                <button type="button" @click="removeTimTeknisi(idx)" class="absolute -top-2 -right-2 bg-red-100 text-red-600 rounded-full p-1 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-200" title="Hapus Anggota">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                                
+                                                <div class="md:col-span-4">
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Nama Anggota</label>
+                                                    <input v-model="anggota.nama" type="text" class="w-full px-3 py-1.5 border border-slate-300 rounded-md text-sm focus:ring-1 focus:ring-indigo-400 focus:border-indigo-400" placeholder="Nama..." />
+                                                </div>
+                                                <div class="md:col-span-4">
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">No. WhatsApp</label>
+                                                    <input v-model="anggota.wa" type="text" class="w-full px-3 py-1.5 border border-slate-300 rounded-md text-sm focus:ring-1 focus:ring-indigo-400 focus:border-indigo-400" placeholder="08..." />
+                                                </div>
+                                                <div class="md:col-span-4">
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Ukuran Seragam</label>
+                                                    <select v-model="anggota.ukuran_seragam" class="w-full px-3 py-1.5 border border-slate-300 rounded-md text-sm focus:ring-1 focus:ring-indigo-400 focus:border-indigo-400">
+                                                        <option value="">- Pilih Ukuran -</option>
+                                                        <option value="M">M</option>
+                                                        <option value="L">L</option>
+                                                        <option value="XL">XL</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

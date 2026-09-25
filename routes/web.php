@@ -344,6 +344,10 @@ Route::middleware(['auth'])->group(function () {
                 }
                 $data['foto_tambahan'] = json_encode($processedFotoTambahan);
             }
+            
+            if ($request->has('tim_teknisi')) {
+                $data['tim_teknisi'] = is_array($request->tim_teknisi) ? json_encode($request->tim_teknisi) : $request->tim_teknisi;
+            }
 
             // Convert empty strings to null for integer fields just in case
             if (isset($data['estimasi_pelanggan']) && $data['estimasi_pelanggan'] === '') {
