@@ -767,7 +767,7 @@ const getStatusDate = (stepName) => {
             </div>
 
             <!-- Printable Area (Only visible on print) -->
-            <div class="hidden print:flex flex-col bg-white w-full h-auto min-h-screen" style="font-family: 'Times New Roman', Times, serif; color: black; line-height: 1.5; font-size: 14px;">
+            <div class="hidden print-only-area flex-col bg-white w-full h-auto min-h-screen" style="font-family: 'Times New Roman', Times, serif; color: black; line-height: 1.5; font-size: 14px;">
                 <!-- Watermark for Print -->
                 <div class="hidden print:flex absolute inset-0 z-0 items-center justify-center opacity-[0.05] pointer-events-none select-none overflow-hidden">
                     <div class="text-[120px] font-extrabold uppercase rotate-[-30deg] tracking-widest whitespace-nowrap">VIRUZS</div>
@@ -890,6 +890,24 @@ const getStatusDate = (stepName) => {
 </template>
 
 <style scoped>
+@media print {
+    body, html {
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: white !important;
+        height: auto !important;
+    }
+    .print-only-area {
+        display: flex !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+    .print\:hidden {
+        display: none !important;
+    }
+}
+
 .unprocessed-line {
     background-image: repeating-linear-gradient(
         -45deg,
