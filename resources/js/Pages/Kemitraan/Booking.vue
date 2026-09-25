@@ -64,7 +64,7 @@ const openBastModal = (item) => {
             pihak1_perusahaan: 'PT VIRUZS GLOBAL CONNECTION',
             pihak1_alamat: 'Kp Cilandak RT 002 RW 002 Sirnajaya, Warungkiara, Sukabumi, Jawa Barat, Indonesia.',
             pihak2_nama: item.nama_pelanggan || '',
-            pihak2_jabatan: isPop ? 'MITRA POP' : 'DIREKTUR',
+            pihak2_jabatan: isPop ? 'KOORDINATOR POP' : 'DIREKTUR',
             pihak2_perusahaan: item.nama_pelanggan || '',
             pihak2_alamat: item.alamat || '',
             sebutan_pihak2: isPop ? 'POP' : 'PELANGGAN/RESELLER',
