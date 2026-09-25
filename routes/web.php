@@ -153,7 +153,7 @@ Route::middleware(['auth'])->group(function () {
                 if ($b->bast) {
                     $b->bast->data = json_decode($b->bast->data, true);
                 }
-                $dataSaya = DB::table('data_sayas')->where('user_id', $b->user_id)->first();
+                $dataSaya = DB::table('kemitraan_profiles')->where('user_id', $b->user_id)->first();
                 $b->status_akun = $dataSaya ? $dataSaya->status_akun : 'Pending';
                 return $b;
             });
