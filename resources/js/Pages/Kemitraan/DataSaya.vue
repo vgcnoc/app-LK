@@ -531,8 +531,8 @@ const formattedTodayDate = computed(() => {
                                     <div class="space-y-4">
                                         <div v-for="(foto, index) in form.foto_tambahan" :key="index" class="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-slate-50 p-4 rounded-xl border border-slate-200">
                                             <div class="flex-1 w-full">
-                                                <label class="block text-xs font-medium text-slate-500 mb-1">Nama Foto/Dokumen</label>
-                                                <input v-model="foto.nama" type="text" placeholder="Contoh: Foto Tiang, Bukti Lain, dll" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Nama</label>
+                                                <input v-model="foto.nama" type="text" placeholder="Contoh: Tim Instalasi, Teknisi, dll" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400" />
                                             </div>
                                             <div class="flex-1 w-full">
                                                 <label class="block text-xs font-medium text-slate-500 mb-1">Upload File <span v-if="foto.path" class="text-indigo-500">(Sudah ada)</span></label>
