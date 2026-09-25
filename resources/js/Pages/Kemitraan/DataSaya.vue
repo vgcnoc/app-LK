@@ -154,7 +154,11 @@ const statusSteps = [
 ];
 
 const currentStepIndex = computed(() => {
-    return statusSteps.indexOf(props.profile.status_akun || 'Pending');
+    let status = props.profile.status_akun || 'Pending';
+    if (status === 'Survey' || status === 'Metro') {
+        status = 'Survey Metro';
+    }
+    return statusSteps.indexOf(status);
 });
 
 const getStatusDate = (stepName) => {
