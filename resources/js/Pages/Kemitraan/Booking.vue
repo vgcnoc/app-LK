@@ -27,8 +27,26 @@ const showBastModal = ref(false);
 const selectedBooking = ref(null);
 const draftBastData = ref({});
 
+const formatIndoDate = (dateStr) => {
+    if (!dateStr) return '-';
+    if (dateStr.includes(' ')) return dateStr;
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+};
+
 const openBastModal = (item) => {
     selectedBooking.value = item;
+    
+    let ymdDate = '';
+    if (item.created_at) {
+        ymdDate = item.created_at.split(' ')[0];
+    } else {
+        const today = new Date();
+        ymdDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    }
+
     draftBastData.value = {
         nomor: '00002/BAST/VGC/VII/2025',
         hari_tanggal: formattedTodayDate.value,
@@ -48,9 +66,9 @@ const openBastModal = (item) => {
         layanan_lokasi_asal: '-',
         layanan_lokasi_tujuan: item.alamat || '',
         layanan_tanggal_booking: item.tanggal || '',
-        layanan_tanggal_instalasi: item.tanggal || '',
-        layanan_tanggal_aktivasi: item.tanggal || '',
-        layanan_tanggal_aktif: item.tanggal || '',
+        layanan_tanggal_instalasi: ymdDate,
+        layanan_tanggal_aktivasi: ymdDate,
+        layanan_tanggal_aktif: ymdDate,
         penandatangan_nama_pihak2: item.nama_pelanggan || '..............................'
     };
     showBastModal.value = true;
@@ -352,28 +370,31 @@ const deleteBooking = (id) => {
                                     <td class="border border-black px-2 py-1">Tanggal Booking</td>
                                     <td class="border border-black px-2 py-1 flex items-center bg-yellow-50/50 print:bg-transparent">
                                         <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.layanan_tanggal_booking" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                        <input type="text" v-model="draftBastData.layanan_tanggal_booking" readonly class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1 cursor-default">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Tanggal Instalasi</td>
                                     <td class="border border-black px-2 py-1 flex items-center">
                                         <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.layanan_tanggal_instalasi" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                        <input type="date" v-model="draftBastData.layanan_tanggal_instalasi" class="print:hidden border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1 cursor-pointer">
+                                        <span class="hidden print:inline flex-1 text-sm">{{ formatIndoDate(draftBastData.layanan_tanggal_instalasi) }}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Tanggal Aktivasi</td>
                                     <td class="border border-black px-2 py-1 flex items-center">
                                         <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.layanan_tanggal_aktivasi" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                        <input type="date" v-model="draftBastData.layanan_tanggal_aktivasi" class="print:hidden border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1 cursor-pointer">
+                                        <span class="hidden print:inline flex-1 text-sm">{{ formatIndoDate(draftBastData.layanan_tanggal_aktivasi) }}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-black px-2 py-1">Tanggal Aktif Berlangganan</td>
                                     <td class="border border-black px-2 py-1 flex items-center">
                                         <span class="mr-1">:</span>
-                                        <input type="text" v-model="draftBastData.layanan_tanggal_aktif" class="border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1">
+                                        <input type="date" v-model="draftBastData.layanan_tanggal_aktif" class="print:hidden border-0 bg-transparent p-0 focus:ring-0 text-sm flex-1 cursor-pointer">
+                                        <span class="hidden print:inline flex-1 text-sm">{{ formatIndoDate(draftBastData.layanan_tanggal_aktif) }}</span>
                                     </td>
                                 </tr>
                             </tbody>
