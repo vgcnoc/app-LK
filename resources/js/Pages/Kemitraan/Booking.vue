@@ -54,13 +54,26 @@ const openBastModal = (item) => {
 
     let isPop = true; // All Kemitraan bookings are considered POP
 
+    let defaultInstalasiDate = '';
+    let defaultAktivasiDate = '';
     let defaultAktifDate = '';
+
+    if (item.status_history) {
+        if (item.status_history['Instalasi']) defaultInstalasiDate = item.status_history['Instalasi'].split(' ')[0];
+        if (item.status_history['Aktivasi']) defaultAktivasiDate = item.status_history['Aktivasi'].split(' ')[0];
+        if (item.status_history['Aktif']) defaultAktifDate = item.status_history['Aktif'].split(' ')[0];
+    }
+    
+    // Fallbacks if they reached a state but history is missing (e.g. legacy data)
     if (item.status_akun === 'Aktif') {
-        if (item.status_history && item.status_history['Aktif']) {
-            defaultAktifDate = item.status_history['Aktif'].split(' ')[0];
-        } else {
-            defaultAktifDate = ymdDate;
-        }
+        if (!defaultAktifDate) defaultAktifDate = ymdDate;
+        if (!defaultAktivasiDate) defaultAktivasiDate = defaultAktifDate;
+        if (!defaultInstalasiDate) defaultInstalasiDate = defaultAktifDate;
+    } else if (item.status_akun === 'Aktivasi') {
+        if (!defaultAktivasiDate) defaultAktivasiDate = ymdDate;
+        if (!defaultInstalasiDate) defaultInstalasiDate = defaultAktivasiDate;
+    } else if (item.status_akun === 'Instalasi') {
+        if (!defaultInstalasiDate) defaultInstalasiDate = ymdDate;
     }
 
     if (item.bast && item.bast.data) {
@@ -73,15 +86,23 @@ const openBastModal = (item) => {
             draftBastData.value.pihak2_jabatan = 'KOORDINATOR POP';
         }
         
-        // Ensure dates are correct based on current status, overriding old saved defaults
-        if (item.status_akun !== 'Aktif') {
-            draftBastData.value.layanan_tanggal_instalasi = '';
-            draftBastData.value.layanan_tanggal_aktivasi = '';
+        // Ensure dates are correct based on current status, overriding old saved defaults if status hasn't reached there yet
+        if (!defaultAktifDate && !['Aktif'].includes(item.status_akun)) {
             draftBastData.value.layanan_tanggal_aktif = '';
-        } else {
-            if (!draftBastData.value.layanan_tanggal_instalasi) draftBastData.value.layanan_tanggal_instalasi = defaultAktifDate;
-            if (!draftBastData.value.layanan_tanggal_aktivasi) draftBastData.value.layanan_tanggal_aktivasi = defaultAktifDate;
-            if (!draftBastData.value.layanan_tanggal_aktif) draftBastData.value.layanan_tanggal_aktif = defaultAktifDate;
+        } else if (!draftBastData.value.layanan_tanggal_aktif) {
+            draftBastData.value.layanan_tanggal_aktif = defaultAktifDate;
+        }
+
+        if (!defaultAktivasiDate && !['Aktivasi', 'Aktif'].includes(item.status_akun)) {
+            draftBastData.value.layanan_tanggal_aktivasi = '';
+        } else if (!draftBastData.value.layanan_tanggal_aktivasi) {
+            draftBastData.value.layanan_tanggal_aktivasi = defaultAktivasiDate;
+        }
+
+        if (!defaultInstalasiDate && !['Instalasi', 'Aktivasi', 'Aktif'].includes(item.status_akun)) {
+            draftBastData.value.layanan_tanggal_instalasi = '';
+        } else if (!draftBastData.value.layanan_tanggal_instalasi) {
+            draftBastData.value.layanan_tanggal_instalasi = defaultInstalasiDate;
         }
     } else {
         draftBastData.value = {
@@ -104,8 +125,8 @@ const openBastModal = (item) => {
             layanan_lokasi_asal: '-',
             layanan_lokasi_tujuan: item.alamat || '',
             layanan_tanggal_booking: item.tanggal || '',
-            layanan_tanggal_instalasi: defaultAktifDate,
-            layanan_tanggal_aktivasi: defaultAktifDate,
+            layanan_tanggal_instalasi: defaultInstalasiDate,
+            layanan_tanggal_aktivasi: defaultAktivasiDate,
             layanan_tanggal_aktif: defaultAktifDate,
             penandatangan_nama_pihak2: item.nama_pelanggan || '..............................'
         };
