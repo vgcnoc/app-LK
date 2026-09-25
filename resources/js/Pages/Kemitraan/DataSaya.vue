@@ -819,42 +819,42 @@ const getStatusDate = (stepName) => {
                                 <tr>
                                     <td class="py-2 font-bold align-top">Tipe Kemitraan</td>
                                     <td class="py-2 align-top">:</td>
-                                    <td class="py-2 align-top">{{ profile.tipe_kemitraan }}</td>
+                                    <td class="py-2 align-top">{{ profile.tipe_kemitraan || '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 font-bold align-top">Metro / Backbone</td>
                                     <td class="py-2 align-top">:</td>
-                                    <td class="py-2 align-top">{{ profile.metro }}</td>
+                                    <td class="py-2 align-top">{{ profile.metro || '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 font-bold align-top">Bandwidth</td>
                                     <td class="py-2 align-top">:</td>
-                                    <td class="py-2 align-top">{{ profile.bandwidth }}</td>
+                                    <td class="py-2 align-top">{{ profile.bandwidth || '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 font-bold align-top">Nama Penanggung Jawab</td>
                                     <td class="py-2 align-top">:</td>
-                                    <td class="py-2 align-top">{{ profile.nama_pic }}</td>
+                                    <td class="py-2 align-top">{{ profile.nama_pic || displayUser.name }}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 font-bold align-top">No WhatsApp</td>
                                     <td class="py-2 align-top">:</td>
-                                    <td class="py-2 align-top">{{ profile.wa_pic }}</td>
+                                    <td class="py-2 align-top">{{ profile.wa_pic || displayUser.phone || '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 font-bold align-top">Alamat Kemitraan</td>
                                     <td class="py-2 align-top">:</td>
-                                    <td class="py-2 align-top">{{ profile.alamat }}</td>
+                                    <td class="py-2 align-top">{{ profile.alamat || '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 font-bold align-top">Titik Koordinat</td>
                                     <td class="py-2 align-top">:</td>
-                                    <td class="py-2 align-top">{{ profile.titik_koordinat }}</td>
+                                    <td class="py-2 align-top">{{ profile.titik_koordinat || '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 font-bold align-top">Rekening Pembayaran</td>
                                     <td class="py-2 align-top">:</td>
-                                    <td class="py-2 align-top">{{ profile.rekening }}</td>
+                                    <td class="py-2 align-top">{{ profile.rekening || '-' }}</td>
                                 </tr>
                             </tbody>
                         </table>
