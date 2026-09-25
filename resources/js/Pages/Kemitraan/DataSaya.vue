@@ -131,6 +131,10 @@ const formattedTodayDate = computed(() => {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     }).format(new Date());
 });
+
+const printPage = () => {
+    window.print();
+};
 </script>
 
 <template>
@@ -139,7 +143,7 @@ const formattedTodayDate = computed(() => {
     <KemitraanLayout>
         <template #header>
             <div class="hidden sm:flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div class="flex-1 min-w-0">
+                <div class="flex-1 min-w-0 print:hidden">
                     <h2 class="text-xl sm:text-3xl font-bold text-slate-800 tracking-tight">
                         Data Saya
                     </h2>
@@ -147,7 +151,16 @@ const formattedTodayDate = computed(() => {
                         Informasi profil dan data kemitraan Anda.
                     </p>
                 </div>
-                <div class="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-sm">
+                <!-- Printable Header Title (only visible on print) -->
+                <div class="hidden print:block mb-4 text-center w-full border-b pb-4">
+                    <h2 class="text-2xl font-bold text-slate-800 uppercase tracking-widest">
+                        Profil Kemitraan
+                    </h2>
+                    <p class="text-sm text-slate-500 mt-1">
+                        Dicetak pada: {{ formattedTodayDate }}
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-sm print:hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
@@ -296,13 +309,22 @@ const formattedTodayDate = computed(() => {
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
                         <h3 class="font-bold text-slate-800 text-lg">Detail Data Mitra</h3>
-                        <button v-if="!editing" @click="editing = true"
-                            class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                            Edit Profil
-                        </button>
+                        <div v-if="!editing" class="flex gap-2 print:hidden">
+                            <button @click="printPage"
+                                class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-lg shadow-sm transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                </svg>
+                                Cetak
+                            </button>
+                            <button @click="editing = true"
+                                class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Edit Profil
+                            </button>
+                        </div>
                     </div>
 
                     <div class="p-6">
