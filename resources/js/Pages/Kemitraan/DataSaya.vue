@@ -805,7 +805,6 @@ const getStatusDate = (stepName) => {
                                     <div class="px-8 py-2 sm:px-12 sm:py-4 print:px-12 print:py-4 bg-white">
                         <div class="text-center mb-6 font-bold flex flex-col items-center">
                             <p class="text-xl underline mb-1 uppercase tracking-wide">Formulir PENDAFTARAN</p>
-                            <p class="text-sm font-normal">Tanggal Cetak: {{ formattedTodayDate }}</p>
                             <p class="text-sm font-bold mt-1">Nomor: {{ nomorSurat }}</p>
                         </div>
                         
