@@ -17,6 +17,35 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
+    Route::get('register-admin-cs', function () {
+        return inertia('Auth/RegisterAdminCS');
+    })->name('register.admin_cs');
+
+    Route::post('register-admin-cs', function (\Illuminate\Http\Request $request) {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:'.\App\Models\User::class,
+            'password' => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
+        ]);
+
+        $user = \App\Models\User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+            'role' => 'Admin_cs',
+        ]);
+
+        if (method_exists($user, 'syncRoles')) {
+            $user->syncRoles(['Admin_cs']);
+        }
+
+        event(new \Illuminate\Auth\Events\Registered($user));
+
+        \Illuminate\Support\Facades\Auth::login($user);
+
+        return redirect()->route('dashboard');
+    });
+
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
