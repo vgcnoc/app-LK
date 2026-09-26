@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
-import { Head, useForm, router } from '@inertiajs/vue3';
+import { Head, useForm, router, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import axios from 'axios';
 
@@ -33,6 +33,14 @@ const props = defineProps({
         type: Number,
         default: 0,
     }
+});
+
+const page = usePage();
+const isAdminCs = computed(() => {
+    const user = page.props.auth.user;
+    if (!user) return false;
+    const role = user.user_role || user.role || '';
+    return role.toLowerCase() === 'admin_cs';
 });
 
 // Format Currency
@@ -1034,7 +1042,7 @@ const deleteCustomer = (customer) => {
                     </div>
 
                     <!-- Nominal Lunas -->
-                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
+                    <div v-if="!isAdminCs" class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex-1 min-w-0">
                                 <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 truncate">
@@ -1056,7 +1064,7 @@ const deleteCustomer = (customer) => {
                     </div>
 
                     <!-- Total Tagihan (Belum Lunas) -->
-                    <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
+                    <div v-if="!isAdminCs" class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex-1 min-w-0">
                                 <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 truncate">
