@@ -65,6 +65,14 @@ const props = defineProps({
 const permissions = computed(() => usePage().props.auth?.permissions || []);
 const can = (perm) => permissions.value.includes(perm);
 
+const page = usePage();
+const isAdminCs = computed(() => {
+    const user = page.props.auth?.user;
+    if (!user) return false;
+    const role = user.user_role || user.role || '';
+    return role.toLowerCase() === 'admin_cs';
+});
+
 // Helper: Indonesian Currency Formatting
 const formatRupiah = (number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -400,7 +408,7 @@ watch(
                 </div>
 
                 <!-- 1. Top 4 Cards -->
-                <div v-if="can('lihat_nominal_dashboard')" class="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+                <div v-if="can('lihat_nominal_dashboard') || isAdminCs" :class="['grid gap-3 sm:gap-4', isAdminCs ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2 md:grid-cols-2 xl:grid-cols-4']">
                     <!-- Income Card -->
                     <div class="relative overflow-hidden rounded-2xl bg-emerald-50 sm:bg-gradient-to-br sm:from-emerald-100 sm:to-emerald-50 p-4 sm:p-6 border border-emerald-100 min-w-0">
                         <div class="relative z-10 flex flex-col h-full">
@@ -450,7 +458,7 @@ watch(
                     </div>
 
                     <!-- Balance Card -->
-                    <div class="relative overflow-hidden rounded-2xl bg-blue-50 sm:bg-gradient-to-br sm:from-blue-100 sm:to-blue-50 p-4 sm:p-6 border border-blue-100 min-w-0">
+                    <div v-if="!isAdminCs" class="relative overflow-hidden rounded-2xl bg-blue-50 sm:bg-gradient-to-br sm:from-blue-100 sm:to-blue-50 p-4 sm:p-6 border border-blue-100 min-w-0">
                         <div class="relative z-10 flex flex-col h-full">
                             <div class="flex items-center gap-2 mb-2 sm:mb-3">
                                 <div class="bg-blue-500 text-white p-1.5 sm:p-3 rounded-lg sm:rounded-xl shadow-sm flex-shrink-0">
@@ -474,7 +482,7 @@ watch(
                     </div>
 
                     <!-- Unpaid Card -->
-                    <div class="relative overflow-hidden rounded-2xl bg-amber-50 sm:bg-gradient-to-br sm:from-amber-100 sm:to-amber-50 p-4 sm:p-6 border border-amber-100 min-w-0">
+                    <div v-if="!isAdminCs" class="relative overflow-hidden rounded-2xl bg-amber-50 sm:bg-gradient-to-br sm:from-amber-100 sm:to-amber-50 p-4 sm:p-6 border border-amber-100 min-w-0">
                         <div class="relative z-10 flex flex-col h-full">
                             <div class="flex items-center gap-2 mb-2 sm:mb-3">
                                 <div class="bg-amber-500 text-white p-1.5 sm:p-3 rounded-lg sm:rounded-xl shadow-sm flex-shrink-0">
@@ -497,7 +505,7 @@ watch(
                 <!-- 2. Charts Section -->
                 <div class="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 gap-6">
                     <!-- Bar Chart -->
-                    <div v-if="can('lihat_nominal_dashboard')" class="xl:col-span-2 lg:col-span-2 bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm min-w-0">
+                    <div v-if="can('lihat_nominal_dashboard') || isAdminCs" class="xl:col-span-2 lg:col-span-2 bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm min-w-0">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 mb-6">
                             <div class="flex items-center gap-3">
                                 <div class="bg-indigo-50 text-indigo-500 p-2 rounded-lg">
