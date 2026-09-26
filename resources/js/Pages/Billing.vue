@@ -951,7 +951,7 @@ const deleteCustomer = (customer) => {
         <div class="py-8">
             <div class="mx-auto max-w-full space-y-6">
                 <!-- 1. STATS CARDS -->
-                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 print:hidden">
+                <div :class="['grid grid-cols-1 gap-5 sm:grid-cols-2 print:hidden', isAdminCs ? 'lg:grid-cols-4 xl:grid-cols-4' : 'lg:grid-cols-3 xl:grid-cols-6']">
                     <!-- Total Pelanggan -->
                     <div class="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition hover:shadow-md min-w-0">
                         <div class="flex items-center justify-between gap-3">
