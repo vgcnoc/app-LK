@@ -182,7 +182,7 @@ const renderChart = async () => {
                             let label = context.dataset.label || '';
                             if (label) label += ': ';
                             if (context.parsed.y !== null) {
-                                label += formatRupiah(context.parsed.y);
+                                label += isAdminCs.value ? 'Rp ***' : formatRupiah(context.parsed.y);
                             }
                             return label;
                         },
@@ -200,7 +200,7 @@ const renderChart = async () => {
                         color: '#94a3b8',
                         font: { size: 11 },
                         callback: function (val) {
-                            return formatRupiah(val);
+                            return isAdminCs.value ? 'Rp ***' : formatRupiah(val);
                         },
                     },
                 },
@@ -421,7 +421,7 @@ watch(
                                 <p class="text-[10px] sm:text-xs font-bold text-emerald-800 uppercase tracking-wider truncate">Total Pemasukan</p>
                             </div>
                             <h3 class="text-lg sm:text-3xl font-black text-emerald-900 tracking-tight truncate">
-                                {{ formatRupiah(summary.income) }}
+                                {{ isAdminCs ? 'Rp ***' : formatRupiah(summary.income) }}
                             </h3>
                             <div class="mt-auto pt-2 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[9px] sm:text-xs">
                                 <span class="inline-flex items-center gap-0.5 sm:gap-1 font-semibold text-emerald-700 bg-emerald-200/50 px-1 sm:px-2 py-0.5 rounded-md whitespace-nowrap">
@@ -445,7 +445,7 @@ watch(
                                 <p class="text-[10px] sm:text-xs font-bold text-rose-800 uppercase tracking-wider truncate">Total Pengeluaran</p>
                             </div>
                             <h3 class="text-lg sm:text-3xl font-black text-rose-900 tracking-tight truncate">
-                                {{ formatRupiah(summary.expense) }}
+                                {{ isAdminCs ? 'Rp ***' : formatRupiah(summary.expense) }}
                             </h3>
                             <div class="mt-auto pt-2 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[9px] sm:text-xs">
                                 <span class="inline-flex items-center gap-0.5 sm:gap-1 font-semibold text-rose-700 bg-rose-200/50 px-1 sm:px-2 py-0.5 rounded-md whitespace-nowrap">
