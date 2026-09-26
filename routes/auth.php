@@ -32,11 +32,11 @@ Route::middleware('guest')->group(function () {
             'name' => $request->name,
             'email' => $request->email,
             'password' => \Illuminate\Support\Facades\Hash::make($request->password),
-            'role' => 'Admin_cs',
+            'role' => 'admin_cs',
         ]);
 
         if (method_exists($user, 'syncRoles')) {
-            $user->syncRoles(['Admin_cs']);
+            $user->syncRoles(['admin_cs']);
         }
 
         event(new \Illuminate\Auth\Events\Registered($user));
