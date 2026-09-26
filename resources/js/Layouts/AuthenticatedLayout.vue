@@ -550,6 +550,11 @@ const can = (perm) => permissions.value.includes(perm);
 
             <!-- Main Content -->
             <main class="flex-1 overflow-x-auto overflow-y-auto bg-slate-50 p-4 sm:p-6 pb-20 lg:pb-6 print:overflow-visible print:bg-white print:p-0 print:block">
+                <!-- Mobile Page Header (Hidden on Desktop since it's in Topbar) -->
+                <div class="mb-6 lg:hidden" v-if="$slots.header">
+                    <slot name="header" />
+                </div>
+                
                 <slot />
                 
                 <!-- Footer -->
