@@ -2874,4 +2874,12 @@ Route::group(['middleware' => function ($request, $next) {
             'data' => $bookings
         ]);
     });
+
+    Route::get('/api/customers', function () {
+        $customers = \App\Models\Customer::all();
+        return response()->json([
+            'success' => true,
+            'data' => $customers
+        ]);
+    });
 });
