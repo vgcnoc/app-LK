@@ -1249,6 +1249,30 @@ Route::middleware(['auth'])->group(function () {
         return response()->download($path);
     })->name('backup.restore');
 
+    // API endpoints for APM2 Integration (Protected by Bearer Token)
+    Route::group(['middleware' => function ($request, $next) {
+        $setting = \App\Models\ApiSetting::first();
+        if ($setting && !empty($setting->api_key)) {
+            $token = $request->bearerToken();
+            if ($token !== $setting->api_key) {
+                return response()->json(['error' => 'Unauthorized. Invalid Bearer Token.'], 401);
+            }
+        }
+        return $next($request);
+    }], function () {
+        Route::get('/api/ping', function () {
+            return response()->json(['message' => 'pong', 'status' => 'OK']);
+        });
+
+        Route::get('/api/booking', function () {
+            $bookings = \App\Models\Customer::where('status_pelanggan', 'Booking')->get();
+            return response()->json([
+                'success' => true,
+                'data' => $bookings
+            ]);
+        });
+    });
+
     // Notifications API
     Route::get('/api/notifications', function (Request $request) {
         return response()->json([
