@@ -2868,18 +2868,10 @@ Route::group(['middleware' => function ($request, $next) {
     });
 
     Route::get('/api/booking', function () {
-        $bookings = \App\Models\Customer::where('status_pelanggan', 'Booking')->get();
-        return response()->json([
-            'success' => true,
-            'data' => $bookings
-        ]);
+        return \App\Models\Customer::where('status_pelanggan', 'Booking')->get();
     });
 
     Route::get('/api/customers', function () {
-        $customers = \App\Models\Customer::where('status_pelanggan', 'Booking')->get();
-        return response()->json([
-            'success' => true,
-            'data' => $customers
-        ]);
+        return \App\Models\Customer::where('status_pelanggan', 'Booking')->get();
     });
 });
