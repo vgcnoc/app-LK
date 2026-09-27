@@ -322,6 +322,7 @@ const can = (perm) => permissions.value.includes(perm);
 
                 <!-- Kemitraan -->
                 <Link
+                    v-if="$page.props.auth.user.role !== 'sales'"
                     :href="route('kemitraan.index')"
                     :class="[
                         route().current('kemitraan*')
