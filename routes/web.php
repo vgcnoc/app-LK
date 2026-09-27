@@ -219,6 +219,10 @@ Route::middleware(['auth'])->group(function () {
         ]);
     })->name('kemitraan.booking.datasaya');
 
+    Route::get('/kemitraan/legalitas', [\App\Http\Controllers\LegalitasController::class, 'index'])->name('kemitraan.legalitas.index');
+    Route::post('/kemitraan/legalitas', [\App\Http\Controllers\LegalitasController::class, 'store'])->name('kemitraan.legalitas.store');
+    Route::delete('/kemitraan/legalitas/{id}', [\App\Http\Controllers\LegalitasController::class, 'destroy'])->name('kemitraan.legalitas.destroy');
+
     Route::get('/kemitraan/bast', function () {
         $user = auth()->user();
         if ($user->role !== 'kemitraan') {
