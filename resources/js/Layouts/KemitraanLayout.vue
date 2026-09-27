@@ -40,6 +40,8 @@ const can = (perm) => permissions.value.includes(perm);
 
 const userRole = computed(() => usePage().props.auth?.user?.role || '');
 const isAdmin = computed(() => userRole.value !== 'kemitraan');
+const mitraStatusAkun = computed(() => usePage().props.auth?.mitra_status_akun || 'Pending');
+const canViewLegalitas = computed(() => isAdmin.value || (userRole.value === 'kemitraan' && mitraStatusAkun.value === 'Aktif'));
 </script>
 
 <template>
@@ -124,6 +126,7 @@ const isAdmin = computed(() => userRole.value !== 'kemitraan');
 
                 <!-- Legalitas -->
                 <Link
+                    v-if="canViewLegalitas"
                     :href="route('kemitraan.legalitas.index')"
                     :class="[
                         route().current('kemitraan.legalitas*')

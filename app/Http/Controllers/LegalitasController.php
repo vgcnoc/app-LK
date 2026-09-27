@@ -11,6 +11,14 @@ class LegalitasController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
+        if ($user && $user->role === 'kemitraan') {
+            $profile = \Illuminate\Support\Facades\DB::table('kemitraan_profiles')->where('user_id', $user->id)->first();
+            if (!$profile || $profile->status_akun !== 'Aktif') {
+                abort(403, 'Akses ditolak. Status kemitraan Anda belum aktif.');
+            }
+        }
+
         $documents = LegalitasDocument::latest()->get();
         return Inertia::render('Kemitraan/Legalitas/Index', [
             'documents' => $documents

@@ -32,12 +32,21 @@ class HandleInertiaRequests extends Middleware
         $appLogo = \App\Models\Setting::where('key', 'app_logo')->value('value');
         $supportWaNumber = \App\Models\Setting::where('key', 'support_wa_number')->value('value');
         
+        $mitraStatusAkun = 'Pending';
+        if ($request->user() && $request->user()->role === 'kemitraan') {
+            $profile = \Illuminate\Support\Facades\DB::table('kemitraan_profiles')->where('user_id', $request->user()->id)->first();
+            if ($profile) {
+                $mitraStatusAkun = $profile->status_akun;
+            }
+        }
+
         return [
             ...parent::share($request),
             'app_logo' => $appLogo,
             'support_wa_number' => $supportWaNumber ?: '6281234567890',
             'auth' => [
                 'user' => $request->user(),
+                'mitra_status_akun' => $mitraStatusAkun,
                 'permissions' => $request->user()
                     ? $request->user()->getAllPermissions()->pluck('name')->toArray()
                     : [],
