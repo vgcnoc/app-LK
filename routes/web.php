@@ -2873,7 +2873,7 @@ Route::group(['middleware' => function ($request, $next) {
 
     Route::get('/api/customers', function () {
         $customers = \App\Models\Customer::where('status_pelanggan', 'Booking')->get()->map(function ($c) {
-            $c->phone = !empty($c->no_wa) ? $c->no_wa : '-';
+            $c->phone = !empty($c->no_wa) ? $c->no_wa : '000000000' . $c->id;
             $c->address = !empty($c->alamat) ? $c->alamat : '-';
             return $c;
         });
