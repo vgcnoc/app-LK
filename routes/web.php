@@ -2876,7 +2876,7 @@ Route::group(['middleware' => function ($request, $next) {
     });
 
     Route::get('/api/customers', function () {
-        $customers = \App\Models\Customer::all();
+        $customers = \App\Models\Customer::where('status_pelanggan', 'Booking')->get();
         return response()->json([
             'success' => true,
             'data' => $customers
