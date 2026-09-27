@@ -61,7 +61,7 @@ const permissionGroups = computed(() => [
     {
         label: 'Multi-Tier Affiliate & Sales',
         icon: '🔗',
-        permissions: props.allPermissions.filter(p => p.includes('affiliate') || p.includes('akun_sales')),
+        permissions: props.allPermissions.filter(p => p.includes('affiliate') || p.includes('akun_sales') || p.includes('komisi')),
     },
     {
         label: 'Laporan & Analisa',
@@ -76,13 +76,14 @@ const permissionGroups = computed(() => [
     {
         label: 'Pengaturan & Manajemen',
         icon: '⚙️',
-        permissions: props.allPermissions.filter(p => p.includes('pengaturan') || p.includes('manajemen')),
+        permissions: props.allPermissions.filter(p => p.includes('pengaturan') || p.includes('manajemen') || p.includes('integrasi')),
     },
 ]);
 
 const permissionLabels = {
     // Dashboard
     'akses_dashboard': 'Lihat Dashboard',
+    'lihat_nominal_dashboard': 'Lihat Nominal (Pendapatan/Pengeluaran)',
     
     // Booking Pelanggan
     'akses_booking': 'Lihat Daftar Booking',
@@ -96,6 +97,7 @@ const permissionLabels = {
     'tambah_pelanggan': 'Tambah Pelanggan Baru',
     'edit_pelanggan': 'Edit Data Pelanggan',
     'hapus_pelanggan': 'Hapus Data Pelanggan',
+    'akses_pelanggan_pantauan': 'Lihat Pelanggan Pantauan',
     
     // Pelanggan Non-Aktif
     'akses_data_nonaktif': 'Lihat Data Non-Aktif',
@@ -124,6 +126,7 @@ const permissionLabels = {
     'edit_affiliate': 'Edit Data Sales/Affiliate',
     'hapus_affiliate': 'Hapus Data Sales/Affiliate',
     'kelola_akun_sales': 'Kelola Akun Login Sales (Buat/Hapus Akun)',
+    'akses_komisi': 'Lihat Data Komisi',
 
     // Laporan & Analisa
     'akses_laporan': 'Lihat Laporan Keuangan',
@@ -140,6 +143,7 @@ const permissionLabels = {
     'manajemen_pengguna': 'Kelola Akun Pengguna (Staff/Admin)',
     'manajemen_role': 'Kelola Role & Hak Akses',
     'pengaturan_aplikasi': 'Pengaturan Aplikasi (Logo, dll)',
+    'akses_integrasi': 'Akses API Billing & Integrasi',
 };
 
 const openEditModal = (role) => {
