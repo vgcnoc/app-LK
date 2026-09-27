@@ -599,8 +599,16 @@ const deleteInvoice = (id) => {
                             </table>
                         </div>
 
-                        <!-- Totals -->
-                        <div class="flex justify-end">
+                        <!-- Totals & Payment Info -->
+                        <div class="flex flex-col sm:flex-row justify-between gap-6">
+                            <!-- Payment Info -->
+                            <div class="w-full sm:w-1/2 p-4 bg-slate-50/50 rounded-xl border border-slate-100">
+                                <p class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Catatan:</p>
+                                <p class="text-sm text-slate-600 font-medium">No rekening PT Viruzs Global Connection</p>
+                                <p class="text-lg font-bold text-indigo-700 mt-1">BRI 4101-01-039481-53-8</p>
+                            </div>
+
+                            <!-- Totals -->
                             <div class="w-full sm:w-1/2 md:w-1/3 space-y-3">
                                 <div class="flex justify-between items-center text-sm px-4">
                                     <span class="text-slate-600 font-medium">Total Tagihan</span>
