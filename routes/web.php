@@ -913,7 +913,18 @@ Route::middleware(['auth'])->group(function () {
         $userArea = auth()->user()->area;
         $isAdmin = auth()->user()->role === 'admin';
 
-        $transactionsQuery = \App\Models\Transaction::with(['expenseCategory', 'companyExpenseType', 'material', 'customer'])->latest('date');
+        $transactionsQuery = \App\Models\Transaction::with(['expenseCategory', 'companyExpenseType', 'material', 'customer'])
+            ->where(function($q) {
+                $q->where('type', '!=', 'income')
+                  ->orWhere(function($q2) {
+                      $q2->where('type', 'income')
+                         ->where(function($q3) {
+                             $q3->where('payment_status', 'paid')
+                                ->orWhereNull('payment_status');
+                         });
+                  });
+            })
+            ->latest('date');
 
         if (!$isAdmin && $userArea) {
             $transactionsQuery->where('area', $userArea);
