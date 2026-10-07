@@ -208,6 +208,78 @@ const importForm = useForm({
     customersData: [],
 });
 
+// =================== CREATE MODAL ===================
+const isFetchingCoordinate = ref(false);
+
+const fetchCoordinate = (form) => {
+    if (!navigator.geolocation) {
+        alert('Geolocation tidak didukung oleh browser Anda.');
+        return;
+    }
+    
+    isFetchingCoordinate.value = true;
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const lat = position.coords.latitude.toFixed(6);
+            const lng = position.coords.longitude.toFixed(6);
+            form.coordinate = `${lat}, ${lng}`;
+            isFetchingCoordinate.value = false;
+        },
+        (error) => {
+            console.error(error);
+            alert('Gagal mendapatkan lokasi. Pastikan izin lokasi diaktifkan.');
+            isFetchingCoordinate.value = false;
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+    );
+};
+
+const showCreateModal = ref(false);
+
+const createForm = useForm({
+    name: '',
+    area: '',
+    alamat: '',
+    kecamatan: '',
+    desa_kelurahan: '',
+    rt_rw: '',
+    paket: '',
+    register_date: new Date().toISOString().split('T')[0],
+    status_pelanggan: 'Aktif',
+    base_amount: '',
+    amount: '',
+    sales_id: '',
+    coordinate: '',
+    no_wa: '',
+    installation_fee: ''
+});
+
+const openCreateModal = () => {
+    createForm.reset();
+    createForm.clearErrors();
+    createForm.register_date = new Date().toISOString().split('T')[0];
+    createForm.status_pelanggan = 'Aktif';
+    showCreateModal.value = true;
+};
+
+const closeCreateModal = () => {
+    showCreateModal.value = false;
+    createForm.reset();
+    createForm.clearErrors();
+};
+
+const submitCreate = () => {
+    createForm.amount = createForm.base_amount;
+    createForm.post(route('pelanggan.store'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            closeCreateModal();
+        },
+    });
+};
+// ====================================================
+
+
 const handleFile = (file) => {
     if (!file) return;
 
@@ -1137,8 +1209,16 @@ const deleteCustomer = (customer) => {
                                 </svg>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <h3 class="text-base font-semibold text-slate-800 truncate">Import Billing Data via Excel</h3>
-                                <p class="text-xs text-slate-500 truncate">Unggah berkas spreadsheet untuk menambahkan pelanggan secara massal.</p>
+                                <h3 class="text-base font-semibold text-slate-800 truncate">Import / Tambah Billing Data</h3>
+                                <p class="text-xs text-slate-500 truncate">Unggah berkas spreadsheet atau tambahkan pelanggan secara manual.</p>
+                            </div>
+                            <div>
+                                <button type="button" @click="openCreateModal" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Tambah Data
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -2505,5 +2585,313 @@ const deleteCustomer = (customer) => {
                 </form>
             </div>
         </div>
+            <div v-if="showCreateModal" class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" @click="closeCreateModal"></div>
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div class="relative w-full max-w-xl transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 border border-slate-100">
+                    <!-- Modal Header -->
+                    <div class="flex items-center justify-between border-b border-slate-100 bg-slate-50/75 px-3 py-3 sm:px-6 sm:py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-slate-800">Tambah Pelanggan Baru</h3>
+                                <p class="text-xs text-slate-500">Masukkan data master pelanggan baru ke dalam sistem.</p>
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            @click="closeCreateModal"
+                            class="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 focus:outline-none"
+                        >
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Modal Body Form -->
+                    <form @submit.prevent="submitCreate">
+                        <div class="p-6 space-y-4">
+                            <!-- Nama Pelanggan & No WA -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Nama Pelanggan <span class="text-rose-500">*</span>
+                                    </label>
+                                    <input
+                                        v-model="createForm.name"
+                                        type="text"
+                                        required
+                                        placeholder="Contoh: Budi Santoso"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+                                    <p v-if="createForm.errors.name" class="mt-1 text-xs text-rose-600">{{ createForm.errors.name }}</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        No WA
+                                    </label>
+                                    <input
+                                        v-model="createForm.no_wa"
+                                        type="text"
+                                        placeholder="Contoh: 08123456789"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+                                    <p v-if="createForm.errors.no_wa" class="mt-1 text-xs text-rose-600">{{ createForm.errors.no_wa }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Area & Paket -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Area / Wilayah <span class="text-rose-500">*</span>
+                                    </label>
+                                    <select
+                                        v-model="createForm.area"
+                                        required
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 bg-white"
+                                    >
+                                        <option value="" disabled>-- Pilih Area --</option>
+                                        <option v-for="a in areas" :key="a" :value="a">{{ a }}</option>
+                                    </select>
+                                    <p v-if="createForm.errors.area" class="mt-1 text-xs text-rose-600">{{ createForm.errors.area }}</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Paket Langganan
+                                    </label>
+                                    <select
+                                        v-model="createForm.paket"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    >
+                                        <option value="" disabled>-- Pilih Paket Langganan --</option>
+                                        <option v-for="p in internetPackages" :key="p.id" :value="p.name">{{ p.name }}</option>
+                                    </select>
+                                    <p v-if="createForm.errors.paket" class="mt-1 text-xs text-rose-600">{{ createForm.errors.paket }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Kecamatan -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Kecamatan
+                                </label>
+                                <input
+                                    type="text"
+                                    v-model="createForm.kecamatan"
+                                    placeholder="Contoh: Sukasari"
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                />
+                                <p v-if="createForm.errors.kecamatan" class="mt-1 text-xs text-rose-600">{{ createForm.errors.kecamatan }}</p>
+                            </div>
+
+                            <!-- Desa / Kelurahan -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Desa / Kelurahan
+                                </label>
+                                <input
+                                    type="text"
+                                    v-model="createForm.desa_kelurahan"
+                                    placeholder="Contoh: Sukamaju"
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                />
+                                <p v-if="createForm.errors.desa_kelurahan" class="mt-1 text-xs text-rose-600">{{ createForm.errors.desa_kelurahan }}</p>
+                            </div>
+
+                            <!-- RT / RW -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    RT / RW
+                                </label>
+                                <input
+                                    type="text"
+                                    v-model="createForm.rt_rw"
+                                    placeholder="Contoh: 02/04"
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                />
+                                <p v-if="createForm.errors.rt_rw" class="mt-1 text-xs text-rose-600">{{ createForm.errors.rt_rw }}</p>
+                            </div>
+
+                            <!-- Alamat Detail -->
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Detail Jalan / Nomor Rumah
+                                </label>
+                                <textarea
+                                    v-model="createForm.alamat"
+                                    rows="2"
+                                    placeholder="Jl. Melati No. 12..."
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                ></textarea>
+                                <p v-if="createForm.errors.alamat" class="mt-1 text-xs text-rose-600">{{ createForm.errors.alamat }}</p>
+                            </div>
+
+                            <!-- Koordinat -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Titik Koordinat
+                                </label>
+                                <div class="flex gap-2">
+                                    <input
+                                        v-model="createForm.coordinate"
+                                        type="text"
+                                        placeholder="Contoh: -6.200000, 106.816666"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+                                    <button
+                                        type="button"
+                                        @click="fetchCoordinate(createForm)"
+                                        :disabled="isFetchingCoordinate"
+                                        class="shrink-0 flex items-center justify-center rounded-lg bg-slate-100 px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 hover:bg-slate-200 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 border border-slate-300 disabled:opacity-50"
+                                        title="Dapatkan lokasi saat ini"
+                                    >
+                                        <svg v-if="isFetchingCoordinate" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        <svg v-else class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <span class="ml-2 hidden sm:inline">{{ isFetchingCoordinate ? 'Mencari...' : 'Auto' }}</span>
+                                    </button>
+                                </div>
+                                <p v-if="createForm.errors.coordinate" class="mt-1 text-xs text-rose-600">{{ createForm.errors.coordinate }}</p>
+                            </div>
+
+                            <!-- Base Amount / Tarif & Tgl Register -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Tarif / Base Amount (Rp) <span class="text-rose-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                            <span class="text-xs font-semibold text-slate-400">Rp</span>
+                                        </div>
+                                        <input
+                                            v-model="createForm.base_amount"
+                                            type="number"
+                                            min="0"
+                                            step="1"
+                                            required
+                                            placeholder="150000"
+                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        />
+                                    </div>
+                                    <p v-if="createForm.errors.base_amount" class="mt-1 text-xs text-rose-600">{{ createForm.errors.base_amount }}</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Tanggal Registrasi
+                                    </label>
+                                    <input
+                                        v-model="createForm.register_date"
+                                        type="date"
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+                                    <p v-if="createForm.errors.register_date" class="mt-1 text-xs text-rose-600">{{ createForm.errors.register_date }}</p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Biaya Pasang Baru (Rp)
+                                    </label>
+                                    <div class="relative">
+                                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                            <span class="text-xs font-semibold text-slate-400">Rp</span>
+                                        </div>
+                                        <input
+                                            v-model="createForm.installation_fee"
+                                            type="number"
+                                            min="0"
+                                            step="1"
+                                            placeholder="0"
+                                            class="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        />
+                                    </div>
+                                    <p v-if="createForm.errors.installation_fee" class="mt-1 text-xs text-rose-600">{{ createForm.errors.installation_fee }}</p>
+                                </div>
+
+                                <!-- Status Pelanggan -->
+                                <div class="col-span-1 sm:col-span-1">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Status Pelanggan <span class="text-rose-500">*</span>
+                                    </label>
+                                    <select
+                                        v-model="createForm.status_pelanggan"
+                                        required
+                                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                    >
+                                        <option value="Aktif">Aktif</option>
+                                        <option value="Suspend">Suspend</option>
+                                        <option value="Berhenti">Berhenti</option>
+                                    </select>
+                                    <p v-if="createForm.errors.status_pelanggan" class="mt-1 text-xs text-rose-600">{{ createForm.errors.status_pelanggan }}</p>
+                                </div>
+                                <div class="col-span-1 sm:col-span-2">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Sales / Afiliator
+                                    </label>
+                                    <template v-if="!is_sales">
+                                        <select
+                                            v-model="createForm.sales_id"
+                                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                        >
+                                            <option value="">-- Tanpa Sales --</option>
+                                            <option v-for="s in sales" :key="s.id" :value="s.id">{{ s.name }} ({{ s.member_number }})</option>
+                                        </select>
+                                        <p v-if="createForm.errors.sales_id" class="mt-1 text-xs text-rose-600">{{ createForm.errors.sales_id }}</p>
+                                    </template>
+                                    <template v-else>
+                                        <input
+                                            type="text"
+                                            disabled
+                                            :value="$page.props.auth.user.name"
+                                            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs sm:text-sm text-slate-500 cursor-not-allowed"
+                                        />
+                                        <p class="mt-1 text-[11px] text-slate-500">Otomatis dialokasikan ke akun Anda</p>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="flex items-center justify-end gap-3 border-t border-slate-100 bg-slate-50/75 px-3 py-3 sm:px-6 sm:py-4">
+                            <button
+                                type="button"
+                                @click="closeCreateModal"
+                                class="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs sm:text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none"
+                            >
+                                Batal
+                            </button>
+                            <button
+                                type="submit"
+                                :disabled="createForm.processing"
+                                class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none disabled:opacity-50"
+                            >
+                                <svg v-if="createForm.processing" class="h-4 w-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span>{{ createForm.processing ? 'Menyimpan...' : 'Simpan Pelanggan' }}</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= EDIT CUSTOMER MODAL ================= -->
     </AuthenticatedLayout>
 </template>
