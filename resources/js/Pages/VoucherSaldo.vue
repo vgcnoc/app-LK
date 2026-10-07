@@ -868,10 +868,10 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                                     </svg>
                                                     Set Lunas
                                                 </button>
-                                                <button v-if="t.transaction_mode === 'Piutang' && (t.payment_status === 'paid' || Number(t.children_sum_amount) > 0) && !t.parent_id"
+                                                <button v-if="(t.transaction_mode === 'Piutang' && (t.payment_status === 'paid' || Number(t.children_sum_amount) > 0) && !t.parent_id) || (t.transaction_mode === 'Tunai' && !t.parent_id)"
                                                     @click="batalLunas(t.id)"
                                                     type="button" 
-                                                    title="Batalkan Semua Pembayaran"
+                                                    title="Batalkan Lunas / Jadikan Piutang"
                                                     class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white rounded-lg text-xs font-semibold transition-colors border border-rose-200">
                                                     <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />

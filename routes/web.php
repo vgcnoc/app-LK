@@ -600,6 +600,10 @@ Route::middleware(['auth'])->group(function () {
                     $q->where('payment_status', 'paid')
                       ->orWhereNull('payment_status');
                 })
+                ->where(function($q) {
+                    $q->where('transaction_mode', '!=', 'Piutang')
+                      ->orWhereNull('transaction_mode');
+                })
                 ->where('description', 'not like', 'Pembayaran dari %');
             if ($request->filled('area')) {
                 $manualIncomeQuery->where('area', $request->area);
@@ -623,6 +627,10 @@ Route::middleware(['auth'])->group(function () {
                 ->where(function($q) {
                     $q->where('payment_status', 'paid')
                       ->orWhereNull('payment_status');
+                })
+                ->where(function($q) {
+                    $q->where('transaction_mode', '!=', 'Piutang')
+                      ->orWhereNull('transaction_mode');
                 })->sum('amount');
         }
         $totalExpense = (clone $query)->where('type', 'expense')->sum('amount');
@@ -649,6 +657,10 @@ Route::middleware(['auth'])->group(function () {
             ->where(function($q) {
                 $q->where('payment_status', 'paid')
                   ->orWhereNull('payment_status');
+            })
+            ->where(function($q) {
+                $q->where('transaction_mode', '!=', 'Piutang')
+                  ->orWhereNull('transaction_mode');
             })
             ->where('description', 'not like', 'Pembayaran dari %')
             ->whereNotNull('area')
@@ -727,6 +739,10 @@ Route::middleware(['auth'])->group(function () {
                 ->where(function($q) {
                     $q->where('payment_status', 'paid')
                       ->orWhereNull('payment_status');
+                })
+                ->where(function($q) {
+                    $q->where('transaction_mode', '!=', 'Piutang')
+                      ->orWhereNull('transaction_mode');
                 })->sum('amount');
             $expense = Transaction::where('date', $date)->where('type', 'expense')->sum('amount');
             
@@ -742,6 +758,10 @@ Route::middleware(['auth'])->group(function () {
                          ->where(function($q3) {
                              $q3->where('payment_status', 'paid')
                                 ->orWhereNull('payment_status');
+                         })
+                         ->where(function($q4) {
+                             $q4->where('transaction_mode', '!=', 'Piutang')
+                                ->orWhereNull('transaction_mode');
                          });
                   });
             })
@@ -2228,47 +2248,59 @@ Route::middleware(['auth'])->group(function () {
             $proofPath = $request->file('proof')->store('payments', 'public');
         }
 
-        // Create child transaction (the payment)
-        Transaction::create([
-            'type' => 'income',
-            'amount' => $data['amount'],
-            'date' => $data['date'],
-            'payment_method' => $data['payment_method'],
-            'transaction_mode' => 'Tunai',
-            'income_source' => $transaction->income_source,
-            'description' => 'Pembayaran piutang: ' . $transaction->description,
-            'parent_id' => $transaction->id,
-            'collector' => $data['collector'],
-            'proof' => $proofPath,
-            'payment_status' => 'paid',
-            'paid_at' => $data['date'],
-            'reseller_id' => $transaction->reseller_id,
-        ]);
-
         // Check if fully paid
-        $totalPaid = Transaction::where('parent_id', $transaction->id)->sum('amount');
-        if ($totalPaid >= $transaction->amount) {
+        $paidAmount = Transaction::where('parent_id', $transaction->id)->sum('amount');
+        $newTotal = $paidAmount + $data['amount'];
+
+        if ($paidAmount == 0 && $newTotal >= $transaction->amount) {
+            // Full payment at once!
+            // Do not create a child. Just update the parent.
             $transaction->update([
                 'payment_status' => 'paid',
-                'paid_at' => date('Y-m-d')
+                'paid_at' => $data['date'],
+                'transaction_mode' => 'Tunai',
+                'payment_method' => $data['payment_method'],
+                'collector' => $data['collector'],
+                'proof' => $proofPath,
             ]);
+        } else {
+            // Create child transaction (the payment)
+            Transaction::create([
+                'type' => 'income',
+                'amount' => $data['amount'],
+                'date' => $data['date'],
+                'payment_method' => $data['payment_method'],
+                'transaction_mode' => 'Tunai',
+                'income_source' => $transaction->income_source,
+                'description' => 'Pembayaran piutang: ' . $transaction->description,
+                'parent_id' => $transaction->id,
+                'collector' => $data['collector'],
+                'proof' => $proofPath,
+                'payment_status' => 'paid',
+                'paid_at' => $data['date'],
+                'reseller_id' => $transaction->reseller_id,
+            ]);
+
+            if ($newTotal >= $transaction->amount) {
+                $transaction->update([
+                    'payment_status' => 'paid',
+                    'paid_at' => date('Y-m-d')
+                ]);
+            }
         }
 
         return back()->with('success', 'Pembayaran piutang berhasil dicatat.');
     })->name('voucher-saldo.lunas');
 
     Route::post('/voucher-saldo/{transaction}/batal-lunas', function (Transaction $transaction) {
-        if ($transaction->transaction_mode !== 'Piutang') {
-            return back()->with('error', 'Hanya transaksi piutang yang dapat dibatalkan.');
-        }
-
         // Delete all child payments
         Transaction::where('parent_id', $transaction->id)->delete();
 
-        // Revert parent status
+        // Revert parent status to Piutang
         $transaction->update([
             'payment_status' => 'unpaid',
-            'paid_at' => null
+            'paid_at' => null,
+            'transaction_mode' => 'Piutang'
         ]);
 
         return back()->with('success', 'Status lunas berhasil dibatalkan.');
