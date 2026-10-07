@@ -1412,6 +1412,7 @@ Route::middleware(['auth'])->group(function () {
         $keterangan = $request->input('keterangan', null);
         $hasDiskon = $request->boolean('has_diskon', false);
         $diskon = $hasDiskon ? (float) $request->input('diskon', 0) : 0;
+        $paidMonthsCount = (int) $request->input('paid_months_count', 0);
         
         $totalTagihan = $customer->amount > 0 ? $customer->amount : $customer->base_amount;
         
@@ -1419,8 +1420,15 @@ Route::middleware(['auth'])->group(function () {
             return back()->with('error', 'Nominal pembayaran harus lebih dari 0.');
         }
 
-        DB::transaction(function () use ($customer, $paymentMethod, $paymentDate, $paymentAmount, $totalTagihan, $isJanjiBayar, $promiseDate, $keterangan, $diskon) {
-            $desc = 'Pembayaran dari ' . $customer->name;
+        DB::transaction(function () use ($customer, $paymentMethod, $paymentDate, $paymentAmount, $totalTagihan, $isJanjiBayar, $promiseDate, $keterangan, $diskon, $paidMonthsCount) {
+            // Jika user memilih bulan spesifik (paid_months_count > 0), gunakan prefix 'Pelunasan Tagihan'
+            // agar syncBilling tidak menghitungnya sebagai pembayaran tambahan karena last_paid_date akan maju.
+            if ($paidMonthsCount > 0) {
+                $desc = 'Pelunasan Tagihan dari ' . $customer->name;
+            } else {
+                $desc = 'Pembayaran dari ' . $customer->name;
+            }
+
             if ($diskon > 0) {
                 $desc .= ' (Diskon: Rp ' . number_format($diskon, 0, ',', '.') . ')';
             }
@@ -1441,16 +1449,27 @@ Route::middleware(['auth'])->group(function () {
 
             $remaining = $totalTagihan - $paymentAmount - $diskon;
 
+            $newLastPaidDate = $customer->last_paid_date;
+            if ($paidMonthsCount > 0) {
+                if ($customer->last_paid_date) {
+                    $newLastPaidDate = \Carbon\Carbon::parse($customer->last_paid_date)->addMonths($paidMonthsCount)->endOfMonth()->toDateString();
+                } else {
+                    $refDate = $customer->register_date ? $customer->register_date : $customer->created_at;
+                    $newLastPaidDate = \Carbon\Carbon::parse($refDate)->addMonths($paidMonthsCount)->endOfMonth()->toDateString();
+                }
+            }
+
             if ($remaining <= 0) {
                 // Full payment - mark as paid
                 $customer->update([
                     'status' => 'paid',
                     'amount' => 0,
-                    'last_paid_date' => $paymentDate,
+                    'last_paid_date' => $newLastPaidDate ?: $paymentDate,
                     'last_payment_date' => $paymentDate,
                     'last_paid_by' => auth()->user() ? auth()->user()->name : 'Admin',
                     'promise_date' => null,
-                    'prorata_amount' => null
+                    'prorata_amount' => null,
+                    'is_partial_payment' => false
                 ]);
 
                 // Generate Monthly Commissions if customer has sales and is active
@@ -1518,9 +1537,11 @@ Route::middleware(['auth'])->group(function () {
                 // Partial payment - update remaining amount, keep as pending/nunggak
                 $customer->update([
                     'amount' => $remaining,
+                    'last_paid_date' => $newLastPaidDate ?: $customer->last_paid_date,
                     'last_payment_date' => $paymentDate,
                     'last_paid_by' => auth()->user() ? auth()->user()->name : 'Admin',
-                    'promise_date' => $isJanjiBayar ? $promiseDate : $customer->promise_date
+                    'promise_date' => $isJanjiBayar ? $promiseDate : $customer->promise_date,
+                    'is_partial_payment' => true
                 ]);
             }
         });
@@ -2125,6 +2146,7 @@ Route::middleware(['auth'])->group(function () {
         $endDate = $request->query('end_date', date('Y-m-t'));
         $status = $request->query('status', 'Semua'); // 'Semua', 'Lunas', 'Piutang'
         $area = $request->query('area', 'Semua');
+        $resellerId = $request->query('reseller_id', 'Semua');
 
         $query = Transaction::with('reseller')
             ->withSum('children', 'amount')
@@ -2140,6 +2162,10 @@ Route::middleware(['auth'])->group(function () {
 
         if ($area !== 'Semua' && $area !== '') {
             $query->where('area', $area);
+        }
+
+        if ($resellerId !== 'Semua' && $resellerId !== '') {
+            $query->where('reseller_id', $resellerId);
         }
             
         $transactions = $query->orderBy('date', 'desc')
@@ -2175,6 +2201,7 @@ Route::middleware(['auth'])->group(function () {
                 'end_date' => $endDate,
                 'status' => $status,
                 'area' => $area,
+                'reseller_id' => $resellerId,
             ]
         ]);
     })->name('voucher-saldo.index');
@@ -2250,46 +2277,21 @@ Route::middleware(['auth'])->group(function () {
             $proofPath = $request->file('proof')->store('payments', 'public');
         }
 
-        // Check if fully paid
-        $paidAmount = Transaction::where('parent_id', $transaction->id)->sum('amount');
-        $newTotal = $paidAmount + $data['amount'];
+        DB::transaction(function () use ($transaction, $data, $proofPath) {
+            // Delete any existing children just in case, because user only wants 1 transaction
+            Transaction::where('parent_id', $transaction->id)->delete();
 
-        if ($paidAmount == 0 && $newTotal >= $transaction->amount) {
-            // Full payment at once!
-            // Do not create a child. Just update the parent.
+            // Just update the parent
             $transaction->update([
                 'payment_status' => 'paid',
+                'date' => $data['date'], // update original date to payment date
                 'paid_at' => $data['date'],
                 'transaction_mode' => 'Tunai',
                 'payment_method' => $data['payment_method'],
                 'collector' => $data['collector'],
                 'proof' => $proofPath,
             ]);
-        } else {
-            // Create child transaction (the payment)
-            Transaction::create([
-                'type' => 'income',
-                'amount' => $data['amount'],
-                'date' => $data['date'],
-                'payment_method' => $data['payment_method'],
-                'transaction_mode' => 'Tunai',
-                'income_source' => $transaction->income_source,
-                'description' => 'Pembayaran piutang: ' . $transaction->description,
-                'parent_id' => $transaction->id,
-                'collector' => $data['collector'],
-                'proof' => $proofPath,
-                'payment_status' => 'paid',
-                'paid_at' => $data['date'],
-                'reseller_id' => $transaction->reseller_id,
-            ]);
-
-            if ($newTotal >= $transaction->amount) {
-                $transaction->update([
-                    'payment_status' => 'paid',
-                    'paid_at' => date('Y-m-d')
-                ]);
-            }
-        }
+        });
 
         return back()->with('success', 'Pembayaran piutang berhasil dicatat.');
     })->name('voucher-saldo.lunas');

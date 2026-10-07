@@ -123,22 +123,9 @@ const isOverdue = (c) => {
         return false; // Active promise date overrides overdue status
     }
 
-    const globalDueDate = props.settings.global_due_date ? parseInt(props.settings.global_due_date) : null;
-    if (globalDueDate) {
-        // If customer registered this month, and the register date is after the global due date,
-        // they shouldn't be marked as overdue for the current month.
-        const registerDate = c.register_date ? new Date(c.register_date) : new Date(c.created_at);
-        if (registerDate.getMonth() === todayDate.getMonth() && registerDate.getFullYear() === todayDate.getFullYear()) {
-            if (registerDate.getDate() > globalDueDate) {
-                return false; 
-            }
-        }
-        
-        const dueDate = getCustomerDueDate(c);
-        if (dueDate && todayDate > dueDate) return true;
-    }
-    
+    // Only consider overdue if they owe for more than just the current month (nunggak)
     if (String(c.status).toLowerCase() === 'nunggak') return true;
+    
     return false;
 };
 
@@ -617,7 +604,7 @@ const filteredCustomers = computed(() => {
 
         const matchesTab = 
             appliedStatusFilter.value !== 'all' ||
-            (activeTab.value === 'semua' && !hasJanjiBayar && !isSebagian && !isJatuhTempo && !isProrata) ||
+            (activeTab.value === 'semua' && !isLunas) ||
             (activeTab.value === 'piutang' && isSebagian && isPiutang && !hasJanjiBayar) ||
             (activeTab.value === 'janji_bayar' && isPiutang && hasJanjiBayar) ||
             (activeTab.value === 'jatuh_tempo' && isJatuhTempo && !hasJanjiBayar) ||
@@ -773,6 +760,7 @@ const updatePaymentAmountFromCheckboxes = () => {
     const selectedMonths = unpaidMonthsList.value.filter(m => m.selected);
     const totalAmount = selectedMonths.reduce((sum, m) => sum + m.amount, 0);
     lunasForm.payment_amount = totalAmount;
+    lunasForm.paid_months_count = selectedMonths.length;
     
     if (selectedMonths.length > 0) {
         lunasForm.keterangan = 'Pembayaran tagihan: ' + selectedMonths.map(m => m.name).join(', ');
@@ -791,6 +779,7 @@ const lunasForm = useForm({
     keterangan: '',
     has_diskon: false,
     diskon: 0,
+    paid_months_count: 0,
 });
 
 const openLunasModal = (customer) => {
@@ -811,8 +800,10 @@ const openLunasModal = (customer) => {
     
     if (unpaidMonthsList.value.length > 0) {
         lunasForm.keterangan = 'Pembayaran tagihan: ' + unpaidMonthsList.value.map(m => m.name).join(', ');
+        lunasForm.paid_months_count = unpaidMonthsList.value.length;
     } else {
         lunasForm.keterangan = '';
+        lunasForm.paid_months_count = 0;
     }
     
     lunasForm.has_diskon = false;
@@ -1589,7 +1580,7 @@ const deleteCustomer = (customer) => {
                                     <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 whitespace-nowrap">Alamat</th>
                                     <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 print:hidden whitespace-nowrap">Nama Paket</th>
                                     <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 print:hidden whitespace-nowrap">Tanggal Register</th>
-                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 print:hidden whitespace-nowrap">Pembayaran Terakhir</th>
+                                    <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 print:hidden whitespace-nowrap">Terbayar Sampai</th>
                                     <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-right whitespace-nowrap">Tagihan</th>
                                     <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center print:hidden whitespace-nowrap">Status Pelanggan</th>
                                     <th scope="col" class="px-3 py-2.5 sm:px-6 sm:py-3.5 text-center print:hidden whitespace-nowrap">Status</th>
@@ -1655,9 +1646,9 @@ const deleteCustomer = (customer) => {
                                         {{ formatDate(customer.register_date) }}
                                     </td>
 
-                                    <!-- Pembayaran Terakhir -->
+                                    <!-- Terbayar Sampai -->
                                     <td class="whitespace-nowrap print:hidden px-3 py-3 sm:px-6 sm:py-4 text-xs text-slate-600">
-                                        {{ formatDate(customer.last_payment_date || customer.last_paid_date) }}
+                                        {{ formatDate(customer.last_paid_date || customer.last_payment_date) }}
                                     </td>
 
                                     <!-- Amount -->

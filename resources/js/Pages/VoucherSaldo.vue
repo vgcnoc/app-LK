@@ -227,6 +227,7 @@ const filterForm = useForm({
     end_date: props.filters.end_date || '',
     status: props.filters.status || 'Semua',
     area: props.filters.area || 'Semua',
+    reseller_id: props.filters.reseller_id || 'Semua',
 });
 
 const applyFilters = () => {
@@ -748,6 +749,17 @@ watch([searchQuery, () => props.filters], () => currentPageTransactions.value = 
                                 >
                                     <option value="Semua">Semua Area</option>
                                     <option v-for="area in areas" :key="area" :value="area">{{ area }}</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="reseller_id" class="block text-xs font-medium text-slate-700">Reseller</label>
+                                <select
+                                    id="reseller_id"
+                                    v-model="filterForm.reseller_id"
+                                    class="mt-1 block w-full rounded-lg border-0 py-2 pl-3 pr-10 text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                >
+                                    <option value="Semua">Semua Reseller</option>
+                                    <option v-for="reseller in resellers" :key="reseller.id" :value="reseller.id">{{ reseller.name }}</option>
                                 </select>
                             </div>
                             <div class="flex flex-wrap items-center gap-2 mt-2 sm:mt-0 w-full sm:w-auto">
