@@ -570,11 +570,23 @@ watch([() => createForm.paket, () => createForm.area], ([newPaket, newArea], [ol
     if (newPaket !== oldPaket || newArea !== oldArea) {
         createForm.installation_fee = calculateInstallationFee(newPaket, newArea);
     }
+    if (newPaket !== oldPaket && newPaket) {
+        const pkg = props.pakets.find(p => p.name === newPaket);
+        if (pkg) {
+            createForm.base_amount = pkg.price;
+        }
+    }
 });
 
 watch([() => editForm.paket, () => editForm.area], ([newPaket, newArea], [oldPaket, oldArea]) => {
     if (showEditModal.value && (newPaket !== oldPaket || newArea !== oldArea)) {
         editForm.installation_fee = calculateInstallationFee(newPaket, newArea);
+    }
+    if (showEditModal.value && newPaket !== oldPaket && newPaket) {
+        const pkg = props.pakets.find(p => p.name === newPaket);
+        if (pkg) {
+            editForm.base_amount = pkg.price;
+        }
     }
 });
 

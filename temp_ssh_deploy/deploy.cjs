@@ -2,7 +2,7 @@ const { Client } = require('ssh2');
 const conn = new Client(); 
 conn.on('ready', () => { 
     console.log('Client :: ready'); 
-    conn.exec('cd /var/www/lk.viruzs.my.id && git reset --hard HEAD && git pull origin main && php artisan migrate --force && npm install && npm run build', (err, stream) => {
+    conn.exec('cd /var/www/lk.viruzs.my.id && git reset --hard HEAD && git clean -fd && git pull origin main && php artisan migrate --force && npm install && npm run build', (err, stream) => {
         if (err) throw err; 
         stream.on('close', (code, signal) => { 
             console.log('Stream :: close :: code: ' + code + ', signal: ' + signal); 

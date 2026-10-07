@@ -254,6 +254,15 @@ const createForm = useForm({
     installation_fee: ''
 });
 
+watch(() => createForm.paket, (newPaket) => {
+    if (newPaket) {
+        const pkg = props.internetPackages.find(p => p.name === newPaket);
+        if (pkg) {
+            createForm.base_amount = pkg.price;
+        }
+    }
+});
+
 const openCreateModal = () => {
     createForm.reset();
     createForm.clearErrors();
