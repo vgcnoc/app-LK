@@ -666,6 +666,47 @@ const exportPDF = () => {
 // Set Lunas Modal
 const isLunasModalOpen = ref(false);
 const activeCustomer = ref(null);
+const unpaidMonthsList = ref([]);
+
+const calculateUnpaidMonths = (customer) => {
+    if (!customer || customer.amount <= 0 || customer.status === 'paid') return [];
+    
+    let monthsOwed = Math.ceil(Number(customer.amount) / Number(customer.base_amount));
+    if (monthsOwed < 1) monthsOwed = 1;
+    
+    const unpaid = [];
+    const currentDate = new Date();
+    for (let i = monthsOwed - 1; i >= 0; i--) {
+        const d = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+        const monthName = d.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+        
+        let amountForThisMonth = Number(customer.base_amount);
+        if (i === monthsOwed - 1) { // Oldest month
+            const remainder = Number(customer.amount) % Number(customer.base_amount);
+            if (remainder !== 0) amountForThisMonth = remainder;
+        }
+        
+        unpaid.push({
+            id: i,
+            name: monthName,
+            amount: amountForThisMonth,
+            selected: true
+        });
+    }
+    return unpaid;
+};
+
+const updatePaymentAmountFromCheckboxes = () => {
+    const selectedMonths = unpaidMonthsList.value.filter(m => m.selected);
+    const totalAmount = selectedMonths.reduce((sum, m) => sum + m.amount, 0);
+    lunasForm.payment_amount = totalAmount;
+    
+    if (selectedMonths.length > 0) {
+        lunasForm.keterangan = 'Pembayaran tagihan: ' + selectedMonths.map(m => m.name).join(', ');
+    } else {
+        lunasForm.keterangan = '';
+    }
+};
 
 const lunasForm = useForm({
     payment_method_id: '',
@@ -683,7 +724,9 @@ const openLunasModal = (customer) => {
     activeCustomer.value = customer;
     lunasForm.reset();
     lunasForm.clearErrors();
-    // Default to first payment method if available
+    
+    unpaidMonthsList.value = calculateUnpaidMonths(customer);
+
     if (props.paymentMethods.length > 0) {
         lunasForm.payment_method_id = props.paymentMethods[0].id;
         lunasForm.payment_method = props.paymentMethods[0].name;
@@ -692,7 +735,13 @@ const openLunasModal = (customer) => {
     lunasForm.payment_amount = customer.amount || customer.base_amount || 0;
     lunasForm.is_janji_bayar = false;
     lunasForm.promise_date = '';
-    lunasForm.keterangan = '';
+    
+    if (unpaidMonthsList.value.length > 0) {
+        lunasForm.keterangan = 'Pembayaran tagihan: ' + unpaidMonthsList.value.map(m => m.name).join(', ');
+    } else {
+        lunasForm.keterangan = '';
+    }
+    
     lunasForm.has_diskon = false;
     lunasForm.diskon = 0;
     isLunasModalOpen.value = true;
@@ -1917,6 +1966,25 @@ const deleteCustomer = (customer) => {
 
                     <!-- Form -->
                     <form @submit.prevent="submitLunas" class="mt-5 space-y-4">
+                        <!-- Pilih Tagihan -->
+                        <div v-if="unpaidMonthsList.length > 0">
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                                Pilih Tagihan yang Dibayar
+                            </label>
+                            <div class="space-y-2 max-h-40 overflow-y-auto pr-2 rounded-xl border border-slate-200 p-3 bg-slate-50/50">
+                                <label v-for="(month, index) in unpaidMonthsList" :key="index" class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-100 transition cursor-pointer">
+                                    <input 
+                                        type="checkbox" 
+                                        v-model="month.selected"
+                                        @change="updatePaymentAmountFromCheckboxes"
+                                        class="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-600"
+                                    />
+                                    <span class="text-sm font-medium text-slate-700 flex-1">{{ month.name }}</span>
+                                    <span class="text-sm font-bold text-slate-900">{{ formatRupiah(month.amount) }}</span>
+                                </label>
+                            </div>
+                        </div>
+
                         <!-- Nominal Pembayaran -->
                         <div>
                             <label for="payment-amount" class="block text-xs font-semibold uppercase tracking-wider text-slate-700">
