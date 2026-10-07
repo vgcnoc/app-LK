@@ -1447,6 +1447,7 @@ Route::middleware(['auth'])->group(function () {
                     'status' => 'paid',
                     'amount' => 0,
                     'last_paid_date' => $paymentDate,
+                    'last_payment_date' => $paymentDate,
                     'last_paid_by' => auth()->user() ? auth()->user()->name : 'Admin',
                     'promise_date' => null,
                     'prorata_amount' => null
@@ -1517,6 +1518,7 @@ Route::middleware(['auth'])->group(function () {
                 // Partial payment - update remaining amount, keep as pending/nunggak
                 $customer->update([
                     'amount' => $remaining,
+                    'last_payment_date' => $paymentDate,
                     'last_paid_by' => auth()->user() ? auth()->user()->name : 'Admin',
                     'promise_date' => $isJanjiBayar ? $promiseDate : $customer->promise_date
                 ]);

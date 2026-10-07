@@ -94,25 +94,17 @@ const deleteSelected = () => {
 const isAktif = (c) => !c.status_pelanggan || String(c.status_pelanggan).toLowerCase() === 'aktif';
 
 const getCustomerDueDate = (c) => {
-    const globalDueDate = props.settings.global_due_date ? parseInt(props.settings.global_due_date) : null;
-    if (!globalDueDate) return null;
-    
+    const globalDueDate = props.settings.global_due_date ? parseInt(props.settings.global_due_date) : 20;
     const globalDueTime = props.settings.global_due_time || '23:59';
     const [hours, minutes] = globalDueTime.split(':').map(Number);
 
-    let startMonth;
-    if (c.last_paid_date) {
-        startMonth = new Date(c.last_paid_date);
-        startMonth.setMonth(startMonth.getMonth() + 1);
-    } else {
-        startMonth = c.register_date ? new Date(c.register_date) : new Date(c.created_at);
-        if (c.prorata_amount !== null && c.prorata_amount !== undefined) {
-            startMonth.setMonth(startMonth.getMonth() + 1);
-        }
+    let monthsOwed = 1;
+    if (c.amount > 0 && c.base_amount > 0) {
+        monthsOwed = Math.ceil(Number(c.amount) / Number(c.base_amount));
     }
-    
-    let dueDate = new Date(startMonth);
-    dueDate.setDate(globalDueDate);
+
+    const currentDate = new Date();
+    let dueDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - monthsOwed + 1, globalDueDate);
     dueDate.setHours(hours, minutes, 0, 0);
     return dueDate;
 };
@@ -1576,7 +1568,7 @@ const deleteCustomer = (customer) => {
 
                                     <!-- Pembayaran Terakhir -->
                                     <td class="whitespace-nowrap print:hidden px-3 py-3 sm:px-6 sm:py-4 text-xs text-slate-600">
-                                        {{ formatDate(customer.last_paid_date) }}
+                                        {{ formatDate(customer.last_payment_date || customer.last_paid_date) }}
                                     </td>
 
                                     <!-- Amount -->
