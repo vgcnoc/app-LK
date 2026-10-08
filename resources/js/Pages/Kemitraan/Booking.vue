@@ -229,6 +229,7 @@ const deleteBooking = (id) => {
                                     <th class="px-6 py-4 font-semibold">Nama / Usaha</th>
                                     <th class="px-6 py-4 font-semibold">No. HP</th>
                                     <th class="px-6 py-4 font-semibold">Alamat</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Status</th>
                                     <th class="px-6 py-4 font-semibold text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -250,6 +251,17 @@ const deleteBooking = (id) => {
                                     </td>
                                     <td class="px-6 py-4">
                                         <p class="text-sm text-slate-600 line-clamp-1 max-w-[200px]" :title="item.alamat">{{ item.alamat || '-' }}</p>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                                        <span class="inline-flex items-center rounded-md px-2.5 py-1 text-[11px] font-semibold"
+                                            :class="{
+                                                'bg-emerald-100 text-emerald-700': item.status_akun === 'Aktif',
+                                                'bg-red-100 text-red-700': item.status_akun === 'Nonaktif',
+                                                'bg-amber-100 text-amber-700': item.status_akun === 'Pending' || !item.status_akun,
+                                                'bg-blue-100 text-blue-700': !['Aktif', 'Nonaktif', 'Pending'].includes(item.status_akun)
+                                            }">
+                                            {{ item.status_akun || 'Pending' }}
+                                        </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                         <div class="flex items-center justify-center gap-2">
