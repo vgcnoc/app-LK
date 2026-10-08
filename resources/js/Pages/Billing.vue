@@ -2254,13 +2254,13 @@ const deleteCustomer = (customer) => {
             ></div>
 
             <!-- Modal Panel -->
-            <div class="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white shadow-2xl transition-all">
-                <div class="border-b border-slate-100 bg-slate-50/50 px-3 py-3 sm:px-6 sm:py-4">
+            <div class="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white shadow-2xl transition-all flex flex-col max-h-[90vh]">
+                <div class="border-b border-slate-100 bg-slate-50/50 px-3 py-3 sm:px-6 sm:py-4 shrink-0">
                     <h3 class="text-lg font-bold text-slate-800">Edit Pelanggan</h3>
                     <p class="mt-1 text-xs text-slate-500">Perbarui informasi Billing Data.</p>
                 </div>
 
-                <div class="p-6">
+                <div class="p-6 overflow-y-auto flex-1">
                     <form @submit.prevent="submitEdit">
                         <div class="space-y-4">
                             <!-- Name -->
