@@ -605,6 +605,7 @@ const filteredCustomers = computed(() => {
         const matchesTab = 
             appliedStatusFilter.value !== 'all' ||
             (activeTab.value === 'semua') ||
+            (activeTab.value === 'lunas' && isLunas) ||
             (activeTab.value === 'piutang' && isSebagian && isPiutang && !hasJanjiBayar) ||
             (activeTab.value === 'janji_bayar' && isPiutang && hasJanjiBayar) ||
             (activeTab.value === 'jatuh_tempo' && isJatuhTempo && !hasJanjiBayar) ||
@@ -1414,6 +1415,18 @@ const deleteCustomer = (customer) => {
                             >
                                 🆕 Pelanggan Prorata
                                 <span class="ml-1.5 rounded-md bg-cyan-100 px-1.5 py-0.5 text-[10px] font-bold text-cyan-700">{{ props.customers.filter(c => String(c.status).toLowerCase() === 'prorata').length }}</span>
+                            </button>
+                            <button
+                                @click="activeTab = 'lunas'"
+                                :class="[
+                                    'rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-200',
+                                    activeTab === 'lunas'
+                                        ? 'bg-white text-emerald-700 shadow-sm ring-1 ring-emerald-200/60'
+                                        : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
+                                ]"
+                            >
+                                ✅ Tagihan Lunas
+                                <span class="ml-1.5 rounded-md bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700">{{ props.customers.filter(c => String(c.status).toLowerCase() === 'paid').length }}</span>
                             </button>
                             <button
                                 @click="activeTab = 'riwayat_upgrade'"
