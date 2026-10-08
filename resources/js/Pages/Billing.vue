@@ -604,7 +604,7 @@ const filteredCustomers = computed(() => {
 
         const matchesTab = 
             appliedStatusFilter.value !== 'all' ||
-            (activeTab.value === 'semua') ||
+            (activeTab.value === 'semua' && isPiutang && !hasJanjiBayar && !isSebagian && !isJatuhTempo && !isProrata) ||
             (activeTab.value === 'lunas' && isLunas) ||
             (activeTab.value === 'piutang' && isSebagian && isPiutang && !hasJanjiBayar) ||
             (activeTab.value === 'janji_bayar' && isPiutang && hasJanjiBayar) ||
@@ -1366,7 +1366,7 @@ const deleteCustomer = (customer) => {
                                ]"
                             >
                                 📋 Daftar Tagihan
-                                <span class="ml-1.5 rounded-md bg-slate-200/80 px-1.5 py-0.5 text-[10px] font-bold text-slate-600">{{ props.customers.filter(c => !c.promise_date && !checkSebagian(c) && !isOverdue(c) && String(c.status).toLowerCase() !== 'prorata').length }}</span>
+                                <span class="ml-1.5 rounded-md bg-slate-200/80 px-1.5 py-0.5 text-[10px] font-bold text-slate-600">{{ props.customers.filter(c => !c.promise_date && !checkSebagian(c) && !isOverdue(c) && String(c.status).toLowerCase() !== 'prorata' && String(c.status).toLowerCase() !== 'paid' && isAktif(c)).length }}</span>
                             </button>
                             <button
                                 @click="activeTab = 'jatuh_tempo'"
