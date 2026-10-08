@@ -604,7 +604,7 @@ const filteredCustomers = computed(() => {
 
         const matchesTab = 
             appliedStatusFilter.value !== 'all' ||
-            (activeTab.value === 'semua' && !isLunas) ||
+            (activeTab.value === 'semua') ||
             (activeTab.value === 'piutang' && isSebagian && isPiutang && !hasJanjiBayar) ||
             (activeTab.value === 'janji_bayar' && isPiutang && hasJanjiBayar) ||
             (activeTab.value === 'jatuh_tempo' && isJatuhTempo && !hasJanjiBayar) ||
