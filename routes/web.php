@@ -1578,35 +1578,34 @@ Route::middleware(['auth'])->group(function () {
 
         DB::transaction(function () use ($customer) {
             // Find the latest transaction for this customer
-            $latestTransaction = Transaction::where('description', 'Pembayaran dari ' . $customer->name)
+            $latestTransaction = Transaction::where(function($q) use ($customer) {
+                    $q->where('description', 'like', 'Pembayaran dari ' . $customer->name . '%')
+                      ->orWhere('description', 'like', 'Pelunasan Tagihan dari ' . $customer->name . '%');
+                })
                 ->where('type', 'income')
                 ->orderBy('created_at', 'desc')
                 ->first();
 
             if ($latestTransaction) {
+                if ($customer->last_paid_date) {
+                    $monthsToRevert = max(1, round($latestTransaction->amount / max(1, $customer->base_amount)));
+                    $newDate = \Carbon\Carbon::parse($customer->last_paid_date)->subMonths($monthsToRevert)->format('Y-m-d');
+                    
+                    $regDateStart = \Carbon\Carbon::parse($customer->register_date ?: $customer->created_at)->startOfMonth();
+                    if (\Carbon\Carbon::parse($newDate)->lt($regDateStart)) {
+                        $newDate = null;
+                    }
+                    
+                    $customer->update(['last_paid_date' => $newDate]);
+                }
                 $latestTransaction->delete();
-            }
-
-            // Find the next latest transaction to rollback last_paid_date
-            $previousTransaction = Transaction::where('description', 'Pembayaran dari ' . $customer->name)
-                ->where('type', 'income')
-                ->orderBy('created_at', 'desc')
-                ->first();
-
-            if ($previousTransaction) {
-                $customer->update([
-                    'last_paid_date' => $previousTransaction->date,
-                    'last_paid_by' => null,
-                ]);
             } else {
-                $customer->update([
-                    'last_paid_date' => null,
-                    'last_paid_by' => null,
-                ]);
+                // If somehow no transaction is found, just reset last_paid_date to null
+                $customer->update(['last_paid_date' => null]);
             }
             
             // Set them to pending, the syncBilling will recalculate if needed when page loads
-            $customer->update(['status' => 'pending', 'amount' => $customer->base_amount]);
+            $customer->update(['status' => 'pending', 'amount' => $customer->base_amount, 'last_paid_by' => null]);
         });
 
         return back()->with('success', 'Pelunasan berhasil dibatalkan (rollback).');
