@@ -343,6 +343,7 @@ const getStatusDate = (stepName) => {
                                 <option value="Asnet">Asnet</option>
                                 <option value="Lintas Arta">Lintas Arta</option>
                                 <option value="MAP">MAP</option>
+                                <option value="Viruzs">Viruzs</option>
                             </select>
                         </div>
                     </div>
