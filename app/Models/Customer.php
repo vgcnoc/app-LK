@@ -136,10 +136,12 @@ class Customer extends Model
                     }
                 } else {
                     // Determine if pending, nunggak, or prorata
-                    // If diff == 1 and prorata is active, status is prorata
                     $isPartial = $totalPaid > 0 ? 1 : 0;
                     
-                    if ($diff == 1 && $c->prorata_amount !== null) {
+                    // Check if this is the customer's first bill after registration
+                    $isFirstBill = ($c->last_paid_date === null && $registerMonth->diffInMonths($currentMonth, false) == 1);
+                        
+                    if (($diff == 1 && $c->prorata_amount !== null) || $isFirstBill) {
                         if ($c->status !== 'prorata' || $c->amount != $expectedAmount || $c->is_partial_payment != $isPartial) {
                             $c->update(['status' => 'prorata', 'amount' => $expectedAmount, 'is_partial_payment' => $isPartial]);
                         }
