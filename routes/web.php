@@ -2075,9 +2075,7 @@ Route::middleware(['auth'])->group(function () {
         $originalStatus = $customer->status_pelanggan;
         $originalPaket = $customer->paket;
         
-        if (!isset($data['prorata_amount'])) {
-            $data['prorata_amount'] = Customer::calculateProrata($data['base_amount'] ?? $customer->base_amount, $data['register_date'] ?? clone $customer->register_date);
-        }
+        $data['prorata_amount'] = Customer::calculateProrata($data['base_amount'] ?? $customer->base_amount, $data['register_date'] ?? $customer->register_date);
 
         $isUpgrade = filter_var($request->input('is_upgrade'), FILTER_VALIDATE_BOOLEAN);
         unset($data['is_upgrade']);

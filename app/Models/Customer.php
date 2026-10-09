@@ -14,12 +14,6 @@ class Customer extends Model
         
         try {
             $regDate = \Carbon\Carbon::parse($registerDate);
-            $now = \Carbon\Carbon::now();
-            
-            // Only calculate prorata if register date is in the CURRENT month and year
-            if ($regDate->month !== $now->month || $regDate->year !== $now->year) {
-                return null;
-            }
             
             $daysInMonth = $regDate->daysInMonth;
             $remainingDays = $daysInMonth - $regDate->day + 1;

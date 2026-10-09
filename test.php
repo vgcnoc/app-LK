@@ -1,0 +1,5 @@
+<?php
+require __DIR__.'/vendor/autoload.php';
+$app = require_once __DIR__.'/bootstrap/app.php';
+$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+echo App\Models\Customer::calculateProrata(130000, '2026-10-08');
