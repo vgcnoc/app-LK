@@ -1616,13 +1616,23 @@ Route::middleware(['auth'])->group(function () {
         \App\Models\Customer::syncBilling();
         $excludedAreas = ['Gratis BC 1', 'Gratis BC 2', 'Gratis BC 3'];
         
-        $customers = Customer::with('suspensions')
-            ->where(function($query) use ($excludedAreas) {
-                $query->whereIn('status_pelanggan', ['Berhenti', 'Nonaktif', 'Suspend', 'Isolir', 'Gratis', 'Stop Permanen', 'Berhenti sementara'])
-                      ->orWhereIn('area', $excludedAreas);
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Customer::with('suspensions')
+            ->where(function($q) use ($excludedAreas) {
+                $q->whereIn('status_pelanggan', ['Berhenti', 'Nonaktif', 'Suspend', 'Isolir', 'Gratis', 'Stop Permanen', 'Berhenti sementara'])
+                  ->orWhereIn('area', $excludedAreas);
+            });
+            
+        $user = request()->user();
+        if ($user && $user->role === 'sales') {
+            $salesModel = \App\Models\Sales::where('user_id', $user->id)->first();
+            if ($salesModel) {
+                $query->where('sales_id', $salesModel->id);
+            } else {
+                $query->whereRaw('0 = 1');
+            }
+        }
+            
+        $customers = $query->orderBy('created_at', 'desc')->get();
             
         $allSuspensions = \App\Models\CustomerSuspension::with('customer')
             ->orderBy('suspend_start_date', 'desc')
@@ -1639,14 +1649,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pelanggan-pantauan', function () {
         \App\Models\Customer::syncBilling();
         
-        $customersQuery = Customer::withCount('suspensions')
-            ->where(function ($query) {
-                $query->whereIn('status_pelanggan', ['Suspend', 'Berhenti sementara', 'Isolir', 'Berhenti', 'Nonaktif', 'Stop Permanen', 'Putus'])
-                      ->orWhere('status', 'nunggak')
-                      ->orWhereNotNull('promise_date');
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Customer::withCount('suspensions')
+            ->where(function ($q) {
+                $q->whereIn('status_pelanggan', ['Suspend', 'Berhenti sementara', 'Isolir', 'Berhenti', 'Nonaktif', 'Stop Permanen', 'Putus'])
+                  ->orWhere('status', 'nunggak')
+                  ->orWhereNotNull('promise_date');
+            });
+            
+        $user = request()->user();
+        if ($user && $user->role === 'sales') {
+            $salesModel = \App\Models\Sales::where('user_id', $user->id)->first();
+            if ($salesModel) {
+                $query->where('sales_id', $salesModel->id);
+            } else {
+                $query->whereRaw('0 = 1');
+            }
+        }
+            
+        $customersQuery = $query->orderBy('created_at', 'desc')->get();
             
         $customers = $customersQuery->filter(function($c) {
             $isBerhenti = in_array(strtolower($c->status_pelanggan ?? ''), ['berhenti', 'nonaktif', 'stop permanen', 'putus']);
@@ -1895,9 +1915,19 @@ Route::middleware(['auth'])->group(function () {
     // MASTER DATA PELANGGAN
     Route::get('/pelanggan', function () {
         // Halaman ini khusus untuk Master Data Pelanggan (CRUD basic)
-        $customers = Customer::where('status_pelanggan', '!=', 'Booking')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Customer::where('status_pelanggan', '!=', 'Booking');
+        
+        $user = request()->user();
+        if ($user && $user->role === 'sales') {
+            $salesModel = \App\Models\Sales::where('user_id', $user->id)->first();
+            if ($salesModel) {
+                $query->where('sales_id', $salesModel->id);
+            } else {
+                $query->whereRaw('0 = 1');
+            }
+        }
+        
+        $customers = $query->orderBy('created_at', 'desc')->get();
         
         // Generate Chart Data (Last 6 months)
         $chartLabels = [];
